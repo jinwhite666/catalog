@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0f19; /* Deep infrastructure dark mode */
+            background-color: #0b0f19;
             color: #e2e8f0;
             display: flex;
             flex-direction: column;
@@ -21,25 +21,23 @@
             font-weight: 300;
             letter-spacing: 3px;
             margin-bottom: 40px;
-            color: #38bdf8; /* Cyber blue accent */
+            color: #38bdf8;
             text-transform: uppercase;
         }
         .container {
-            display: flex;
-            gap: 25px;
-            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
-            flex-wrap: wrap; /* Adjusts for mobile screens */
         }
         .card {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 40px 30px;
-            flex: 1;
-            min-width: 250px;
+            border-radius: 8px;
+            padding: 30px 20px;
             text-align: center;
             text-decoration: none;
             color: inherit;
@@ -51,24 +49,24 @@
         }
         .card:hover {
             border-color: #38bdf8;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
             transform: translateY(-5px);
+            background: #243347;
         }
         .card h2 {
-            margin-top: 0;
-            font-size: 1.4rem;
+            margin: 15px 0 10px 0;
+            font-size: 1.2rem;
             color: #f8fafc;
             letter-spacing: 1px;
         }
         .card p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #94a3b8;
-            margin-bottom: 0;
-            line-height: 1.5;
+            margin: 0;
+            line-height: 1.4;
         }
         .icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -77,16 +75,28 @@
     <h1>OmniSense Directory</h1>
 
     <div class="container">
+        <a href="My_Profile.html" class="card">
+            <div class="icon">👤</div>
+            <h2>Professional Profile</h2>
+            <p>Senior Network & Security Infrastructure Architect credentials.</p>
+        </a>
+
+        <a href="PM_Daily_Handbook.html" class="card">
+            <div class="icon">📔</div>
+            <h2>PM Daily Handbook</h2>
+            <p>Operational guidelines and project management protocols.</p>
+        </a>
+
         <a href="IT_Business_Research_Catalog.html" class="card">
             <div class="icon">📊</div>
-            <h2>IT Business Research</h2>
-            <p>Access high-level strategic analysis and unit economics data.</p>
+            <h2>Business Research</h2>
+            <p>Strategic analysis and AI-driven market research data.</p>
         </a>
 
         <a href="IT_Infra_Business_Catalog.html" class="card">
             <div class="icon">⚙️</div>
             <h2>IT Infrastructure</h2>
-            <p>Access architecture blueprints and deployment protocols.</p>
+            <p>Multi-vendor architecture blueprints and security specs.</p>
         </a>
     </div>
 
