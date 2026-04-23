@@ -1,9 +1,24 @@
+I understand exactly what you need. We are going to take that massive, dark-neon **2099 Cyberpunk** aesthetic we just built and inject your actual WHITE ENTERPRISES INC. directory files into it. 
+
+Instead of showing global website traffic, this terminal will now act as the futuristic gateway to your stealth R&D catalogs, profile, and downloadable assets. 
+
+I've mapped your files to different "Sectors" with unique neon colors and added "Data Payload" bars to keep that high-tech, data-heavy feel. The `.zip` file is also properly configured to trigger a download.
+
+### Instructions to Deploy:
+1. Open your **`index.html`** file on GitHub.
+2. Click the **Pencil icon** to edit.
+3. Delete everything inside and paste the code below.
+4. Click **Commit changes** and hard refresh your live site after 60 seconds.
+
+### The Code (`index.html`)
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | GLOBAL OVERVIEW</title>
+    <title>WHITE ENTERPRISES INC. | STEALTH DATABANK</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
 
@@ -90,7 +105,7 @@
             gap: 15px;
         }
 
-        /* Individual Data Cards */
+        /* Individual Data Cards (Links) */
         .data-card {
             background: rgba(10, 15, 25, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -98,11 +113,14 @@
             backdrop-filter: blur(5px);
             padding: 20px;
             display: grid;
-            grid-template-columns: 50px 2fr 1fr 1fr;
+            grid-template-columns: 60px 2fr 1fr 1fr;
             align-items: center;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-decoration: none; /* Remove link underline */
+            color: inherit;
+            cursor: pointer;
         }
 
         .data-card:hover {
@@ -121,7 +139,7 @@
 
         .site-info h2 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -135,11 +153,12 @@
             display: inline-block;
             margin-top: 5px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .traffic-data {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: right;
             color: #fff;
         }
@@ -147,11 +166,11 @@
         /* Visual Volume Bar */
         .volume-container {
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
-            margin-top: 10px;
+            margin-top: 15px;
             grid-column: 1 / -1; /* Spans across the whole bottom of the card */
         }
 
@@ -163,25 +182,25 @@
         }
 
         /* Sector Colors */
-        .color-search { color: var(--neon-blue); border-left-color: var(--neon-blue); }
-        .color-search .volume-bar { background: var(--neon-blue); color: var(--neon-blue); }
-        .color-search .sector-tag { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
-
-        .color-video { color: var(--neon-red); border-left-color: var(--neon-red); }
-        .color-video .volume-bar { background: var(--neon-red); color: var(--neon-red); }
-        .color-video .sector-tag { border: 1px solid var(--neon-red); color: var(--neon-red); }
-
-        .color-social { color: var(--neon-magenta); border-left-color: var(--neon-magenta); }
-        .color-social .volume-bar { background: var(--neon-magenta); color: var(--neon-magenta); }
-        .color-social .sector-tag { border: 1px solid var(--neon-magenta); color: var(--neon-magenta); }
+        .color-core { color: var(--neon-blue); border-left-color: var(--neon-blue); }
+        .color-core .volume-bar { background: var(--neon-blue); color: var(--neon-blue); }
+        .color-core .sector-tag { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
 
         .color-ai { color: var(--neon-green); border-left-color: var(--neon-green); }
         .color-ai .volume-bar { background: var(--neon-green); color: var(--neon-green); }
         .color-ai .sector-tag { border: 1px solid var(--neon-green); color: var(--neon-green); }
 
-        .color-info { color: var(--neon-yellow); border-left-color: var(--neon-yellow); }
-        .color-info .volume-bar { background: var(--neon-yellow); color: var(--neon-yellow); }
-        .color-info .sector-tag { border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
+        .color-quantum { color: var(--neon-magenta); border-left-color: var(--neon-magenta); }
+        .color-quantum .volume-bar { background: var(--neon-magenta); color: var(--neon-magenta); }
+        .color-quantum .sector-tag { border: 1px solid var(--neon-magenta); color: var(--neon-magenta); }
+
+        .color-ops { color: var(--neon-yellow); border-left-color: var(--neon-yellow); }
+        .color-ops .volume-bar { background: var(--neon-yellow); color: var(--neon-yellow); }
+        .color-ops .sector-tag { border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
+
+        .color-download { color: var(--neon-red); border-left-color: var(--neon-red); }
+        .color-download .volume-bar { background: var(--neon-red); color: var(--neon-red); }
+        .color-download .sector-tag { border: 1px solid var(--neon-red); color: var(--neon-red); }
 
         /* Footer */
         footer {
@@ -192,11 +211,12 @@
             color: rgba(255, 255, 255, 0.4);
             border-top: 1px dashed rgba(255, 255, 255, 0.1);
             padding-top: 20px;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
             .data-card {
-                grid-template-columns: 40px 1fr;
+                grid-template-columns: 50px 1fr;
                 gap: 10px;
             }
             .traffic-data {
@@ -215,53 +235,54 @@
     <div class="dashboard-container">
         <header>
             <h1>WHITE ENTERPRISES INC.</h1>
-            <div class="subtitle">GLOBAL TRAFFIC OVERVIEW // YEAR 2099 DATABANK</div>
+            <div class="subtitle">STEALTH R&D DATABANK // YEAR 2099 ARCHITECTURE</div>
         </header>
 
         <div class="data-grid" id="data-grid">
             </div>
 
         <footer>
-            DATA SOURCED FROM GLOBAL TELEMETRY SYSTEMS | EDUCATIONAL PROTOTYPE ONLY | ARCHITECT: JIN WHITE
+            DATA SOURCED FROM STEALTH R&D REPOSITORIES | ARCHITECT: JIN WHITE<br>
+            Educational and Conceptual Prototype Only. No warranties implied. Pricing speculative.
         </footer>
     </div>
 
     <script>
-        // Global Traffic Data
-        const globalData = [
-            { rank: '01', name: 'Google', traffic: 110, volumeText: '110 Billion', sector: 'Search Engine', colorClass: 'color-search' },
-            { rank: '02', name: 'YouTube', traffic: 54, volumeText: '54 Billion', sector: 'Streaming Video', colorClass: 'color-video' },
-            { rank: '03', name: 'Facebook', traffic: 10.8, volumeText: '10.8 Billion', sector: 'Social Core', colorClass: 'color-social' },
-            { rank: '04', name: 'Instagram', traffic: 7.1, volumeText: '7.1 Billion', sector: 'Visual Social', colorClass: 'color-social' },
-            { rank: '05', name: 'ChatGPT', traffic: 6.1, volumeText: '6.1 Billion', sector: 'AI / Neural Net', colorClass: 'color-ai' },
-            { rank: '06', name: 'Reddit', traffic: 5.7, volumeText: '5.7 Billion', sector: 'Forum Aggregator', colorClass: 'color-info' },
-            { rank: '07', name: 'Wikipedia', traffic: 4.8, volumeText: '4.8 Billion', sector: 'Global Encyclopedia', colorClass: 'color-info' },
-            { rank: '08', name: 'X', traffic: 4.4, volumeText: '4.4 Billion', sector: 'Micro-Social', colorClass: 'color-social' },
-            { rank: '09', name: 'Amazon', traffic: 4.0, volumeText: '4.0 Billion', sector: 'E-Commerce', colorClass: 'color-search' },
-            { rank: '10', name: 'WhatsApp', traffic: 3.0, volumeText: '3.0 Billion', sector: 'Secure Messaging', colorClass: 'color-green' } // Re-using AI color for variation
+        // Your White Enterprises Inc. File Directory
+        const directoryData = [
+            { id: '01', name: 'Identity Protocol', url: 'My_Profile.html', sector: 'SYS.IDENTITY', desc: 'Core Profile', colorClass: 'color-core', barScale: 100 },
+            { id: '02', name: 'AI Future Research', url: 'AI_Future_Research.html', sector: 'SYS.RESEARCH', desc: 'Predictive Models', colorClass: 'color-ai', barScale: 85 },
+            { id: '03', name: 'AI Applications', url: 'AI_Applications_all_Sectors.html', sector: 'SYS.APPLICATIONS', desc: 'Cross-Sector Logic', colorClass: 'color-ai', barScale: 80 },
+            { id: '04', name: 'AI Business Catalog', url: 'AI_Business_Catalog_.html', sector: 'SYS.MARKET_INTEL', desc: 'Venture Logic', colorClass: 'color-ai', barScale: 75 },
+            { id: '05', name: 'Quantum Catalog', url: 'Quantum_Catalog.html', sector: 'SYS.COMPUTE', desc: 'Next-Gen Specs', colorClass: 'color-quantum', barScale: 90 },
+            { id: '06', name: 'IT Infra Catalog', url: 'IT_Infra_Business_Catalog.html', sector: 'SYS.INFRASTRUCTURE', desc: 'Enterprise Blueprints', colorClass: 'color-core', barScale: 95 },
+            { id: '07', name: 'PM Daily Handbook', url: 'PM_Daily_Handbook.html', sector: 'SYS.OPERATIONS', desc: 'Protocols', colorClass: 'color-ops', barScale: 65 },
+            { id: '08', name: 'Assessment Templates', url: 'White_DoorOpener_Assessment _Templates.zip', sector: 'EXTRACT.DATA', desc: 'Downloadable Asset', colorClass: 'color-download', barScale: 100, isDownload: true }
         ];
 
         const gridContainer = document.getElementById('data-grid');
 
         // Render Data Cards
-        globalData.forEach((site, index) => {
-            // Because Google is so massive (110B), a strict linear scale makes WhatsApp (3B) invisible.
-            // We use a modified calculation to ensure all bars are visible but still show scale.
-            const minWidth = 10; 
-            const calculatedWidth = Math.max(minWidth, (site.traffic / 110) * 100);
+        directoryData.forEach((file) => {
+            const card = document.createElement('a');
+            card.className = `data-card ${file.colorClass}`;
+            card.href = file.url;
+            
+            // Add download attribute if it's the zip file
+            if(file.isDownload) {
+                card.setAttribute('download', '');
+            }
 
-            const card = document.createElement('div');
-            card.className = `data-card ${site.colorClass}`;
             card.innerHTML = `
-                <div class="rank">${site.rank}</div>
+                <div class="rank">${file.id}</div>
                 <div class="site-info">
-                    <h2>${site.name}</h2>
-                    <div class="sector-tag">SYS.${site.sector}</div>
+                    <h2>${file.name}</h2>
+                    <div class="sector-tag">${file.sector}</div>
                 </div>
-                <div class="traffic-data">VOL: ${site.volumeText}</div>
+                <div class="traffic-data">DESC: ${file.desc}</div>
                 <div class="traffic-data">STATUS: ONLINE</div>
                 <div class="volume-container">
-                    <div class="volume-bar" style="width: 0%" data-target-width="${calculatedWidth}%"></div>
+                    <div class="volume-bar" style="width: 0%" data-target-width="${file.barScale}%"></div>
                 </div>
             `;
             gridContainer.appendChild(card);
@@ -272,7 +293,7 @@
             document.querySelectorAll('.volume-bar').forEach(bar => {
                 bar.style.width = bar.getAttribute('data-target-width');
             });
-        }, 500);
+        }, 300);
 
         // --- 3D Moving Grid Background ---
         const canvas = document.getElementById('cyber-canvas');
@@ -325,3 +346,4 @@
     </script>
 </body>
 </html>
+```
