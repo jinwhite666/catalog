@@ -3,461 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | NEURAL DIRECTORY</title>
+    <title>WHITE ENTERPRISES INC. | GLOBAL OVERVIEW</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
 
         :root {
-            --bg-deep: #02040a;
-            --cyber-blue: #0ff;
-            --neon-magenta: #f0f;
-            --quantum-violet: #8a2be2;
-            --ops-green: #0fa;
-            --text-main: #e2e8f0;
-            --text-muted: #64748b;
+            --bg-base: #030508;
+            --neon-blue: #00f3ff;
+            --neon-magenta: #ff00ea;
+            --neon-yellow: #fffb00;
+            --neon-green: #00ff66;
+            --neon-red: #ff0055;
+            --grid-color: rgba(0, 243, 255, 0.1);
         }
 
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Share Tech Mono', monospace;
-            overflow: hidden; /* Lock scroll for app-like feel */
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Background Canvas for Neural Lines */
-        #neural-canvas {
+        /* Moving Cyber Grid Background */
+        #cyber-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 0;
-            opacity: 0.6;
-        }
-
-        /* HUD Overlay */
-        .hud-container {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
-            pointer-events: none; /* Let clicks pass through to nodes */
-            display: flex;
-            justify-content: space-between;
-            padding: 30px;
-            box-sizing: border-box;
+            z-index: -2;
         }
 
-        /* Left Panel: Identity & Log */
-        .panel-left {
-            width: 350px;
-            pointer-events: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* CRT Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .identity-core {
-            border-left: 3px solid var(--cyber-blue);
-            padding-left: 15px;
-            background: linear-gradient(90deg, rgba(0,255,255,0.05) 0%, transparent 100%);
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .identity-core h1 {
-            margin: 0 0 5px 0;
-            font-size: 1.5rem;
-            color: #fff;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px var(--cyber-blue);
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 20px;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
         }
 
-        .identity-core h2 {
-            margin: 0 0 5px 0;
-            font-size: 1rem;
-            color: var(--cyber-blue);
-        }
-
-        .identity-core p {
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.5rem;
             margin: 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .system-log {
-            flex-grow: 1;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .log-header {
-            font-size: 0.8rem;
-            color: var(--neon-magenta);
-            border-bottom: 1px solid var(--neon-magenta);
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
             text-transform: uppercase;
         }
 
-        .log-content {
-            font-size: 0.85rem;
-            color: var(--cyber-blue);
-            white-space: pre-wrap;
-            overflow-y: auto;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--neon-magenta);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
         }
 
-        /* Right Panel: Interaction Modes */
-        .panel-right {
-            width: 200px;
-            pointer-events: auto;
+        /* Data Matrix Layout */
+        .data-grid {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
             gap: 15px;
         }
 
-        .mode-btn {
-            background: transparent;
-            border: 1px solid var(--text-muted);
-            color: var(--text-muted);
-            padding: 10px 20px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-            width: 100%;
-            text-align: right;
+        /* Individual Data Cards */
+        .data-card {
+            background: rgba(10, 15, 25, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--neon-blue);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1fr;
+            align-items: center;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .mode-btn:hover {
-            border-color: var(--cyber-blue);
-            color: var(--cyber-blue);
+        .data-card:hover {
+            background: rgba(20, 30, 45, 0.9);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            transform: translateX(10px);
         }
 
-        .mode-btn.active {
-            border-color: var(--neon-magenta);
-            color: #fff;
-            background: rgba(255, 0, 255, 0.1);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        .rank {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Data Matrix Nodes */
-        #matrix-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-        }
-
-        .data-node {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            width: 160px;
-            height: 60px;
-            background: rgba(10, 15, 30, 0.8);
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-main);
-            font-size: 0.8rem;
-            border-radius: 4px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,0,0,0.8);
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .data-node::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            z-index: -1;
-            background: transparent;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .data-node:hover {
-            z-index: 100;
-        }
-
-        /* Cluster Colors */
-        .cluster-core { border-color: #fff; color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2); width: 200px; height: 80px; font-size: 1rem; }
-        .cluster-ai { border-color: var(--neon-magenta); }
-        .cluster-ai:hover { box-shadow: 0 0 25px var(--neon-magenta); background: rgba(255,0,255,0.1); }
-        .cluster-infra { border-color: var(--cyber-blue); }
-        .cluster-infra:hover { box-shadow: 0 0 25px var(--cyber-blue); background: rgba(0,255,255,0.1); }
-        .cluster-ops { border-color: var(--ops-green); }
-        .cluster-ops:hover { box-shadow: 0 0 25px var(--ops-green); background: rgba(0,255,170,0.1); }
-
-        /* --- Interaction Stream Effects (Applied via JS classes on body) --- */
-        body.gaze-active .data-node:hover {
-            transform: translate(-50%, -50%) scale(1.3);
+        .site-info h2 {
+            margin: 0;
+            font-size: 1.5rem;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        body.neural-active .data-node {
-            animation: neuralPulse 2s infinite alternate;
+
+        .sector-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            margin-top: 5px;
+            text-transform: uppercase;
         }
-        @keyframes neuralPulse {
-            0% { box-shadow: 0 0 5px currentColor; }
-            100% { box-shadow: 0 0 25px currentColor, inset 0 0 10px currentColor; }
+
+        .traffic-data {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            text-align: right;
+            color: #fff;
         }
-        
-        /* Footer Disclaimer */
-        .cyber-footer {
-            position: absolute;
-            bottom: 10px;
-            left: 380px; /* Offset for left panel */
-            right: 230px; /* Offset for right panel */
+
+        /* Visual Volume Bar */
+        .volume-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+            grid-column: 1 / -1; /* Spans across the whole bottom of the card */
+        }
+
+        .volume-bar {
+            height: 100%;
+            width: 0%; /* Set via JS */
+            box-shadow: 0 0 10px currentColor;
+            transition: width 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+
+        /* Sector Colors */
+        .color-search { color: var(--neon-blue); border-left-color: var(--neon-blue); }
+        .color-search .volume-bar { background: var(--neon-blue); color: var(--neon-blue); }
+        .color-search .sector-tag { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
+
+        .color-video { color: var(--neon-red); border-left-color: var(--neon-red); }
+        .color-video .volume-bar { background: var(--neon-red); color: var(--neon-red); }
+        .color-video .sector-tag { border: 1px solid var(--neon-red); color: var(--neon-red); }
+
+        .color-social { color: var(--neon-magenta); border-left-color: var(--neon-magenta); }
+        .color-social .volume-bar { background: var(--neon-magenta); color: var(--neon-magenta); }
+        .color-social .sector-tag { border: 1px solid var(--neon-magenta); color: var(--neon-magenta); }
+
+        .color-ai { color: var(--neon-green); border-left-color: var(--neon-green); }
+        .color-ai .volume-bar { background: var(--neon-green); color: var(--neon-green); }
+        .color-ai .sector-tag { border: 1px solid var(--neon-green); color: var(--neon-green); }
+
+        .color-info { color: var(--neon-yellow); border-left-color: var(--neon-yellow); }
+        .color-info .volume-bar { background: var(--neon-yellow); color: var(--neon-yellow); }
+        .color-info .sector-tag { border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
+
+        /* Footer */
+        footer {
             text-align: center;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            pointer-events: auto;
-            border-top: 1px dashed rgba(255,255,255,0.1);
-            padding-top: 10px;
+            margin-top: 50px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .data-card {
+                grid-template-columns: 40px 1fr;
+                gap: 10px;
+            }
+            .traffic-data {
+                grid-column: 2;
+                text-align: left;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="neural-canvas"></canvas>
+    <canvas id="cyber-canvas"></canvas>
+    <div class="scanlines"></div>
 
-    <div id="matrix-container">
-        </div>
+    <div class="dashboard-container">
+        <header>
+            <h1>WHITE ENTERPRISES INC.</h1>
+            <div class="subtitle">GLOBAL TRAFFIC OVERVIEW // YEAR 2099 DATABANK</div>
+        </header>
 
-    <div class="hud-container">
-        <div class="panel-left">
-            <div class="identity-core">
-                <h1>WHITE ENTERPRISES INC.</h1>
-                <h2>SYS.ARCHITECT // JIN WHITE</h2>
-                <p>SEC.CLR: OMNI-NODE ACTIVE<br>LOC: MUMBAI_GRID // R&D_STEALTH</p>
+        <div class="data-grid" id="data-grid">
             </div>
-            
-            <div class="system-log">
-                <div class="log-header">System Log_Feed v9.4</div>
-                <div class="log-content" id="log-output">
-                    > INITIALIZING NEURAL DIRECTORY...
-                    > ESTABLISHING HANDSHAKE...
-                    > 9 NODES ONLINE.
-                    > AWAITING USER INPUT.
-                </div>
-            </div>
-        </div>
 
-        <div class="panel-right">
-            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: -5px; text-transform: uppercase;">Interaction Streams</div>
-            <button class="mode-btn active" onclick="setMode('standard', this)">[0] Standard</button>
-            <button class="mode-btn" onclick="setMode('gesture', this)">[1] Gesture Sync</button>
-            <button class="mode-btn" onclick="setMode('gaze', this)">[2] Gaze Track</button>
-            <button class="mode-btn" onclick="setMode('neural', this)">[3] Neural Link</button>
-        </div>
-    </div>
-
-    <div class="cyber-footer">
-        EDUCATIONAL PURPOSES ONLY. Not a prospectus or professional advice. Pricing speculative. No warranties implied. Liability limited. 
+        <footer>
+            DATA SOURCED FROM GLOBAL TELEMETRY SYSTEMS | EDUCATIONAL PROTOTYPE ONLY | ARCHITECT: JIN WHITE
+        </footer>
     </div>
 
     <script>
-        // --- Data Matrix Definition ---
-        const nodesData = [
-            { id: 'core', label: 'My_Profile', file: 'My_Profile.html', cluster: 'core', desc: '> ACCESSING PROFILE...\n> Loading 16+ Years Multi-Vendor Architecture History.\n> Identity: Jin White / Arvind Pardeshi.' },
-            { id: 'ai1', label: 'AI_Future_Research', file: 'AI_Future_Research.html', cluster: 'ai', desc: '> ACCESSING AI LAB...\n> Loading Predictive modeling and neuro-symbolic logic.' },
-            { id: 'ai2', label: 'AI_Applications', file: 'AI_Applications_all_Sectors.html', cluster: 'ai', desc: '> ACCESSING SECTOR DATA...\n> Loading Cross-sector implementation strategies.' },
-            { id: 'ai3', label: 'AI_Business', file: 'AI_Business_Catalog_.html', cluster: 'ai', desc: '> ACCESSING MARKET INTEL...\n> Loading Business logic for AI ventures.' },
-            { id: 'inf1', label: 'IT_Infra_Catalog', file: 'IT_Infra_Business_Catalog.html', cluster: 'infra', desc: '> ACCESSING INFRA BLUEPRINTS...\n> Loading Enterprise security specs.' },
-            { id: 'inf2', label: 'Quantum_Catalog', file: 'Quantum_Catalog.html', cluster: 'infra', desc: '> ACCESSING QUANTUM REPOSITORY...\n> Loading Next-gen compute frameworks.' },
-            { id: 'inf3', label: 'Business_Research', file: 'IT_Business_Research_Catalog.html', cluster: 'infra', desc: '> ACCESSING ANALYTICS...\n> Loading Strategic unit economics.' },
-            { id: 'ops1', label: 'PM_Daily_Handbook', file: 'PM_Daily_Handbook.html', cluster: 'ops', desc: '> ACCESSING OPS MANUAL...\n> Loading PM protocols.' },
-            { id: 'ops2', label: 'Assessment_Templates', file: 'White_DoorOpener_Assessment _Templates.zip', cluster: 'ops', desc: '> INITIATING DOWNLOAD...\n> DoorOpener technical discovery templates.', download: true }
+        // Global Traffic Data
+        const globalData = [
+            { rank: '01', name: 'Google', traffic: 110, volumeText: '110 Billion', sector: 'Search Engine', colorClass: 'color-search' },
+            { rank: '02', name: 'YouTube', traffic: 54, volumeText: '54 Billion', sector: 'Streaming Video', colorClass: 'color-video' },
+            { rank: '03', name: 'Facebook', traffic: 10.8, volumeText: '10.8 Billion', sector: 'Social Core', colorClass: 'color-social' },
+            { rank: '04', name: 'Instagram', traffic: 7.1, volumeText: '7.1 Billion', sector: 'Visual Social', colorClass: 'color-social' },
+            { rank: '05', name: 'ChatGPT', traffic: 6.1, volumeText: '6.1 Billion', sector: 'AI / Neural Net', colorClass: 'color-ai' },
+            { rank: '06', name: 'Reddit', traffic: 5.7, volumeText: '5.7 Billion', sector: 'Forum Aggregator', colorClass: 'color-info' },
+            { rank: '07', name: 'Wikipedia', traffic: 4.8, volumeText: '4.8 Billion', sector: 'Global Encyclopedia', colorClass: 'color-info' },
+            { rank: '08', name: 'X', traffic: 4.4, volumeText: '4.4 Billion', sector: 'Micro-Social', colorClass: 'color-social' },
+            { rank: '09', name: 'Amazon', traffic: 4.0, volumeText: '4.0 Billion', sector: 'E-Commerce', colorClass: 'color-search' },
+            { rank: '10', name: 'WhatsApp', traffic: 3.0, volumeText: '3.0 Billion', sector: 'Secure Messaging', colorClass: 'color-green' } // Re-using AI color for variation
         ];
 
-        const container = document.getElementById('matrix-container');
-        const logOutput = document.getElementById('log-output');
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        let nodeElements = [];
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let currentMode = 'standard';
+        const gridContainer = document.getElementById('data-grid');
 
-        // --- Layout Engine ---
-        function initMatrix() {
-            container.innerHTML = '';
-            nodeElements = [];
-            const cx = window.innerWidth * 0.55; // Slightly offset to right
-            const cy = window.innerHeight * 0.5;
-            const radiusAI = 250;
-            const radiusInfra = 300;
-            const radiusOps = 200;
+        // Render Data Cards
+        globalData.forEach((site, index) => {
+            // Because Google is so massive (110B), a strict linear scale makes WhatsApp (3B) invisible.
+            // We use a modified calculation to ensure all bars are visible but still show scale.
+            const minWidth = 10; 
+            const calculatedWidth = Math.max(minWidth, (site.traffic / 110) * 100);
 
-            nodesData.forEach((data, index) => {
-                const el = document.createElement('a');
-                el.className = `data-node cluster-${data.cluster}`;
-                el.href = data.file;
-                if(data.download) el.setAttribute('download', '');
-                el.innerHTML = `[ ${data.label} ]`;
-                
-                // Calculate Orbital Positions
-                let x = cx, y = cy;
-                if (data.cluster === 'ai') {
-                    const angle = (index * 1.5) * Math.PI / 4 - 0.5;
-                    x = cx + Math.cos(angle) * radiusAI;
-                    y = cy + Math.sin(angle) * radiusAI;
-                } else if (data.cluster === 'infra') {
-                    const angle = (index * 0.8) * Math.PI / 3 + 2.5;
-                    x = cx + Math.cos(angle) * radiusInfra;
-                    y = cy + Math.sin(angle) * radiusInfra;
-                } else if (data.cluster === 'ops') {
-                    const angle = (index * 2) * Math.PI / 2 + 1.5;
-                    x = cx + Math.cos(angle) * radiusOps;
-                    y = cy + Math.sin(angle) * radiusOps;
-                }
-
-                // Store base positions for parallax/gesture math
-                el.dataset.bx = x;
-                el.dataset.by = y;
-                
-                el.style.left = `${x}px`;
-                el.style.top = `${y}px`;
-
-                // Interactions
-                el.addEventListener('mouseenter', () => typeLog(data.desc));
-                el.addEventListener('mouseleave', () => typeLog("> STANDBY... MONITORING DATA STREAMS."));
-
-                container.appendChild(el);
-                nodeElements.push({ el, data, bx: x, by: y });
-            });
-
-            resizeCanvas();
-        }
-
-        // --- Canvas Drawing (Neural Connections) ---
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            drawNetwork();
-        }
-
-        function drawNetwork() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const core = nodeElements.find(n => n.data.id === 'core');
-            if(!core) return;
-
-            const cx = parseFloat(core.el.style.left);
-            const cy = parseFloat(core.el.style.top);
-
-            ctx.lineWidth = 1;
-            
-            nodeElements.forEach(node => {
-                if(node.data.id === 'core') return;
-                const nx = parseFloat(node.el.style.left);
-                const ny = parseFloat(node.el.style.top);
-
-                // Set color based on cluster
-                if(node.data.cluster === 'ai') ctx.strokeStyle = 'rgba(255, 0, 255, 0.3)';
-                else if(node.data.cluster === 'infra') ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
-                else ctx.strokeStyle = 'rgba(0, 255, 170, 0.3)';
-
-                // Draw line with "pulse" opacity if neural active
-                if(currentMode === 'neural') {
-                    ctx.globalAlpha = 0.2 + Math.abs(Math.sin(Date.now() / 500));
-                } else {
-                    ctx.globalAlpha = 1;
-                }
-
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.lineTo(nx, ny);
-                ctx.stroke();
-            });
-        }
-
-        // --- Interaction Modes ---
-        window.setMode = function(mode, btnElement) {
-            currentMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-            
-            document.body.className = '';
-            if(mode !== 'standard') document.body.classList.add(`${mode}-active`);
-
-            if(mode === 'gesture') typeLog("> GESTURE SYNC ENABLED.\n> Nodes responding to spatial movement.");
-            else if(mode === 'gaze') typeLog("> GAZE TRACKING SIMULATED.\n> Focus lock enhancements active.");
-            else if(mode === 'neural') typeLog("> NEURAL LINK ESTABLISHED.\n> Synaptic rendering active.");
-            else typeLog("> REVERTED TO STANDARD HAPTIC INPUT.");
-        }
-
-        // Mouse Tracker for Gesture Mode
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            if(currentMode === 'gesture') {
-                // Parallax effect
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                const offsetX = (mouseX - centerX) / 30;
-                const offsetY = (mouseY - centerY) / 30;
-
-                nodeElements.forEach(n => {
-                    // Different depths based on cluster
-                    let depth = n.data.cluster === 'core' ? 0.5 : 1.5;
-                    n.el.style.left = `${n.bx - (offsetX * depth)}px`;
-                    n.el.style.top = `${n.by - (offsetY * depth)}px`;
-                });
-            } else {
-                // Reset positions
-                nodeElements.forEach(n => {
-                    n.el.style.left = `${n.bx}px`;
-                    n.el.style.top = `${n.by}px`;
-                });
-            }
+            const card = document.createElement('div');
+            card.className = `data-card ${site.colorClass}`;
+            card.innerHTML = `
+                <div class="rank">${site.rank}</div>
+                <div class="site-info">
+                    <h2>${site.name}</h2>
+                    <div class="sector-tag">SYS.${site.sector}</div>
+                </div>
+                <div class="traffic-data">VOL: ${site.volumeText}</div>
+                <div class="traffic-data">STATUS: ONLINE</div>
+                <div class="volume-container">
+                    <div class="volume-bar" style="width: 0%" data-target-width="${calculatedWidth}%"></div>
+                </div>
+            `;
+            gridContainer.appendChild(card);
         });
 
-        // Animation Loop for Canvas
-        function animate() {
-            drawNetwork();
-            requestAnimationFrame(animate);
+        // Animate Volume Bars on Load
+        setTimeout(() => {
+            document.querySelectorAll('.volume-bar').forEach(bar => {
+                bar.style.width = bar.getAttribute('data-target-width');
+            });
+        }, 500);
+
+        // --- 3D Moving Grid Background ---
+        const canvas = document.getElementById('cyber-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let gridOffset = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
 
-        // Typewriter effect for log
-        let typeInterval;
-        function typeLog(text) {
-            clearInterval(typeInterval);
-            logOutput.innerHTML = '';
-            let i = 0;
-            typeInterval = setInterval(() => {
-                logOutput.innerHTML += text.charAt(i);
-                i++;
-                if (i >= text.length) clearInterval(typeInterval);
-                logOutput.scrollTop = logOutput.scrollHeight;
-            }, 15); // Fast typing
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawGrid() {
+            ctx.fillStyle = '#030508';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.15)';
+            ctx.lineWidth = 1;
+
+            const horizon = height * 0.3; // High horizon line
+            const fov = 300;
+
+            ctx.beginPath();
+
+            // Draw vertical lines (perspective)
+            for (let i = -width; i < width * 2; i += 80) {
+                ctx.moveTo(width / 2, horizon);
+                ctx.lineTo(i, height);
+            }
+
+            // Draw horizontal lines (moving forward)
+            gridOffset = (gridOffset + 1) % 40;
+            for (let i = gridOffset; i < height - horizon; i += 40) {
+                // Closer lines are spaced further apart to fake 3D depth
+                let y = horizon + Math.pow(i, 1.4) * 0.2; 
+                if (y > height) break;
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+            }
+
+            ctx.stroke();
+            requestAnimationFrame(drawGrid);
         }
 
-        // Init
-        window.addEventListener('resize', () => { initMatrix(); });
-        initMatrix();
-        animate();
+        drawGrid();
     </script>
 </body>
 </html>
