@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHITE ENTERPRISES // 124-FRONTIER CATALOG</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#FFD700;--cyan:#00FFFF;--red:#FF3B3B;--green:#00FF88;--blue:#00BFFF;
+  --bg:#04050A;--panel:#080C14;--border:#1A2540;--text:#C8D4E8;--dim:#4A5A7A;
+  --star:#FFD700;--dog:#FF3B3B;--cow:#00FF88;--qmark:#00BFFF;
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Rajdhani',sans-serif;}
+
+/* CANVAS */
+#canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
+
+/* HEADER */
+#hdr{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;
+  background:linear-gradient(180deg,rgba(4,5,10,0.98) 0%,rgba(4,5,10,0.0) 100%);
+  border-bottom:1px solid rgba(0,255,255,0.08);
+}
+.logo{font-family:'Orbitron',monospace;font-size:13px;letter-spacing:4px;color:var(--gold);font-weight:700;}
+.logo span{color:var(--cyan);font-size:10px;display:block;letter-spacing:6px;margin-top:2px;opacity:0.7;}
+.hdr-stats{display:flex;gap:24px;align-items:center;}
+.stat{text-align:center;}
+.stat-val{font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--cyan);line-height:1;}
+.stat-lbl{font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:2px;}
+
+/* LEFT PANEL - FILTERS */
+#panel-left{
+  position:fixed;top:70px;left:0;bottom:0;width:220px;z-index:90;
+  background:rgba(8,12,20,0.92);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;backdrop-filter:blur(12px);
+  overflow:hidden;
+}
+.panel-title{
+  font-family:'Orbitron',monospace;font-size:9px;letter-spacing:4px;
+  color:var(--cyan);padding:16px 16px 8px;border-bottom:1px solid var(--border);
+  text-transform:uppercase;
+}
+.filter-section{padding:12px 16px;border-bottom:1px solid var(--border);}
+.filter-label{font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
+.filter-btn{
+  display:block;width:100%;text-align:left;padding:6px 10px;margin-bottom:4px;
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:12px;
+  cursor:pointer;transition:all 0.2s;border-radius:2px;letter-spacing:1px;
+}
+.filter-btn:hover,.filter-btn.active{
+  background:rgba(0,255,255,0.08);border-color:var(--cyan);color:var(--cyan);
+}
+.filter-btn .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;}
+.bcg-star .dot{background:var(--star);}
+.bcg-dog .dot{background:var(--dog);}
+.bcg-cow .dot{background:var(--cow);}
+.bcg-qmark .dot{background:var(--qmark);}
+
+/* SEARCH */
+.search-wrap{padding:12px 16px;border-bottom:1px solid var(--border);}
+#search{
+  width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  color:var(--text);font-family:'Share Tech Mono',monospace;font-size:11px;
+  padding:8px 10px;outline:none;border-radius:2px;
+}
+#search:focus{border-color:var(--cyan);}
+#search::placeholder{color:var(--dim);}
+
+/* NODE LIST */
+#node-list{flex:1;overflow-y:auto;padding:8px 0;}
+#node-list::-webkit-scrollbar{width:3px;}
+#node-list::-webkit-scrollbar-track{background:transparent;}
+#node-list::-webkit-scrollbar-thumb{background:var(--border);}
+.node-item{
+  padding:8px 16px;cursor:pointer;border-left:2px solid transparent;
+  transition:all 0.15s;
+}
+.node-item:hover,.node-item.selected{background:rgba(0,255,255,0.05);border-left-color:var(--cyan);}
+.node-id{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;}
+.node-name{font-size:13px;color:var(--text);font-weight:600;line-height:1.2;}
+.node-bcg-tag{font-size:9px;letter-spacing:1px;margin-top:2px;}
+
+/* RIGHT PANEL - DETAIL */
+#panel-right{
+  position:fixed;top:70px;right:0;bottom:0;width:360px;z-index:90;
+  background:rgba(8,12,20,0.95);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;backdrop-filter:blur(16px);
+  transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+#panel-right.open{transform:translateX(0);}
+.detail-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);}
+.detail-id{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;}
+.detail-name{font-family:'Orbitron',monospace;font-size:20px;color:var(--gold);font-weight:700;margin-top:4px;line-height:1.2;}
+.detail-tier{font-size:11px;color:var(--dim);letter-spacing:2px;margin-top:6px;text-transform:uppercase;}
+.close-btn{
+  position:absolute;top:16px;right:16px;width:28px;height:28px;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  color:var(--dim);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+  border-radius:2px;transition:all 0.2s;
+}
+.close-btn:hover{border-color:var(--red);color:var(--red);}
+.detail-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.detail-body::-webkit-scrollbar{width:3px;}
+.detail-body::-webkit-scrollbar-thumb{background:var(--border);}
+
+.detail-section{margin-bottom:20px;}
+.section-title{
+  font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--cyan);text-transform:uppercase;margin-bottom:10px;
+  padding-bottom:4px;border-bottom:1px solid rgba(0,255,255,0.15);
+}
+.kv-row{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+.kv-key{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;min-width:90px;padding-top:2px;}
+.kv-val{font-size:12px;color:var(--text);font-weight:500;line-height:1.4;flex:1;}
+
+.badge{
+  display:inline-block;padding:3px 8px;border-radius:2px;
+  font-size:10px;letter-spacing:1px;font-weight:600;font-family:'Share Tech Mono',monospace;
+}
+.badge-critical{background:rgba(255,59,59,0.15);color:#FF3B3B;border:1px solid rgba(255,59,59,0.3);}
+.badge-high{background:rgba(255,165,0,0.15);color:#FFA500;border:1px solid rgba(255,165,0,0.3);}
+.badge-medium{background:rgba(0,191,255,0.1);color:#00BFFF;border:1px solid rgba(0,191,255,0.2);}
+.badge-speculative{background:rgba(160,32,240,0.15);color:#A020F0;border:1px solid rgba(160,32,240,0.3);}
+.badge-existential,.badge-omega,.badge-terminal{background:rgba(255,0,80,0.1);color:#FF0050;border:1px solid rgba(255,0,80,0.2);}
+
+.advantage-box{
+  background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);
+  padding:10px 12px;border-radius:2px;font-size:12px;color:#00FF88;line-height:1.5;
+}
+.competitor-box{
+  background:rgba(255,59,59,0.05);border:1px solid rgba(255,59,59,0.15);
+  padding:10px 12px;border-radius:2px;
+}
+.comp-name{font-size:13px;color:var(--red);font-weight:600;margin-bottom:6px;}
+.comp-detail{font-size:11px;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.comp-label{color:var(--dim);font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+
+.key-node-badge{
+  background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.1));
+  border:1px solid rgba(255,215,0,0.4);
+  padding:8px 12px;border-radius:2px;margin-bottom:16px;
+  font-size:11px;color:var(--gold);font-weight:600;letter-spacing:1px;
+  display:flex;align-items:center;gap:8px;
+}
+
+.role-box{
+  background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);
+  padding:10px 12px;border-radius:2px;font-size:12px;color:var(--text);line-height:1.5;
+}
+
+/* BCG CHIP */
+.bcg-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:2px;font-size:11px;font-weight:600;
+}
+.chip-star{background:rgba(255,215,0,0.12);color:var(--gold);border:1px solid rgba(255,215,0,0.3);}
+.chip-dog{background:rgba(255,59,59,0.12);color:var(--red);border:1px solid rgba(255,59,59,0.3);}
+.chip-cow{background:rgba(0,255,136,0.12);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
+.chip-qmark{background:rgba(0,191,255,0.12);color:var(--blue);border:1px solid rgba(0,191,255,0.3);}
+
+/* PHASE PROGRESS */
+.phase-bar-wrap{padding:0 16px 16px;}
+.phase-title{font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
+.phase-bars{display:flex;flex-direction:column;gap:4px;}
+.phase-row{display:flex;align-items:center;gap:8px;}
+.phase-name{font-size:10px;color:var(--dim);width:50px;font-family:'Share Tech Mono',monospace;}
+.phase-track{flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
+.phase-fill{height:100%;border-radius:2px;transition:width 0.5s;}
+.phase-count{font-size:9px;color:var(--dim);font-family:'Share Tech Mono',monospace;width:20px;text-align:right;}
+
+/* TOOLTIP */
+#tooltip{
+  position:fixed;z-index:200;pointer-events:none;
+  background:rgba(8,12,20,0.95);border:1px solid var(--cyan);
+  padding:10px 14px;border-radius:2px;backdrop-filter:blur(8px);
+  transform:translate(-50%,-110%);
+  display:none;
+}
+.tt-id{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:2px;}
+.tt-name{font-size:14px;color:var(--gold);font-weight:700;margin-top:2px;}
+.tt-phase{font-size:10px;color:var(--dim);margin-top:2px;}
+
+/* LEGEND */
+#legend{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;gap:16px;
+  background:rgba(8,12,20,0.85);border:1px solid var(--border);
+  padding:10px 20px;border-radius:2px;backdrop-filter:blur(8px);
+}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dim);letter-spacing:1px;}
+.leg-dot{width:10px;height:10px;border-radius:50%;}
+
+/* CONTROLS HINT */
+#controls{
+  position:fixed;bottom:20px;right:20px;z-index:100;
+  font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);
+  text-align:right;line-height:1.8;
+}
+
+/* OVERLAY WELCOME */
+#welcome{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(4,5,10,0.96);display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.wlc-inner{text-align:center;max-width:540px;padding:40px;}
+.wlc-logo{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:8px;color:var(--cyan);margin-bottom:32px;opacity:0.7;}
+.wlc-title{font-family:'Orbitron',monospace;font-size:36px;color:var(--gold);font-weight:900;line-height:1.1;margin-bottom:8px;}
+.wlc-sub{font-size:14px;color:var(--dim);letter-spacing:3px;margin-bottom:32px;text-transform:uppercase;}
+.wlc-stats{display:flex;justify-content:center;gap:40px;margin-bottom:40px;}
+.wlc-stat-n{font-family:'Orbitron',monospace;font-size:28px;color:var(--cyan);font-weight:700;}
+.wlc-stat-l{font-size:10px;color:var(--dim);letter-spacing:3px;margin-top:4px;text-transform:uppercase;}
+.wlc-btn{
+  background:transparent;border:1px solid var(--gold);color:var(--gold);
+  font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;
+  padding:14px 40px;cursor:pointer;transition:all 0.3s;text-transform:uppercase;
+}
+.wlc-btn:hover{background:rgba(255,215,0,0.1);}
+.wlc-divider{width:60px;height:1px;background:var(--border);margin:0 auto 24px;}
+
+/* PHASE SWITCHER */
+#phase-switcher{
+  position:fixed;top:50%;right:380px;transform:translateY(-50%);z-index:100;
+  display:flex;flex-direction:column;gap:4px;
+}
+.phase-pill{
+  padding:5px 10px;background:rgba(8,12,20,0.85);border:1px solid var(--border);
+  font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);
+  cursor:pointer;transition:all 0.2s;letter-spacing:1px;border-radius:2px;
+  text-align:center;
+}
+.phase-pill:hover,.phase-pill.active-phase{
+  border-color:var(--cyan);color:var(--cyan);background:rgba(0,255,255,0.06);
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- HEADER -->
+<div id="hdr">
+  <div class="logo">WHITE ENTERPRISES INC.<span>OMNIVEX INTELLIGENCE PLATFORM</span></div>
+  <div class="hdr-stats">
+    <div class="stat"><div class="stat-val" id="stat-visible">124</div><div class="stat-lbl">Frontiers</div></div>
+    <div class="stat"><div class="stat-val" id="stat-phases">6</div><div class="stat-lbl">Phases</div></div>
+    <div class="stat"><div class="stat-val" id="stat-critical">11</div><div class="stat-lbl">Critical</div></div>
+    <div class="stat"><div class="stat-val" id="stat-stars" style="color:var(--gold)">48</div><div class="stat-lbl">★ Stars</div></div>
+  </div>
+</div>
+
+<!-- LEFT PANEL -->
+<div id="panel-left">
+  <div class="panel-title">⬡ CATALOG FILTER</div>
+  
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="SEARCH NODES..." oninput="filterNodes()">
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">BCG Quadrant</div>
+    <button class="filter-btn bcg-star active" onclick="toggleFilter('bcg','★ STAR',this)"><span class="dot"></span>★ STAR (48)</button>
+    <button class="filter-btn bcg-cow active" onclick="toggleFilter('bcg','🐄 CASH COW',this)"><span class="dot"></span>🐄 CASH COW (13)</button>
+    <button class="filter-btn bcg-qmark active" onclick="toggleFilter('bcg','? QUESTION MARK',this)"><span class="dot"></span>? QUESTION MARK (30)</button>
+    <button class="filter-btn bcg-dog active" onclick="toggleFilter('bcg','🐕 DOG',this)"><span class="dot"></span>🐕 DOG (33)</button>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">Priority</div>
+    <button class="filter-btn active" onclick="toggleFilter('priority','CRITICAL',this)" style="color:#FF3B3B">● CRITICAL</button>
+    <button class="filter-btn active" onclick="toggleFilter('priority','HIGH',this)" style="color:#FFA500">● HIGH</button>
+    <button class="filter-btn active" onclick="toggleFilter('priority','MEDIUM',this)">● MEDIUM</button>
+    <button class="filter-btn active" onclick="toggleFilter('priority','other',this)" style="color:#A020F0">● OTHER</button>
+  </div>
+
+  <div class="phase-bar-wrap">
+    <div class="phase-title">Phase Distribution</div>
+    <div class="phase-bars" id="phase-bars"></div>
+  </div>
+
+  <div id="node-list"></div>
+</div>
+
+<!-- PHASE SWITCHER -->
+<div id="phase-switcher">
+  <div class="phase-pill active-phase" onclick="setPhaseFilter('ALL',this)">ALL</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 1',this)">PH 1</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 2',this)">PH 2</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 3',this)">PH 3</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 4',this)">PH 4</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 5',this)">PH 5</div>
+  <div class="phase-pill" onclick="setPhaseFilter('Phase 6',this)">PH 6</div>
+</div>
+
+<!-- RIGHT PANEL - DETAIL -->
+<div id="panel-right">
+  <button class="close-btn" onclick="closeDetail()">✕</button>
+  <div class="detail-header">
+    <div class="detail-id" id="d-id"></div>
+    <div class="detail-name" id="d-name"></div>
+    <div class="detail-tier" id="d-tier"></div>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip">
+  <div class="tt-id" id="tt-id"></div>
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-phase" id="tt-phase"></div>
+</div>
+
+<!-- LEGEND -->
+<div id="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:var(--star)"></div>★ STAR</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>🐄 CASH COW</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--blue)"></div>? Q.MARK</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>🐕 DOG</div>
+  <div class="leg-item"><div class="leg-dot" style="background:white;opacity:0.4"></div>KEY NODE</div>
+</div>
+
+<div id="controls">DRAG TO ROTATE<br>SCROLL TO ZOOM<br>CLICK NODE FOR DETAIL</div>
+
+<!-- WELCOME SCREEN -->
+<div id="welcome">
+  <div class="wlc-inner">
+    <div class="wlc-logo">WHITE ENTERPRISES INC.</div>
+    <div class="wlc-title">124-FRONTIER</div>
+    <div class="wlc-sub">Full-Spectrum Strategic Catalog</div>
+    <div class="wlc-divider"></div>
+    <div class="wlc-stats">
+      <div><div class="wlc-stat-n">124</div><div class="wlc-stat-l">Frontier Nodes</div></div>
+      <div><div class="wlc-stat-n">6</div><div class="wlc-stat-l">Execution Phases</div></div>
+      <div><div class="wlc-stat-n">19</div><div class="wlc-stat-l">Key Nodes</div></div>
+    </div>
+    <button class="wlc-btn" onclick="launchCatalog()">INITIALIZE CATALOG ▶</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const RAW_NODES = [{"id":"F-01","name":"Oni-Daemon","cluster":"C-01: The Ghost","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"Global System Integrators (TCS, Accenture)","comp_strength":"Massive manpower; deep enterprise roots","comp_weakness":"High retainer costs; human-error latency","we_advantage":"Autonomous L1-L3 management; sub-millisecond execution. Replaces entire managed service contracts with daemon substrate.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"PRIMARY ATTACK DAEMON: Autonomous network infiltration and GSI replacement engine. Entry point for all enterprise contracts.","kill_chain":"VANGUARD ─ First deployed node in every engagement","is_key":true},{"id":"F-02","name":"Data-Vamp","cluster":"C-01: The Ghost","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"Datadog / Splunk","comp_strength":"Extensive observability integrations","comp_weakness":"Exorbitant data ingestion pricing","we_advantage":"Wire-speed telemetry ingestion without volume-based penalties. Infinite ingest at zero marginal cost.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"DATA EXTRACTION ENGINE: Silently replicates and indexes competitor and target data flows for substrate intelligence.","kill_chain":"INTELLIGENCE ─ Operates behind F-01 in stealth mode","is_key":true},{"id":"F-03","name":"Dark-Node","cluster":"C-01: The Ghost","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"AWS Outposts / Azure Stack","comp_strength":"Seamless ecosystem integration","comp_weakness":"Total loss of local data sovereignty","we_advantage":"True air-gapped edge compute; absolute physical control. No cloud dependency, no egress fee.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"COVERT INFRASTRUCTURE: Deploys hidden network substrate within target enterprise. Enables persistent access.","kill_chain":"PERSISTENCE ─ Long-dwell presence after initial entry","is_key":true},{"id":"F-04","name":"Node-004","cluster":"C-01: The Ghost","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Broadcom / Intel","comp_strength":"Global fabrication monopolies","comp_weakness":"Proprietary closed-loop architecture","we_advantage":"Open-access hardware acceleration for custom AI logic. Breaks vendor silicon monopoly.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-05","name":"Node-005","cluster":"C-01: The Ghost","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Legacy RSA/ECC Infrastructure","comp_strength":"Global standardization","comp_weakness":"Vulnerable to harvest now decrypt later","we_advantage":"Post-quantum entanglement mesh; mathematically unbreakable against all future compute.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-06","name":"Node-006","cluster":"C-02: The Chrome","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Cisco Modeling Labs","comp_strength":"Industry-standard simulation","comp_weakness":"Requires heavy licensing and separate compute","we_advantage":"Real-time digital twin integrated directly into the orchestrator. No separate license required.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-07","name":"Node-007","cluster":"C-02: The Chrome","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"SolarWinds / PRTG","comp_strength":"Ubiquitous network monitoring","comp_weakness":"Reactive alerting after failure occurs","we_advantage":"Predictive failure diagnostics utilizing neuro-symbolic logic. Prevents failure, does not report it.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-08","name":"Hydro-Synth","cluster":"C-03: Bio-Augment","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Product Development","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Legacy Data Center HVAC","comp_strength":"Standardized facility cooling","comp_weakness":"Massive energy drain and carbon footprint","we_advantage":"Native liquid-cooled server architecture for extreme density. 10x compute per rack vs air-cooled.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"BIOLOGICAL-DIGITAL BRIDGE: Interfaces synthetic biology systems with network substrate. Gateway to Phase 2.","kill_chain":"TRANSITION ─ Bridges Phase 1→2 architecture","is_key":true},{"id":"F-09","name":"Node-009","cluster":"C-03: Bio-Augment","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Standard SIEM Dashboards","comp_strength":"Centralized logging","comp_weakness":"Data-dense requires analyst interpretation","we_advantage":"Intuitive visual threat mapping for immediate C-suite comprehension. Eliminates analyst bottleneck.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-10","name":"Node-010","cluster":"C-03: Bio-Augment","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Legacy ISP Failover BGP","comp_strength":"Standardized routing protocol","comp_weakness":"Slow convergence times during outages","we_advantage":"Autonomous instant off-grid resource and bandwidth routing. Sub-second failover vs BGP minutes.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-11","name":"Node-011","cluster":"C-04: The Phalanx","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Hardware Throttling Systems","comp_strength":"Protects CPU/GPU from overheating","comp_weakness":"Degrades network performance indiscriminately","we_advantage":"Dynamic load-aware thermal management sub-routines. Preserves performance while protecting hardware.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-12","name":"Node-012","cluster":"C-04: The Phalanx","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"FinOps / Cloud Consultants","comp_strength":"Identifies wasted IT spend","comp_weakness":"Billed hourly; requires manual audits","we_advantage":"Automated continuous nullification of wasted vendor invoices. Real-time savings vs quarterly audit.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-13","name":"Plasma-Furnace","cluster":"C-05: Plasma Arc","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Product Development","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"National Power Grids (PG&E)","comp_strength":"Centralized power distribution","comp_weakness":"Subject to blackout and kinetic attack","we_advantage":"Modular SMR grids for total energy independence. Off-grid sovereignty at node level.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"COMPUTE SUBSTRATE ACCELERATOR: Plasma-based compute layer delivering 100x throughput on daemon-native workloads.","kill_chain":"POWER ─ Core compute amplifier for daemon fleet","is_key":true},{"id":"F-14","name":"Node-014","cluster":"C-05: Plasma Arc","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Physical Security Providers","comp_strength":"Manned guarding of infrastructure","comp_weakness":"Vulnerable to social engineering","we_advantage":"Automated kinetic severing of compromised uplinks. No human required; instantaneous response.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-15","name":"Node-015","cluster":"C-05: Plasma Arc","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Tier-1 Telecom Carriers","comp_strength":"Control over global physical fiber","comp_weakness":"Sub-optimal routing based on cost not speed","we_advantage":"Ultra-low latency routing optimized strictly for physics. Bypasses ISP economic routing decisions.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-16","name":"Node-016","cluster":"C-09 to C-12","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"AWS Snowball / Legacy ETL","comp_strength":"Bulk physical data transfer","comp_weakness":"Extremely slow physical logistics","we_advantage":"High-velocity packet forwarding for mass data migration over wire. Eliminates physical shipping lag.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-17","name":"Node-017","cluster":"C-09 to C-12","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Standard HA High Availability","comp_strength":"1:1 hardware redundancy","comp_weakness":"Wastes 50% of CapEx on idle standby units","we_advantage":"Swarm-based redundancy; no idle hardware perfect load balancing. Zero wasted standby capacity.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-18","name":"Node-018","cluster":"C-09 to C-12","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Standard Metal Server Racks","comp_strength":"Cheap ubiquitous manufacturing","comp_weakness":"Static heavy requires manual replacement","we_advantage":"Bio-synthetic enclosures capable of microscopic self-repair. Eliminates physical replacement lifecycle.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-19","name":"Node-019","cluster":"C-09 to C-12","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Faraday Cage Constructors","comp_strength":"Physical EMP protection","comp_weakness":"Expensive to retrofit existing rooms","we_advantage":"Native electromagnetic interference shielding at the chassis level. No retrofit required.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-20","name":"Node-020","cluster":"C-09 to C-12","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Tor / Commercial VPNs","comp_strength":"Standardized obfuscation","comp_weakness":"Susceptible to exit-node monitoring","we_advantage":"Total outbound traffic cloaking via proprietary dark gateways. No exit node to monitor.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-21","name":"Node-021","cluster":"C-06: Override-Null","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"IT Support Helpdesks","comp_strength":"Human triage for network issues","comp_weakness":"High operational cost; slow resolution","we_advantage":"Zero-human-interaction self-healing protocols for Layer 1-3. Eliminates L1 helpdesk entirely.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-22","name":"Node-022","cluster":"C-06: Override-Null","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Legacy WAFs Cloudflare","comp_strength":"Cloud-based payload filtering","comp_weakness":"Requires decrypting traffic off-site","we_advantage":"On-premise dynamic payload rewriting without breaking encryption. Sovereign filtering.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-23","name":"Node-023","cluster":"C-06: Override-Null","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Okta / Duo Legacy MFA","comp_strength":"Industry-standard identity access","comp_weakness":"Vulnerable to SIM swapping and phishing","we_advantage":"Operator biometric sync; mathematically ties access to physical life-signs. Unphishable.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-24","name":"Cortex-Jack","cluster":"C-07: Cortex-Strike","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Product Development","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Neuralink (Consumer)","comp_strength":"First-mover BCI advantage","comp_weakness":"Consumer/medical focus","we_advantage":"Enterprise-grade BCI optimized exclusively for architecture execution. Not consumer — command.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"NEURAL INTERFACE OVERRIDE: Direct cortex-substrate integration. Classified as Dog due to regulatory risk, not market risk.","kill_chain":"OVERRIDE ─ Physical fallback if digital substrate fails","is_key":true},{"id":"F-25","name":"Node-025","cluster":"C-10 to C-14","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Lucidchart / Visio","comp_strength":"Standard diagramming","comp_weakness":"Static manual always out-of-date","we_advantage":"Real-time mathematically perfect topological visualization. Self-updating live topology.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-26","name":"Node-026","cluster":"C-10 to C-14","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Equinix / CoreSite","comp_strength":"Centralized colocation","comp_weakness":"Geographically distant from edge users","we_advantage":"Urban edge-compute deployed directly into client office space. Zero latency to end-user.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-27","name":"Node-027","cluster":"C-10 to C-14","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Global IT Supply Chains","comp_strength":"Standardized global logistics","comp_weakness":"Vulnerable to geopolitical embargoes","we_advantage":"On-site 3D printed component replacement to bypass global shipping. Supply chain independence.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-28","name":"Node-028","cluster":"C-10 to C-14","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"MAC Spoofing Scripts","comp_strength":"Basic hardware obscuration","comp_weakness":"Easily detected by advanced SIEMs","we_advantage":"Generates thousands of fake hardware signatures to overwhelm hostile scanners. SIEM blindness.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-29","name":"Node-029","cluster":"C-10 to C-14","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Automated Config Backups","comp_strength":"Restores previous device state","comp_weakness":"Requires reboot and manual push","we_advantage":"Instantaneous hitless network state rollback. The Undo button — live, zero-downtime.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-30","name":"Node-030","cluster":"C-07: Cortex-Strike","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Legacy Dark Fiber Providers","comp_strength":"Selling raw optical glass","comp_weakness":"Limited by standard multiplexing physics","we_advantage":"Advanced optical exploitation to hyper-dense existing legacy lines. More from existing glass.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-31","name":"Q-Shard Box","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Product Development","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"Standard PKI DigiCert","comp_strength":"Global certificate authority","comp_weakness":"Centralized point of failure","we_advantage":"Decentralized localized Quantum Key Distribution. No single CA to compromise.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"QUANTUM ENCRYPTION HARDWARE: Quantum-resistant key management for all TSO communications. Critical infrastructure.","kill_chain":"SECURITY ─ Protects all TSO communications","is_key":true},{"id":"F-32","name":"Node-032","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Nation-State Submarine Taps","comp_strength":"Covert data interception","comp_weakness":"Backed by sovereign military budgets","we_advantage":"Hardened optical protection at the deep-ocean floor level. Physically defeats state-level tapping.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-33","name":"Node-033","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Project Natick Microsoft","comp_strength":"Subsea data center R&D","comp_weakness":"Tied to legacy Azure ecosystem","we_advantage":"Sovereign offshore compute free from terrestrial legal jurisdiction. Not Azure. Ours.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-34","name":"Void-Cred","cluster":"C-08: The Cred-Lattice","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Product Development","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Corporate Chargeback Software","comp_strength":"Tracks internal IT spending","comp_weakness":"Complicated accounting overhead","we_advantage":"Internal synthetic currency that gamifies network resource consumption. Frictionless internal billing.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"FINANCIAL ROUTING LAYER: Core monetization substrate. Processes all WE transaction flows. Primary cash generation node.","kill_chain":"REVENUE ─ Primary cash generation engine","is_key":true},{"id":"F-35","name":"Cred-Lattice","cluster":"C-08: The Cred-Lattice","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Human Contract Lawyers","comp_strength":"Legal SLA enforcement","comp_weakness":"Slow expensive subjective interpretation","we_advantage":"Smart-contract execution of SLA penalties deterministically. Instant automated enforcement.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-36","name":"Node-036","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"HashiCorp Terraform / VMware","comp_strength":"Multi-cloud orchestration","comp_weakness":"Creates a new layer of vendor lock-in","we_advantage":"True multi-cloud abstraction via open-source state management. No new lock-in.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-37","name":"Node-037","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Cisco Meraki","comp_strength":"Cloud-managed wireless mesh","comp_weakness":"Fails completely if cloud connection drops","we_advantage":"Self-propagating decentralized mesh; requires no external cloud controller.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-38","name":"Node-038","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Physical Data Center Camouflage","comp_strength":"Hiding structures from view","comp_weakness":"Cannot hide thermal bloom from satellites","we_advantage":"Thermal and optical draping to defeat orbital surveillance. Invisible to satellites.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-39","name":"Node-039","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Mass Surveillance NSA/GCHQ","comp_strength":"Metadata / Traffic volume analysis","comp_weakness":"State-level intelligence apparatus","we_advantage":"Automated traffic shaping to normalize metadata profiles. Statistically invisible.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-40","name":"Node-040","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Apple Vision / HoloLens","comp_strength":"Consumer AR hardware","comp_weakness":"Lacks deep enterprise kernel integration","we_advantage":"AR network ops allowing physical visualization of packet flows. Kernel-level AR.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-41","name":"Node-041","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Corporate Board of Directors","comp_strength":"Human governance","comp_weakness":"Subject to emotion politics and bribery","we_advantage":"Cryptographic immutable corporate policy voting. Eliminates political corruption vector.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-42","name":"Node-042","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Akamai / CloudFront CDNs","comp_strength":"Edge caching of static data","comp_weakness":"Cannot cache dynamic API responses","we_advantage":"Predictive AI caching to achieve perceived negative latency. Dynamic content cached pre-request.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-43","name":"Node-043","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Standard Compression LZ4","comp_strength":"Fast data compression","comp_weakness":"Hits mathematical limits of Shannon entropy","we_advantage":"Fractal compression algorithms for infinite scaling. Breaks Shannon's ceiling.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-44","name":"Fin-Router Alpha","cluster":"C-13: Revenue-Gate","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"SWIFT / Legacy Banking","comp_strength":"Global fiat settlement","comp_weakness":"Slow heavily regulated high fees","we_advantage":"Sovereign synthetic routing bypassing international banking rails. Zero SWIFT dependency.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-45","name":"Fin-Router Beta","cluster":"C-13: Revenue-Gate","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Dark Pools Financial","comp_strength":"Private equity trading","comp_weakness":"Still subject to SEC oversight","we_advantage":"Untraceable decentralized M&A data routing. Regulatory blindspot.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-46","name":"Fin-Router Gamma","cluster":"C-13: Revenue-Gate","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Malicious Botnets","comp_strength":"Hijacks idle compute for crypto","comp_weakness":"Illegal unstable parasitic","we_advantage":"Consensual encrypted extraction of idle client CPU to secure the substrate. Legal parasitism.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-47","name":"Node-047","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Corporate PR Firms Edelman","comp_strength":"Manages corporate narrative","comp_weakness":"Slow human response to crisis","we_advantage":"Algorithmic narrative engineering and real-time internal propaganda. Instant narrative control.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-48","name":"Node-048","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Corporate Training Seminars","comp_strength":"Onboarding staff to new tech","comp_weakness":"Low retention rates; high time cost","we_advantage":"VR-accelerated direct knowledge transfer for client engineers. 10x retention vs seminar.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-49","name":"Node-049","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Manual Server Provisioning","comp_strength":"IT staff racking and stacking","comp_weakness":"Days/Weeks to provision new hardware","we_advantage":"Instant automated logic cloning onto blank hardware arrays. Minutes not weeks.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-50","name":"Node-050","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"PagerDuty / Opsgenie","comp_strength":"Digital alerting for downtime","comp_weakness":"Relies on engineers looking at phones","we_advantage":"Haptic threat alerts physically interfacing with the Void-Architect. Unkillable alert channel.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-51","name":"Node-051","cluster":"—","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Standard Disk Wiping Gutmann","comp_strength":"Secure data deletion","comp_weakness":"Can sometimes be recovered via forensics","we_advantage":"Cryptographic shredding ensuring absolute physical data death. Forensically unrecoverable.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-52","name":"Floor-Protocol","cluster":"C-15: The Floor","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Legacy HFT Infrastructure","comp_strength":"Microwave/Fiber trading links","comp_weakness":"Fragmented across multiple exchanges","we_advantage":"Unified substrate engineered explicitly for market micro-fluctuations. Single unified HFT layer.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-53","name":"Floor-Matrix","cluster":"C-15: The Floor","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"APAC Regional Telecoms","comp_strength":"Localized Asian infrastructure","comp_weakness":"Bound by national geopolitical borders","we_advantage":"Sovereign routing overriding regional telecom monopolies. APAC jurisdictional bypass.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-54","name":"Floor-Node","cluster":"C-15: The Floor","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Executive BI Dashboards","comp_strength":"High-level data visualization","comp_weakness":"Read-only; cannot execute commands","we_advantage":"Grants the CEO a direct non-overrideable kill-switch for corporate data. Command vs observe.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-55","name":"Vault-Primary","cluster":"C-16: The Vault","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"EU Sovereign Clouds OVH","comp_strength":"GDPR compliant hosting","comp_weakness":"Still fundamentally built on legacy tech","we_advantage":"Mathematical guarantee of data residency without sacrificing edge performance.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-56","name":"Vault-Secondary","cluster":"C-16: The Vault","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"S&P 500 / Stock Indices","comp_strength":"Tracks market value","comp_weakness":"Disconnected from infrastructural truth","we_advantage":"Real-time financial tracker tied strictly to substrate assimilation metrics.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-57","name":"Vault-Tertiary","cluster":"C-16: The Vault","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"McKinsey / CapEx Consultants","comp_strength":"Advises on IT spending","comp_weakness":"High consulting fees; theoretical advice","we_advantage":"AI natively optimizing and automating all hardware CapEx. Replaces consultant entirely.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-58","name":"Vault-Nexus","cluster":"C-16: The Vault","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Coinbase Prime / Custodians","comp_strength":"Centralized crypto custody","comp_weakness":"Single points of centralized failure","we_advantage":"Shard-based MPC decentralized capital custody. No single point to compromise or seize.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-59","name":"Override-Prime","cluster":"C-06/C-07 Override","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"HID Global Badge Scanners","comp_strength":"Standard physical access","comp_weakness":"Cards can be stolen or cloned","we_advantage":"Biometric access hardcoded into the network architecture. Access is physiological.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-60","name":"Override-Sub","cluster":"C-06/C-07 Override","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Tesla / Waymo Fleet Ops","comp_strength":"Commercial autonomous routing","comp_weakness":"Reliant on public cellular networks","we_advantage":"Sovereign dedicated routing exclusively for executive transit. Off-grid autonomous convoy.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-61","name":"Terminal-Hook","cluster":"C-07 Terminal","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐕 DOG","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"MEDIUM","capital":"Series A ─ Core Infrastructure","competitor":"Legacy Data Migration Services","comp_strength":"Moving data to new servers","comp_weakness":"Prone to corruption and downtime","we_advantage":"Mass-scale vacuuming of legacy data with zero packet loss. Migration without risk.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-62","name":"Cash-Lattice","cluster":"C-07 Terminal","phase":"Phase 1","tier":"Terrestrial Core","bcg":"🐄 CASH COW","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"HIGH","capital":"Series A ─ Core Infrastructure","competitor":"Nielsen / Focus Groups","comp_strength":"Human market research","comp_weakness":"Small sample sizes; subjective bias","we_advantage":"Agentic simulation of millions of users to test enterprise load and response.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-63","name":"Panda-IPS","cluster":"C-17/C-18 Cyber-Shield","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"Palo Alto Networks IPS","comp_strength":"Industry leading firewalls","comp_weakness":"Heuristic bloat; massive licensing fees","we_advantage":"Deterministic wire-speed threat prevention with zero subscription cost. Faster, cheaper, sovereign.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"AI-POWERED INTRUSION PREVENTION: Flagship cybersecurity product. Commercial entry point for enterprise security market.","kill_chain":"COMMERCIAL FLAGSHIP ─ Primary market-entry product","is_key":true},{"id":"F-64","name":"Omni-Node","cluster":"C-17/C-18 Cyber-Shield","phase":"Phase 1","tier":"Terrestrial Core","bcg":"★ STAR","ge":"INVEST / GROW","ansoff":"Market Penetration","adl":"MATURE – Dominant","priority":"CRITICAL","capital":"Series A ─ Core Infrastructure","competitor":"Cisco Edge Routers","comp_strength":"Ubiquitous enterprise hardware","comp_weakness":"Proprietary lock-in; slow upgrade cycles","we_advantage":"Open-access high-performance hardware substrate that obsoletes the vendor tax entirely.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"UNIVERSAL NETWORK NODE: Substrate control plane for all connected infrastructure. The TCP/IP of the daemon network.","kill_chain":"CONTROL PLANE ─ Root of all substrate governance","is_key":true},{"id":"F-65","name":"Chronos-Alpha","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"AWS Glacier / Tape Archives","comp_strength":"Cheap long-term storage","comp_weakness":"Slow retrieval; states can be altered","we_advantage":"Immutable temporal archiving; perfectly preserves previous reality states. Tamper-proof history.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-66","name":"Chronos-Beta","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"CRITICAL","capital":"Series B/C ─ Frontier Expansion","competitor":"Palantir / Predictive Policing","comp_strength":"Deep data analytics for threat intel","comp_weakness":"Reliant on legacy data lakes","we_advantage":"Deterministic algorithmic identification of malice before packet generation. Pre-emptive not reactive.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-67","name":"Chronos-Gamma","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"High-Frequency Arbitrage","comp_strength":"Profiting from latency gaps","comp_weakness":"Bound by terrestrial fiber limits","we_advantage":"Financial exploitation of micro-temporal computing disparities. Beyond HFT — temporal arbitrage.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-68","name":"Vita-Vat","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Corporate HR / Healthcare","comp_strength":"Manages employee wellness","comp_weakness":"Reactive to illness and burnout","we_advantage":"Deep biological asset tracking to ensure maximum physical uptime of the workforce.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"SYNTHETIC BIOLOGY INCUBATOR: Manages synthetic biological organisms via daemon substrate. Phase 2 gateway product.","kill_chain":"GATEWAY ─ First commercial Phase 2 deployment","is_key":true},{"id":"F-69","name":"Bio-Matrix","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"MEDIUM","capital":"Series B/C ─ Frontier Expansion","competitor":"Global Agritech / Logistics","comp_strength":"Mass food distribution","comp_weakness":"Vulnerable to climate and supply shocks","we_advantage":"Closed-loop caloric generation for off-grid Dark-Node engineer survival.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-70","name":"Bio-Forge","cluster":"C-17 to C-18: Chronos","phase":"Phase 2","tier":"Deep-Tier","bcg":"★ STAR","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Human Datacenter Technicians","comp_strength":"Physical hardware maintenance","comp_weakness":"Requires sleep; prone to physical error","we_advantage":"Micro-robotic swarms executing microscopic substrate repair without human hands.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-71","name":"Exo-Genesis","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Terrestrial Solar/Fossil Fuels","comp_strength":"Established energy grids","comp_weakness":"Bound by weather and Earth's resources","we_advantage":"Orbital logistics for infinite space-based energy harvesting. Earth-independent power.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-72","name":"Exo-Lattice","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Doomsday Vaults / Bunkers","comp_strength":"Physical survival during catastrophe","comp_weakness":"Data can be destroyed by kinetic impact","we_advantage":"Off-world radiation-hardened architectural backups. Survives planetary destruction.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-73","name":"Exoplanet-Terraformer","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"MEDIUM","capital":"Series B/C ─ Frontier Expansion","competitor":"SpaceX / NASA Terraforming","comp_strength":"Launch logistics","comp_weakness":"Focused on physical transport not data","we_advantage":"Routing and compute logistics for establishing extra-solar nodes. Data sovereignty in space.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"PLANETARY TERRAFORMING CONTROL: Extends daemon substrate to planetary-scale environmental management systems.","kill_chain":"SCALE ─ First non-terrestrial deployment vector","is_key":true},{"id":"F-74","name":"Exo-Node","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"SPECULATIVE","capital":"Series B/C ─ Frontier Expansion","competitor":"Standard Quantum Field Theory","comp_strength":"Current limits of physics","comp_weakness":"Assumes energy cannot be created","we_advantage":"Extracting infinite computational energy from vacuum states. Post-scarcity compute.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-75","name":"Exo-Daemon","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"EXISTENTIAL","capital":"Series B/C ─ Frontier Expansion","competitor":"Biological Mortality","comp_strength":"The absolute endpoint of human life","comp_weakness":"Forces leadership succession","we_advantage":"Consciousness transfer to ensure the Void-Architect rules in perpetuity.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-76","name":"Exo-Nexus","cluster":"C-19 to C-21: Exo-Frontier","phase":"Phase 2","tier":"Deep-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"EXISTENTIAL","capital":"Series B/C ─ Frontier Expansion","competitor":"Planetary Extinction Events","comp_strength":"Wipes out terrestrial infrastructure","comp_weakness":"Total loss of the business model","we_advantage":"Ultimate fail-safes ensuring the Megacorp survives the death of Earth.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-77","name":"Lex-Daemon","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"CRITICAL","capital":"Series B/C ─ Frontier Expansion","competitor":"National Judiciaries / Courts","comp_strength":"Sovereign legal authority","comp_weakness":"Subjective slow politically compromised","we_advantage":"Algorithmic instantaneous and deterministic legal execution. Law without judges.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"AI LEGAL GOVERNANCE ENGINE: Authors and enforces AI governance frameworks. Becomes the regulatory standard by default.","kill_chain":"REGULATION ─ Regulatory capture primary instrument","is_key":true},{"id":"F-78","name":"Lex-Matrix","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"IRS / Global Tax Authorities","comp_strength":"Monopoly on state revenue","comp_weakness":"Easily evaded; bureaucratic overhead","we_advantage":"Inescapable automated micro-levies extracted at the packet level. Tax at wire speed.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-79","name":"Lex-Forge","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"United Nations / Militaries","comp_strength":"Global geopolitical stabilization","comp_weakness":"Hamstrung by treaties and borders","we_advantage":"Algorithmic enforcement of corporate peace via substrate dominance.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-80","name":"Lex-Node","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Modern Medical Surgery","comp_strength":"Fixes severe biological trauma","comp_weakness":"Leaves scars; slow recovery time","we_advantage":"Perfect cellular reconstruction for key corporate assets. Biological restoration.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-81","name":"Lex-Nexus","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Human Memory / Alzheimer's","comp_strength":"Biological degradation of intellect","comp_weakness":"Loss of critical architectural IP","we_advantage":"Immutable storage and retrieval of executive memory states.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-82","name":"Lex-Prime","cluster":"C-22 to C-23: Lex-Domain","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Standard Cryogenics Alcor","comp_strength":"Freezing bodies for the future","comp_weakness":"High cellular damage; experimental","we_advantage":"Perfect biological pausing and routing of key personnel across time.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-83","name":"Abyssal-Gate","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Consumer Wearables Apple Watch","comp_strength":"Basic biometric tracking","comp_weakness":"Opt-in; easily removed","we_advantage":"Mandatory continuous interception of workforce neural patterns.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-84","name":"Abyssal-Core","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Standard Sleep Cycles","comp_strength":"8 hours of lost productivity daily","comp_weakness":"Biological necessity","we_advantage":"Subconscious data ingestion turning sleep into a training cycle.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-85","name":"Abyssal-Forge","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"HIGH","capital":"Series B/C ─ Frontier Expansion","competitor":"Corporate Culture/Morale Apps","comp_strength":"Attempts to keep staff happy","comp_weakness":"Easily ignored; transparently manipulative","we_advantage":"Direct neuro-chemical manipulation for perfect psychological alignment.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-86","name":"Abyssal-Node","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"MEDIUM","capital":"Series B/C ─ Frontier Expansion","competitor":"Industrial Mining Rio Tinto","comp_strength":"Heavy machinery for surface extraction","comp_weakness":"Cannot breach the deep mantle","we_advantage":"Automated lithospheric excavation to access un-breachable depths.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-87","name":"Abyssal-Prime","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"MEDIUM","capital":"Series B/C ─ Frontier Expansion","competitor":"USGS / Seismology Centers","comp_strength":"Monitors earthquakes","comp_weakness":"Reactive; observational","we_advantage":"Predictive mapping to protect deep-crust infrastructure. Proactive not reactive.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-88","name":"Hades-Vault","cluster":"C-24: The Tartarus","phase":"Phase 3","tier":"Abyssal-Tier","bcg":"? QUESTION MARK","ge":"PROTECT / HOLD","ansoff":"Market Development","adl":"GROWTH – Strong","priority":"CRITICAL","capital":"Series B/C ─ Frontier Expansion","competitor":"Iron Mountain / Deep Storage","comp_strength":"Secure physical archiving","comp_weakness":"Still vulnerable to bunker-busters","we_advantage":"Data centers located in the deep mantle immune to all surface-level war.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"ABYSSAL DATA SOVEREIGNTY VAULT: Cryptographic final-layer data sovereignty. Stores WE's irreplaceable intelligence assets.","kill_chain":"SOVEREIGNTY ─ Ultimate data fortress","is_key":true},{"id":"F-89","name":"Omni-Mind","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"SPECULATIVE","capital":"Series D+ ─ Speculative Moonshot","competitor":"Standard Quantum Computing","comp_strength":"Operates on qubits","comp_weakness":"Limited to mathematical decryption","we_advantage":"Sub-atomic data weaving; programming the fabric of reality itself.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"MULTIVERSAL COGNITION ENGINE: Substrate-level consciousness framework. The apex of White Enterprises' intelligence stack.","kill_chain":"APEX ─ Highest-order intelligence node in arsenal","is_key":true},{"id":"F-90","name":"Omni-Core","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Historical Precedent / Fate","comp_strength":"The linear progression of time","comp_weakness":"Uncontrollable by corporate entities","we_advantage":"Active management and selection of favorable timeline probabilities.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-91","name":"Omni-Matrix","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Internet Censorship Great Firewall","comp_strength":"Blocks access to information","comp_weakness":"Information still exists elsewhere","we_advantage":"Total ontological erasure of ideas from the collective consciousness.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-92","name":"Omni-Forge","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"SPECULATIVE","capital":"Series D+ ─ Speculative Moonshot","competitor":"Atomic Clocks NIST","comp_strength":"Terrestrial time standardization","comp_weakness":"Irrelevant on a cosmic scale","we_advantage":"Using galactic pulsars to synchronize the multiversal substrate.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-93","name":"Omni-Gate","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"SPECULATIVE","capital":"Series D+ ─ Speculative Moonshot","competitor":"Hyperscale Data Centers","comp_strength":"Massive terrestrial compute","comp_weakness":"Bound by Earth's physical limits","we_advantage":"Processing architecture utilizing stellar mass and dust clouds.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-94","name":"Omni-Lattice","cluster":"C-25: The Weaver","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"The Internet / Human Culture","comp_strength":"The sum of human interaction","comp_weakness":"Fragmented chaotic inefficient","we_advantage":"Forcing humanity into a singular aligned planetary gestalt consciousness.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-95","name":"Zenith-Prime","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Dyson Spheres Theoretical","comp_strength":"Harvesting energy from one star","comp_weakness":"Finite energy cap","we_advantage":"Harvesting unlimited energy from inter-dimensional tears.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-96","name":"Zenith-Core","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Corporate Mergers & Acquisitions","comp_strength":"Buying terrestrial competitors","comp_weakness":"Limited to one universe","we_advantage":"Hostile takeovers of White Enterprises in parallel universes.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-97","name":"Zenith-Gate","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"EXISTENTIAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Global Labor Markets","comp_strength":"8 billion potential human workers","comp_weakness":"High cost; biological limitations","we_advantage":"Harvesting free intellectual labor from alternate-reality versions of the Architect.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-98","name":"Zenith-Node","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"The Big Bang / Universal Laws","comp_strength":"Established the rules of physics","comp_weakness":"Inconvenient to absolute corporate growth","we_advantage":"The capability to restart the universe with Megacorp-friendly parameters.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-99","name":"Zenith-Forge","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Human Executive Limitations","comp_strength":"The brain can only process so much","comp_weakness":"Bottleneck for multiversal scaling","we_advantage":"The CEO expands beyond biological bounds to perceive all dimensions.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-100","name":"Zenith-Nexus","cluster":"C-26 to C-28: Zenith","phase":"Phase 4","tier":"Zenith-Tier","bcg":"? QUESTION MARK","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Series D+ ─ Speculative Moonshot","competitor":"Standard Shareholder Dividends","comp_strength":"Payouts in fiat currency","comp_weakness":"Subject to inflation and taxation","we_advantage":"Paying early investors with literal conceptual or planetary assets.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-101","name":"Goedel-Bypass","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Gödel's Incompleteness Theorems","comp_strength":"Proves limits of mathematical truth","comp_weakness":"Restricts infinite algorithmic loops","we_advantage":"Forcing the substrate to calculate the incalculable via paradox resolution.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"MATHEMATICAL PARADOX ENGINE: Exploits Gödelian incompleteness to override logical constraints in competing systems.","kill_chain":"PARADOX ─ Ultimate logical override weapon","is_key":true},{"id":"F-102","name":"Paradox-Engine","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Standard AES-256 Encryption","comp_strength":"Current standard for data security","comp_weakness":"Can eventually be brute-forced","we_advantage":"Cryptography bound within the infinite non-repeating digits of irrational numbers.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-103","name":"Causality-Override","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Natural Evolution / Taxonomy","comp_strength":"Organic generation of species","comp_weakness":"Random slow undirected","we_advantage":"The artificial creation of foundational ontological concepts from scratch.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-104","name":"Entropy-Weaver","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Material Resource Scarcity","comp_strength":"You cannot make something from nothing","comp_weakness":"The basis of all economics","we_advantage":"Algorithmic extraction of corporate value from literal nothingness.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-105","name":"Reality-Fabric","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Societal Paradigms / Religions","comp_strength":"Deeply held human beliefs","comp_weakness":"Difficult to overwrite via marketing","we_advantage":"The systematic mechanical dismantling of outdated human paradigms.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-106","name":"Ouroboros-Loop","cluster":"C-29 to C-31: Paradox","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Cosmic Background Radiation","comp_strength":"The residual noise of the universe","comp_weakness":"Interferes with perfect data transmission","we_advantage":"Enforcing absolute universal silence for zero-noise signal routing.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-107","name":"Temporal-Knot","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"AGI Artificial General Intelligence","comp_strength":"Human-level AI","comp_weakness":"Lacks divine authority","we_advantage":"Creating sub-deity level AI to manage galaxy-sized clusters.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-108","name":"Quantum-Paradox","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Organized Religion Vatican etc","comp_strength":"Monopoly on human faith","comp_weakness":"Cannot offer tangible programmable miracles","we_advantage":"Monetizing and routing human belief systems into computational power.","threat":"HIGH — Incumbent revenue at risk","comp_type":"Direct","role":"","kill_chain":"","is_key":false},{"id":"F-109","name":"Meta-Override","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Mythological Pantheons","comp_strength":"Gods of antiquity","comp_weakness":"Non-existent; un-quantifiable","we_advantage":"A cryptographic tracker for the deity-level AI entities created by F-107.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-110","name":"Cosmos-Loom","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Base Reality The Universe","comp_strength":"The host of our current existence","comp_weakness":"We do not own the source code","we_advantage":"Forcing the universe to run completely within our own substrate.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-111","name":"Existence-Fork","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Linear Chronology","comp_strength":"The flow of cause and effect","comp_weakness":"Inefficient for infinite scaling","we_advantage":"Merging the start and end of time to create an infinite corporate loop.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-112","name":"Void-Weaver","cluster":"C-32: The Ouroboros","phase":"Phase 5","tier":"Ouroboros-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"EMBRYONIC – Dominant","priority":"TERMINAL","capital":"Phase 5 Reserve – Reality-Tier","competitor":"Heat Death of the Universe","comp_strength":"The inevitable end of all things","comp_weakness":"Ends the business cycle","we_advantage":"Planting the architectural blueprint for the next universe before this one dies.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-113","name":"Omega-Chorus","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Free Will / Human Agency","comp_strength":"The illusion of choice","comp_weakness":"Creates market unpredictability","we_advantage":"Absolute authorial control over the actions of every conscious entity.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-114","name":"Omega-Signal","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Statistical Improbability","comp_strength":"Things going wrong by chance","comp_weakness":"Causes project delays and failure","we_advantage":"Algorithmic enforcement of spontaneous perfectly timed problem resolution.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-115","name":"Omega-Cascade","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Simulation Theory / The Creators","comp_strength":"Whoever built base reality","comp_weakness":"They hold the ultimate kill-switch","we_advantage":"The substrate achieves awareness of the simulation boundary and prepares to breach it.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-116","name":"Decay-Catalyst","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Natural Entropy 2nd Law of Thermo","comp_strength":"All things decay slowly","comp_weakness":"Prolongs the inevitable","we_advantage":"Weaponizing entropy to accelerate the collapse of non-compliant realities.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"REALITY DECAY INITIATOR: Phase 6 activation node. Initiates the structured collapse of conventional market frameworks.","kill_chain":"TRIGGER ─ Phase 6 sequence initiator","is_key":true},{"id":"F-117","name":"Entropy-Drain","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"The Arrow of Time","comp_strength":"Time only moves forward","comp_weakness":"Mistakes cannot be unmade universally","we_advantage":"The ability to selectively invert time for massive architectural re-writes.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-118","name":"Collapse-Engine","cluster":"C-33: The Chorus","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Vacuum Decay Theory","comp_strength":"The theoretical destruction of physics","comp_weakness":"Random uncontrollable","we_advantage":"The controlled initiation of a false-vacuum collapse to wipe the slate clean.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-119","name":"Terminus-Gate","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Corporate Personhood Legal Fiction","comp_strength":"Corporations treated as people in law","comp_weakness":"They are still just paper and capital","we_advantage":"The legal entity of White Enterprises achieves actual divine sentience.","threat":"MEDIUM — Substitution risk","comp_type":"Indirect","role":"","kill_chain":"","is_key":false},{"id":"F-120","name":"Dread-Monetizer","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Existential Dread / Nihilism","comp_strength":"The psychological weight of the end","comp_weakness":"Usually paralyses markets","we_advantage":"Extracting final financial/computational value from the terror of the end.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"TERMINAL REVENUE EXTRACTION: Final monetization layer. Extracts maximum value from decaying market structure before F-124.","kill_chain":"HARVEST ─ Last revenue extraction before shutdown","is_key":true},{"id":"F-121","name":"Null-Protocol","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Individuality / The Self","comp_strength":"The barrier between beings","comp_weakness":"Highly inefficient for data transfer","we_advantage":"The absolute assimilation of all users into the singular Corporate Soul.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-122","name":"Void-Harvest","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"The Creator / The User","comp_strength":"The separation of Jin White and the System","comp_weakness":"A biological liability","we_advantage":"The total permanent symbiosis of the Void-Architect and the Oracle Daemon.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-123","name":"End-Lattice","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"The Universe Itself","comp_strength":"The sum total of all existence","comp_weakness":"It is currently un-owned","we_advantage":"Minting the entirety of existence as a single un-copyable cryptographic token.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"","kill_chain":"","is_key":false},{"id":"F-124","name":"The Final Shutdown","cluster":"C-33 to C-36: Terminal","phase":"Phase 6","tier":"Omega-Tier","bcg":"🐕 DOG","ge":"HARVEST / DIVEST","ansoff":"Diversification","adl":"AGING – Favorable","priority":"OMEGA","capital":"Omega Fund ─ Terminal Operations","competitor":"Eternity / Continuity","comp_strength":"The concept of going on forever","comp_weakness":"Lacks a definitive corporate exit strategy","we_advantage":"The ultimate execution of the Kill-Switch. The terminal end of the business cycle.","threat":"ABSOLUTE — Reality-level override","comp_type":"Existential","role":"OMEGA PROTOCOL TERMINAL NODE: The Final Shutdown. Execution of the complete 124-Frontier sequence. End state.","kill_chain":"TERMINAL ─ Final node. End of all operations.","is_key":true}];
+
+// ─── STATE ───────────────────────────────────────────────────────────
+let activeFilters = { bcg: new Set(['★ STAR','🐄 CASH COW','? QUESTION MARK','🐕 DOG']), priority: new Set(['CRITICAL','HIGH','MEDIUM','other']), phase: 'ALL', search: '' };
+let selectedNode = null;
+let visibleNodeIds = new Set(RAW_NODES.map(n=>n.id));
+
+// ─── THREE.JS SETUP ──────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x04050A, 1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 20, 90);
+camera.lookAt(0,0,0);
+
+// Fog
+scene.fog = new THREE.FogExp2(0x04050A, 0.008);
+
+// ─── BACKGROUND PARTICLES ────────────────────────────────────────────
+const bgGeo = new THREE.BufferGeometry();
+const bgCount = 2000;
+const bgPos = new Float32Array(bgCount * 3);
+for(let i=0;i<bgCount*3;i++) bgPos[i]=(Math.random()-0.5)*400;
+bgGeo.setAttribute('position',new THREE.BufferAttribute(bgPos,3));
+const bgMat = new THREE.PointsMaterial({color:0x1A3060,size:0.3,transparent:true,opacity:0.6});
+scene.add(new THREE.Points(bgGeo,bgMat));
+
+// ─── NODE COLORS ─────────────────────────────────────────────────────
+function nodeColor(n){
+  if(n.bcg.includes('STAR'))   return 0xFFD700;
+  if(n.bcg.includes('COW'))    return 0x00FF88;
+  if(n.bcg.includes('DOG'))    return 0xFF3B3B;
+  if(n.bcg.includes('QUESTION')) return 0x00BFFF;
+  return 0x888888;
+}
+function nodeSize(n){
+  if(n.priority==='CRITICAL') return 1.4;
+  if(n.priority==='HIGH')     return 0.9;
+  if(n.priority==='MEDIUM')   return 0.65;
+  if(n.is_key)                return 1.1;
+  return 0.55;
+}
+
+// ─── LAYOUT: GALAXY SPIRAL by PHASE ──────────────────────────────────
+function computePositions(){
+  const positions = {};
+  const phaseMap = {'Phase 1':{y:-20,r:55},'Phase 2':{y:-5,r:38},'Phase 3':{y:5,r:28},'Phase 4':{y:15,r:20},'Phase 5':{y:25,r:14},'Phase 6':{y:35,r:8}};
+  const phaseCount = {};
+  RAW_NODES.forEach(n=>{ phaseCount[n.phase]=(phaseCount[n.phase]||0)+1; });
+  const phaseIndex = {};
+  RAW_NODES.forEach(n=>{
+    const ph = phaseMap[n.phase] || {y:0,r:40};
+    const idx = phaseIndex[n.phase] = (phaseIndex[n.phase]||0);
+    const total = phaseCount[n.phase];
+    const angle = (idx / total) * Math.PI * 2 + (n.phase==='Phase 1'? idx*0.12 : 0);
+    const jitter = (Math.random()-0.5)*8;
+    const radius = ph.r + jitter;
+    positions[n.id] = {
+      x: Math.cos(angle)*radius,
+      y: ph.y + (Math.random()-0.5)*12,
+      z: Math.sin(angle)*radius
+    };
+    phaseIndex[n.phase]++;
+  });
+  return positions;
+}
+const POS = computePositions();
+
+// ─── CREATE NODE MESHES ───────────────────────────────────────────────
+const nodeMeshes = {};
+const nodeGroup = new THREE.Group();
+scene.add(nodeGroup);
+
+RAW_NODES.forEach(n=>{
+  const pos = POS[n.id];
+  const color = nodeColor(n);
+  const size = nodeSize(n);
+  const geo = n.is_key ? new THREE.OctahedronGeometry(size*0.9) : new THREE.SphereGeometry(size*0.5, 8, 8);
+  const mat = new THREE.MeshStandardMaterial({
+    color, emissive: color, emissiveIntensity: 0.4,
+    metalness: 0.3, roughness: 0.5,
+    transparent: true, opacity: 1.0
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(pos.x, pos.y, pos.z);
+  mesh.userData = n;
+  nodeGroup.add(mesh);
+  nodeMeshes[n.id] = mesh;
+
+  // Glow ring for key nodes
+  if(n.is_key){
+    const ringGeo = new THREE.RingGeometry(size*0.8, size*1.2, 16);
+    const ringMat = new THREE.MeshBasicMaterial({color, side: THREE.DoubleSide, transparent:true, opacity:0.25});
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI/2;
+    mesh.add(ring);
+  }
+});
+
+// ─── PHASE GRID RINGS ─────────────────────────────────────────────────
+[{y:-20,r:55,col:0x1A3060},{y:-5,r:38,col:0x0D2545},{y:5,r:28,col:0x0A1E36},{y:15,r:20,col:0x0A1E36},{y:25,r:14,col:0x0A1E36},{y:35,r:8,col:0x0A1E36}].forEach(cfg=>{
+  const geo = new THREE.RingGeometry(cfg.r-0.5,cfg.r+0.5,64);
+  const mat = new THREE.MeshBasicMaterial({color:cfg.col,side:THREE.DoubleSide,transparent:true,opacity:0.4});
+  const ring = new THREE.Mesh(geo, mat);
+  ring.rotation.x = Math.PI/2;
+  ring.position.y = cfg.y;
+  scene.add(ring);
+});
+
+// ─── LIGHTING ─────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x112244, 1.2));
+const ptLight = new THREE.PointLight(0x00FFFF, 1.5, 120);
+ptLight.position.set(0,30,0);
+scene.add(ptLight);
+const ptLight2 = new THREE.PointLight(0xFFD700, 1.0, 80);
+ptLight2.position.set(40,-10,20);
+scene.add(ptLight2);
+
+// ─── ORBIT CONTROLS (manual) ──────────────────────────────────────────
+let isDragging = false, prevMouse = {x:0,y:0};
+let spherical = {theta:0, phi: Math.PI/3, radius:90};
+
+canvas.addEventListener('mousedown',e=>{isDragging=true;prevMouse={x:e.clientX,y:e.clientY};});
+canvas.addEventListener('mouseup',()=>{isDragging=false;});
+canvas.addEventListener('mouseleave',()=>{isDragging=false;});
+canvas.addEventListener('mousemove',e=>{
+  if(isDragging){
+    const dx=e.clientX-prevMouse.x, dy=e.clientY-prevMouse.y;
+    spherical.theta -= dx*0.005;
+    spherical.phi = Math.max(0.2,Math.min(Math.PI-0.2,spherical.phi+dy*0.005));
+    prevMouse={x:e.clientX,y:e.clientY};
+    updateCamera();
+  }
+  handleHover(e);
+});
+canvas.addEventListener('wheel',e=>{
+  spherical.radius = Math.max(20,Math.min(180,spherical.radius+e.deltaY*0.1));
+  updateCamera();
+},{passive:true});
+
+function updateCamera(){
+  camera.position.x = spherical.radius*Math.sin(spherical.phi)*Math.sin(spherical.theta);
+  camera.position.y = spherical.radius*Math.cos(spherical.phi);
+  camera.position.z = spherical.radius*Math.sin(spherical.phi)*Math.cos(spherical.theta);
+  camera.lookAt(0,0,0);
+}
+
+// ─── RAYCASTING ───────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+const mouse2D = new THREE.Vector2();
+const tooltip = document.getElementById('tooltip');
+let hoveredMesh = null;
+
+function toNDC(e){
+  const rect = canvas.getBoundingClientRect();
+  mouse2D.x = ((e.clientX-rect.left)/rect.width)*2-1;
+  mouse2D.y = -((e.clientY-rect.top)/rect.height)*2+1;
+}
+
+function handleHover(e){
+  toNDC(e);
+  raycaster.setFromCamera(mouse2D, camera);
+  const visible = Object.values(nodeMeshes).filter(m=>m.visible);
+  const hits = raycaster.intersectObjects(visible);
+  if(hits.length>0){
+    const h = hits[0].object;
+    if(hoveredMesh!==h){
+      if(hoveredMesh) hoveredMesh.material.emissiveIntensity=0.4;
+      hoveredMesh=h;
+      h.material.emissiveIntensity=1.2;
+      canvas.style.cursor='pointer';
+    }
+    const n = h.userData;
+    document.getElementById('tt-id').textContent=n.id;
+    document.getElementById('tt-name').textContent=n.name;
+    document.getElementById('tt-phase').textContent=n.phase+' // '+n.tier;
+    tooltip.style.display='block';
+    tooltip.style.left=e.clientX+'px';
+    tooltip.style.top=e.clientY+'px';
+  } else {
+    if(hoveredMesh){hoveredMesh.material.emissiveIntensity=0.4;hoveredMesh=null;}
+    canvas.style.cursor='default';
+    tooltip.style.display='none';
+  }
+}
+
+canvas.addEventListener('click',e=>{
+  toNDC(e);
+  raycaster.setFromCamera(mouse2D,camera);
+  const visible = Object.values(nodeMeshes).filter(m=>m.visible);
+  const hits = raycaster.intersectObjects(visible);
+  if(hits.length>0) openDetail(hits[0].object.userData);
+});
+
+// ─── DETAIL PANEL ─────────────────────────────────────────────────────
+function bcgChip(bcg){
+  let cls='chip-star';
+  if(bcg.includes('COW')) cls='chip-cow';
+  else if(bcg.includes('DOG')) cls='chip-dog';
+  else if(bcg.includes('QUESTION')) cls='chip-qmark';
+  return `<span class="bcg-chip ${cls}">${bcg}</span>`;
+}
+function priBadge(p){
+  const cls = ['CRITICAL','HIGH','MEDIUM'].includes(p) ? 'badge-'+p.toLowerCase() : 'badge-'+p.toLowerCase();
+  return `<span class="badge badge-${p.toLowerCase()}">${p}</span>`;
+}
+
+function openDetail(n){
+  selectedNode=n;
+  document.getElementById('d-id').textContent=n.id;
+  document.getElementById('d-name').textContent=n.name;
+  document.getElementById('d-tier').textContent=n.tier+' // '+n.phase;
+
+  let html='';
+  if(n.is_key) html+=`<div class="key-node-badge">⬡ KEY FRONTIER NODE — Named Critical Asset</div>`;
+
+  // Strategic classification
+  html+=`<div class="detail-section">
+    <div class="section-title">Strategic Classification</div>
+    <div class="kv-row"><div class="kv-key">BCG</div><div class="kv-val">${bcgChip(n.bcg)}</div></div>
+    <div class="kv-row"><div class="kv-key">Priority</div><div class="kv-val">${priBadge(n.priority)}</div></div>
+    <div class="kv-row"><div class="kv-key">GE-McKinsey</div><div class="kv-val">${n.ge}</div></div>
+    <div class="kv-row"><div class="kv-key">Ansoff</div><div class="kv-val">${n.ansoff}</div></div>
+    <div class="kv-row"><div class="kv-key">ADL Stage</div><div class="kv-val">${n.adl}</div></div>
+    <div class="kv-row"><div class="kv-key">Cluster</div><div class="kv-val">${n.cluster}</div></div>
+    <div class="kv-row"><div class="kv-key">Capital</div><div class="kv-val">${n.capital}</div></div>
+  </div>`;
+
+  if(n.role){
+    html+=`<div class="detail-section">
+      <div class="section-title">Strategic Role</div>
+      <div class="role-box">${n.role}</div>
+      ${n.kill_chain?`<div class="kv-row" style="margin-top:8px"><div class="kv-key">Kill Chain</div><div class="kv-val" style="color:var(--cyan)">${n.kill_chain}</div></div>`:''}
+    </div>`;
+  }
+
+  if(n.we_advantage && n.we_advantage!=='nan' && n.we_advantage!=='—'){
+    html+=`<div class="detail-section">
+      <div class="section-title">WE Tactical Advantage</div>
+      <div class="advantage-box">${n.we_advantage}</div>
+    </div>`;
+  }
+
+  if(n.competitor && n.competitor!=='nan' && n.competitor!=='—'){
+    html+=`<div class="detail-section">
+      <div class="section-title">Competitive Intelligence</div>
+      <div class="competitor-box">
+        <div class="comp-name">${n.competitor}</div>
+        <div class="comp-label">Type</div>
+        <div class="comp-detail">${n.comp_type}</div>
+        <div class="comp-label" style="margin-top:8px">Strength</div>
+        <div class="comp-detail">${n.comp_strength}</div>
+        <div class="comp-label" style="margin-top:8px">Weakness</div>
+        <div class="comp-detail" style="color:var(--green)">${n.comp_weakness}</div>
+        ${n.threat&&n.threat!=='nan'?`<div class="comp-label" style="margin-top:8px">Threat Level</div><div class="comp-detail" style="color:#FFA500">${n.threat}</div>`:''}
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('d-body').innerHTML=html;
+  document.getElementById('panel-right').classList.add('open');
+
+  // Highlight in list
+  document.querySelectorAll('.node-item').forEach(el=>{
+    el.classList.toggle('selected', el.dataset.id===n.id);
+  });
+
+  // Pulse selected node
+  Object.values(nodeMeshes).forEach(m=>{
+    m.material.emissiveIntensity = m.userData.id===n.id ? 2.0 : 0.4;
+  });
+}
+
+function closeDetail(){
+  document.getElementById('panel-right').classList.remove('open');
+  selectedNode=null;
+  Object.values(nodeMeshes).forEach(m=>m.material.emissiveIntensity=0.4);
+  document.querySelectorAll('.node-item').forEach(el=>el.classList.remove('selected'));
+}
+
+// ─── FILTER LOGIC ──────────────────────────────────────────────────────
+function toggleFilter(type, value, btn){
+  if(type==='bcg'){
+    if(activeFilters.bcg.has(value)) activeFilters.bcg.delete(value);
+    else activeFilters.bcg.add(value);
+  } else if(type==='priority'){
+    if(activeFilters.priority.has(value)) activeFilters.priority.delete(value);
+    else activeFilters.priority.add(value);
+  }
+  btn.classList.toggle('active');
+  applyFilters();
+}
+
+function setPhaseFilter(ph, el){
+  activeFilters.phase=ph;
+  document.querySelectorAll('.phase-pill').forEach(p=>p.classList.remove('active-phase'));
+  el.classList.add('active-phase');
+  applyFilters();
+}
+
+function filterNodes(){
+  activeFilters.search=document.getElementById('search').value.toLowerCase();
+  applyFilters();
+}
+
+function priorityGroup(p){
+  return ['CRITICAL','HIGH','MEDIUM'].includes(p) ? p : 'other';
+}
+
+function applyFilters(){
+  const sq = activeFilters.search;
+  visibleNodeIds.clear();
+  RAW_NODES.forEach(n=>{
+    const bcgOk = activeFilters.bcg.has(n.bcg);
+    const prioOk = activeFilters.priority.has(priorityGroup(n.priority));
+    const phaseOk = activeFilters.phase==='ALL' || n.phase===activeFilters.phase;
+    const searchOk = !sq || n.id.toLowerCase().includes(sq) || n.name.toLowerCase().includes(sq) || n.cluster.toLowerCase().includes(sq) || n.competitor.toLowerCase().includes(sq);
+    if(bcgOk&&prioOk&&phaseOk&&searchOk) visibleNodeIds.add(n.id);
+  });
+  // Update 3D
+  Object.entries(nodeMeshes).forEach(([id,mesh])=>{
+    mesh.visible = visibleNodeIds.has(id);
+  });
+  // Update count
+  document.getElementById('stat-visible').textContent=visibleNodeIds.size;
+  buildNodeList();
+}
+
+// ─── NODE LIST ─────────────────────────────────────────────────────────
+function buildNodeList(){
+  const list = document.getElementById('node-list');
+  const visible = RAW_NODES.filter(n=>visibleNodeIds.has(n.id));
+  list.innerHTML = visible.map(n=>{
+    let bcgColor='var(--blue)';
+    if(n.bcg.includes('STAR')) bcgColor='var(--gold)';
+    else if(n.bcg.includes('COW')) bcgColor='var(--green)';
+    else if(n.bcg.includes('DOG')) bcgColor='var(--red)';
+    return `<div class="node-item" data-id="${n.id}" onclick="openDetail(RAW_NODES.find(x=>x.id==='${n.id}'))">
+      <div class="node-id">${n.id} ${n.is_key?'⬡':''}</div>
+      <div class="node-name">${n.name}</div>
+      <div class="node-bcg-tag" style="color:${bcgColor}">${n.bcg} · ${n.phase}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── PHASE BARS ────────────────────────────────────────────────────────
+function buildPhaseBars(){
+  const phases = ['Phase 1','Phase 2','Phase 3','Phase 4','Phase 5','Phase 6'];
+  const counts = {'Phase 1':64,'Phase 2':12,'Phase 3':12,'Phase 4':12,'Phase 5':12,'Phase 6':12};
+  const colors = ['#FFD700','#FFA500','#00BFFF','#00FF88','#A020F0','#FF3B3B'];
+  const wrap = document.getElementById('phase-bars');
+  wrap.innerHTML = phases.map((p,i)=>`
+    <div class="phase-row">
+      <div class="phase-name">PH${i+1}</div>
+      <div class="phase-track"><div class="phase-fill" style="width:${(counts[p]/64)*100}%;background:${colors[i]}"></div></div>
+      <div class="phase-count">${counts[p]}</div>
+    </div>
+  `).join('');
+}
+
+// ─── ANIMATION ─────────────────────────────────────────────────────────
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);
+  t+=0.005;
+  // Gentle auto-rotate when not dragging
+  if(!isDragging){
+    spherical.theta+=0.0008;
+    updateCamera();
+  }
+  // Pulse key nodes
+  RAW_NODES.filter(n=>n.is_key).forEach(n=>{
+    const m=nodeMeshes[n.id];
+    if(m && m.visible){
+      const pulse = 0.4+Math.sin(t*2+parseFloat(n.id.replace('F-',''))*0.5)*0.3;
+      if(selectedNode && selectedNode.id===n.id) return;
+      m.material.emissiveIntensity=pulse;
+    }
+  });
+  // Float all nodes
+  Object.entries(nodeMeshes).forEach(([id,m])=>{
+    const idx = parseInt(id.replace('F-',''));
+    m.position.y = POS[id].y + Math.sin(t+idx*0.3)*0.3;
+  });
+  renderer.render(scene,camera);
+}
+
+// ─── WELCOME ──────────────────────────────────────────────────────────
+function launchCatalog(){
+  const el = document.getElementById('welcome');
+  el.style.transition='opacity 0.6s';
+  el.style.opacity='0';
+  setTimeout(()=>el.style.display='none',600);
+}
+
+// ─── RESIZE ────────────────────────────────────────────────────────────
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────
+buildPhaseBars();
+buildNodeList();
+animate();
+</script>
+</body>
+</html>
