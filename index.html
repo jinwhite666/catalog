@@ -3,298 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | Strategic Directory</title>
+    <title>WHITE ENTERPRISES INC. | NEURAL DIRECTORY</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #05080f;
-            color: #e2e8f0;
-            overflow-x: hidden;
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --bg-deep: #02040a;
+            --cyber-blue: #0ff;
+            --neon-magenta: #f0f;
+            --quantum-violet: #8a2be2;
+            --ops-green: #0fa;
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
         }
 
-        /* 3D Canvas Background */
-        #bg-canvas {
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden; /* Lock scroll for app-like feel */
+        }
+
+        /* Background Canvas for Neural Lines */
+        #neural-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
+            z-index: 0;
+            opacity: 0.6;
         }
 
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 60px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            font-weight: 700;
-            letter-spacing: 5px;
-            margin-bottom: 25px;
-            color: #ffffff;
-            text-transform: uppercase;
-            text-align: center;
-            border-bottom: 2px solid #38bdf8;
-            padding-bottom: 10px;
-            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-        }
-
-        /* Profile Banner */
-        .profile-banner {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            border-radius: 8px;
-            padding: 25px 40px;
-            text-align: center;
-            max-width: 900px;
-            margin-bottom: 50px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .profile-banner h2 {
-            margin: 0 0 10px 0;
-            color: #f8fafc;
-            letter-spacing: 2px;
-            font-size: 1.5rem;
-        }
-
-        .profile-banner h3 {
-            margin: 0 0 15px 0;
-            color: #38bdf8;
-            font-weight: 400;
-            font-size: 1rem;
-            letter-spacing: 1px;
-        }
-
-        .profile-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-
-        .profile-links a {
-            color: #38bdf8;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .profile-links a:hover {
-            color: #ffffff;
-        }
-
-        /* Grid Container */
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+        /* HUD Overlay */
+        .hud-container {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none; /* Let clicks pass through to nodes */
+            display: flex;
+            justify-content: space-between;
+            padding: 30px;
             box-sizing: border-box;
-            margin-bottom: 60px;
         }
 
-        /* Cards */
-        .card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-            border-radius: 8px;
-            padding: 30px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
+        /* Left Panel: Identity & Log */
+        .panel-left {
+            width: 350px;
+            pointer-events: auto;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            gap: 20px;
         }
 
-        .card:hover {
-            border-color: #38bdf8;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
-            transform: translateY(-5px);
-            background: rgba(36, 51, 71, 0.9);
+        .identity-core {
+            border-left: 3px solid var(--cyber-blue);
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(0,255,255,0.05) 0%, transparent 100%);
         }
 
-        .card h2 {
-            margin: 15px 0 10px 0;
-            font-size: 1.1rem;
-            color: #f8fafc;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .identity-core h1 {
+            margin: 0 0 5px 0;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--cyber-blue);
         }
 
-        .card p {
-            font-size: 0.85rem;
-            color: #94a3b8;
+        .identity-core h2 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            color: var(--cyber-blue);
+        }
+
+        .identity-core p {
             margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
             line-height: 1.4;
         }
 
-        .icon { font-size: 2rem; }
-
-        /* Disclaimer */
-        .disclaimer {
-            max-width: 900px;
-            text-align: center;
-            font-size: 0.75rem;
-            line-height: 1.6;
-            color: #64748b;
-            border-top: 1px solid rgba(30, 41, 59, 0.5);
-            padding-top: 30px;
-            margin-top: auto;
+        .system-log {
+            flex-grow: 1;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .disclaimer b {
-            color: #94a3b8;
-            display: block;
-            margin-bottom: 5px;
+        .log-header {
+            font-size: 0.8rem;
+            color: var(--neon-magenta);
+            border-bottom: 1px solid var(--neon-magenta);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
             text-transform: uppercase;
+        }
+
+        .log-content {
+            font-size: 0.85rem;
+            color: var(--cyber-blue);
+            white-space: pre-wrap;
+            overflow-y: auto;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Right Panel: Interaction Modes */
+        .panel-right {
+            width: 200px;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: right;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--cyber-blue);
+            color: var(--cyber-blue);
+        }
+
+        .mode-btn.active {
+            border-color: var(--neon-magenta);
+            color: #fff;
+            background: rgba(255, 0, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        /* Data Matrix Nodes */
+        #matrix-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+        }
+
+        .data-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 60px;
+            background: rgba(10, 15, 30, 0.8);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            border-radius: 4px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .data-node::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            z-index: -1;
+            background: transparent;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .data-node:hover {
+            z-index: 100;
+        }
+
+        /* Cluster Colors */
+        .cluster-core { border-color: #fff; color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2); width: 200px; height: 80px; font-size: 1rem; }
+        .cluster-ai { border-color: var(--neon-magenta); }
+        .cluster-ai:hover { box-shadow: 0 0 25px var(--neon-magenta); background: rgba(255,0,255,0.1); }
+        .cluster-infra { border-color: var(--cyber-blue); }
+        .cluster-infra:hover { box-shadow: 0 0 25px var(--cyber-blue); background: rgba(0,255,255,0.1); }
+        .cluster-ops { border-color: var(--ops-green); }
+        .cluster-ops:hover { box-shadow: 0 0 25px var(--ops-green); background: rgba(0,255,170,0.1); }
+
+        /* --- Interaction Stream Effects (Applied via JS classes on body) --- */
+        body.gaze-active .data-node:hover {
+            transform: translate(-50%, -50%) scale(1.3);
             letter-spacing: 1px;
+        }
+        body.neural-active .data-node {
+            animation: neuralPulse 2s infinite alternate;
+        }
+        @keyframes neuralPulse {
+            0% { box-shadow: 0 0 5px currentColor; }
+            100% { box-shadow: 0 0 25px currentColor, inset 0 0 10px currentColor; }
+        }
+        
+        /* Footer Disclaimer */
+        .cyber-footer {
+            position: absolute;
+            bottom: 10px;
+            left: 380px; /* Offset for left panel */
+            right: 230px; /* Offset for right panel */
+            text-align: center;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            pointer-events: auto;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="neural-canvas"></canvas>
 
-    <div class="content-wrapper">
-        <h1>WHITE ENTERPRISES INC.</h1>
+    <div id="matrix-container">
+        </div>
 
-        <div class="profile-banner">
-            <h2>Jin White (Arvind Pardeshi)</h2>
-            <h3>Principal Security & AI Infrastructure Architect | 16+ Years Multi-Vendor Orchestration | Founder (Stealth R&D)</h3>
-            <div class="profile-links">
-                <span>📍 Mumbai</span>
-                <span>📧 <a href="mailto:arvindpardeshi151@gmail.com">arvindpardeshi151@gmail.com</a></span>
-                <span>📞 +91 9321411739</span>
-                <span>🔗 <a href="https://linkedin.com/in/arvind-pardeshi-ab92382a2" target="_blank">LinkedIn Profile</a></span>
+    <div class="hud-container">
+        <div class="panel-left">
+            <div class="identity-core">
+                <h1>WHITE ENTERPRISES INC.</h1>
+                <h2>SYS.ARCHITECT // JIN WHITE</h2>
+                <p>SEC.CLR: OMNI-NODE ACTIVE<br>LOC: MUMBAI_GRID // R&D_STEALTH</p>
+            </div>
+            
+            <div class="system-log">
+                <div class="log-header">System Log_Feed v9.4</div>
+                <div class="log-content" id="log-output">
+                    > INITIALIZING NEURAL DIRECTORY...
+                    > ESTABLISHING HANDSHAKE...
+                    > 9 NODES ONLINE.
+                    > AWAITING USER INPUT.
+                </div>
             </div>
         </div>
 
-        <div class="container">
-            <a href="My_Profile.html" class="card">
-                <div class="icon">👤</div>
-                <h2>Professional Profile</h2>
-                <p>Detailed resume, architecture credentials, and project history.</p>
-            </a>
-            <a href="AI_Future_Research.html" class="card">
-                <div class="icon">🧠</div>
-                <h2>AI Future Research</h2>
-                <p>Predictive modeling, neuro-symbolic AI, and frontier research.</p>
-            </a>
-            <a href="AI_Applications_all_Sectors.html" class="card">
-                <div class="icon">🚀</div>
-                <h2>AI Applications</h2>
-                <p>Cross-sector AI implementation and deployment strategies.</p>
-            </a>
-            <a href="Quantum_Catalog.html" class="card">
-                <div class="icon">⚛️</div>
-                <h2>Quantum Catalog</h2>
-                <p>Next-generation quantum computing and research frameworks.</p>
-            </a>
-            <a href="AI_Business_Catalog_.html" class="card">
-                <div class="icon">📈</div>
-                <h2>AI Business</h2>
-                <p>Market intelligence and business logic for AI ventures.</p>
-            </a>
-            <a href="IT_Business_Research_Catalog.html" class="card">
-                <div class="icon">📊</div>
-                <h2>Business Research</h2>
-                <p>Strategic analysis, market intelligence, and unit economics.</p>
-            </a>
-            <a href="IT_Infra_Business_Catalog.html" class="card">
-                <div class="icon">⚙️</div>
-                <h2>IT Infrastructure</h2>
-                <p>Enterprise architecture blueprints and security specs.</p>
-            </a>
-            <a href="PM_Daily_Handbook.html" class="card">
-                <div class="icon">📔</div>
-                <h2>PM Handbook</h2>
-                <p>Operational guidelines and project management protocols.</p>
-            </a>
-            <a href="White_DoorOpener_Assessment _Templates.zip" class="card" download>
-                <div class="icon">🗂️</div>
-                <h2>Assessment Templates</h2>
-                <p>Downloadable DoorOpener templates for technical discovery and client assessment.</p>
-            </a>
+        <div class="panel-right">
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: -5px; text-transform: uppercase;">Interaction Streams</div>
+            <button class="mode-btn active" onclick="setMode('standard', this)">[0] Standard</button>
+            <button class="mode-btn" onclick="setMode('gesture', this)">[1] Gesture Sync</button>
+            <button class="mode-btn" onclick="setMode('gaze', this)">[2] Gaze Track</button>
+            <button class="mode-btn" onclick="setMode('neural', this)">[3] Neural Link</button>
         </div>
-
-        <footer class="disclaimer">
-            <b>Disclaimer</b>
-            <p>
-                <strong>Educational Purposes Only:</strong> This document is an open-source, community-driven research paper produced for conceptual and educational exploration only. It does not constitute a prospectus, investment offering, or professional financial, legal, or technical advice.<br><br>
-                <strong>Pricing Note:</strong> All pricing and financial metrics referenced within these catalogs are speculative and subject to change based on dynamic market conditions.<br><br>
-                <strong>No Warranties:</strong> All information is provided on an "AS IS" basis without any guarantee of completeness, accuracy, or timeliness. Neither the authors nor any affiliated contributors make any warranties of any kind, express or implied.<br><br>
-                <strong>Limitation of Liability:</strong> Neither the research contributors nor any affiliated community members shall be liable for any direct, indirect, incidental, or consequential damages arising from the use of, or reliance upon, any information contained herein. Readers are encouraged to verify all information with other professional sources.
-            </p>
-        </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <div class="cyber-footer">
+        EDUCATIONAL PURPOSES ONLY. Not a prospectus or professional advice. Pricing speculative. No warranties implied. Liability limited. 
+    </div>
+
     <script>
-        const canvas = document.querySelector('#bg-canvas');
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 50;
+        // --- Data Matrix Definition ---
+        const nodesData = [
+            { id: 'core', label: 'My_Profile', file: 'My_Profile.html', cluster: 'core', desc: '> ACCESSING PROFILE...\n> Loading 16+ Years Multi-Vendor Architecture History.\n> Identity: Jin White / Arvind Pardeshi.' },
+            { id: 'ai1', label: 'AI_Future_Research', file: 'AI_Future_Research.html', cluster: 'ai', desc: '> ACCESSING AI LAB...\n> Loading Predictive modeling and neuro-symbolic logic.' },
+            { id: 'ai2', label: 'AI_Applications', file: 'AI_Applications_all_Sectors.html', cluster: 'ai', desc: '> ACCESSING SECTOR DATA...\n> Loading Cross-sector implementation strategies.' },
+            { id: 'ai3', label: 'AI_Business', file: 'AI_Business_Catalog_.html', cluster: 'ai', desc: '> ACCESSING MARKET INTEL...\n> Loading Business logic for AI ventures.' },
+            { id: 'inf1', label: 'IT_Infra_Catalog', file: 'IT_Infra_Business_Catalog.html', cluster: 'infra', desc: '> ACCESSING INFRA BLUEPRINTS...\n> Loading Enterprise security specs.' },
+            { id: 'inf2', label: 'Quantum_Catalog', file: 'Quantum_Catalog.html', cluster: 'infra', desc: '> ACCESSING QUANTUM REPOSITORY...\n> Loading Next-gen compute frameworks.' },
+            { id: 'inf3', label: 'Business_Research', file: 'IT_Business_Research_Catalog.html', cluster: 'infra', desc: '> ACCESSING ANALYTICS...\n> Loading Strategic unit economics.' },
+            { id: 'ops1', label: 'PM_Daily_Handbook', file: 'PM_Daily_Handbook.html', cluster: 'ops', desc: '> ACCESSING OPS MANUAL...\n> Loading PM protocols.' },
+            { id: 'ops2', label: 'Assessment_Templates', file: 'White_DoorOpener_Assessment _Templates.zip', cluster: 'ops', desc: '> INITIATING DOWNLOAD...\n> DoorOpener technical discovery templates.', download: true }
+        ];
 
-        // Create Neural Particle Cloud
-        const geometry = new THREE.BufferGeometry();
-        const vertices = [];
-        for (let i = 0; i < 6000; i++) {
-            vertices.push(
-                THREE.MathUtils.randFloatSpread(2500), 
-                THREE.MathUtils.randFloatSpread(2500), 
-                THREE.MathUtils.randFloatSpread(2500)
-            );
+        const container = document.getElementById('matrix-container');
+        const logOutput = document.getElementById('log-output');
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let nodeElements = [];
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let currentMode = 'standard';
+
+        // --- Layout Engine ---
+        function initMatrix() {
+            container.innerHTML = '';
+            nodeElements = [];
+            const cx = window.innerWidth * 0.55; // Slightly offset to right
+            const cy = window.innerHeight * 0.5;
+            const radiusAI = 250;
+            const radiusInfra = 300;
+            const radiusOps = 200;
+
+            nodesData.forEach((data, index) => {
+                const el = document.createElement('a');
+                el.className = `data-node cluster-${data.cluster}`;
+                el.href = data.file;
+                if(data.download) el.setAttribute('download', '');
+                el.innerHTML = `[ ${data.label} ]`;
+                
+                // Calculate Orbital Positions
+                let x = cx, y = cy;
+                if (data.cluster === 'ai') {
+                    const angle = (index * 1.5) * Math.PI / 4 - 0.5;
+                    x = cx + Math.cos(angle) * radiusAI;
+                    y = cy + Math.sin(angle) * radiusAI;
+                } else if (data.cluster === 'infra') {
+                    const angle = (index * 0.8) * Math.PI / 3 + 2.5;
+                    x = cx + Math.cos(angle) * radiusInfra;
+                    y = cy + Math.sin(angle) * radiusInfra;
+                } else if (data.cluster === 'ops') {
+                    const angle = (index * 2) * Math.PI / 2 + 1.5;
+                    x = cx + Math.cos(angle) * radiusOps;
+                    y = cy + Math.sin(angle) * radiusOps;
+                }
+
+                // Store base positions for parallax/gesture math
+                el.dataset.bx = x;
+                el.dataset.by = y;
+                
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+
+                // Interactions
+                el.addEventListener('mouseenter', () => typeLog(data.desc));
+                el.addEventListener('mouseleave', () => typeLog("> STANDBY... MONITORING DATA STREAMS."));
+
+                container.appendChild(el);
+                nodeElements.push({ el, data, bx: x, by: y });
+            });
+
+            resizeCanvas();
         }
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-        const material = new THREE.PointsMaterial({ color: 0x38bdf8, size: 2, transparent: true, opacity: 0.6 });
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
 
-        // Mouse Interaction
-        let mouseX = 0, mouseY = 0;
+        // --- Canvas Drawing (Neural Connections) ---
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawNetwork();
+        }
+
+        function drawNetwork() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const core = nodeElements.find(n => n.data.id === 'core');
+            if(!core) return;
+
+            const cx = parseFloat(core.el.style.left);
+            const cy = parseFloat(core.el.style.top);
+
+            ctx.lineWidth = 1;
+            
+            nodeElements.forEach(node => {
+                if(node.data.id === 'core') return;
+                const nx = parseFloat(node.el.style.left);
+                const ny = parseFloat(node.el.style.top);
+
+                // Set color based on cluster
+                if(node.data.cluster === 'ai') ctx.strokeStyle = 'rgba(255, 0, 255, 0.3)';
+                else if(node.data.cluster === 'infra') ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+                else ctx.strokeStyle = 'rgba(0, 255, 170, 0.3)';
+
+                // Draw line with "pulse" opacity if neural active
+                if(currentMode === 'neural') {
+                    ctx.globalAlpha = 0.2 + Math.abs(Math.sin(Date.now() / 500));
+                } else {
+                    ctx.globalAlpha = 1;
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(nx, ny);
+                ctx.stroke();
+            });
+        }
+
+        // --- Interaction Modes ---
+        window.setMode = function(mode, btnElement) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            document.body.className = '';
+            if(mode !== 'standard') document.body.classList.add(`${mode}-active`);
+
+            if(mode === 'gesture') typeLog("> GESTURE SYNC ENABLED.\n> Nodes responding to spatial movement.");
+            else if(mode === 'gaze') typeLog("> GAZE TRACKING SIMULATED.\n> Focus lock enhancements active.");
+            else if(mode === 'neural') typeLog("> NEURAL LINK ESTABLISHED.\n> Synaptic rendering active.");
+            else typeLog("> REVERTED TO STANDARD HAPTIC INPUT.");
+        }
+
+        // Mouse Tracker for Gesture Mode
         document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) / 80;
-            mouseY = (e.clientY - window.innerHeight / 2) / 80;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if(currentMode === 'gesture') {
+                // Parallax effect
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const offsetX = (mouseX - centerX) / 30;
+                const offsetY = (mouseY - centerY) / 30;
+
+                nodeElements.forEach(n => {
+                    // Different depths based on cluster
+                    let depth = n.data.cluster === 'core' ? 0.5 : 1.5;
+                    n.el.style.left = `${n.bx - (offsetX * depth)}px`;
+                    n.el.style.top = `${n.by - (offsetY * depth)}px`;
+                });
+            } else {
+                // Reset positions
+                nodeElements.forEach(n => {
+                    n.el.style.left = `${n.bx}px`;
+                    n.el.style.top = `${n.by}px`;
+                });
+            }
         });
 
-        // Animation Loop
+        // Animation Loop for Canvas
         function animate() {
+            drawNetwork();
             requestAnimationFrame(animate);
-            
-            // Slow continuous rotation
-            particles.rotation.y += 0.0005;
-            particles.rotation.x += 0.0002;
-            
-            // Camera follows mouse
-            camera.position.x += (mouseX - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
-            
-            renderer.render(scene, camera);
         }
 
-        // Handle Window Resize
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
+        // Typewriter effect for log
+        let typeInterval;
+        function typeLog(text) {
+            clearInterval(typeInterval);
+            logOutput.innerHTML = '';
+            let i = 0;
+            typeInterval = setInterval(() => {
+                logOutput.innerHTML += text.charAt(i);
+                i++;
+                if (i >= text.length) clearInterval(typeInterval);
+                logOutput.scrollTop = logOutput.scrollHeight;
+            }, 15); // Fast typing
+        }
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        // Init
+        window.addEventListener('resize', () => { initMatrix(); });
+        initMatrix();
         animate();
     </script>
 </body>
