@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNIVEX // QUANTUM SALES CATALOG 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #030508;
+  --deep: #060b12;
+  --surface: #090f1c;
+  --panel: #0d1525;
+  --border: #1a2d50;
+  --border-hi: #0d4a8a;
+  --cyan: #00d4ff;
+  --cyan-dim: #0088bb;
+  --gold: #f0a500;
+  --gold-dim: #a87000;
+  --green: #00ff88;
+  --green-dim: #008844;
+  --purple: #b060ff;
+  --purple-dim: #6030aa;
+  --red: #ff4060;
+  --amber: #ffaa00;
+  --text-pri: #c8dff5;
+  --text-sec: #6a8ab0;
+  --text-dim: #3a5070;
+}
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+body{background:var(--void);color:var(--text-pri);font-family:'Rajdhani',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+
+/* SCANLINE OVERLAY */
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,15,35,0.12) 3px,rgba(0,15,35,0.12) 4px);pointer-events:none;z-index:999}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(3,5,8,0.96);border-bottom:1px solid var(--border);padding:12px 40px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(10px)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--cyan);letter-spacing:3px;font-weight:900}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--text-sec);text-decoration:none;font-size:12px;letter-spacing:2px;font-family:'Share Tech Mono',monospace;transition:color 0.2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);border:1px solid var(--gold-dim);padding:3px 10px;border-radius:2px;letter-spacing:2px}
+
+/* HERO */
+.hero{padding:80px 40px 60px;text-align:center;border-bottom:1px solid var(--border);background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(0,80,180,0.1) 0%,transparent 70%)}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan-dim);letter-spacing:5px;margin-bottom:20px}
+.hero-title{font-family:'Orbitron',sans-serif;font-size:42px;font-weight:900;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--text-sec);max-width:700px;margin:0 auto 30px;font-weight:400}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:40px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-val{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--cyan);display:block}
+.hstat-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-top:4px}
+
+/* SECTION HEADERS */
+.section{padding:60px 40px;border-bottom:1px solid var(--border)}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:40px}
+.sec-num{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:3px}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;letter-spacing:2px}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec-tag{font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:2px;letter-spacing:2px}
+.tag-cyan{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
+.tag-gold{background:rgba(240,165,0,0.1);color:var(--gold);border:1px solid rgba(240,165,0,0.3)}
+.tag-green{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.3)}
+.tag-purple{background:rgba(176,96,255,0.1);color:var(--purple);border:1px solid rgba(176,96,255,0.3)}
+.tag-red{background:rgba(255,64,96,0.1);color:var(--red);border:1px solid rgba(255,64,96,0.3)}
+.tag-amber{background:rgba(255,170,0,0.1);color:var(--amber);border:1px solid rgba(255,170,0,0.3)}
+
+/* VENDOR HEADER CARD */
+.vendor-block{margin-bottom:50px}
+.vendor-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:24px 28px;border-left:4px solid;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0 6px 0 0;background:var(--panel);flex-wrap:wrap}
+.vendor-ibm{border-left-color:#0f62fe}
+.vendor-goog{border-left-color:#34a853}
+.vendor-qinn{border-left-color:#9f00ff}
+.vendor-rig{border-left-color:#f59e0b}
+.vendor-ionq{border-left-color:#00d4ff}
+.vendor-name{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px}
+.vendor-tagline{font-size:13px;color:var(--text-sec);margin-top:6px;max-width:500px}
+.vendor-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.vendor-pill{font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 12px;border-radius:12px;letter-spacing:1px;text-align:center}
+.pill-blue{background:rgba(15,98,254,0.15);color:#6699ff;border:1px solid rgba(15,98,254,0.4)}
+.pill-green{background:rgba(52,168,83,0.15);color:#66cc88;border:1px solid rgba(52,168,83,0.4)}
+.pill-purple{background:rgba(159,0,255,0.2);color:#c080ff;border:1px solid rgba(159,0,255,0.4)}
+.pill-amber{background:rgba(245,158,11,0.15);color:#ffc040;border:1px solid rgba(245,158,11,0.4)}
+.pill-cyan{background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.4)}
+.pill-red{background:rgba(255,64,96,0.12);color:#ff6080;border:1px solid rgba(255,64,96,0.3)}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:0;border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:20px;background:var(--surface)}
+.prod-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:20px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.prod-card:hover{border-color:var(--cyan-dim)}
+.prod-card::after{content:'';position:absolute;top:0;right:0;width:2px;height:100%;background:var(--border)}
+.prod-type{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:3px;margin-bottom:8px}
+.prod-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#e0f0ff;letter-spacing:1px;margin-bottom:10px}
+.prod-desc{font-size:13px;color:var(--text-sec);line-height:1.5;margin-bottom:14px}
+.prod-specs{list-style:none}
+.prod-specs li{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-sec);padding:3px 0;border-bottom:1px solid rgba(26,45,80,0.5);display:flex;justify-content:space-between}
+.prod-specs li:last-child{border-bottom:none}
+.prod-specs .key{color:var(--text-dim)}
+.prod-specs .val{color:var(--text-pri)}
+.prod-specs .val.hi{color:var(--cyan)}
+.prod-specs .val.gold{color:var(--gold)}
+.prod-specs .val.grn{color:var(--green)}
+.prod-specs .val.pur{color:var(--purple)}
+.prod-specs .val.amb{color:var(--amber)}
+.prod-price{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.price-val{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--gold)}
+.price-note{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px}
+.prod-badge{position:absolute;top:12px;right:12px;font-family:'Share Tech Mono',monospace;font-size:9px;padding:3px 8px;border-radius:2px;letter-spacing:1px}
+.badge-new{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green-dim)}
+.badge-flagship{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid var(--cyan-dim)}
+.badge-free{background:rgba(240,165,0,0.1);color:var(--gold);border:1px solid var(--gold-dim)}
+.badge-enterprise{background:rgba(176,96,255,0.1);color:var(--purple);border:1px solid var(--purple-dim)}
+.badge-unique{background:rgba(255,64,96,0.1);color:var(--red);border:1px solid rgba(255,64,96,0.4)}
+
+/* DOOR-OPENER TABLE */
+.door-table{width:100%;border-collapse:collapse;margin-top:8px}
+.door-table th{background:var(--panel);font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;padding:12px 14px;text-align:left;border:1px solid var(--border)}
+.door-table td{padding:12px 14px;border:1px solid var(--border);font-size:13px;color:var(--text-sec);vertical-align:top}
+.door-table tr:nth-child(even) td{background:rgba(13,21,37,0.5)}
+.door-table td.strategy{color:var(--text-pri);font-weight:600}
+.door-table td.vendor-col{font-family:'Share Tech Mono',monospace;font-size:11px}
+.door-table td .pitch{font-size:12px;color:var(--gold);margin-top:4px;font-style:italic}
+
+/* SERVICES CATALOG */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.svc-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:transform 0.2s,border-color 0.2s}
+.svc-card:hover{transform:translateY(-2px);border-color:var(--cyan-dim)}
+.svc-tier{padding:6px 16px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;font-weight:700}
+.tier-A{background:rgba(0,212,255,0.12);color:var(--cyan)}
+.tier-B{background:rgba(240,165,0,0.12);color:var(--gold)}
+.tier-C{background:rgba(176,96,255,0.12);color:var(--purple)}
+.tier-D{background:rgba(0,255,136,0.12);color:var(--green)}
+.svc-body{padding:18px 20px}
+.svc-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#e8f4ff;letter-spacing:1px;margin-bottom:8px}
+.svc-desc{font-size:13px;color:var(--text-sec);line-height:1.5;margin-bottom:12px}
+.svc-includes{list-style:none}
+.svc-includes li{font-size:12px;color:var(--text-sec);padding:3px 0;padding-left:14px;position:relative}
+.svc-includes li::before{content:'▸';position:absolute;left:0;color:var(--cyan-dim);font-size:10px;top:4px}
+.svc-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(6,11,18,0.5)}
+.svc-price{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold)}
+.svc-duration{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px}
+
+/* BFSI SIGNAL BOX */
+.signal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.signal-box{background:var(--panel);border:1px solid var(--border);border-left:3px solid;border-radius:0 6px 6px 0;padding:18px 20px}
+.signal-box.cyan{border-left-color:var(--cyan)}
+.signal-box.gold{border-left-color:var(--gold)}
+.signal-box.green{border-left-color:var(--green)}
+.signal-box.purple{border-left-color:var(--purple)}
+.signal-box.red{border-left-color:var(--red)}
+.signal-box.amber{border-left-color:var(--amber)}
+.sig-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:3px;margin-bottom:6px}
+.sig-title{font-family:'Orbitron',sans-serif;font-size:13px;color:#e0f0ff;font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.sig-body{font-size:13px;color:var(--text-sec);line-height:1.6}
+.sig-cta{display:inline-block;margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;text-decoration:none;border-bottom:1px solid var(--cyan-dim);padding-bottom:2px}
+
+/* PRICING MATRIX */
+.price-matrix{overflow-x:auto}
+.price-table{width:100%;border-collapse:collapse;min-width:700px}
+.price-table th{background:var(--panel);font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;padding:12px 16px;text-align:left;border:1px solid var(--border)}
+.price-table th.col-head{color:var(--cyan)}
+.price-table td{padding:12px 16px;border:1px solid var(--border);font-size:13px;vertical-align:middle}
+.price-table td.vendor{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px}
+.td-ibm{color:#6699ff}
+.td-goog{color:#66cc88}
+.td-qinn{color:#c080ff}
+.td-rig{color:#ffc040}
+.td-ionq{color:#00d4ff}
+.price-table tr:nth-child(even) td{background:rgba(13,21,37,0.4)}
+.price-hi{color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700}
+.price-free{color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px}
+.tier-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+
+/* ROADMAP TIMELINE */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:28px;padding:16px 20px;background:var(--panel);border:1px solid var(--border);border-radius:4px}
+.tl-item::before{content:'';position:absolute;left:-28px;top:20px;width:10px;height:10px;border-radius:50%;background:var(--cyan);border:2px solid var(--deep)}
+.tl-year{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;margin-bottom:6px}
+.tl-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#e0f0ff;margin-bottom:8px}
+.tl-body{font-size:13px;color:var(--text-sec)}
+
+/* FOOTER */
+.footer{padding:40px;border-top:1px solid var(--border);text-align:center;background:var(--deep)}
+.footer-logo{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--cyan);letter-spacing:4px;font-weight:900;margin-bottom:10px}
+.footer-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;line-height:1.8}
+
+/* UTILITY */
+.divider{height:1px;background:var(--border);margin:40px 0}
+.label-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.intro-text{font-size:14px;color:var(--text-sec);max-width:860px;line-height:1.7;margin-bottom:28px}
+.highlight{color:var(--cyan)}
+.highlight-gold{color:var(--gold)}
+.columns-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.columns-2{grid-template-columns:1fr}.hero-title{font-size:26px}.hero-stats{gap:24px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">OMNIVEX // QUANTUM INTEL</div>
+  <ul class="nav-links">
+    <li><a href="#products">PRODUCTS</a></li>
+    <li><a href="#pricing">PRICING</a></li>
+    <li><a href="#dooropeners">DOOR-OPENERS</a></li>
+    <li><a href="#services">SERVICES</a></li>
+    <li><a href="#bfsi">BFSI PLAY</a></li>
+    <li><a href="#roadmap">ROADMAP</a></li>
+  </ul>
+  <div class="nav-badge">APRIL 2026</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">// QUANTUM COMPUTING SALES INTELLIGENCE CATALOG</div>
+  <h1 class="hero-title">QUANTUM VENDOR<br>DEEPDIVE & SALES PLAYBOOK</h1>
+  <p class="hero-sub">Full product catalog, access pricing, door-opener strategies, and consulting services for IBM Quantum, Google Quantum AI, Quantinuum, Rigetti, and IonQ — structured for BFSI, defense, and enterprise sales.</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-val">5</span><span class="hstat-label">VENDORS MAPPED</span></div>
+    <div class="hstat"><span class="hstat-val">$130M</span><span class="hstat-label">IONQ 2025 REVENUE</span></div>
+    <div class="hstat"><span class="hstat-val">98 Q</span><span class="hstat-label">HELIOS QUBITS</span></div>
+    <div class="hstat"><span class="hstat-val">$10B</span><span class="hstat-label">QUANTINUUM VALUATION</span></div>
+    <div class="hstat"><span class="hstat-val">FREE</span><span class="hstat-label">IBM OPEN PLAN</span></div>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: PRODUCTS ===== -->
+<section class="section" id="products">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2 class="sec-title">PRODUCT CATALOG</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-cyan">FULL STACK MAPPING</span>
+  </div>
+  <p class="intro-text">Each vendor offers a layered product stack spanning quantum hardware, cloud access, software SDKs, and application solutions. This catalog maps every sellable product across all five vendors with specs, access modes, and client-facing positioning.</p>
+
+  <!-- IBM -->
+  <div class="vendor-block">
+    <div class="vendor-header vendor-ibm">
+      <div>
+        <div class="vendor-name" style="color:#6699ff">IBM QUANTUM</div>
+        <div class="vendor-tagline">Full-stack quantum-centric supercomputing. World's largest fleet of 100+ qubit systems, backed by 300+ enterprise partners and the Qiskit open-source ecosystem.</div>
+        <div class="label-row" style="margin-top:12px">
+          <span class="sec-tag tag-cyan" style="font-size:9px">SUPERCONDUCTING</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">CLOUD PLATFORM</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">ENTERPRISE</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">HPC BRIDGE</span>
+        </div>
+      </div>
+      <div class="vendor-meta">
+        <span class="vendor-pill pill-blue">NYSE: IBM</span>
+        <span class="vendor-pill pill-blue">300+ PARTNERS</span>
+        <span class="vendor-pill pill-blue">QISKIT ECOSYSTEM</span>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <span class="prod-badge badge-free">FREE TIER</span>
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">IBM QUANTUM OPEN PLAN</div>
+        <div class="prod-desc">Entry-level cloud access to IBM's quantum processors. Perfect for exploration, prototyping, and academic use. Instant activation, no credit card required.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Access</span><span class="val hi">Cloud (ibm.com)</span></li>
+          <li><span class="key">Runtime</span><span class="val">10 min/month</span></li>
+          <li><span class="key">Qubits</span><span class="val">100+ qubit systems</span></li>
+          <li><span class="key">SDK</span><span class="val">Qiskit (open source)</span></li>
+          <li><span class="key">Simulator</span><span class="val grn">Included</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">FREE</span>
+          <span class="price-note">ZERO COST ENTRY</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-flagship">STANDARD</span>
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">PAY-AS-YOU-GO PLAN</div>
+        <div class="prod-desc">On-demand quantum compute billed per second. No upfront commitment. Ideal for small-scale research, PoC development, and sporadic workloads.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Billing</span><span class="val gold">$96 USD / minute</span></li>
+          <li><span class="key">Commitment</span><span class="val grn">None</span></li>
+          <li><span class="key">Platforms</span><span class="val">AWS, Azure, IBM Cloud</span></li>
+          <li><span class="key">Qiskit Functions</span><span class="val hi">Catalog access</span></li>
+          <li><span class="key">SLA</span><span class="val">Standard</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">$96/MIN</span>
+          <span class="price-note">BILLED PER SECOND</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-enterprise">PROJECT</span>
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">FLEX PLAN</div>
+        <div class="prod-desc">Pre-purchased compute blocks for project-based work. Starting at 400 minutes per year with burst capacity. Better unit economics for sustained workloads.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Rate</span><span class="val gold">$72 USD / minute</span></li>
+          <li><span class="key">Min. Purchase</span><span class="val">400 min/year</span></li>
+          <li><span class="key">Flexibility</span><span class="val hi">Burst + sustained</span></li>
+          <li><span class="key">Support</span><span class="val">Priority queue</span></li>
+          <li><span class="key">Savings vs PAYG</span><span class="val grn">25% discount</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">$72/MIN</span>
+          <span class="price-note">MIN 400 MIN/YEAR</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-enterprise">SCALE</span>
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">PREMIUM PLAN</div>
+        <div class="prod-desc">Annual subscription for large-scale quantum compute. Starting at 5,200 minutes/year. Best unit economics, priority execution, dedicated support, and enterprise SLAs.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Rate</span><span class="val gold">$48 USD / minute</span></li>
+          <li><span class="key">Min. Volume</span><span class="val">5,200 min/year</span></li>
+          <li><span class="key">Savings vs PAYG</span><span class="val grn">50% discount</span></li>
+          <li><span class="key">Support</span><span class="val hi">Dedicated team</span></li>
+          <li><span class="key">SLA</span><span class="val pur">Enterprise grade</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">$48/MIN</span>
+          <span class="price-note">ANNUAL SUBSCRIPTION</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-new">ECOSYSTEM</span>
+        <div class="prod-type">// SOFTWARE</div>
+        <div class="prod-name">QISKIT FUNCTIONS CATALOG</div>
+        <div class="prod-desc">Curated ecosystem of circuit and application services for algorithm discovery, application development, and execution acceleration. Built by IBM and partners.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Type</span><span class="val hi">SaaS quantum functions</span></li>
+          <li><span class="key">Partners</span><span class="val">IBM + ecosystem ISVs</span></li>
+          <li><span class="key">Use cases</span><span class="val">Finance, chem, logistics</span></li>
+          <li><span class="key">Integration</span><span class="val">Qiskit Runtime</span></li>
+          <li><span class="key">Access</span><span class="val grn">Platform subscription</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">BUNDLED</span>
+          <span class="price-note">WITH COMPUTE PLANS</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// ARCHITECTURE</div>
+        <div class="prod-name">QUANTUM-CENTRIC SUPERCOMPUTING REFERENCE</div>
+        <div class="prod-desc">IBM's 2026 blueprint for integrating quantum into HPC data centers. Modular architecture enabling any HPC center to add quantum compute capabilities.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Target</span><span class="val">HPC research centers</span></li>
+          <li><span class="key">Integration</span><span class="val hi">Hybrid classical+quantum</span></li>
+          <li><span class="key">Delivery</span><span class="val">Consulting + platform</span></li>
+          <li><span class="key">Partners</span><span class="val">300+ global network</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">CONTACT IBM</span>
+          <span class="price-note">ENTERPRISE ENGAGEMENT</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GOOGLE -->
+  <div class="vendor-block">
+    <div class="vendor-header vendor-goog">
+      <div>
+        <div class="vendor-name" style="color:#66cc88">GOOGLE QUANTUM AI</div>
+        <div class="vendor-tagline">Research-first quantum computing. Willow chip achieved first verifiable quantum advantage in October 2025. Cirq open-source SDK. Access via Google Cloud Platform for select partners.</div>
+        <div class="label-row" style="margin-top:12px">
+          <span class="sec-tag tag-green" style="font-size:9px">SUPERCONDUCTING</span>
+          <span class="sec-tag tag-green" style="font-size:9px">RESEARCH LEADER</span>
+          <span class="sec-tag tag-green" style="font-size:9px">OPEN SOURCE</span>
+          <span class="sec-tag tag-green" style="font-size:9px">QUANTUM ADVANTAGE</span>
+        </div>
+      </div>
+      <div class="vendor-meta">
+        <span class="vendor-pill pill-green">ALPHABET / GCP</span>
+        <span class="vendor-pill pill-green">WILLOW CHIP 2025</span>
+        <span class="vendor-pill pill-green">NATURE PUBLISHED</span>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <span class="prod-badge badge-new">FLAGSHIP</span>
+        <div class="prod-type">// HARDWARE</div>
+        <div class="prod-name">WILLOW QUANTUM PROCESSOR</div>
+        <div class="prod-desc">Google's latest superconducting chip. First system to achieve verifiable quantum advantage — a repeatable result published in Nature that no classical computer can replicate. Milestone achieved October 2025.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Type</span><span class="val hi">Superconducting</span></li>
+          <li><span class="key">Achievement</span><span class="val grn">Quantum advantage (2025)</span></li>
+          <li><span class="key">Published</span><span class="val">Nature, Oct 2025</span></li>
+          <li><span class="key">Access</span><span class="val">Research partners only</span></li>
+          <li><span class="key">Roadmap</span><span class="val pur">Fault tolerance target</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">PARTNER ACCESS</span>
+          <span class="price-note">APPLICATION REQUIRED</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-free">OPEN SOURCE</span>
+        <div class="prod-type">// SOFTWARE</div>
+        <div class="prod-name">CIRQ FRAMEWORK</div>
+        <div class="prod-desc">Google's open-source Python library for writing, manipulating, and optimizing quantum circuits on near-term quantum computers. Production-grade and actively maintained.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Language</span><span class="val">Python</span></li>
+          <li><span class="key">License</span><span class="val grn">Apache 2.0 (free)</span></li>
+          <li><span class="key">Docs</span><span class="val hi">quantumai.google/cirq</span></li>
+          <li><span class="key">Simulator</span><span class="val grn">Included (free)</span></li>
+          <li><span class="key">Community</span><span class="val">Active / large</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">FREE</span>
+          <span class="price-note">OPEN SOURCE</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">GCP QUANTUM AI ACCESS</div>
+        <div class="prod-desc">Cloud-based access to Google's quantum systems via GCP for approved research and commercial partners. Integration with Google Cloud services and AI/ML toolchain.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Platform</span><span class="val hi">Google Cloud Platform</span></li>
+          <li><span class="key">Access</span><span class="val">Research + select commercial</span></li>
+          <li><span class="key">Integration</span><span class="val">Vertex AI, BigQuery</span></li>
+          <li><span class="key">Target</span><span class="val">Research institutions</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">CONTACT GOOGLE</span>
+          <span class="price-note">PARTNER APPLICATION</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// EDUCATIONAL</div>
+        <div class="prod-name">QUANTUM AI LEARNING RESOURCES</div>
+        <div class="prod-desc">Free educational content, interactive notebooks, and course materials covering quantum computing fundamentals, algorithm design, and Cirq programming.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Format</span><span class="val">Tutorials + notebooks</span></li>
+          <li><span class="key">Access</span><span class="val grn">quantumai.google (free)</span></li>
+          <li><span class="key">Topics</span><span class="val">QC fundamentals to advanced</span></li>
+          <li><span class="key">Prerequisites</span><span class="val">Basic Python</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">FREE</span>
+          <span class="price-note">PUBLIC ACCESS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUANTINUUM -->
+  <div class="vendor-block">
+    <div class="vendor-header vendor-qinn">
+      <div>
+        <div class="vendor-name" style="color:#c080ff">QUANTINUUM</div>
+        <div class="vendor-tagline">World's highest-fidelity quantum computing. Helios — 98 all-to-all connected trapped-ion qubits, 99.9975% single-qubit fidelity. Honeywell-backed. $10B valuation. IPO S-1 filed January 2026.</div>
+        <div class="label-row" style="margin-top:12px">
+          <span class="sec-tag tag-purple" style="font-size:9px">TRAPPED-ION</span>
+          <span class="sec-tag tag-purple" style="font-size:9px">HELIOS SYSTEM</span>
+          <span class="sec-tag tag-purple" style="font-size:9px">HIGHEST FIDELITY</span>
+          <span class="sec-tag tag-purple" style="font-size:9px">HONEYWELL BACKED</span>
+        </div>
+      </div>
+      <div class="vendor-meta">
+        <span class="vendor-pill pill-purple">PRE-IPO S-1 FILED</span>
+        <span class="vendor-pill pill-purple">$10B VALUATION</span>
+        <span class="vendor-pill pill-purple">54% HONEYWELL</span>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <span class="prod-badge badge-new">FLAGSHIP 2025</span>
+        <div class="prod-type">// HARDWARE</div>
+        <div class="prod-name">HELIOS QUANTUM COMPUTER</div>
+        <div class="prod-desc">World's most accurate commercial quantum computer. 98 fully connected trapped-ion qubits, NVIDIA GB200 integration via NVQLink, real-time error correction. Launched November 2025. Customers include JPMorganChase, Amgen, BMW, SoftBank.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Physical Qubits</span><span class="val hi">98 (all-to-all)</span></li>
+          <li><span class="key">Logical Qubits</span><span class="val hi">48 error-corrected</span></li>
+          <li><span class="key">1Q Gate Fidelity</span><span class="val grn">99.9975%</span></li>
+          <li><span class="key">2Q Gate Fidelity</span><span class="val grn">99.921%</span></li>
+          <li><span class="key">NVIDIA Link</span><span class="val pur">GB200 NVQLink</span></li>
+          <li><span class="key">Access</span><span class="val">Cloud + on-premises</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">ENTERPRISE</span>
+          <span class="price-note">CONTACT QUANTINUUM</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// HARDWARE</div>
+        <div class="prod-name">H2 SYSTEM MODEL</div>
+        <div class="prod-desc">Second-generation quantum computer with racetrack architecture. Available on Microsoft Azure Quantum. Proven in production, with demonstrated quantum advantage results.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Architecture</span><span class="val hi">Racetrack QCCD</span></li>
+          <li><span class="key">Azure Access</span><span class="val grn">Azure Quantum</span></li>
+          <li><span class="key">Billing</span><span class="val gold">HQC credits</span></li>
+          <li><span class="key">Status</span><span class="val">Production GA</span></li>
+          <li><span class="key">Pricing formula</span><span class="val">HQC = 5 + C(N₁q + 10N₂q)/5000</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">HQC CREDITS</span>
+          <span class="price-note">CONTACT FOR PRICING</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-flagship">SECURITY</span>
+        <div class="prod-type">// SOLUTION</div>
+        <div class="prod-name">QUANTUM ORIGIN (QRNG)</div>
+        <div class="prod-desc">Advanced quantum random number generator designed to strengthen encryption and protect data. Direct encryption layer product — no quantum expertise required to deploy. Critical for BFSI and defence.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Type</span><span class="val hi">Quantum CSPRNG</span></li>
+          <li><span class="key">Use case</span><span class="val">Encryption key hardening</span></li>
+          <li><span class="key">Deployment</span><span class="val">API / on-prem</span></li>
+          <li><span class="key">Compliance</span><span class="val grn">FIPS, NIST PQC ready</span></li>
+          <li><span class="key">BFSI relevance</span><span class="val pur">RBI crypto mandates</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">SUBSCRIPTION</span>
+          <span class="price-note">CONTACT QUANTINUUM</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// SOFTWARE</div>
+        <div class="prod-name">INQUANTO — QUANTUM CHEMISTRY</div>
+        <div class="prod-desc">Computational chemistry platform for complex molecular and materials simulations. Used by pharma, energy, and materials companies. Runs on H-series and Helios hardware.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Domain</span><span class="val hi">Computational chemistry</span></li>
+          <li><span class="key">Integration</span><span class="val">H1, H2, Helios</span></li>
+          <li><span class="key">Clients</span><span class="val">Pharma, energy, materials</span></li>
+          <li><span class="key">Interface</span><span class="val">Python library</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">LICENSE</span>
+          <span class="price-note">ENTERPRISE PRICING</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// PLATFORM</div>
+        <div class="prod-name">NEXUS — QUANTUM MANAGEMENT PLATFORM</div>
+        <div class="prod-desc">All-in-one quantum computing platform for accessing, managing, and developing on the H-series and Helios systems. Includes emulation, workflow management, and collaboration tools.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Access</span><span class="val hi">Cloud dashboard</span></li>
+          <li><span class="key">Emulation</span><span class="val grn">Selene emulator (free)</span></li>
+          <li><span class="key">Includes</span><span class="val">TKET + Guppy</span></li>
+          <li><span class="key">Q-Net</span><span class="val pur">Community + support</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">BUNDLED</span>
+          <span class="price-note">WITH SYSTEM ACCESS</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// SDK</div>
+        <div class="prod-name">TKET + GUPPY PROGRAMMING STACK</div>
+        <div class="prod-desc">TKET: gate-level quantum computation SDK. Guppy: new Python-based language for hybrid quantum-classical programming. Allows classical and quantum code in a single program — unique in the market.</div>
+        <ul class="prod-specs">
+          <li><span class="key">TKET</span><span class="val hi">Gate-level SDK</span></li>
+          <li><span class="key">Guppy</span><span class="val hi">Hybrid Q+C language</span></li>
+          <li><span class="key">License</span><span class="val grn">Open source (Guppy)</span></li>
+          <li><span class="key">Platform</span><span class="val">CUDA-Q compatible</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">FREE / OPEN</span>
+          <span class="price-note">SDK + GUPPY OSS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGETTI -->
+  <div class="vendor-block">
+    <div class="vendor-header vendor-rig">
+      <div>
+        <div class="vendor-name" style="color:#ffc040">RIGETTI COMPUTING</div>
+        <div class="vendor-tagline">Superconducting quantum hardware manufacturer. Only vendor offering a purchasable on-premises QPU product (Novera). ~$8M revenue. Smallest pure-play in this group. Niche but strategically unique.</div>
+        <div class="label-row" style="margin-top:12px">
+          <span class="sec-tag tag-gold" style="font-size:9px">SUPERCONDUCTING</span>
+          <span class="sec-tag tag-gold" style="font-size:9px">QPU MANUFACTURER</span>
+          <span class="sec-tag tag-gold" style="font-size:9px">ON-PREM QPU</span>
+          <span class="sec-tag tag-gold" style="font-size:9px">NYSE: RGTI</span>
+        </div>
+      </div>
+      <div class="vendor-meta">
+        <span class="vendor-pill pill-amber">NYSE: RGTI</span>
+        <span class="vendor-pill pill-amber">~$8M REVENUE</span>
+        <span class="vendor-pill pill-amber">NOVERA SHIPS TODAY</span>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <span class="prod-badge badge-unique">UNIQUE</span>
+        <div class="prod-type">// HARDWARE PRODUCT</div>
+        <div class="prod-name">NOVERA QPU — 9-QUBIT ON-PREMISES</div>
+        <div class="prod-desc">The only commercially available purchasable quantum processor unit in this vendor group. 9 superconducting qubits. Designed for labs, research institutions, and sovereign/classified environments that require on-site quantum hardware. Ships today.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Qubits</span><span class="val hi">9 superconducting</span></li>
+          <li><span class="key">Form factor</span><span class="val gold">Purchasable QPU unit</span></li>
+          <li><span class="key">Deployment</span><span class="val">On-premises / lab</span></li>
+          <li><span class="key">Availability</span><span class="val grn">Ships today</span></li>
+          <li><span class="key">Target</span><span class="val">Research labs, defense, sovereign</span></li>
+          <li><span class="key">Control</span><span class="val">Full hardware control</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">CONTACT RIGETTI</span>
+          <span class="price-note">ORDER: rigetti.com/novera</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// CLOUD ACCESS</div>
+        <div class="prod-name">RIGETTI CLOUD QPU ACCESS</div>
+        <div class="prod-desc">Pay-as-you-go access to Rigetti's QPUs via Amazon Braket ($0.30/task + time-based per-execution charges). QVM simulator free for all users. No per-gate charges.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Platform</span><span class="val hi">Amazon Braket</span></li>
+          <li><span class="key">Per-task</span><span class="val gold">$0.30 / task</span></li>
+          <li><span class="key">Billing</span><span class="val gold">Job execution time</span></li>
+          <li><span class="key">Per-gate</span><span class="val grn">No charge</span></li>
+          <li><span class="key">Simulator (QVM)</span><span class="val grn">Free all plans</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">$0.30/TASK</span>
+          <span class="price-note">+ EXECUTION TIME</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-free">FREE SDK</span>
+        <div class="prod-type">// SOFTWARE</div>
+        <div class="prod-name">QUIL / FOREST SDK</div>
+        <div class="prod-desc">Rigetti's quantum instruction language (Quil) and Forest SDK for quantum programming. Includes QVM quantum virtual machine simulator available free to all users.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Language</span><span class="val hi">Quil (quantum ISA)</span></li>
+          <li><span class="key">SDK</span><span class="val">Forest SDK</span></li>
+          <li><span class="key">Simulator</span><span class="val grn">QVM (free)</span></li>
+          <li><span class="key">License</span><span class="val grn">Open source</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">FREE</span>
+          <span class="price-note">OPEN SOURCE</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IONQ -->
+  <div class="vendor-block">
+    <div class="vendor-header vendor-ionq">
+      <div>
+        <div class="vendor-name" style="color:#00d4ff">IONQ</div>
+        <div class="vendor-tagline">NYSE-listed trapped-ion quantum computing. $130M 2025 revenue (202% YoY). First quantum company to clear $100M GAAP. 5-vertical platform spanning compute, networking, security, sensing, and space. 2026 guidance: $225-245M.</div>
+        <div class="label-row" style="margin-top:12px">
+          <span class="sec-tag tag-cyan" style="font-size:9px">TRAPPED-ION</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">NYSE: IONQ</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">$130M REVENUE 2025</span>
+          <span class="sec-tag tag-cyan" style="font-size:9px">5-VERTICAL PLATFORM</span>
+        </div>
+      </div>
+      <div class="vendor-meta">
+        <span class="vendor-pill pill-cyan">NYSE: IONQ</span>
+        <span class="vendor-pill pill-cyan">$11B MARKET CAP</span>
+        <span class="vendor-pill pill-red">FAULT-TOLERANT BLUEPRINT</span>
+      </div>
+    </div>
+    <div class="prod-grid">
+
+      <div class="prod-card">
+        <span class="prod-badge badge-flagship">CURRENT GEN</span>
+        <div class="prod-type">// HARDWARE</div>
+        <div class="prod-name">IONQ TEMPO — CURRENT SYSTEM</div>
+        <div class="prod-desc">IonQ's current commercial quantum computer. Available on AWS Braket, Azure Quantum, and GCP Marketplace. Targeting 99.99% two-qubit fidelity in 2026 with mid-circuit measurement and 2D qubit arrays.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Architecture</span><span class="val hi">Trapped-ion 2D array</span></li>
+          <li><span class="key">Access</span><span class="val">AWS, Azure, GCP</span></li>
+          <li><span class="key">2026 fidelity target</span><span class="val grn">99.99% 2Q gate</span></li>
+          <li><span class="key">Connectivity</span><span class="val hi">All-to-all</span></li>
+          <li><span class="key">Revenue model</span><span class="val gold">AQT / shots-based</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">AQT TOKENS</span>
+          <span class="price-note">CLOUD METERED</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-new">2026 LAUNCH</span>
+        <div class="prod-type">// HARDWARE ROADMAP</div>
+        <div class="prod-name">256-QUBIT PLATFORM (2026)</div>
+        <div class="prod-desc">IonQ's next-generation system targeting 256 qubits, 12 logical qubits, and &lt;1.00E-7 logical error state. On track for 2026 delivery. Part of 2M+ physical qubit roadmap to 2030.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Target qubits</span><span class="val hi">256 physical</span></li>
+          <li><span class="key">Logical qubits</span><span class="val hi">12 logical</span></li>
+          <li><span class="key">Logical error</span><span class="val grn">&lt;1.00E-7</span></li>
+          <li><span class="key">Delivery</span><span class="val gold">2026 planned</span></li>
+          <li><span class="key">2030 roadmap</span><span class="val pur">2M physical qubits</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">ROADMAP</span>
+          <span class="price-note">2026 LAUNCH</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// PLATFORM</div>
+        <div class="prod-name">QUANTUM NETWORKING PLATFORM</div>
+        <div class="prod-desc">Quantum-secured communications and global quantum internet infrastructure. IonQ linked remote ion-traps using quantum entanglement and converted quantum frequencies to telecom wavelengths in 2025.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Milestone 2025</span><span class="val hi">Remote entanglement</span></li>
+          <li><span class="key">Telecom convert</span><span class="val grn">Quantum → telecom</span></li>
+          <li><span class="key">Target</span><span class="val">Gov, enterprise, BFSI</span></li>
+          <li><span class="key">Deployment</span><span class="val pur">Europe network deployed</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">ENTERPRISE</span>
+          <span class="price-note">CUSTOM PARTNERSHIP</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// SECURITY</div>
+        <div class="prod-name">QUANTUM SECURITY PLATFORM</div>
+        <div class="prod-desc">Post-quantum cryptography and quantum-safe communications. Protects critical data from current and future quantum threats. Relevant for BFSI, defense, and government clients facing PQC compliance deadlines.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Focus</span><span class="val hi">Post-quantum crypto</span></li>
+          <li><span class="key">Threat model</span><span class="val">Current + future Q threats</span></li>
+          <li><span class="key">Compliance</span><span class="val grn">NIST PQC standards</span></li>
+          <li><span class="key">Target</span><span class="val pur">BFSI, defense, gov</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">ENTERPRISE</span>
+          <span class="price-note">PARTNER PRICING</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// SENSING</div>
+        <div class="prod-name">QUANTUM SENSING PLATFORM</div>
+        <div class="prod-desc">Ultra-precise quantum-enhanced sensing for navigation, imaging, and resource discovery. Applications in defence, autonomous vehicles, mining, and precision medicine.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Applications</span><span class="val hi">Nav, imaging, discovery</span></li>
+          <li><span class="key">Advantage</span><span class="val grn">Beyond classical limits</span></li>
+          <li><span class="key">Sectors</span><span class="val">Defense, mining, medical</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">PARTNER</span>
+          <span class="price-note">CUSTOM ENGAGEMENT</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-unique">UNIQUE</span>
+        <div class="prod-type">// DEFENSE / SOVEREIGN</div>
+        <div class="prod-name">QUANTUM SPACE INFRASTRUCTURE</div>
+        <div class="prod-desc">Secure space-based quantum computing platform for government and enterprise data sovereignty. Sold KISTI 100-qubit system; DARPA benchmarking services active. Unique in the quantum market.</div>
+        <ul class="prod-specs">
+          <li><span class="key">First sale</span><span class="val hi">KISTI 100-qubit system</span></li>
+          <li><span class="key">Gov contracts</span><span class="val">DARPA benchmarking</span></li>
+          <li><span class="key">Focus</span><span class="val pur">Sovereign data protection</span></li>
+          <li><span class="key">GCC angle</span><span class="val gold">Defense + sovereignty</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">GOVERNMENT</span>
+          <span class="price-note">RFP / TENDER</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <div class="prod-type">// CLOUD</div>
+        <div class="prod-name">IONQ QUANTUM CLOUD (MULTI-PLATFORM)</div>
+        <div class="prod-desc">Access IonQ quantum systems in under 10 minutes via AWS Braket, Azure Quantum, and Google Cloud Marketplace. AQT token pricing model on Azure. Per-shot + per-task on AWS.</div>
+        <ul class="prod-specs">
+          <li><span class="key">AWS</span><span class="val hi">$0.30/task + $0.08/shot</span></li>
+          <li><span class="key">Azure</span><span class="val gold">AQT token model</span></li>
+          <li><span class="key">GCP</span><span class="val grn">Cloud Marketplace</span></li>
+          <li><span class="key">Time to start</span><span class="val grn">&lt;10 minutes</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">$0.30/TASK</span>
+          <span class="price-note">AWS BRAKET ENTRY</span>
+        </div>
+      </div>
+
+      <div class="prod-card">
+        <span class="prod-badge badge-new">2026 BLUEPRINT</span>
+        <div class="prod-type">// RESEARCH / CONSULTING</div>
+        <div class="prod-name">FAULT-TOLERANT BLUEPRINT + SERVICES</div>
+        <div class="prod-desc">IonQ published a detailed technical blueprint for 10,000-qubit fault-tolerant systems in 2026 — the most comprehensive architecture document in the industry. Consulting services co-development available.</div>
+        <ul class="prod-specs">
+          <li><span class="key">Blueprint scope</span><span class="val hi">10,000 physical qubits</span></li>
+          <li><span class="key">Layers</span><span class="val">Compiler, EC, HW, control</span></li>
+          <li><span class="key">Co-dev</span><span class="val gold">Partner engagements</span></li>
+          <li><span class="key">Revenue</span><span class="val pur">Design + consulting fees</span></li>
+        </ul>
+        <div class="prod-price">
+          <span class="price-val">PARTNERSHIP</span>
+          <span class="price-note">CUSTOM SCOPING</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: PRICING MATRIX ===== -->
+<section class="section" id="pricing">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2 class="sec-title">PRICING REFERENCE MATRIX</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-gold">COST BENCHMARKS</span>
+  </div>
+  <p class="intro-text">Quantum compute pricing varies dramatically by vendor, access model, and billing unit. Use this matrix to set client expectations and identify lowest-friction entry points for each budget tier.</p>
+  <div class="price-matrix">
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th class="col-head">VENDOR</th>
+          <th class="col-head">PRODUCT / TIER</th>
+          <th class="col-head">PRICING MODEL</th>
+          <th class="col-head">ENTRY COST</th>
+          <th class="col-head">BEST FOR</th>
+          <th class="col-head">CLOUD ACCESS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="vendor td-ibm">IBM</td>
+          <td>Open Plan</td>
+          <td>Free tier</td>
+          <td class="price-free">$0 / FREE</td>
+          <td>Pilots, academic, PoC</td>
+          <td>IBM Quantum Platform</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ibm">IBM</td>
+          <td>Pay-As-You-Go</td>
+          <td>Per-second runtime</td>
+          <td class="price-hi">$96 / minute</td>
+          <td>Small-scale projects</td>
+          <td>IBM Cloud, AWS, Azure</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ibm">IBM</td>
+          <td>Flex Plan</td>
+          <td>Pre-purchased blocks</td>
+          <td class="price-hi">$72 / minute</td>
+          <td>Project-based work</td>
+          <td>IBM Quantum Platform</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ibm">IBM</td>
+          <td>Premium Plan</td>
+          <td>Annual subscription</td>
+          <td class="price-hi">$48 / minute</td>
+          <td>Enterprise scale</td>
+          <td>Dedicated allocation</td>
+        </tr>
+        <tr>
+          <td class="vendor td-goog">GOOGLE</td>
+          <td>Cirq SDK</td>
+          <td>Open source</td>
+          <td class="price-free">FREE</td>
+          <td>Development, simulation</td>
+          <td>Local / GCP simulator</td>
+        </tr>
+        <tr>
+          <td class="vendor td-goog">GOOGLE</td>
+          <td>Willow / GCP Access</td>
+          <td>Partner application</td>
+          <td class="price-hi">PARTNER ONLY</td>
+          <td>Research institutions</td>
+          <td>GCP (select access)</td>
+        </tr>
+        <tr>
+          <td class="vendor td-qinn">QUANTINUUM</td>
+          <td>H2 (Azure Quantum)</td>
+          <td>HQC credits</td>
+          <td class="price-hi">HQC = 5 + C(ops)/5000</td>
+          <td>High-fidelity research</td>
+          <td>Azure Quantum</td>
+        </tr>
+        <tr>
+          <td class="vendor td-qinn">QUANTINUUM</td>
+          <td>Helios (Cloud)</td>
+          <td>Enterprise contract</td>
+          <td class="price-hi">CONTACT SALES</td>
+          <td>Enterprise GenQAI</td>
+          <td>Quantinuum Cloud</td>
+        </tr>
+        <tr>
+          <td class="vendor td-qinn">QUANTINUUM</td>
+          <td>Helios (On-Prem)</td>
+          <td>HaaS / capital</td>
+          <td class="price-hi">CONTACT SALES</td>
+          <td>Sovereign, classified</td>
+          <td>On-premises deployment</td>
+        </tr>
+        <tr>
+          <td class="vendor td-qinn">QUANTINUUM</td>
+          <td>Selene Emulator</td>
+          <td>Free trial</td>
+          <td class="price-free">FREE (eHQC)</td>
+          <td>Algorithm testing</td>
+          <td>Nexus Platform</td>
+        </tr>
+        <tr>
+          <td class="vendor td-rig">RIGETTI</td>
+          <td>QVM Simulator</td>
+          <td>Free all plans</td>
+          <td class="price-free">FREE</td>
+          <td>Circuit testing</td>
+          <td>AWS Braket</td>
+        </tr>
+        <tr>
+          <td class="vendor td-rig">RIGETTI</td>
+          <td>Cloud QPU Access</td>
+          <td>Pay-as-you-go</td>
+          <td class="price-hi">$0.30 / task + time</td>
+          <td>QPU experimentation</td>
+          <td>Amazon Braket</td>
+        </tr>
+        <tr>
+          <td class="vendor td-rig">RIGETTI</td>
+          <td>Novera 9Q (On-Prem)</td>
+          <td>Hardware purchase</td>
+          <td class="price-hi">PURCHASE PRICE</td>
+          <td>Labs, sovereign deploy</td>
+          <td>On-premises (no cloud)</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ionq">IONQ</td>
+          <td>Forte / Tempo (AWS)</td>
+          <td>Per-task + per-shot</td>
+          <td class="price-hi">$0.30/task + $0.08/shot</td>
+          <td>Metered cloud compute</td>
+          <td>Amazon Braket</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ionq">IONQ</td>
+          <td>Aria Plan (Azure)</td>
+          <td>AQT token model</td>
+          <td class="price-hi">AQT formula-based</td>
+          <td>Monthly subscription</td>
+          <td>Azure Quantum</td>
+        </tr>
+        <tr>
+          <td class="vendor td-ionq">IONQ</td>
+          <td>Networking / Security / Space</td>
+          <td>Enterprise contract</td>
+          <td class="price-hi">CUSTOM PARTNERSHIP</td>
+          <td>Gov, defense, BFSI</td>
+          <td>Dedicated + on-prem</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: DOOR-OPENERS ===== -->
+<section class="section" id="dooropeners">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2 class="sec-title">DOOR-OPENER PLAYBOOK</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-green">FREE ENTRY STRATEGIES</span>
+  </div>
+  <p class="intro-text">Door-openers are zero/low-cost entry points that initiate the client relationship with no procurement friction. Each is tied to a real free-tier or no-cost vendor offer, paired with a consultative hook that creates the paid engagement that follows.</p>
+
+  <table class="door-table">
+    <thead>
+      <tr>
+        <th>VENDOR</th>
+        <th>DOOR-OPENER OFFER</th>
+        <th>WHAT THE CLIENT GETS</th>
+        <th>YOUR CONSULTING HOOK</th>
+        <th>TARGET AUDIENCE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="vendor-col td-ibm">IBM QUANTUM</td>
+        <td class="strategy">Free IBM Quantum Account Setup + First Circuit Workshop
+          <div class="pitch">"Let's run your first quantum circuit on real IBM hardware today — no cost, no procurement."</div>
+        </td>
+        <td>IBM Open Plan account, 10 min/month runtime, Qiskit access, quantum computer access, first working circuit</td>
+        <td>Position as their "quantum readiness assessment partner." After the workshop, pitch a paid Quantum Readiness Report (₹2-5L) covering use-case mapping, workload suitability scoring, and 90-day adoption roadmap.</td>
+        <td>CTO, Chief Innovation Officer, Head of Technology, R&D teams at banks, pharma, logistics</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-ibm">IBM QUANTUM</td>
+        <td class="strategy">IBM Quantum Network Introduction Briefing
+          <div class="pitch">"I'll host a 90-minute private briefing on how 300+ global enterprises are using IBM Quantum — including BFSI use cases."</div>
+        </td>
+        <td>Curated case study presentation, industry-specific use case mapping, access to IBM Quantum Network collateral, roadmap visibility</td>
+        <td>After the briefing, propose a paid Quantum Use-Case Feasibility Study (₹3-8L) scoping 2-3 client-specific workloads against IBM's hardware roadmap.</td>
+        <td>CXO level: CFO, CRO, CDO at HDFC, ICICI, Axis, Kotak, SEBI-regulated entities</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-goog">GOOGLE QUANTUM AI</td>
+        <td class="strategy">Free Cirq Installation + Quantum Algorithm Demo
+          <div class="pitch">"We'll install Cirq (free, open source) and run a live quantum optimization demo on your data — zero spend."</div>
+        </td>
+        <td>Cirq environment setup, 1 custom quantum circuit demo (portfolio optimization, risk simulation), Google's free educational resources</td>
+        <td>The demo creates the proof-of-concept gap. Follow up with a paid Quantum Algorithm Development engagement (₹5-12L) to port their current classical optimization model to a hybrid quantum-classical equivalent.</td>
+        <td>Quantitative analysts, risk teams, data science leads at asset managers, hedge funds, insurance quants</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-qinn">QUANTINUUM</td>
+        <td class="strategy">Quantum Origin QRNG Free Trial Registration
+          <div class="pitch">"Quantum Origin has a trial — let me get your security team registered today. It strengthens your AES encryption keys immediately using quantum randomness."</div>
+        </td>
+        <td>Quantum Origin trial access, QRNG-hardened encryption key demo, RBI/SEBI crypto compliance briefing document, technical report</td>
+        <td>The trial surfaces the gap between current PRNG-based encryption and quantum-grade randomness. Pitch a paid Quantum Encryption Assessment + PQC Readiness Report (₹4-10L) covering FIPS compliance, key management upgrade, and migration plan.</td>
+        <td>CISO, Head of Information Security, Crypto/PKI team, DPO at banks, NBFCs, payment gateways</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-qinn">QUANTINUUM</td>
+        <td class="strategy">Selene Emulator Access — Free Algorithm Testing
+          <div class="pitch">"Quantinuum's Selene emulator is free. Let's test your financial model algorithm on it before committing to real quantum hardware spend."</div>
+        </td>
+        <td>Selene emulator access (free eHQC), algorithm testing environment, pre-hardware validation, Guppy/TKET onboarding</td>
+        <td>Emulator results create the business case for real hardware access. Propose a paid Quantum Algorithm Validation + Hardware Migration study (₹6-15L) that translates emulator results to production H2/Helios workloads.</td>
+        <td>Quantitative finance teams, derivatives pricing teams, risk model architects at tier-1 banks</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-rig">RIGETTI</td>
+        <td class="strategy">Free QVM Simulator Demo on Client Use Case
+          <div class="pitch">"Rigetti's QVM simulator is completely free on AWS Braket. I'll run your logistics/portfolio optimization problem on it — live, in your environment, today."</div>
+        </td>
+        <td>QVM simulator access (free), custom circuit for client use case, AWS Braket environment, baseline quantum vs classical benchmark</td>
+        <td>QVM benchmark creates a concrete comparison. Follow with a paid Quantum vs Classical Benchmark Report (₹2-6L) with vendor-agnostic hardware recommendations and expected ROI timeline for QPU investment.</td>
+        <td>Operations research teams, supply chain, logistics, portfolio optimization desks at insurance companies</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-rig">RIGETTI</td>
+        <td class="strategy">Novera On-Prem QPU Architecture Briefing
+          <div class="pitch">"Did you know you can now own a quantum processor on-site? I'll brief your team on Rigetti's Novera — the first purchasable QPU — and what it means for classified/sovereign environments."</div>
+        </td>
+        <td>Novera technical briefing deck, sovereign deployment architecture overview, comparison vs cloud QPU models, regulatory compliance mapping</td>
+        <td>Classified and defense clients will immediately ask about procurement. Offer a paid Sovereign Quantum Infrastructure Assessment (₹8-20L) covering regulatory clearance, facility requirements, integration architecture, and vendor negotiation support.</td>
+        <td>Defence R&D labs, DRDO, ISRO, classified financial infrastructure, sovereign wealth funds</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-ionq">IONQ</td>
+        <td class="strategy">IonQ Cloud Quickstart — First Run in 10 Minutes
+          <div class="pitch">"IonQ guarantees you can access their quantum computer in under 10 minutes via AWS or Azure. Let's do it live in your next team meeting."</div>
+        </td>
+        <td>IonQ cloud access (metered, low entry cost), live quantum circuit execution on trapped-ion hardware, first benchmark results, AQT token usage report</td>
+        <td>The live demo creates the "we ran quantum" moment that unlocks budget conversations. Propose a paid Quantum Compute PoC Program (₹5-15L): 90-day structured proof of concept on a specific BFSI workload using IonQ hardware with bi-weekly progress reports.</td>
+        <td>Innovation labs, fintech CTOs, digital transformation leads, RBI Regulatory Sandbox participants</td>
+      </tr>
+      <tr>
+        <td class="vendor-col td-ionq">IONQ</td>
+        <td class="strategy">Post-Quantum Cryptography Threat Briefing (Free)
+          <div class="pitch">"In 2025 Google published an algorithm that can compromise current blockchain encryption. I'll brief your security team on what this means and how IonQ's quantum security platform addresses it."</div>
+        </td>
+        <td>Free 60-minute PQC threat briefing, NIST PQC standards overview, blockchain/PKI vulnerability mapping, IonQ quantum security platform overview</td>
+        <td>The briefing creates urgency around cryptographic infrastructure modernisation. Follow with a paid PQC Migration Assessment (₹6-15L) covering current crypto inventory audit, risk scoring against Harvest-Now-Decrypt-Later threats, and NIST PQC migration roadmap.</td>
+        <td>CISO, Head of Crypto, CTO at stock exchanges, payment networks, RBI-regulated banks, insurance companies</td>
+      </tr>
+      <tr>
+        <td class="vendor-col" style="color:#a0c0e0">MULTI-VENDOR</td>
+        <td class="strategy">Quantum Readiness Maturity Assessment (Free Scorecard)
+          <div class="pitch">"I'll run your organisation through a vendor-neutral 20-question Quantum Readiness Scorecard — free, takes 45 minutes, gives you a maturity rating vs global BFSI peers."</div>
+        </td>
+        <td>Quantum Readiness Score (0-100), maturity level rating (Unaware / Exploring / Piloting / Scaling), benchmarked against 300+ IBM Quantum Network enterprises, custom recommendations report</td>
+        <td>Every organisation scores &lt;70 on first run. The scorecard creates the paid engagement: a full Quantum Strategy Roadmap (₹10-25L) covering vendor selection, use case prioritisation, budget planning, and 3-year implementation plan.</td>
+        <td>Any CXO — CFO, CTO, CISO, CDO — at any organisation exploring quantum. Works at any size, any sector.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== SECTION 4: CONSULTING SERVICES ===== -->
+<section class="section" id="services">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2 class="sec-title">CONSULTING SERVICES CATALOG</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-purple">PAID ENGAGEMENTS</span>
+  </div>
+  <p class="intro-text">Services are structured in four tiers: <span class="highlight">Tier A</span> (advisory & assessment, lowest friction), <span class="highlight-gold">Tier B</span> (technical delivery & PoC), <span class="highlight" style="color:var(--purple)">Tier C</span> (platform & integration), and <span class="highlight" style="color:var(--green)">Tier D</span> (managed programs & retainers). Price ranges are in INR for Indian market and can be converted for GCC engagements.</p>
+
+  <div class="services-grid">
+
+    <!-- TIER A -->
+    <div class="svc-card">
+      <div class="svc-tier tier-A">// TIER A · ADVISORY</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM READINESS ASSESSMENT</div>
+        <div class="svc-desc">Vendor-neutral maturity assessment covering use-case suitability, team readiness, infrastructure fit, and competitive positioning. Includes executive briefing and written report.</div>
+        <ul class="svc-includes">
+          <li>20-dimension quantum readiness scorecard</li>
+          <li>Use-case suitability matrix (10 use cases vs 5 vendors)</li>
+          <li>Executive summary with board-ready slides</li>
+          <li>Competitor quantum investment benchmarking</li>
+          <li>Recommended next steps with budget ranges</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹2.5L – ₹5L</span>
+        <span class="svc-duration">2–3 WEEKS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-A">// TIER A · ADVISORY</div>
+      <div class="svc-body">
+        <div class="svc-name">PQC CRYPTOGRAPHY RISK AUDIT</div>
+        <div class="svc-desc">Audit of current cryptographic infrastructure against NIST PQC standards and Harvest-Now-Decrypt-Later threats. Covers PKI, TLS, key management, and blockchain exposure. Critical for BFSI.</div>
+        <ul class="svc-includes">
+          <li>Cryptographic inventory audit (PKI, TLS, HSMs)</li>
+          <li>NIST PQC migration gap analysis</li>
+          <li>Risk scoring per system / data class</li>
+          <li>Vendor comparison: Quantinuum Origin vs IonQ Security</li>
+          <li>Prioritised remediation roadmap with timelines</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹4L – ₹10L</span>
+        <span class="svc-duration">3–5 WEEKS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-A">// TIER A · ADVISORY</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM VENDOR SELECTION ADVISORY</div>
+        <div class="svc-desc">RFI/RFP development and vendor evaluation service for organisations selecting between IBM, Google, Quantinuum, IonQ, and Rigetti. Includes scoring matrix, demo coordination, and contract negotiation support.</div>
+        <ul class="svc-includes">
+          <li>Requirements gathering and use-case definition</li>
+          <li>RFI document drafting (5 vendors)</li>
+          <li>Weighted scoring matrix and evaluation rubric</li>
+          <li>Vendor demo facilitation and technical Q&A</li>
+          <li>Contract terms review and negotiation support</li>
+          <li>Final recommendation report</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹5L – ₹12L</span>
+        <span class="svc-duration">4–8 WEEKS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-A">// TIER A · ADVISORY</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM STRATEGY ROADMAP</div>
+        <div class="svc-desc">3-year quantum adoption roadmap covering use-case phasing, vendor partnerships, team building, budget planning, and risk management. Board-ready deliverable with C-suite presentation.</div>
+        <ul class="svc-includes">
+          <li>Current state assessment and baseline</li>
+          <li>3-year phased adoption roadmap</li>
+          <li>Use-case prioritisation by ROI and feasibility</li>
+          <li>Budget model: Year 1/2/3 investment ranges</li>
+          <li>Build vs buy vs partner decision framework</li>
+          <li>KPIs and governance framework</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹10L – ₹25L</span>
+        <span class="svc-duration">6–10 WEEKS</span>
+      </div>
+    </div>
+
+    <!-- TIER B -->
+    <div class="svc-card">
+      <div class="svc-tier tier-B">// TIER B · TECHNICAL DELIVERY</div>
+      <div class="svc-body">
+        <div class="svc-name">IBM QUANTUM POC — BFSI WORKLOAD</div>
+        <div class="svc-desc">Structured 90-day proof of concept on IBM Quantum platform for a specific BFSI workload. Covers use-case setup, circuit design, benchmarking, and commercial case documentation.</div>
+        <ul class="svc-includes">
+          <li>Use-case scoping and IBM plan selection</li>
+          <li>Qiskit circuit design and implementation</li>
+          <li>Quantum vs classical benchmark comparison</li>
+          <li>Error mitigation strategy</li>
+          <li>Results documentation and BoD-ready report</li>
+          <li>Vendor escalation and technical support liaison</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹8L – ₹20L</span>
+        <span class="svc-duration">90 DAYS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-B">// TIER B · TECHNICAL DELIVERY</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTINUUM HELIOS POC — FINANCIAL ANALYTICS</div>
+        <div class="svc-desc">End-to-end PoC on Quantinuum Helios for BFSI financial analytics use cases: derivatives pricing, portfolio optimisation, credit risk modelling. Includes NVIDIA GB200 hybrid compute integration.</div>
+        <ul class="svc-includes">
+          <li>Problem formulation for Helios (QCCD architecture)</li>
+          <li>InQuanto or Guppy implementation</li>
+          <li>Hybrid classical-quantum pipeline design</li>
+          <li>NVIDIA GB200 integration advisory</li>
+          <li>Performance benchmarking vs classical HPC</li>
+          <li>Commercial case and ROI model</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹12L – ₹30L</span>
+        <span class="svc-duration">90 DAYS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-B">// TIER B · TECHNICAL DELIVERY</div>
+      <div class="svc-body">
+        <div class="svc-name">IONQ QUANTUM ALGORITHM DEVELOPMENT</div>
+        <div class="svc-desc">Custom quantum algorithm development on IonQ's trapped-ion hardware via AWS Braket or Azure Quantum. Covers VQE, QAOA, and QML algorithm implementations for optimisation and ML workloads.</div>
+        <ul class="svc-includes">
+          <li>Algorithm selection and feasibility study</li>
+          <li>Circuit design optimised for trapped-ion</li>
+          <li>Multi-platform access setup (AWS, Azure, GCP)</li>
+          <li>Error mitigation and shot optimisation</li>
+          <li>Classical-quantum hybrid architecture</li>
+          <li>Results analysis and iteration plan</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹8L – ₹18L</span>
+        <span class="svc-duration">60–90 DAYS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-B">// TIER B · TECHNICAL DELIVERY</div>
+      <div class="svc-body">
+        <div class="svc-name">RIGETTI NOVERA DEPLOYMENT ADVISORY</div>
+        <div class="svc-desc">Full advisory for on-premises Novera QPU procurement, facility preparation, integration with existing HPC/cloud infrastructure, and researcher training. Includes vendor liaison and contract support.</div>
+        <ul class="svc-includes">
+          <li>Facility requirements and dilution refrigerator specs</li>
+          <li>Novera procurement and vendor negotiation support</li>
+          <li>Integration with existing HPC and classical compute</li>
+          <li>Quil / Forest SDK setup and training</li>
+          <li>Security and classified environment compliance check</li>
+          <li>6-month post-deployment support plan</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹15L – ₹40L</span>
+        <span class="svc-duration">3–6 MONTHS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-B">// TIER B · TECHNICAL DELIVERY</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM ENCRYPTION KEY UPGRADE (QRNG)</div>
+        <div class="svc-desc">End-to-end implementation of Quantinuum Quantum Origin QRNG into existing PKI/key management infrastructure. Delivers demonstrably stronger encryption without changing cryptographic algorithms.</div>
+        <ul class="svc-includes">
+          <li>Quantum Origin trial setup and integration</li>
+          <li>PKI / HSM integration architecture</li>
+          <li>API deployment (cloud or on-prem)</li>
+          <li>FIPS and RBI compliance documentation</li>
+          <li>Before/after entropy analysis report</li>
+          <li>Team training and runbook</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹6L – ₹15L</span>
+        <span class="svc-duration">4–8 WEEKS</span>
+      </div>
+    </div>
+
+    <!-- TIER C -->
+    <div class="svc-card">
+      <div class="svc-tier tier-C">// TIER C · PLATFORM INTEGRATION</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM-HPC HYBRID INTEGRATION</div>
+        <div class="svc-desc">Technical integration of IBM Quantum or IonQ cloud systems with client's existing HPC infrastructure. Based on IBM's 2026 Quantum-Centric Supercomputing reference architecture.</div>
+        <ul class="svc-includes">
+          <li>HPC environment assessment and quantum readiness</li>
+          <li>IBM Quantum Platform or IonQ cloud connector setup</li>
+          <li>Quantum-classical workload orchestration pipeline</li>
+          <li>Job scheduling and queue management</li>
+          <li>Monitoring, logging, and cost management</li>
+          <li>Runbook and operational handover</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹20L – ₹50L</span>
+        <span class="svc-duration">3–6 MONTHS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-C">// TIER C · PLATFORM INTEGRATION</div>
+      <div class="svc-body">
+        <div class="svc-name">PQC MIGRATION IMPLEMENTATION</div>
+        <div class="svc-desc">Full implementation service for migrating enterprise cryptographic infrastructure to NIST-approved post-quantum algorithms. Covers TLS 1.3 PQC, hybrid key exchange, and certificate lifecycle.</div>
+        <ul class="svc-includes">
+          <li>Crypto inventory and dependency mapping</li>
+          <li>NIST PQC algorithm selection (ML-KEM, ML-DSA, SLH-DSA)</li>
+          <li>Hybrid classical+PQC transition architecture</li>
+          <li>Certificate authority and PKI upgrade</li>
+          <li>Application-layer integration and testing</li>
+          <li>SEBI/RBI compliance documentation package</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹25L – ₹80L</span>
+        <span class="svc-duration">4–9 MONTHS</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-C">// TIER C · PLATFORM INTEGRATION</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM NETWORK ARCHITECTURE (IONQ)</div>
+        <div class="svc-desc">Architecture and planning for quantum-secured network infrastructure using IonQ's networking platform. Covers quantum key distribution, entanglement-based security, and integration with classical network fabric.</div>
+        <ul class="svc-includes">
+          <li>IonQ Quantum Network platform assessment</li>
+          <li>QKD integration architecture design</li>
+          <li>Quantum-classical network segmentation plan</li>
+          <li>Telecom wavelength conversion planning</li>
+          <li>Regulatory compliance (TRAI, DoT, CERT-In)</li>
+          <li>Phased rollout plan with cost model</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹30L – ₹1Cr</span>
+        <span class="svc-duration">6–12 MONTHS</span>
+      </div>
+    </div>
+
+    <!-- TIER D -->
+    <div class="svc-card">
+      <div class="svc-tier tier-D">// TIER D · MANAGED RETAINER</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM ADVISORY RETAINER — MONTHLY</div>
+        <div class="svc-desc">Ongoing monthly advisory covering quantum market intelligence, vendor relationship management, use-case development, and C-suite quantum education. Ideal for enterprises in Year 1–2 of quantum exploration.</div>
+        <ul class="svc-includes">
+          <li>Monthly quantum market intelligence briefing</li>
+          <li>Vendor relationship and renewal management</li>
+          <li>Unlimited advisory calls (up to 8 hrs/month)</li>
+          <li>Use-case pipeline development and tracking</li>
+          <li>Attendance at key quantum events and conferences</li>
+          <li>Escalation support with IBM, IonQ, Quantinuum</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹3L – ₹8L/MO</span>
+        <span class="svc-duration">MIN 6-MONTH TERM</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-D">// TIER D · MANAGED RETAINER</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM INNOVATION PROGRAM — ANNUAL</div>
+        <div class="svc-desc">Full-year quantum innovation program: quarterly PoC cycles, team training, vendor management, and executive reporting. Designed for BFSI institutions building a multi-year quantum capability.</div>
+        <ul class="svc-includes">
+          <li>4 x quarterly PoC cycles (1 use case each)</li>
+          <li>IBM / IonQ / Quantinuum access procurement</li>
+          <li>Internal quantum team upskilling (Qiskit / Cirq / TKET)</li>
+          <li>Monthly board-level quantum intelligence report</li>
+          <li>Annual quantum strategy review and refresh</li>
+          <li>Priority vendor escalation and partner access</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹30L – ₹80L/YR</span>
+        <span class="svc-duration">12-MONTH PROGRAM</span>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-tier tier-D">// TIER D · TRAINING</div>
+      <div class="svc-body">
+        <div class="svc-name">QUANTUM COMPUTING MASTERCLASS — BFSI EDITION</div>
+        <div class="svc-desc">Bespoke 2-day intensive for BFSI technology and quant teams. Covers quantum fundamentals, financial use cases, hands-on Qiskit / Cirq labs, vendor landscape, and regulatory implications.</div>
+        <ul class="svc-includes">
+          <li>Day 1: Quantum fundamentals + BFSI use cases</li>
+          <li>Day 2: Hands-on labs (IBM + IonQ cloud access)</li>
+          <li>Use case: Portfolio optimisation with QAOA</li>
+          <li>Use case: Credit risk with quantum ML</li>
+          <li>Use case: PQC for PKI and key management</li>
+          <li>Certificate of completion + resource package</li>
+        </ul>
+      </div>
+      <div class="svc-footer">
+        <span class="svc-price">₹5L – ₹12L</span>
+        <span class="svc-duration">2-DAY INTENSIVE</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SECTION 5: BFSI INDIA PLAY ===== -->
+<section class="section" id="bfsi">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2 class="sec-title">INDIA BFSI MARKET SIGNALS</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-amber">STRATEGIC INTELLIGENCE</span>
+  </div>
+  <p class="intro-text">India's BFSI sector is the highest-priority target for quantum consulting engagements. RBI, SEBI, and IRDAI regulatory mandates around data security, encryption, and AI risk create urgent demand for quantum-adjacent services — before clients even understand quantum computing itself.</p>
+
+  <div class="signal-grid">
+
+    <div class="signal-box cyan">
+      <div class="sig-label">// SIGNAL 01 · ENCRYPTION</div>
+      <div class="sig-title">RBI'S PQC READINESS WINDOW IS OPEN NOW</div>
+      <div class="sig-body">The RBI Master Directions on IT Governance (2023) mandate cryptographic agility. NIST finalised PQC standards (ML-KEM, ML-DSA) in 2024. Indian banks have 18–36 months before PQC compliance becomes an audit finding. The window to sell PQC assessment and QRNG deployment is open today — no quantum knowledge required from the buyer.</div>
+      <a class="sig-cta">LEAD SERVICE: PQC CRYPTOGRAPHY RISK AUDIT</a>
+    </div>
+
+    <div class="signal-box gold">
+      <div class="sig-label">// SIGNAL 02 · FINANCIAL MODELLING</div>
+      <div class="sig-title">JPMORGAN CHASE IS ALREADY ON HELIOS</div>
+      <div class="sig-body">JPMorganChase is one of Quantinuum Helios' launch customers, researching quantum capabilities for advanced financial analytics. Indian peer banks — HDFC, ICICI, Axis, Kotak — are two to three years behind. The competitive intelligence story sells itself: "Your global peers are already running quantum. Here's how to start."</div>
+      <a class="sig-cta">LEAD SERVICE: QUANTINUUM HELIOS POC — FINANCIAL ANALYTICS</a>
+    </div>
+
+    <div class="signal-box green">
+      <div class="sig-label">// SIGNAL 03 · REGULATORY SANDBOX</div>
+      <div class="sig-title">RBI REGULATORY SANDBOX — QUANTUM TECHNOLOGY TRACK</div>
+      <div class="sig-body">RBI's Regulatory Sandbox accepts applications for emerging technology use cases. Quantum computing applications (especially for fraud detection, credit risk, and payment security) qualify. Position as the advisor who structures the RBI Sandbox submission and runs the PoC — a 6-month paid engagement with government visibility.</div>
+      <a class="sig-cta">LEAD SERVICE: QUANTUM POC + RBI SANDBOX STRUCTURING</a>
+    </div>
+
+    <div class="signal-box purple">
+      <div class="sig-label">// SIGNAL 04 · COMPETITIVE INTELLIGENCE</div>
+      <div class="sig-title">QUANTINUUM IPO S-1 FILED — WINDOW TO BRIEF CLIENT BOARDS</div>
+      <div class="sig-body">Quantinuum filed a confidential S-1 in January 2026 targeting a $10B IPO valuation. This is board-level news for any institution with technology investment mandates. Use the IPO as a briefing hook: "The world's most accurate quantum computer is going public — here's what your board needs to know about quantum investing and quantum risk."</div>
+      <a class="sig-cta">LEAD SERVICE: QUANTUM STRATEGY ROADMAP</a>
+    </div>
+
+    <div class="signal-box red">
+      <div class="sig-label">// SIGNAL 05 · THREAT INTELLIGENCE</div>
+      <div class="sig-title">HARVEST-NOW-DECRYPT-LATER IS ACTIVE AGAINST INDIAN BANKS</div>
+      <div class="sig-body">Nation-state actors are harvesting encrypted financial data today for decryption once quantum computers reach sufficient power (estimated 5–10 years). Indian banks' SWIFT, core banking, and customer data are targets. The threat is immediate even though quantum decryption is future. IonQ's quantum security platform and Quantinuum Origin address this directly.</div>
+      <a class="sig-cta">LEAD SERVICE: PQC MIGRATION IMPLEMENTATION</a>
+    </div>
+
+    <div class="signal-box amber">
+      <div class="sig-label">// SIGNAL 06 · MARKET SIZING</div>
+      <div class="sig-title">IONQ $130M → $245M: QUANTUM IS A COMMERCIAL REALITY</div>
+      <div class="sig-body">IonQ's $130M 2025 revenue and 2026 guidance of $225-245M (73-88% YoY growth) proves the quantum market is real, not hype. Use this data to shut down "quantum is 10 years away" objections. The commercial quantum market is here — Indian BFSI clients that wait 3 more years will be catching up to global peers who started in 2025.</div>
+      <a class="sig-cta">DOOR-OPENER: QUANTUM READINESS MATURITY ASSESSMENT</a>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="sec-head" style="margin-bottom:20px">
+    <span class="sec-num" style="font-size:10px">TARGET LIST</span>
+    <h2 class="sec-title" style="font-size:16px">PRIMARY BFSI TARGET ACCOUNTS</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="columns-2">
+    <div>
+      <table class="price-table">
+        <thead><tr><th class="col-head">INSTITUTION</th><th class="col-head">ENTRY SIGNAL</th><th class="col-head">PRIORITY DOOR-OPENER</th></tr></thead>
+        <tbody>
+          <tr><td class="td-ionq" style="font-weight:700">HDFC Bank</td><td>Digital transformation CDO</td><td>Quantum Readiness Assessment</td></tr>
+          <tr><td class="td-ionq" style="font-weight:700">ICICI Bank</td><td>iLabs innovation team</td><td>IonQ Cloud Quickstart Demo</td></tr>
+          <tr><td class="td-ionq" style="font-weight:700">Axis Bank</td><td>CISO / crypto compliance</td><td>QRNG / PQC Risk Audit</td></tr>
+          <tr><td class="td-ionq" style="font-weight:700">Kotak Mahindra</td><td>Quant finance team</td><td>Cirq Portfolio Optimisation Demo</td></tr>
+          <tr><td class="td-ionq" style="font-weight:700">SBI</td><td>Technology governance</td><td>PQC Briefing + RBI Compliance</td></tr>
+          <tr><td class="td-ionq" style="font-weight:700">NSE / BSE</td><td>Market data security</td><td>Post-Quantum Crypto Threat Briefing</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class="price-table">
+        <thead><tr><th class="col-head">INSTITUTION</th><th class="col-head">ENTRY SIGNAL</th><th class="col-head">PRIORITY DOOR-OPENER</th></tr></thead>
+        <tbody>
+          <tr><td class="td-qinn" style="font-weight:700">LIC of India</td><td>Actuarial / risk modelling</td><td>Quantum Algorithm Demo (risk)</td></tr>
+          <tr><td class="td-qinn" style="font-weight:700">IRDAI</td><td>Regulatory AI interest</td><td>Quantum Strategy Briefing</td></tr>
+          <tr><td class="td-qinn" style="font-weight:700">NPCI</td><td>UPI fraud detection</td><td>Quantum ML Fraud Detection Demo</td></tr>
+          <tr><td class="td-qinn" style="font-weight:700">RBI Innovation Hub</td><td>Sandbox submissions</td><td>RBI Sandbox Quantum PoC</td></tr>
+          <tr><td class="td-goog" style="font-weight:700">Paytm / PhonePe</td><td>Security, payments</td><td>PQC + QRNG Briefing</td></tr>
+          <tr><td class="td-goog" style="font-weight:700">Yes Bank / IndusInd</td><td>Digital innovation</td><td>IBM Quantum Open Plan Workshop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: TECHNOLOGY ROADMAP ===== -->
+<section class="section" id="roadmap">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <h2 class="sec-title">QUANTUM COMPUTING HORIZON ROADMAP</h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag tag-cyan">2025 → 2030</span>
+  </div>
+  <p class="intro-text">Understanding the quantum computing roadmap is essential for timing client engagements. Use this timeline to anchor conversations on where clients need to be and when — creating urgency without overpromising.</p>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-year">// 2025 — VERIFIED QUANTUM ADVANTAGE</div>
+      <div class="tl-title">Commercial Quantum Reality Begins</div>
+      <div class="tl-body">Google Willow achieves verifiable quantum advantage (Nature, Oct 2025). Quantinuum Helios launches with 98 qubits, 99.9975% fidelity. IonQ reports $130M revenue. PQC standards finalised by NIST. JPMorganChase, Amgen, BMW, SoftBank running real workloads on Helios. The "quantum is coming" narrative is over — quantum is here.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">// 2026 — SCALE AND PLATFORM EXPANSION</div>
+      <div class="tl-title">256-Qubit Systems + PQC Compliance Wave</div>
+      <div class="tl-body">IonQ launching 256-qubit platform with 12 logical qubits. Quantinuum IPO at $10B valuation. IBM's HPC reference architecture deployments begin. PQC compliance deadlines approaching for regulated industries. IonQ 2026 guidance $225-245M. First Indian BFSI clients should be running quantum pilots. Key window: 2026 is the last year to be a "first mover" in Indian BFSI.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">// 2027–2028 — HYBRID QUANTUM-CLASSICAL AT ENTERPRISE SCALE</div>
+      <div class="tl-title">Quantum Workloads Enter Production</div>
+      <div class="tl-body">IBM Premium Plan deployments in HPC environments at scale. Quantinuum Sol (QCCD 2D grid, hundreds of junctions) begins deployment. IonQ modular systems connecting multiple ion-trap units. Quantum-classical hybrid pipelines become standard in tier-1 financial institutions globally. PQC migration becomes mandatory for regulated Indian entities.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">// 2029–2030 — FAULT-TOLERANT QUANTUM COMPUTING</div>
+      <div class="tl-title">Quantinuum Apollo + IonQ 2M-Qubit Roadmap</div>
+      <div class="tl-body">Quantinuum Apollo projected: thousands of physical qubits, hundreds of logical qubits — universal fault-tolerant quantum computing. IonQ targeting 2M physical qubits / 80,000 logical qubits. IBM CEO Satya Nadella projection: quantum in data centres by 2029. Encryption systems vulnerable to Harvest-Now-Decrypt-Later attacks become fully crackable. PQC migration must be complete by 2028-29 to avoid exposure.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">OMNIVEX // QUANTUM INTELLIGENCE</div>
+  <div class="footer-text">
+    ARVIND PARDESHI · INDEPENDENT NETWORK & SECURITY CONSULTANT · MUMBAI<br>
+    QUANTUM SALES CATALOG v1.0 · APRIL 2026<br>
+    IBM QUANTUM · GOOGLE QUANTUM AI · QUANTINUUM · RIGETTI · IONQ<br>
+    DATA SOURCED FROM VENDOR SITES, PRESS RELEASES, AND MARKET INTELLIGENCE · APRIL 2026<br><br>
+    // THIS DOCUMENT IS FOR CONSULTING INTELLIGENCE AND CLIENT BRIEFING USE ONLY
+  </div>
+</footer>
+
+</body>
+</html>
