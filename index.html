@@ -3,39 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog Selection Directory</title>
+    <title>WHITE ENTERPRISES INC. | Strategic Directory</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0f19;
+            background-color: #05080f;
             color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* 3D Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
         }
+
         h1 {
-            font-weight: 300;
-            letter-spacing: 3px;
-            margin-bottom: 40px;
-            color: #38bdf8;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-bottom: 25px;
+            color: #ffffff;
             text-transform: uppercase;
+            text-align: center;
+            border-bottom: 2px solid #38bdf8;
+            padding-bottom: 10px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
         }
+
+        /* Profile Banner */
+        .profile-banner {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 8px;
+            padding: 25px 40px;
+            text-align: center;
+            max-width: 900px;
+            margin-bottom: 50px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-banner h2 {
+            margin: 0 0 10px 0;
+            color: #f8fafc;
+            letter-spacing: 2px;
+            font-size: 1.5rem;
+        }
+
+        .profile-banner h3 {
+            margin: 0 0 15px 0;
+            color: #38bdf8;
+            font-weight: 400;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .profile-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .profile-links a {
+            color: #38bdf8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .profile-links a:hover {
+            color: #ffffff;
+        }
+
+        /* Grid Container */
         .container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
-            padding: 20px;
             box-sizing: border-box;
+            margin-bottom: 60px;
         }
+
+        /* Cards */
         .card {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
             border-radius: 8px;
             padding: 30px 20px;
             text-align: center;
@@ -47,58 +118,179 @@
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         .card:hover {
             border-color: #38bdf8;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
             transform: translateY(-5px);
-            background: #243347;
+            background: rgba(36, 51, 71, 0.9);
         }
+
         .card h2 {
             margin: 15px 0 10px 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #f8fafc;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
+
         .card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #94a3b8;
             margin: 0;
             line-height: 1.4;
         }
-        .icon {
-            font-size: 2rem;
+
+        .icon { font-size: 2rem; }
+
+        /* Disclaimer */
+        .disclaimer {
+            max-width: 900px;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: #64748b;
+            border-top: 1px solid rgba(30, 41, 59, 0.5);
+            padding-top: 30px;
+            margin-top: auto;
+        }
+
+        .disclaimer b {
+            color: #94a3b8;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
-    <h1>OmniSense Directory</h1>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="container">
-        <a href="My_Profile.html" class="card">
-            <div class="icon">👤</div>
-            <h2>Professional Profile</h2>
-            <p>Senior Network & Security Infrastructure Architect credentials.</p>
-        </a>
+    <div class="content-wrapper">
+        <h1>WHITE ENTERPRISES INC.</h1>
 
-        <a href="PM_Daily_Handbook.html" class="card">
-            <div class="icon">📔</div>
-            <h2>PM Daily Handbook</h2>
-            <p>Operational guidelines and project management protocols.</p>
-        </a>
+        <div class="profile-banner">
+            <h2>Jin White (Arvind Pardeshi)</h2>
+            <h3>Principal Security & AI Infrastructure Architect | 16+ Years Multi-Vendor Orchestration | Founder (Stealth R&D)</h3>
+            <div class="profile-links">
+                <span>📍 Mumbai</span>
+                <span>📧 <a href="mailto:arvindpardeshi151@gmail.com">arvindpardeshi151@gmail.com</a></span>
+                <span>📞 +91 9321411739</span>
+                <span>🔗 <a href="https://linkedin.com/in/arvind-pardeshi-ab92382a2" target="_blank">LinkedIn Profile</a></span>
+            </div>
+        </div>
 
-        <a href="IT_Business_Research_Catalog.html" class="card">
-            <div class="icon">📊</div>
-            <h2>Business Research</h2>
-            <p>Strategic analysis and AI-driven market research data.</p>
-        </a>
+        <div class="container">
+            <a href="My_Profile.html" class="card">
+                <div class="icon">👤</div>
+                <h2>Professional Profile</h2>
+                <p>Detailed resume, architecture credentials, and project history.</p>
+            </a>
+            <a href="AI_Future_Research.html" class="card">
+                <div class="icon">🧠</div>
+                <h2>AI Future Research</h2>
+                <p>Predictive modeling, neuro-symbolic AI, and frontier research.</p>
+            </a>
+            <a href="AI_Applications_all_Sectors.html" class="card">
+                <div class="icon">🚀</div>
+                <h2>AI Applications</h2>
+                <p>Cross-sector AI implementation and deployment strategies.</p>
+            </a>
+            <a href="Quantum_Catalog.html" class="card">
+                <div class="icon">⚛️</div>
+                <h2>Quantum Catalog</h2>
+                <p>Next-generation quantum computing and research frameworks.</p>
+            </a>
+            <a href="AI_Business_Catalog_.html" class="card">
+                <div class="icon">📈</div>
+                <h2>AI Business</h2>
+                <p>Market intelligence and business logic for AI ventures.</p>
+            </a>
+            <a href="IT_Business_Research_Catalog.html" class="card">
+                <div class="icon">📊</div>
+                <h2>Business Research</h2>
+                <p>Strategic analysis, market intelligence, and unit economics.</p>
+            </a>
+            <a href="IT_Infra_Business_Catalog.html" class="card">
+                <div class="icon">⚙️</div>
+                <h2>IT Infrastructure</h2>
+                <p>Enterprise architecture blueprints and security specs.</p>
+            </a>
+            <a href="PM_Daily_Handbook.html" class="card">
+                <div class="icon">📔</div>
+                <h2>PM Handbook</h2>
+                <p>Operational guidelines and project management protocols.</p>
+            </a>
+        </div>
 
-        <a href="IT_Infra_Business_Catalog.html" class="card">
-            <div class="icon">⚙️</div>
-            <h2>IT Infrastructure</h2>
-            <p>Multi-vendor architecture blueprints and security specs.</p>
-        </a>
+        <footer class="disclaimer">
+            <b>Disclaimer</b>
+            <p>
+                <strong>Educational Purposes Only:</strong> This document is an open-source, community-driven research paper produced for conceptual and educational exploration only. It does not constitute a prospectus, investment offering, or professional financial, legal, or technical advice.<br><br>
+                <strong>Pricing Note:</strong> All pricing and financial metrics referenced within these catalogs are speculative and subject to change based on dynamic market conditions.<br><br>
+                <strong>No Warranties:</strong> All information is provided on an "AS IS" basis without any guarantee of completeness, accuracy, or timeliness. Neither the authors nor any affiliated contributors make any warranties of any kind, express or implied.<br><br>
+                <strong>Limitation of Liability:</strong> Neither the research contributors nor any affiliated community members shall be liable for any direct, indirect, incidental, or consequential damages arising from the use of, or reliance upon, any information contained herein. Readers are encouraged to verify all information with other professional sources.
+            </p>
+        </footer>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.querySelector('#bg-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
+
+        // Create Neural Particle Cloud
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 6000; i++) {
+            vertices.push(
+                THREE.MathUtils.randFloatSpread(2500), 
+                THREE.MathUtils.randFloatSpread(2500), 
+                THREE.MathUtils.randFloatSpread(2500)
+            );
+        }
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        const material = new THREE.PointsMaterial({ color: 0x38bdf8, size: 2, transparent: true, opacity: 0.6 });
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        // Mouse Interaction
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) / 80;
+            mouseY = (e.clientY - window.innerHeight / 2) / 80;
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Slow continuous rotation
+            particles.rotation.y += 0.0005;
+            particles.rotation.x += 0.0002;
+            
+            // Camera follows mouse
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        animate();
+    </script>
 </body>
 </html>
