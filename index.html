@@ -3,331 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | STEALTH DATABANK</title>
+    <title>WHITE ENTERPRISES INC. | Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
-
         :root {
-            --bg-base: #030508;
-            --neon-blue: #00f3ff;
-            --neon-magenta: #ff00ea;
-            --neon-yellow: #fffb00;
-            --neon-green: #00ff66;
-            --neon-red: #ff0055;
-            --grid-color: rgba(0, 243, 255, 0.1);
+            --bg-color: #09090b; /* Deep Vercel Black */
+            --surface-color: #18181b; /* Subtle Gray */
+            --border-color: #27272a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --accent-color: #38bdf8;
         }
 
-        body, html {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-base);
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* Moving Cyber Grid Background */
-        #cyber-canvas {
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 60px 24px;
+        }
+
+        /* Subtle Background Gradient Mesh */
+        .bg-mesh {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-
-        /* CRT Scanline Overlay */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.03), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.04), transparent 25%);
             z-index: -1;
             pointer-events: none;
         }
 
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
+        .layout-container {
+            max-width: 1100px;
+            width: 100%;
         }
 
-        /* Header Styling */
-        header {
+        /* Hero Section */
+        .hero {
             text-align: center;
-            margin-bottom: 50px;
-            border-bottom: 2px solid var(--neon-blue);
-            padding-bottom: 20px;
-            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            margin-bottom: 64px;
+            padding: 40px 0;
         }
 
-        h1 {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 2.5rem;
-            margin: 0;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-            text-transform: uppercase;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
         }
 
-        .subtitle {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--neon-magenta);
-            font-size: 1rem;
-            letter-spacing: 2px;
-            margin-top: 10px;
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* Data Matrix Layout */
-        .data-grid {
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Bento Box Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 64px;
+        }
+
+        /* Modern Card Styling */
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        /* Individual Data Cards (Links) */
-        .data-card {
-            background: rgba(10, 15, 25, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-left: 4px solid var(--neon-blue);
-            backdrop-filter: blur(5px);
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 60px 2fr 1fr 1fr;
-            align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-in-out;
             position: relative;
             overflow: hidden;
-            text-decoration: none; /* Remove link underline */
-            color: inherit;
-            cursor: pointer;
         }
 
-        .data-card:hover {
-            background: rgba(20, 30, 45, 0.9);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-            transform: translateX(10px);
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: #1f1f22;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-glow);
         }
 
-        .rank {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.3);
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
         }
 
-        .site-info h2 {
-            margin: 0;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
-        .sector-tag {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            display: inline-block;
-            margin-top: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .card p {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            flex-grow: 1;
         }
 
-        .traffic-data {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.1rem;
-            text-align: right;
-            color: #fff;
+        /* Specialty Card (Highlights the Profile) */
+        .card-featured {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(145deg, var(--surface-color), #09090b);
         }
 
-        /* Visual Volume Bar */
-        .volume-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 15px;
-            grid-column: 1 / -1; /* Spans across the whole bottom of the card */
+        .card-featured .content-wrapper {
+            max-width: 600px;
         }
 
-        .volume-bar {
-            height: 100%;
-            width: 0%; /* Set via JS */
-            box-shadow: 0 0 10px currentColor;
-            transition: width 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+        .card-featured .profile-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
 
-        /* Sector Colors */
-        .color-core { color: var(--neon-blue); border-left-color: var(--neon-blue); }
-        .color-core .volume-bar { background: var(--neon-blue); color: var(--neon-blue); }
-        .color-core .sector-tag { border: 1px solid var(--neon-blue); color: var(--neon-blue); }
-
-        .color-ai { color: var(--neon-green); border-left-color: var(--neon-green); }
-        .color-ai .volume-bar { background: var(--neon-green); color: var(--neon-green); }
-        .color-ai .sector-tag { border: 1px solid var(--neon-green); color: var(--neon-green); }
-
-        .color-quantum { color: var(--neon-magenta); border-left-color: var(--neon-magenta); }
-        .color-quantum .volume-bar { background: var(--neon-magenta); color: var(--neon-magenta); }
-        .color-quantum .sector-tag { border: 1px solid var(--neon-magenta); color: var(--neon-magenta); }
-
-        .color-ops { color: var(--neon-yellow); border-left-color: var(--neon-yellow); }
-        .color-ops .volume-bar { background: var(--neon-yellow); color: var(--neon-yellow); }
-        .color-ops .sector-tag { border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
-
-        .color-download { color: var(--neon-red); border-left-color: var(--neon-red); }
-        .color-download .volume-bar { background: var(--neon-red); color: var(--neon-red); }
-        .color-download .sector-tag { border: 1px solid var(--neon-red); color: var(--neon-red); }
+        .profile-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
         /* Footer */
         footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 32px;
             text-align: center;
-            margin-top: 50px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-            border-top: 1px dashed rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-            line-height: 1.6;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer strong {
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
-            .data-card {
-                grid-template-columns: 50px 1fr;
-                gap: 10px;
-            }
-            .traffic-data {
-                grid-column: 2;
-                text-align: left;
-                font-size: 1rem;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .card-featured { flex-direction: column; align-items: flex-start; gap: 24px; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="cyber-canvas"></canvas>
-    <div class="scanlines"></div>
+    <div class="bg-mesh"></div>
 
-    <div class="dashboard-container">
-        <header>
+    <div class="layout-container">
+        
+        <div class="hero">
+            <div class="hero-badge">System Directory</div>
             <h1>WHITE ENTERPRISES INC.</h1>
-            <div class="subtitle">STEALTH R&D DATABANK // YEAR 2099 ARCHITECTURE</div>
-        </header>
+            <p>Central repository for advanced research, infrastructure blueprints, and stealth operational protocols.</p>
+        </div>
 
-        <div class="data-grid" id="data-grid">
-            </div>
+        <div class="grid">
+            
+            <a href="My_Profile.html" class="card card-featured">
+                <div class="content-wrapper">
+                    <div class="card-icon">👤</div>
+                    <h2>Jin White (Arvind Pardeshi)</h2>
+                    <p>Principal Security & AI Infrastructure Architect. 16+ Years Multi-Vendor Orchestration. Founder of stealth R&D initiatives.</p>
+                    <div class="profile-meta">
+                        <span>📍 Mumbai</span>
+                        <span>✉️ arvindpardeshi151@gmail.com</span>
+                    </div>
+                </div>
+                <div style="color: var(--text-secondary);">View Credentials →</div>
+            </a>
+
+            <a href="AI_Future_Research.html" class="card">
+                <div class="card-icon">🧠</div>
+                <h2>AI Future Research</h2>
+                <p>Predictive modeling, neuro-symbolic AI logic, and frontier technological research frameworks.</p>
+            </a>
+
+            <a href="AI_Applications_all_Sectors.html" class="card">
+                <div class="card-icon">⚡</div>
+                <h2>AI Applications</h2>
+                <p>Strategic deployment and integration logic for cross-sector artificial intelligence solutions.</p>
+            </a>
+
+            <a href="AI_Business_Catalog_.html" class="card">
+                <div class="card-icon">📈</div>
+                <h2>AI Business Logic</h2>
+                <p>Market intelligence, venture frameworks, and business modeling for AI-driven initiatives.</p>
+            </a>
+
+            <a href="Quantum_Catalog.html" class="card">
+                <div class="card-icon">⚛️</div>
+                <h2>Quantum Catalog</h2>
+                <p>Exploratory research and specifications for next-generation quantum computing architectures.</p>
+            </a>
+
+            <a href="IT_Infra_Business_Catalog.html" class="card">
+                <div class="card-icon">🔐</div>
+                <h2>Infrastructure Blueprints</h2>
+                <p>Comprehensive enterprise architecture designs and multi-vendor security specifications.</p>
+            </a>
+
+            <a href="IT_Business_Research_Catalog.html" class="card">
+                <div class="card-icon">📊</div>
+                <h2>Business Research</h2>
+                <p>In-depth strategic analysis, market telemetry, and unit economics documentation.</p>
+            </a>
+
+            <a href="PM_Daily_Handbook.html" class="card">
+                <div class="card-icon">📋</div>
+                <h2>Operations Handbook</h2>
+                <p>Daily project management guidelines, protocols, and standard operating procedures.</p>
+            </a>
+
+            <a href="White_DoorOpener_Assessment _Templates.zip" class="card" download>
+                <div class="card-icon">🗂️</div>
+                <h2>Assessment Templates</h2>
+                <p>Downloadable DoorOpener templates for technical discovery and client assessment.</p>
+            </a>
+
+        </div>
 
         <footer>
-            DATA SOURCED FROM STEALTH R&D REPOSITORIES | ARCHITECT: JIN WHITE<br>
-            Educational and Conceptual Prototype Only. No warranties implied. Pricing speculative.
+            <p style="margin-bottom: 12px;">
+                <strong>Educational Purposes Only:</strong> This directory is an open-source research portal for conceptual exploration. It does not constitute professional financial, legal, or technical advice.
+            </p>
+            <p>
+                <strong>Speculative Data:</strong> Pricing and metrics are speculative. No warranties implied. Liability limited.
+            </p>
         </footer>
+
     </div>
 
-    <script>
-        // Your White Enterprises Inc. File Directory
-        const directoryData = [
-            { id: '01', name: 'Identity Protocol', url: 'My_Profile.html', sector: 'SYS.IDENTITY', desc: 'Core Profile', colorClass: 'color-core', barScale: 100 },
-            { id: '02', name: 'AI Future Research', url: 'AI_Future_Research.html', sector: 'SYS.RESEARCH', desc: 'Predictive Models', colorClass: 'color-ai', barScale: 85 },
-            { id: '03', name: 'AI Applications', url: 'AI_Applications_all_Sectors.html', sector: 'SYS.APPLICATIONS', desc: 'Cross-Sector Logic', colorClass: 'color-ai', barScale: 80 },
-            { id: '04', name: 'AI Business Catalog', url: 'AI_Business_Catalog_.html', sector: 'SYS.MARKET_INTEL', desc: 'Venture Logic', colorClass: 'color-ai', barScale: 75 },
-            { id: '05', name: 'Quantum Catalog', url: 'Quantum_Catalog.html', sector: 'SYS.COMPUTE', desc: 'Next-Gen Specs', colorClass: 'color-quantum', barScale: 90 },
-            { id: '06', name: 'IT Infra Catalog', url: 'IT_Infra_Business_Catalog.html', sector: 'SYS.INFRASTRUCTURE', desc: 'Enterprise Blueprints', colorClass: 'color-core', barScale: 95 },
-            { id: '07', name: 'PM Daily Handbook', url: 'PM_Daily_Handbook.html', sector: 'SYS.OPERATIONS', desc: 'Protocols', colorClass: 'color-ops', barScale: 65 },
-            { id: '08', name: 'Assessment Templates', url: 'White_DoorOpener_Assessment _Templates.zip', sector: 'EXTRACT.DATA', desc: 'Downloadable Asset', colorClass: 'color-download', barScale: 100, isDownload: true }
-        ];
-
-        const gridContainer = document.getElementById('data-grid');
-
-        // Render Data Cards
-        directoryData.forEach((file) => {
-            const card = document.createElement('a');
-            card.className = `data-card ${file.colorClass}`;
-            card.href = file.url;
-            
-            // Add download attribute if it's the zip file
-            if(file.isDownload) {
-                card.setAttribute('download', '');
-            }
-
-            card.innerHTML = `
-                <div class="rank">${file.id}</div>
-                <div class="site-info">
-                    <h2>${file.name}</h2>
-                    <div class="sector-tag">${file.sector}</div>
-                </div>
-                <div class="traffic-data">DESC: ${file.desc}</div>
-                <div class="traffic-data">STATUS: ONLINE</div>
-                <div class="volume-container">
-                    <div class="volume-bar" style="width: 0%" data-target-width="${file.barScale}%"></div>
-                </div>
-            `;
-            gridContainer.appendChild(card);
-        });
-
-        // Animate Volume Bars on Load
-        setTimeout(() => {
-            document.querySelectorAll('.volume-bar').forEach(bar => {
-                bar.style.width = bar.getAttribute('data-target-width');
-            });
-        }, 300);
-
-        // --- 3D Moving Grid Background ---
-        const canvas = document.getElementById('cyber-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let gridOffset = 0;
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        resize();
-
-        function drawGrid() {
-            ctx.fillStyle = '#030508';
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.strokeStyle = 'rgba(0, 243, 255, 0.15)';
-            ctx.lineWidth = 1;
-
-            const horizon = height * 0.3; // High horizon line
-            const fov = 300;
-
-            ctx.beginPath();
-
-            // Draw vertical lines (perspective)
-            for (let i = -width; i < width * 2; i += 80) {
-                ctx.moveTo(width / 2, horizon);
-                ctx.lineTo(i, height);
-            }
-
-            // Draw horizontal lines (moving forward)
-            gridOffset = (gridOffset + 1) % 40;
-            for (let i = gridOffset; i < height - horizon; i += 40) {
-                // Closer lines are spaced further apart to fake 3D depth
-                let y = horizon + Math.pow(i, 1.4) * 0.2; 
-                if (y > height) break;
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-            }
-
-            ctx.stroke();
-            requestAnimationFrame(drawGrid);
-        }
-
-        drawGrid();
-    </script>
 </body>
 </html>
