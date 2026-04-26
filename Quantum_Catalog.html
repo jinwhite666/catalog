@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNIVEX // QUANTUM CLIENT SELECTION & DECISION TOOL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #030508;
+  --deep: #060b12;
+  --surface: #090f1c;
+  --panel: #0d1525;
+  --border: #1a2d50;
+  --border-hi: #0d4a8a;
+  --cyan: #00d4ff;
+  --cyan-dim: #0088bb;
+  --gold: #f0a500;
+  --gold-dim: #a87000;
+  --green: #00ff88;
+  --green-dim: #008844;
+  --purple: #b060ff;
+  --purple-dim: #6030aa;
+  --red: #ff4060;
+  --amber: #ffaa00;
+  --text-pri: #c8dff5;
+  --text-sec: #6a8ab0;
+  --text-dim: #3a5070;
+  --ibm: #6699ff;
+  --goog: #66cc88;
+  --qinn: #c080ff;
+  --rig: #ffc040;
+  --ionq: #00d4ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+body{background:var(--void);color:var(--text-pri);font-family:'Rajdhani',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,15,35,0.1) 3px,rgba(0,15,35,0.1) 4px);pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(3,5,8,0.97);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(10px)}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--cyan);letter-spacing:3px;font-weight:900}
+.nav-badge{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);border:1px solid var(--gold-dim);padding:3px 10px;border-radius:2px;letter-spacing:2px}
+
+/* TABS */
+.tabs{display:flex;background:var(--deep);border-bottom:1px solid var(--border);position:sticky;top:51px;z-index:190}
+.tab-btn{flex:1;padding:16px 24px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;font-weight:700;background:transparent;border:none;color:var(--text-dim);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;position:relative}
+.tab-btn:hover{color:var(--text-sec);background:rgba(0,212,255,0.03)}
+.tab-btn.active{color:var(--cyan);border-bottom-color:var(--cyan);background:rgba(0,212,255,0.05)}
+.tab-panel{display:none;position:relative;z-index:1}
+.tab-panel.active{display:block}
+
+/* SELECTION TOOL */
+.sel-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 103px)}
+.sel-sidebar{background:var(--deep);border-right:1px solid var(--border);padding:0;overflow-y:auto;max-height:calc(100vh - 103px);position:sticky;top:103px}
+.sb-section{border-bottom:1px solid var(--border)}
+.sb-head{padding:14px 20px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;background:rgba(0,212,255,0.04);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.sb-head span{font-size:9px;color:var(--text-dim)}
+.sb-body{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+
+/* FILTER ROW */
+.filter-row{padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px}
+.filter-chip{font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:2px;background:transparent;color:var(--text-sec);cursor:pointer;transition:all 0.15s;letter-spacing:1px}
+.filter-chip:hover{border-color:var(--cyan-dim);color:var(--cyan)}
+.filter-chip.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,0.08)}
+
+/* CHECKBOX ITEM */
+.chk-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:4px;cursor:pointer;transition:background 0.15s}
+.chk-item:hover{background:rgba(0,212,255,0.04)}
+.chk-item input[type=checkbox]{accent-color:var(--cyan);width:14px;height:14px;margin-top:3px;flex-shrink:0;cursor:pointer}
+.chk-label{flex:1}
+.chk-name{font-size:13px;color:var(--text-pri);font-weight:600;line-height:1.3}
+.chk-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-top:2px}
+.chk-price{font-family:'Orbitron',monospace;font-size:10px;color:var(--gold);margin-top:2px}
+.vendor-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;flex-shrink:0;margin-top:5px}
+
+/* MAIN CONTENT */
+.sel-main{padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;max-height:calc(100vh - 103px)}
+
+/* SECTION HEADER */
+.cat-head{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);padding:0 0 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cat-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan)}
+
+/* ITEM CARDS IN MAIN */
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.item-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:14px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden}
+.item-card:hover{border-color:var(--cyan-dim);transform:translateY(-1px)}
+.item-card.selected{border-color:var(--cyan);background:rgba(0,212,255,0.06)}
+.item-card.selected::after{content:'✓';position:absolute;top:8px;right:10px;color:var(--cyan);font-size:14px;font-weight:bold}
+.item-card.hidden{display:none}
+.ic-vendor{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;margin-bottom:6px}
+.ic-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#e0f0ff;letter-spacing:1px;margin-bottom:6px;padding-right:20px;line-height:1.3}
+.ic-desc{font-size:12px;color:var(--text-sec);line-height:1.4;margin-bottom:8px}
+.ic-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.ic-tag{font-family:'Share Tech Mono',monospace;font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:1px}
+.ic-price{font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);font-weight:700}
+
+/* CART */
+.cart-panel{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:16px}
+.cart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cart-title{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan)}
+.cart-actions{display:flex;gap:8px}
+.btn{font-family:'Share Tech Mono',monospace;font-size:10px;padding:6px 14px;border:1px solid;border-radius:2px;cursor:pointer;letter-spacing:1px;transition:all 0.15s}
+.btn-clear{border-color:var(--border);color:var(--text-dim);background:transparent}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+.btn-export{border-color:var(--gold-dim);color:var(--gold);background:rgba(240,165,0,0.08)}
+.btn-export:hover{background:rgba(240,165,0,0.15)}
+.cart-empty{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);text-align:center;padding:20px;letter-spacing:2px}
+.cart-items{display:flex;flex-direction:column;gap:6px}
+.cart-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;gap:8px}
+.ci-info{flex:1}
+.ci-name{font-size:13px;font-weight:600;color:var(--text-pri)}
+.ci-meta{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px}
+.ci-remove{font-size:16px;color:var(--text-dim);cursor:pointer;padding:0 4px;line-height:1}
+.ci-remove:hover{color:var(--red)}
+.cart-summary{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap}
+.cs-stat{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-sec);letter-spacing:1px}
+.cs-val{color:var(--cyan);font-weight:700}
+
+/* EXPORT MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border-hi);border-radius:8px;width:90%;max-width:700px;max-height:85vh;overflow-y:auto}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;color:var(--cyan)}
+.modal-close{font-size:20px;color:var(--text-dim);cursor:pointer;padding:0 4px}
+.modal-close:hover{color:var(--red)}
+.modal-body{padding:24px}
+.export-section{margin-bottom:20px}
+.ex-head{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:10px}
+.export-table{width:100%;border-collapse:collapse}
+.export-table th{background:var(--surface);font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);padding:8px 12px;text-align:left;border:1px solid var(--border);letter-spacing:1px}
+.export-table td{padding:8px 12px;border:1px solid var(--border);font-size:13px;color:var(--text-sec);vertical-align:top}
+.export-table td strong{color:var(--text-pri)}
+
+/* ========== WIZARD ========== */
+.wizard-layout{padding:32px;max-width:900px;margin:0 auto}
+.wiz-progress{display:flex;align-items:center;margin-bottom:32px;gap:0}
+.wiz-step{display:flex;align-items:center;flex:1}
+.wiz-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text-dim);flex-shrink:0;transition:all 0.3s;cursor:pointer}
+.wiz-dot.active{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,0.3)}
+.wiz-dot.done{border-color:var(--green-dim);background:rgba(0,255,136,0.1);color:var(--green)}
+.wiz-line{flex:1;height:1px;background:var(--border);transition:background 0.3s}
+.wiz-line.done{background:var(--green-dim)}
+.wiz-step-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;text-align:center;margin-top:6px;white-space:nowrap}
+
+.wiz-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:28px}
+.wiz-question{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;letter-spacing:1px;color:#e0f0ff;margin-bottom:8px}
+.wiz-hint{font-size:13px;color:var(--text-sec);margin-bottom:24px}
+.wiz-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.wiz-opt{padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all 0.15s;text-align:center}
+.wiz-opt:hover{border-color:var(--cyan-dim);background:rgba(0,212,255,0.04)}
+.wiz-opt.selected{border-color:var(--cyan);background:rgba(0,212,255,0.1)}
+.wiz-opt-icon{font-size:20px;margin-bottom:6px}
+.wiz-opt-label{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#e0f0ff;letter-spacing:1px}
+.wiz-opt-sub{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:4px;letter-spacing:1px}
+
+.wiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:24px}
+.wiz-btn{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;padding:10px 24px;border-radius:4px;cursor:pointer;transition:all 0.15s;border:1px solid}
+.wiz-btn-prev{border-color:var(--border);color:var(--text-sec);background:transparent}
+.wiz-btn-prev:hover{border-color:var(--text-sec);color:var(--text-pri)}
+.wiz-btn-next{border-color:var(--cyan-dim);color:var(--cyan);background:rgba(0,212,255,0.08)}
+.wiz-btn-next:hover{background:rgba(0,212,255,0.16);border-color:var(--cyan)}
+.wiz-btn-next:disabled{opacity:0.3;cursor:not-allowed}
+.wiz-btn-run{border-color:var(--gold-dim);color:var(--gold);background:rgba(240,165,0,0.1);font-size:11px;padding:12px 32px}
+.wiz-btn-run:hover{background:rgba(240,165,0,0.2)}
+
+/* RESULTS */
+.results-section{margin-top:28px}
+.res-head{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;color:var(--cyan);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.res-col-head{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--text-dim);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.rec-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:10px;transition:border-color 0.2s}
+.rec-card:hover{border-color:var(--cyan-dim)}
+.rec-rank{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-bottom:6px}
+.rec-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#e0f0ff;letter-spacing:1px;margin-bottom:6px;line-height:1.3}
+.rec-vendor{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;margin-bottom:8px}
+.rec-bar-wrap{background:var(--surface);border-radius:2px;height:6px;margin-bottom:6px;overflow:hidden}
+.rec-bar{height:100%;border-radius:2px;transition:width 0.8s ease}
+.rec-score{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan)}
+.rec-match{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px}
+.rec-reasons{margin-top:8px;font-size:11px;color:var(--text-sec);line-height:1.5}
+.rec-reasons li{list-style:none;padding-left:12px;position:relative}
+.rec-reasons li::before{content:'▸';position:absolute;left:0;color:var(--cyan-dim);font-size:9px;top:2px}
+
+.wiz-reset{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);border:1px solid var(--border);background:transparent;padding:6px 16px;border-radius:2px;cursor:pointer;letter-spacing:1px;margin-top:20px}
+.wiz-reset:hover{border-color:var(--red);color:var(--red)}
+
+/* TAG COLORS */
+.t-ibm{color:var(--ibm);border-color:rgba(102,153,255,0.3);background:rgba(102,153,255,0.08)}
+.t-goog{color:var(--goog);border-color:rgba(102,204,136,0.3);background:rgba(102,204,136,0.08)}
+.t-qinn{color:var(--qinn);border-color:rgba(192,128,255,0.3);background:rgba(192,128,255,0.08)}
+.t-rig{color:var(--rig);border-color:rgba(255,192,64,0.3);background:rgba(255,192,64,0.08)}
+.t-ionq{color:var(--ionq);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.08)}
+.t-cyan{color:var(--cyan);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.08)}
+.t-gold{color:var(--gold);border-color:rgba(240,165,0,0.3);background:rgba(240,165,0,0.08)}
+.t-green{color:var(--green);border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.08)}
+.t-purple{color:var(--purple);border-color:rgba(176,96,255,0.3);background:rgba(176,96,255,0.08)}
+.t-red{color:var(--red);border-color:rgba(255,64,96,0.3);background:rgba(255,64,96,0.08)}
+.t-amber{color:var(--amber);border-color:rgba(255,170,0,0.3);background:rgba(255,170,0,0.08)}
+
+@media(max-width:900px){
+  .sel-layout{grid-template-columns:1fr}
+  .sel-sidebar{position:static;max-height:none}
+  .results-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">OMNIVEX // QUANTUM CLIENT TOOLS</div>
+  <div class="nav-badge">APRIL 2026</div>
+</nav>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('selection')">// 01 · CLIENT SELECTION TOOL</button>
+  <button class="tab-btn" onclick="switchTab('wizard')">// 02 · DECISION WIZARD</button>
+</div>
+
+<!-- ========== TAB 1: SELECTION TOOL ========== -->
+<div class="tab-panel active" id="tab-selection">
+<div class="sel-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sel-sidebar">
+
+    <div class="sb-section">
+      <div class="sb-head" onclick="toggleSb(this)">
+        VENDORS <span>▾</span>
+      </div>
+      <div class="sb-body" id="sb-vendors">
+        <label class="chk-item"><input type="checkbox" data-group="vendor" data-val="ibm" onchange="applyFilters()"><span class="vendor-dot" style="background:var(--ibm)"></span><div class="chk-label"><div class="chk-name">IBM Quantum</div><div class="chk-meta">SUPERCONDUCTING · QISKIT</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="vendor" data-val="google" onchange="applyFilters()"><span class="vendor-dot" style="background:var(--goog)"></span><div class="chk-label"><div class="chk-name">Google Quantum AI</div><div class="chk-meta">SUPERCONDUCTING · CIRQ</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="vendor" data-val="quantinuum" onchange="applyFilters()"><span class="vendor-dot" style="background:var(--qinn)"></span><div class="chk-label"><div class="chk-name">Quantinuum</div><div class="chk-meta">TRAPPED-ION · HELIOS</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="vendor" data-val="rigetti" onchange="applyFilters()"><span class="vendor-dot" style="background:var(--rig)"></span><div class="chk-label"><div class="chk-name">Rigetti Computing</div><div class="chk-meta">SUPERCONDUCTING · NOVERA</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="vendor" data-val="ionq" onchange="applyFilters()"><span class="vendor-dot" style="background:var(--ionq)"></span><div class="chk-label"><div class="chk-name">IonQ</div><div class="chk-meta">TRAPPED-ION · $130M REV</div></div></label>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-head" onclick="toggleSb(this)">
+        CATEGORY <span>▾</span>
+      </div>
+      <div class="sb-body" id="sb-cat">
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="hardware" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Hardware / QPU</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="cloud" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Cloud Access</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="software" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Software / SDK</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="security" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Security / PQC</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="advisory" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Advisory Services</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="technical" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Technical Delivery</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="managed" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Managed / Retainer</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="cat" data-val="free" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Free / Door-Opener</div></div></label>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-head" onclick="toggleSb(this)">
+        BUDGET <span>▾</span>
+      </div>
+      <div class="sb-body" id="sb-budget">
+        <label class="chk-item"><input type="checkbox" data-group="budget" data-val="free" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Free / Zero Cost</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="budget" data-val="low" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Under ₹5L / &lt;$50K</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="budget" data-val="mid" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">₹5L–₹25L / $50K–$200K</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="budget" data-val="high" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">₹25L–₹1Cr / $200K–$1M</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="budget" data-val="enterprise" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">₹1Cr+ / $1M+ Enterprise</div></div></label>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-head" onclick="toggleSb(this)">
+        TYPE <span>▾</span>
+      </div>
+      <div class="sb-body" id="sb-type">
+        <label class="chk-item"><input type="checkbox" data-group="type" data-val="product" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Products (Vendor)</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="type" data-val="service" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Consulting Services</div></div></label>
+        <label class="chk-item"><input type="checkbox" data-group="type" data-val="dooropener" onchange="applyFilters()"><div class="chk-label"><div class="chk-name">Door-Openers (Free)</div></div></label>
+      </div>
+    </div>
+
+    <div style="padding:14px 16px">
+      <button class="btn btn-clear" style="width:100%" onclick="clearAllFilters()">CLEAR ALL FILTERS</button>
+    </div>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="sel-main">
+
+    <!-- CART -->
+    <div class="cart-panel">
+      <div class="cart-head">
+        <div class="cart-title">// SELECTION CART</div>
+        <div class="cart-actions">
+          <button class="btn btn-clear" onclick="clearCart()">CLEAR</button>
+          <button class="btn btn-export" onclick="showExport()">EXPORT SUMMARY ↗</button>
+        </div>
+      </div>
+      <div id="cart-content">
+        <div class="cart-empty" id="cart-empty">NO ITEMS SELECTED — CHECK ITEMS BELOW TO BUILD YOUR SHORTLIST</div>
+        <div class="cart-items" id="cart-items" style="display:none"></div>
+        <div class="cart-summary" id="cart-summary" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div id="section-products">
+      <div class="cat-head">
+        <span>VENDOR PRODUCTS</span>
+        <span class="cat-count" id="prod-count">31 PRODUCTS</span>
+      </div>
+      <div class="item-grid" id="grid-products"></div>
+    </div>
+
+    <!-- SERVICES -->
+    <div id="section-services">
+      <div class="cat-head" style="margin-top:16px">
+        <span>CONSULTING SERVICES</span>
+        <span class="cat-count" id="svc-count">13 SERVICES</span>
+      </div>
+      <div class="item-grid" id="grid-services"></div>
+    </div>
+
+    <!-- DOOR-OPENERS -->
+    <div id="section-dooropeners">
+      <div class="cat-head" style="margin-top:16px">
+        <span>FREE DOOR-OPENERS</span>
+        <span class="cat-count" id="door-count">10 STRATEGIES</span>
+      </div>
+      <div class="item-grid" id="grid-dooropeners"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ========== TAB 2: DECISION WIZARD ========== -->
+<div class="tab-panel" id="tab-wizard">
+<div class="wizard-layout">
+
+  <!-- PROGRESS -->
+  <div style="margin-bottom:8px">
+    <div class="wiz-progress" id="wiz-progress"></div>
+    <div style="display:flex;gap:0" id="wiz-labels"></div>
+  </div>
+
+  <div class="wiz-card" id="wiz-card">
+    <div class="wiz-question" id="wiz-q"></div>
+    <div class="wiz-hint" id="wiz-hint"></div>
+    <div class="wiz-options" id="wiz-opts"></div>
+    <div class="wiz-nav">
+      <button class="wiz-btn wiz-btn-prev" id="wiz-prev" onclick="wizPrev()">← BACK</button>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px" id="wiz-step-counter"></div>
+      <button class="wiz-btn wiz-btn-next" id="wiz-next" onclick="wizNext()">NEXT →</button>
+    </div>
+  </div>
+
+  <div class="results-section" id="wiz-results" style="display:none"></div>
+
+</div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">// SELECTION SUMMARY EXPORT</div>
+      <span class="modal-close" onclick="closeModal()">✕</span>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const VENDORS = {
+  ibm: { label: 'IBM Quantum', color: '#6699ff', cls: 't-ibm' },
+  google: { label: 'Google Quantum AI', color: '#66cc88', cls: 't-goog' },
+  quantinuum: { label: 'Quantinuum', color: '#c080ff', cls: 't-qinn' },
+  rigetti: { label: 'Rigetti', color: '#ffc040', cls: 't-rig' },
+  ionq: { label: 'IonQ', color: '#00d4ff', cls: 't-ionq' },
+  multi: { label: 'Multi-Vendor', color: '#a0c0e0', cls: 't-cyan' }
+};
+
+const PRODUCTS = [
+  { id:'p1', type:'product', vendor:'ibm', cat:'cloud', budget:'free', name:'IBM Quantum Open Plan', desc:'10 min/month free cloud access on 100+ qubit systems. Zero cost, instant activation.', tags:['cloud','free','qiskit'], price:'FREE' },
+  { id:'p2', type:'product', vendor:'ibm', cat:'cloud', budget:'low', name:'Pay-As-You-Go Plan', desc:'$96/min billed per second. No commitment. Perfect for PoC development.', tags:['cloud','payg'], price:'$96/MIN' },
+  { id:'p3', type:'product', vendor:'ibm', cat:'cloud', budget:'mid', name:'Flex Plan', desc:'$72/min pre-purchased compute blocks. Min 400 min/year. 25% vs PAYG.', tags:['cloud','flex'], price:'$72/MIN' },
+  { id:'p4', type:'product', vendor:'ibm', cat:'cloud', budget:'high', name:'Premium Plan', desc:'$48/min annual subscription. 5,200 min/year. Enterprise SLA + dedicated support.', tags:['cloud','enterprise'], price:'$48/MIN' },
+  { id:'p5', type:'product', vendor:'ibm', cat:'software', budget:'free', name:'Qiskit Functions Catalog', desc:'SaaS quantum functions for finance, chemistry, logistics. Bundled with compute plans.', tags:['software','saas'], price:'BUNDLED' },
+  { id:'p6', type:'product', vendor:'ibm', cat:'hardware', budget:'enterprise', name:'Quantum-Centric Supercomputing Ref.', desc:'IBM 2026 HPC integration architecture. Modular hybrid quantum-classical for data centres.', tags:['hpc','hybrid'], price:'CONTACT IBM' },
+  { id:'p7', type:'product', vendor:'google', cat:'hardware', budget:'enterprise', name:'Willow Quantum Processor', desc:'First verifiable quantum advantage chip (Nature, Oct 2025). Research partners only.', tags:['hardware','research'], price:'PARTNER ACCESS' },
+  { id:'p8', type:'product', vendor:'google', cat:'software', budget:'free', name:'Cirq Framework', desc:'Open-source Python library for quantum circuits. Apache 2.0 license. Free simulator included.', tags:['software','free','oss'], price:'FREE' },
+  { id:'p9', type:'product', vendor:'google', cat:'cloud', budget:'enterprise', name:'GCP Quantum AI Access', desc:'Cloud access for approved research/commercial partners. Integrates with Vertex AI, BigQuery.', tags:['cloud','gcp'], price:'PARTNER' },
+  { id:'p10', type:'product', vendor:'google', cat:'software', budget:'free', name:'Quantum AI Learning Resources', desc:'Free tutorials, notebooks, and courses on quantum computing and Cirq programming.', tags:['education','free'], price:'FREE' },
+  { id:'p11', type:'product', vendor:'quantinuum', cat:'hardware', budget:'enterprise', name:'Helios Quantum Computer', desc:'98 all-to-all connected trapped-ion qubits. 99.9975% fidelity. NVIDIA GB200 via NVQLink.', tags:['hardware','flagship'], price:'ENTERPRISE' },
+  { id:'p12', type:'product', vendor:'quantinuum', cat:'hardware', budget:'high', name:'H2 System Model', desc:'Racetrack QCCD architecture on Azure Quantum. HQC credit billing. Production GA.', tags:['hardware','azure'], price:'HQC CREDITS' },
+  { id:'p13', type:'product', vendor:'quantinuum', cat:'security', budget:'mid', name:'Quantum Origin (QRNG)', desc:'Quantum random number generator for encryption key hardening. FIPS, NIST PQC ready. Critical for BFSI.', tags:['security','qrng'], price:'SUBSCRIPTION' },
+  { id:'p14', type:'product', vendor:'quantinuum', cat:'software', budget:'mid', name:'InQuanto — Quantum Chemistry', desc:'Computational chemistry platform for pharma, energy, materials. Runs on H-series and Helios.', tags:['chemistry','software'], price:'LICENSE' },
+  { id:'p15', type:'product', vendor:'quantinuum', cat:'cloud', budget:'mid', name:'Nexus Platform', desc:'All-in-one platform for H-series and Helios. Includes Selene emulator, TKET, Guppy.', tags:['platform','cloud'], price:'BUNDLED' },
+  { id:'p16', type:'product', vendor:'quantinuum', cat:'software', budget:'free', name:'TKET + Guppy SDK', desc:'Gate-level SDK + hybrid quantum-classical language. Guppy is open source. CUDA-Q compatible.', tags:['sdk','free','oss'], price:'FREE/OPEN' },
+  { id:'p17', type:'product', vendor:'rigetti', cat:'hardware', budget:'enterprise', name:'Novera QPU — 9-Qubit On-Prem', desc:'Only commercially purchasable QPU in the market. Ships today. Designed for labs, defence, sovereign.', tags:['hardware','onprem','unique'], price:'CONTACT RIGETTI' },
+  { id:'p18', type:'product', vendor:'rigetti', cat:'cloud', budget:'low', name:'Rigetti Cloud QPU Access', desc:'$0.30/task + execution time via Amazon Braket. QVM simulator free. No per-gate charges.', tags:['cloud','braket'], price:'$0.30/TASK' },
+  { id:'p19', type:'product', vendor:'rigetti', cat:'software', budget:'free', name:'Quil / Forest SDK', desc:'Quantum instruction language and Forest SDK. QVM virtual machine simulator free to all users.', tags:['sdk','free','oss'], price:'FREE' },
+  { id:'p20', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'IonQ Tempo — Current System', desc:'Trapped-ion 2D array. Available AWS/Azure/GCP. 99.99% 2Q fidelity target for 2026.', tags:['hardware','cloud'], price:'AQT TOKENS' },
+  { id:'p21', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'256-Qubit Platform (2026)', desc:'12 logical qubits, <1E-7 logical error. On track for 2026. Part of 2M+ qubit roadmap.', tags:['hardware','roadmap'], price:'ROADMAP 2026' },
+  { id:'p22', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'Quantum Networking Platform', desc:'Quantum-secured comms. Remote entanglement + telecom wavelength conversion. Europe deployed.', tags:['networking','security'], price:'ENTERPRISE' },
+  { id:'p23', type:'product', vendor:'ionq', cat:'security', budget:'enterprise', name:'Quantum Security Platform', desc:'Post-quantum cryptography for BFSI, defence, government. NIST PQC standards compliant.', tags:['security','pqc'], price:'ENTERPRISE' },
+  { id:'p24', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'Quantum Sensing Platform', desc:'Ultra-precise sensing for navigation, imaging, resource discovery. Defence, mining, medical.', tags:['sensing','defence'], price:'PARTNER' },
+  { id:'p25', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'Quantum Space Infrastructure', desc:'Space-based sovereign quantum computing. KISTI 100Q system sold. DARPA benchmarking active.', tags:['defence','sovereign','unique'], price:'GOV/TENDER' },
+  { id:'p26', type:'product', vendor:'ionq', cat:'cloud', budget:'low', name:'IonQ Quantum Cloud (Multi-Platform)', desc:'Access in <10 minutes via AWS ($0.30/task + $0.08/shot), Azure (AQT), or GCP.', tags:['cloud','aws','azure'], price:'$0.30/TASK' },
+  { id:'p27', type:'product', vendor:'ionq', cat:'hardware', budget:'enterprise', name:'Fault-Tolerant Blueprint + Services', desc:'10,000-qubit architecture blueprint (2026). Most comprehensive in industry. Co-dev partnerships.', tags:['blueprint','research'], price:'PARTNERSHIP' }
+];
+
+const SERVICES = [
+  { id:'s1', type:'service', vendor:'multi', cat:'advisory', budget:'low', name:'Quantum Readiness Assessment', desc:'Vendor-neutral maturity assessment. 20-dimension scorecard, use-case mapping, exec briefing.', tags:['advisory','tier-a'], price:'₹2.5L–₹5L', duration:'2–3 WEEKS' },
+  { id:'s2', type:'service', vendor:'multi', cat:'advisory', budget:'low', name:'PQC Cryptography Risk Audit', desc:'Audit crypto infrastructure against NIST PQC. PKI, TLS, key mgmt, blockchain exposure.', tags:['security','advisory','tier-a'], price:'₹4L–₹10L', duration:'3–5 WEEKS' },
+  { id:'s3', type:'service', vendor:'multi', cat:'advisory', budget:'mid', name:'Quantum Vendor Selection Advisory', desc:'RFI/RFP development and vendor evaluation across IBM, Google, Quantinuum, IonQ, Rigetti.', tags:['advisory','tier-a'], price:'₹5L–₹12L', duration:'4–8 WEEKS' },
+  { id:'s4', type:'service', vendor:'multi', cat:'advisory', budget:'mid', name:'Quantum Strategy Roadmap', desc:'3-year quantum adoption roadmap. Use-case phasing, vendor partners, budget planning.', tags:['strategy','advisory','tier-a'], price:'₹10L–₹25L', duration:'6–10 WEEKS' },
+  { id:'s5', type:'service', vendor:'ibm', cat:'technical', budget:'mid', name:'IBM Quantum PoC — BFSI Workload', desc:'90-day PoC on IBM Quantum for a specific BFSI workload. Qiskit design, benchmarking, BoD report.', tags:['poc','ibm','tier-b'], price:'₹8L–₹20L', duration:'90 DAYS' },
+  { id:'s6', type:'service', vendor:'quantinuum', cat:'technical', budget:'mid', name:'Quantinuum Helios PoC — Financial Analytics', desc:'Helios PoC for derivatives pricing, portfolio optimisation, credit risk. NVIDIA GB200 integration.', tags:['poc','quantinuum','tier-b'], price:'₹12L–₹30L', duration:'90 DAYS' },
+  { id:'s7', type:'service', vendor:'ionq', cat:'technical', budget:'mid', name:'IonQ Quantum Algorithm Development', desc:'Custom VQE/QAOA/QML algorithms on IonQ trapped-ion hardware. Multi-platform AWS/Azure/GCP.', tags:['development','ionq','tier-b'], price:'₹8L–₹18L', duration:'60–90 DAYS' },
+  { id:'s8', type:'service', vendor:'rigetti', cat:'technical', budget:'high', name:'Rigetti Novera Deployment Advisory', desc:'Full advisory for on-premises Novera QPU procurement, facility, integration, training.', tags:['onprem','rigetti','tier-b'], price:'₹15L–₹40L', duration:'3–6 MONTHS' },
+  { id:'s9', type:'service', vendor:'quantinuum', cat:'technical', budget:'mid', name:'Quantum Encryption Key Upgrade (QRNG)', desc:'Implement Quantinuum Quantum Origin QRNG into PKI/key management infrastructure.', tags:['security','qrng','tier-b'], price:'₹6L–₹15L', duration:'4–8 WEEKS' },
+  { id:'s10', type:'service', vendor:'multi', cat:'technical', budget:'high', name:'Quantum-HPC Hybrid Integration', desc:'Integrate IBM Quantum or IonQ cloud with existing HPC. Orchestration pipeline, monitoring.', tags:['hpc','integration','tier-c'], price:'₹20L–₹50L', duration:'3–6 MONTHS' },
+  { id:'s11', type:'service', vendor:'multi', cat:'security', budget:'high', name:'PQC Migration Implementation', desc:'Full NIST PQC migration. TLS 1.3, ML-KEM, ML-DSA, SLH-DSA. SEBI/RBI compliance package.', tags:['pqc','security','tier-c'], price:'₹25L–₹80L', duration:'4–9 MONTHS' },
+  { id:'s12', type:'service', vendor:'ionq', cat:'technical', budget:'enterprise', name:'Quantum Network Architecture (IonQ)', desc:'QKD architecture and quantum-secured network design. Telecom integration, TRAI/DoT compliance.', tags:['networking','tier-c'], price:'₹30L–₹1Cr', duration:'6–12 MONTHS' },
+  { id:'s13', type:'service', vendor:'multi', cat:'managed', budget:'mid', name:'Quantum Advisory Retainer — Monthly', desc:'Monthly advisory: market intel, vendor mgmt, use-case pipeline, up to 8 hrs/month.', tags:['retainer','managed','tier-d'], price:'₹3L–₹8L/MO', duration:'MIN 6 MONTHS' },
+  { id:'s14', type:'service', vendor:'multi', cat:'managed', budget:'high', name:'Quantum Innovation Program — Annual', desc:'Full-year program: 4 quarterly PoC cycles, team training, vendor mgmt, board reports.', tags:['program','managed','tier-d'], price:'₹30L–₹80L/YR', duration:'12 MONTHS' },
+  { id:'s15', type:'service', vendor:'multi', cat:'managed', budget:'mid', name:'Quantum Computing Masterclass — BFSI', desc:'2-day intensive for BFSI teams. Fundamentals + hands-on Qiskit/Cirq labs. PQC, risk, portfolio.', tags:['training','tier-d'], price:'₹4L–₹8L', duration:'2 DAYS' }
+];
+
+const DOOR_OPENERS = [
+  { id:'d1', type:'dooropener', vendor:'ibm', cat:'free', budget:'free', name:'IBM Quantum Free Account + Workshop', desc:'Run first quantum circuit on real IBM hardware. 0 cost. Leads to paid Quantum Readiness Report (₹2–5L).', tags:['free','ibm','workshop'], price:'FREE', pitch:'Let\'s run your first quantum circuit on real IBM hardware today — no cost, no procurement.' },
+  { id:'d2', type:'dooropener', vendor:'ibm', cat:'free', budget:'free', name:'IBM Quantum Network Briefing', desc:'90-min private briefing on 300+ global enterprise IBM Quantum use cases. Leads to paid use-case feasibility study.', tags:['free','ibm','briefing'], price:'FREE', pitch:'I\'ll host a 90-minute private briefing on how 300+ global enterprises are using IBM Quantum.' },
+  { id:'d3', type:'dooropener', vendor:'google', cat:'free', budget:'free', name:'Cirq Install + Quantum Algorithm Demo', desc:'Free Cirq setup + live quantum optimisation demo on client data. Leads to paid algorithm development (₹5–12L).', tags:['free','google','demo'], price:'FREE', pitch:'We\'ll install Cirq and run a live quantum optimization demo on your data — zero spend.' },
+  { id:'d4', type:'dooropener', vendor:'quantinuum', cat:'free', budget:'free', name:'Quantum Origin QRNG Free Trial', desc:'Register security team for Quantum Origin trial. Strengthens AES keys immediately. Leads to PQC audit (₹4–10L).', tags:['free','quantinuum','qrng'], price:'FREE', pitch:'Let me get your security team registered today — it strengthens AES encryption keys immediately.' },
+  { id:'d5', type:'dooropener', vendor:'quantinuum', cat:'free', budget:'free', name:'Selene Emulator — Free Algorithm Testing', desc:'Free eHQC access to Quantinuum Selene emulator. Test financial model algorithms before hardware spend.', tags:['free','quantinuum','emulator'], price:'FREE', pitch:'Let\'s test your financial model algorithm on Selene before committing to real quantum hardware spend.' },
+  { id:'d6', type:'dooropener', vendor:'rigetti', cat:'free', budget:'free', name:'Free QVM Demo on Client Use Case', desc:'Rigetti QVM free on AWS Braket. Run logistics/portfolio optimisation live in client environment.', tags:['free','rigetti','demo'], price:'FREE', pitch:'Rigetti\'s QVM simulator is free on AWS Braket. I\'ll run your optimization problem — live, today.' },
+  { id:'d7', type:'dooropener', vendor:'rigetti', cat:'free', budget:'free', name:'Novera On-Prem QPU Briefing', desc:'Brief on Rigetti\'s Novera purchasable QPU for classified/sovereign environments. Leads to Sovereign QI Assessment (₹8–20L).', tags:['free','rigetti','briefing'], price:'FREE', pitch:'Did you know you can now own a quantum processor on-site? Let me brief your team on Novera.' },
+  { id:'d8', type:'dooropener', vendor:'ionq', cat:'free', budget:'free', name:'IonQ Cloud Quickstart — 10 Minutes', desc:'Access IonQ quantum computer in under 10 minutes via AWS/Azure. Live demo in team meeting.', tags:['free','ionq','demo'], price:'FREE', pitch:'IonQ guarantees quantum access in under 10 minutes. Let\'s do it live in your next team meeting.' },
+  { id:'d9', type:'dooropener', vendor:'ionq', cat:'free', budget:'free', name:'Post-Quantum Cryptography Threat Briefing', desc:'Free 60-min PQC threat briefing. NIST PQC standards, blockchain/PKI vulnerabilities. Leads to PQC Assessment (₹6–15L).', tags:['free','ionq','pqc'], price:'FREE', pitch:'I\'ll brief your security team on what Harvest-Now-Decrypt-Later means for your institution.' },
+  { id:'d10', type:'dooropener', vendor:'multi', cat:'free', budget:'free', name:'Quantum Readiness Maturity Scorecard', desc:'Vendor-neutral 20-question scorecard. Takes 45 mins, gives maturity rating vs global BFSI peers. Leads to Strategy Roadmap (₹10–25L).', tags:['free','multi','assessment'], price:'FREE', pitch:'I\'ll run your organisation through a vendor-neutral Quantum Readiness Scorecard — free, 45 minutes.' }
+];
+
+const ALL_ITEMS = [...PRODUCTS, ...SERVICES, ...DOOR_OPENERS];
+
+// ============================================================
+// CART STATE
+// ============================================================
+let cart = new Set();
+let activeFilters = { vendor: new Set(), cat: new Set(), budget: new Set(), type: new Set() };
+
+function getVendorColor(vendor) { return VENDORS[vendor]?.color || '#aaa'; }
+function getVendorLabel(vendor) { return VENDORS[vendor]?.label || vendor; }
+function getVendorCls(vendor) { return VENDORS[vendor]?.cls || ''; }
+
+// ============================================================
+// RENDER GRIDS
+// ============================================================
+function renderItem(item) {
+  const selected = cart.has(item.id);
+  const color = getVendorColor(item.vendor);
+  const vcls = getVendorCls(item.vendor);
+  const tagsHtml = item.tags.slice(0, 3).map(t => `<span class="ic-tag t-cyan" style="font-size:9px">${t.toUpperCase()}</span>`).join('');
+  const priceHtml = item.price ? `<div class="ic-price">${item.price}</div>` : '';
+  const durationHtml = item.duration ? `<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim)">${item.duration}</div>` : '';
+  return `<div class="item-card ${selected ? 'selected' : ''}" id="card-${item.id}" onclick="toggleItem('${item.id}')">
+    <div class="ic-vendor" style="color:${color}">${getVendorLabel(item.vendor).toUpperCase()}</div>
+    <div class="ic-name">${item.name}</div>
+    <div class="ic-desc">${item.desc}</div>
+    <div class="ic-tags">${tagsHtml}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">${priceHtml}${durationHtml}</div>
+  </div>`;
+}
+
+function renderAll() {
+  const vf = activeFilters.vendor;
+  const cf = activeFilters.cat;
+  const bf = activeFilters.budget;
+  const tf = activeFilters.type;
+
+  function passes(item) {
+    if (vf.size > 0 && !vf.has(item.vendor)) return false;
+    if (tf.size > 0 && !tf.has(item.type)) return false;
+    if (bf.size > 0) {
+      if (!bf.has(item.budget)) return false;
+    }
+    if (cf.size > 0) {
+      const matches = cf.has(item.cat) ||
+        (item.type === 'dooropener' && cf.has('free')) ||
+        (item.type === 'product' && (cf.has('hardware') && item.cat === 'hardware' || cf.has('cloud') && item.cat === 'cloud' || cf.has('software') && item.cat === 'software' || cf.has('security') && item.cat === 'security')) ||
+        (item.type === 'service' && (cf.has('advisory') && item.cat === 'advisory' || cf.has('technical') && item.cat === 'technical' || cf.has('managed') && item.cat === 'managed' || cf.has('security') && item.cat === 'security'));
+      if (!matches) return false;
+    }
+    return true;
+  }
+
+  const prods = PRODUCTS.filter(passes);
+  const svcs = SERVICES.filter(passes);
+  const doors = DOOR_OPENERS.filter(passes);
+
+  document.getElementById('grid-products').innerHTML = prods.map(renderItem).join('') || '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:11px;padding:20px;letter-spacing:2px">NO PRODUCTS MATCH CURRENT FILTERS</div>';
+  document.getElementById('grid-services').innerHTML = svcs.map(renderItem).join('') || '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:11px;padding:20px;letter-spacing:2px">NO SERVICES MATCH CURRENT FILTERS</div>';
+  document.getElementById('grid-dooropeners').innerHTML = doors.map(renderItem).join('') || '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:11px;padding:20px;letter-spacing:2px">NO DOOR-OPENERS MATCH CURRENT FILTERS</div>';
+
+  document.getElementById('prod-count').textContent = prods.length + ' PRODUCTS';
+  document.getElementById('svc-count').textContent = svcs.length + ' SERVICES';
+  document.getElementById('door-count').textContent = doors.length + ' STRATEGIES';
+}
+
+function applyFilters() {
+  document.querySelectorAll('input[data-group]').forEach(chk => {
+    const g = chk.dataset.group;
+    const v = chk.dataset.val;
+    if (chk.checked) activeFilters[g].add(v);
+    else activeFilters[g].delete(v);
+  });
+  renderAll();
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('input[data-group]').forEach(chk => chk.checked = false);
+  Object.keys(activeFilters).forEach(k => activeFilters[k].clear());
+  renderAll();
+}
+
+function toggleSb(el) {
+  const body = el.nextElementSibling;
+  const arrow = el.querySelector('span');
+  if (body.style.display === 'none') { body.style.display = 'flex'; arrow.textContent = '▾'; }
+  else { body.style.display = 'none'; arrow.textContent = '▸'; }
+}
+
+// ============================================================
+// CART LOGIC
+// ============================================================
+function toggleItem(id) {
+  if (cart.has(id)) cart.delete(id);
+  else cart.add(id);
+  updateCardVisual(id);
+  renderCart();
+}
+
+function updateCardVisual(id) {
+  const el = document.getElementById('card-' + id);
+  if (!el) return;
+  if (cart.has(id)) el.classList.add('selected');
+  else el.classList.remove('selected');
+}
+
+function clearCart() {
+  cart.forEach(id => {
+    cart.delete(id);
+    const el = document.getElementById('card-' + id);
+    if (el) el.classList.remove('selected');
+  });
+  renderCart();
+}
+
+function renderCart() {
+  const items = ALL_ITEMS.filter(i => cart.has(i.id));
+  const emptyEl = document.getElementById('cart-empty');
+  const itemsEl = document.getElementById('cart-items');
+  const summaryEl = document.getElementById('cart-summary');
+
+  if (items.length === 0) {
+    emptyEl.style.display = 'block';
+    itemsEl.style.display = 'none';
+    summaryEl.style.display = 'none';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  itemsEl.style.display = 'flex';
+  summaryEl.style.display = 'flex';
+
+  const vendorSet = new Set(items.map(i => i.vendor));
+  itemsEl.innerHTML = items.map(i => `
+    <div class="cart-item">
+      <div class="ci-info">
+        <div class="ci-name">${i.name}</div>
+        <div class="ci-meta" style="color:${getVendorColor(i.vendor)}">${getVendorLabel(i.vendor).toUpperCase()} · ${i.type.toUpperCase()} · ${i.price || ''}</div>
+      </div>
+      <span class="ci-remove" onclick="toggleItem('${i.id}')">✕</span>
+    </div>`).join('');
+
+  const prods = items.filter(i => i.type === 'product').length;
+  const svcs = items.filter(i => i.type === 'service').length;
+  const doors = items.filter(i => i.type === 'dooropener').length;
+  summaryEl.innerHTML = `
+    <span class="cs-stat">TOTAL: <span class="cs-val">${items.length}</span></span>
+    <span class="cs-stat">PRODUCTS: <span class="cs-val">${prods}</span></span>
+    <span class="cs-stat">SERVICES: <span class="cs-val">${svcs}</span></span>
+    <span class="cs-stat">DOOR-OPENERS: <span class="cs-val">${doors}</span></span>
+    <span class="cs-stat">VENDORS: <span class="cs-val">${vendorSet.size}</span></span>`;
+}
+
+function showExport() {
+  const items = ALL_ITEMS.filter(i => cart.has(i.id));
+  if (items.length === 0) { alert('No items selected. Please check items in the grid first.'); return; }
+
+  const groups = { product: 'VENDOR PRODUCTS', service: 'CONSULTING SERVICES', dooropener: 'FREE DOOR-OPENERS' };
+  let html = '';
+
+  ['product', 'service', 'dooropener'].forEach(type => {
+    const subset = items.filter(i => i.type === type);
+    if (!subset.length) return;
+    html += `<div class="export-section">
+      <div class="ex-head">${groups[type]} (${subset.length})</div>
+      <table class="export-table">
+        <thead><tr><th>NAME</th><th>VENDOR</th><th>PRICE / RANGE</th>${type === 'dooropener' ? '<th>PITCH</th>' : '<th>DESCRIPTION</th>'}</tr></thead>
+        <tbody>
+          ${subset.map(i => `<tr>
+            <td><strong>${i.name}</strong></td>
+            <td style="color:${getVendorColor(i.vendor)}">${getVendorLabel(i.vendor)}</td>
+            <td style="color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:11px">${i.price}${i.duration ? '<br><span style="color:var(--text-dim)">' + i.duration + '</span>' : ''}</td>
+            <td>${type === 'dooropener' ? (i.pitch || i.desc) : i.desc}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  });
+
+  const vendorSet = [...new Set(items.map(i => i.vendor))];
+  html += `<div class="export-section">
+    <div class="ex-head">SUMMARY</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      ${['Total Items: ' + items.length, 'Products: ' + items.filter(i=>i.type==='product').length, 'Services: ' + items.filter(i=>i.type==='service').length, 'Door-Openers: ' + items.filter(i=>i.type==='dooropener').length, 'Vendors: ' + vendorSet.length].map(s => `<span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-sec)">${s}</span>`).join('')}
+    </div>
+    <div style="margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim)">VENDORS COVERED: ${vendorSet.map(v => `<span style="color:${getVendorColor(v)}">${getVendorLabel(v)}</span>`).join(' · ')}</div>
+  </div>`;
+
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modal-overlay').classList.remove('show'); }
+
+// ============================================================
+// WIZARD
+// ============================================================
+const WIZ_STEPS = [
+  {
+    id: 'industry',
+    q: 'What is the client\'s industry?',
+    hint: 'This determines the primary regulatory context, use cases, and vendor fit.',
+    opts: [
+      { val: 'bfsi', label: 'BFSI', sub: 'Banks, Insurance, Capital Markets', icon: '🏦' },
+      { val: 'hft', label: 'HFT / Quant', sub: 'Algorithmic & High-Frequency Trading', icon: '📈' },
+      { val: 'healthcare', label: 'Healthcare', sub: 'Pharma, Hospitals, Life Sciences', icon: '🏥' },
+      { val: 'manufacturing', label: 'Manufacturing', sub: 'Industrial, Automotive, Supply Chain', icon: '🏭' },
+      { val: 'fintech', label: 'FinTech', sub: 'Payments, Lending, InsurTech', icon: '💳' },
+      { val: 'government', label: 'Government', sub: 'Defence, Intelligence, Public Sector', icon: '🏛️' },
+      { val: 'enterprise', label: 'Enterprise', sub: 'Large Corporates, Conglomerates', icon: '🏢' },
+      { val: 'gcc', label: 'GCC / Research', sub: 'Global Capability Centres, Academia', icon: '🔬' }
+    ]
+  },
+  {
+    id: 'challenge',
+    q: 'What is the primary business challenge?',
+    hint: 'Select the most pressing problem the client wants to solve.',
+    opts: [
+      { val: 'security', label: 'Security Threats', sub: 'Crypto, PQC, Data Protection', icon: '🔐' },
+      { val: 'fraud', label: 'Fraud / Risk', sub: 'Fraud Detection, Credit Risk', icon: '⚠️' },
+      { val: 'compliance', label: 'Compliance', sub: 'RBI, SEBI, NIST, GDPR', icon: '📋' },
+      { val: 'automation', label: 'Automation', sub: 'Process, Workflow, Decision AI', icon: '⚙️' },
+      { val: 'cost', label: 'Cost Reduction', sub: 'Optimisation, Efficiency', icon: '💰' },
+      { val: 'ai', label: 'AI Adoption', sub: 'Quantum ML, GenAI Integration', icon: '🤖' },
+      { val: 'analytics', label: 'Data Analytics', sub: 'Insights, Simulation, Modelling', icon: '📊' },
+      { val: 'competitive', label: 'Competitive Intel', sub: 'First-Mover, Market Positioning', icon: '🎯' }
+    ]
+  },
+  {
+    id: 'regulation',
+    q: 'Which regulatory framework applies?',
+    hint: 'This shapes compliance requirements and determines urgency.',
+    opts: [
+      { val: 'rbi', label: 'RBI', sub: 'Reserve Bank of India', icon: '🇮🇳' },
+      { val: 'sebi', label: 'SEBI', sub: 'Securities & Exchange Board India', icon: '📑' },
+      { val: 'mas', label: 'MAS TRM', sub: 'Monetary Authority of Singapore', icon: '🇸🇬' },
+      { val: 'dfsa', label: 'DFSA', sub: 'Dubai Financial Services Authority', icon: '🇦🇪' },
+      { val: 'pci', label: 'PCI-DSS', sub: 'Payment Card Industry', icon: '💳' },
+      { val: 'hipaa', label: 'HIPAA', sub: 'US Healthcare', icon: '🏥' },
+      { val: 'gdpr', label: 'GDPR', sub: 'EU Data Protection', icon: '🇪🇺' },
+      { val: 'none', label: 'None', sub: 'No Specific Regulation', icon: '✓' }
+    ]
+  },
+  {
+    id: 'infra',
+    q: 'What is the client\'s infrastructure model?',
+    hint: 'Determines which vendors and deployment options are viable.',
+    opts: [
+      { val: 'cloud', label: 'Cloud-First', sub: 'AWS, Azure, GCP primary', icon: '☁️' },
+      { val: 'onprem', label: 'On-Premises', sub: 'Own data centres', icon: '🖥️' },
+      { val: 'hybrid', label: 'Hybrid', sub: 'Mix of cloud and on-prem', icon: '🔄' },
+      { val: 'legacy', label: 'Legacy', sub: 'Mainframe or older systems', icon: '🏗️' },
+      { val: 'edge', label: 'Edge / Sovereign', sub: 'Air-gapped or sovereign cloud', icon: '🔒' }
+    ]
+  },
+  {
+    id: 'budget',
+    q: 'What is the expected engagement budget?',
+    hint: 'This filters viable products and services to realistic options.',
+    opts: [
+      { val: 'free', label: 'Free / Zero', sub: 'Door-Openers only', icon: '🎁' },
+      { val: 'low', label: 'Under ₹5L', sub: '< $50K · Pilot / Assessment', icon: '💡' },
+      { val: 'mid', label: '₹5L – ₹25L', sub: '$50K–$200K · PoC / Delivery', icon: '📦' },
+      { val: 'high', label: '₹25L – ₹1Cr', sub: '$200K–$1M · Platform / Integration', icon: '🚀' },
+      { val: 'enterprise', label: '₹1Cr+', sub: '$1M+ · Enterprise Program', icon: '🏆' }
+    ]
+  }
+];
+
+let wizAnswers = {};
+let wizStep = 0;
+
+function buildProgress() {
+  const prog = document.getElementById('wiz-progress');
+  const lbls = document.getElementById('wiz-labels');
+  const stepNames = ['Industry', 'Challenge', 'Regulation', 'Infrastructure', 'Budget'];
+  let ph = '', lh = '';
+  WIZ_STEPS.forEach((s, i) => {
+    const isDone = i < wizStep;
+    const isActive = i === wizStep;
+    ph += `<div style="display:flex;align-items:center;flex:1">
+      <div class="wiz-dot ${isDone ? 'done' : isActive ? 'active' : ''}" onclick="if(${isDone})goToStep(${i})">${isDone ? '✓' : i+1}</div>
+      ${i < WIZ_STEPS.length - 1 ? `<div class="wiz-line ${isDone ? 'done' : ''}" style="flex:1;height:1px;background:${isDone ? 'var(--green-dim)' : 'var(--border)'}"></div>` : ''}
+    </div>`;
+    lh += `<div style="flex:1;text-align:center;font-family:Share Tech Mono,monospace;font-size:9px;color:${isActive ? 'var(--cyan)' : isDone ? 'var(--green-dim)' : 'var(--text-dim)'};letter-spacing:1px;margin-top:4px">${stepNames[i].toUpperCase()}</div>`;
+  });
+  prog.innerHTML = ph;
+  lbls.innerHTML = lh;
+}
+
+function goToStep(n) {
+  wizStep = n;
+  buildProgress();
+  renderWizStep();
+}
+
+function renderWizStep() {
+  document.getElementById('wiz-results').style.display = 'none';
+  document.getElementById('wiz-card').style.display = 'block';
+  const step = WIZ_STEPS[wizStep];
+  document.getElementById('wiz-q').textContent = step.q;
+  document.getElementById('wiz-hint').textContent = step.hint;
+  document.getElementById('wiz-step-counter').textContent = `STEP ${wizStep + 1} OF ${WIZ_STEPS.length}`;
+
+  const sel = wizAnswers[step.id];
+  document.getElementById('wiz-opts').innerHTML = step.opts.map(o => `
+    <div class="wiz-opt ${sel === o.val ? 'selected' : ''}" onclick="selectOpt('${step.id}','${o.val}',this)">
+      <div class="wiz-opt-icon">${o.icon}</div>
+      <div class="wiz-opt-label">${o.label}</div>
+      <div class="wiz-opt-sub">${o.sub}</div>
+    </div>`).join('');
+
+  const prev = document.getElementById('wiz-prev');
+  const next = document.getElementById('wiz-next');
+  prev.style.visibility = wizStep === 0 ? 'hidden' : 'visible';
+
+  const isLast = wizStep === WIZ_STEPS.length - 1;
+  next.textContent = isLast ? 'GET RECOMMENDATIONS ▶' : 'NEXT →';
+  next.className = 'wiz-btn ' + (isLast ? 'wiz-btn-run' : 'wiz-btn-next');
+  next.disabled = !sel;
+}
+
+function selectOpt(stepId, val, el) {
+  wizAnswers[stepId] = val;
+  el.closest('.wiz-options').querySelectorAll('.wiz-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('wiz-next').disabled = false;
+}
+
+function wizPrev() {
+  if (wizStep > 0) { wizStep--; buildProgress(); renderWizStep(); }
+}
+
+function wizNext() {
+  const step = WIZ_STEPS[wizStep];
+  if (!wizAnswers[step.id]) return;
+  if (wizStep < WIZ_STEPS.length - 1) {
+    wizStep++;
+    buildProgress();
+    renderWizStep();
+  } else {
+    runScoring();
+  }
+}
+
+// ============================================================
+// SCORING ENGINE
+// ============================================================
+function runScoring() {
+  const { industry, challenge, regulation, infra, budget } = wizAnswers;
+
+  function scoreVendor(vendor) {
+    let s = 0;
+    // Industry fit
+    if (vendor === 'ibm') {
+      if (['bfsi','enterprise','gcc'].includes(industry)) s += 25;
+      else if (['fintech','manufacturing'].includes(industry)) s += 15;
+    }
+    if (vendor === 'quantinuum') {
+      if (['bfsi','hft','government'].includes(industry)) s += 28;
+      else if (['healthcare','fintech'].includes(industry)) s += 18;
+    }
+    if (vendor === 'ionq') {
+      if (['bfsi','government','gcc'].includes(industry)) s += 26;
+      else if (['hft','fintech'].includes(industry)) s += 18;
+    }
+    if (vendor === 'google') {
+      if (['gcc','hft','healthcare'].includes(industry)) s += 22;
+      else if (['enterprise','fintech'].includes(industry)) s += 12;
+    }
+    if (vendor === 'rigetti') {
+      if (['government','gcc'].includes(industry)) s += 20;
+      else if (['manufacturing','enterprise'].includes(industry)) s += 12;
+    }
+    // Challenge fit
+    if (challenge === 'security' && ['quantinuum','ionq'].includes(vendor)) s += 30;
+    if (challenge === 'fraud' && ['ibm','ionq'].includes(vendor)) s += 22;
+    if (challenge === 'compliance' && ['ibm','quantinuum'].includes(vendor)) s += 22;
+    if (challenge === 'cost' && ['ibm','google'].includes(vendor)) s += 18;
+    if (challenge === 'ai' && ['ibm','ionq'].includes(vendor)) s += 20;
+    if (challenge === 'analytics' && ['ibm','google','ionq'].includes(vendor)) s += 18;
+    if (challenge === 'competitive' && ['quantinuum','ionq'].includes(vendor)) s += 15;
+    if (challenge === 'automation' && 'ibm' === vendor) s += 18;
+    // Regulation
+    if (['rbi','sebi'].includes(regulation) && ['ibm','quantinuum','ionq'].includes(vendor)) s += 15;
+    if (regulation === 'hipaa' && ['ibm','quantinuum'].includes(vendor)) s += 15;
+    if (regulation === 'gdpr' && ['ibm','ionq'].includes(vendor)) s += 12;
+    if (regulation === 'pci' && ['quantinuum','ionq'].includes(vendor)) s += 18;
+    if (['mas','dfsa'].includes(regulation) && ['ibm','ionq'].includes(vendor)) s += 14;
+    // Infra fit
+    if (infra === 'cloud' && ['ibm','ionq','google'].includes(vendor)) s += 20;
+    if (infra === 'onprem' && ['quantinuum','rigetti'].includes(vendor)) s += 25;
+    if (infra === 'hybrid' && ['ibm','ionq'].includes(vendor)) s += 20;
+    if (infra === 'edge' && ['rigetti','ionq'].includes(vendor)) s += 22;
+    if (infra === 'legacy' && 'ibm' === vendor) s += 20;
+    // Budget
+    if (budget === 'free' && 'ibm' === vendor) s += 20;
+    if (budget === 'free' && 'google' === vendor) s += 18;
+    if (budget === 'low' && ['ibm','ionq','rigetti'].includes(vendor)) s += 12;
+    if (['mid','high','enterprise'].includes(budget) && ['quantinuum','ibm','ionq'].includes(vendor)) s += 15;
+    return Math.min(s, 100);
+  }
+
+  function scoreItem(item) {
+    let s = 0;
+    const vendorScore = item.vendor === 'multi' ? 60 : scoreVendor(item.vendor);
+    s += vendorScore * 0.4;
+
+    // Budget match
+    const bmap = { free: 0, low: 1, mid: 2, high: 3, enterprise: 4 };
+    const clientBudget = bmap[budget] || 0;
+    const itemBudget = bmap[item.budget] || 0;
+    if (itemBudget === clientBudget) s += 30;
+    else if (itemBudget === clientBudget - 1) s += 15;
+    else if (itemBudget > clientBudget) s -= 20;
+
+    // Challenge alignment
+    if (challenge === 'security' && ['security','pqc','qrng'].some(t => item.tags?.includes(t))) s += 25;
+    if (challenge === 'fraud' && item.tags?.includes('poc')) s += 15;
+    if (challenge === 'compliance' && item.tags?.includes('advisory')) s += 20;
+    if (challenge === 'competitive' && item.cat === 'advisory') s += 15;
+    if (challenge === 'ai' && item.tags?.some(t => ['poc','development','algorithm'].includes(t))) s += 18;
+    if (challenge === 'analytics' && item.tags?.some(t => ['poc','development'].includes(t))) s += 15;
+
+    // Infra alignment
+    if (infra === 'cloud' && item.cat === 'cloud') s += 15;
+    if (infra === 'onprem' && item.tags?.includes('onprem')) s += 20;
+    if (infra === 'edge' && item.tags?.includes('sovereign')) s += 22;
+
+    // Door-opener bonus if budget is free
+    if (budget === 'free' && item.type === 'dooropener') s += 30;
+
+    // Tier A advisory bonus for low budget
+    if (['free','low'].includes(budget) && item.cat === 'advisory') s += 10;
+
+    return Math.min(Math.round(s), 100);
+  }
+
+  const vendorScores = Object.keys(VENDORS).filter(v => v !== 'multi').map(v => ({ v, score: scoreVendor(v) })).sort((a,b) => b.score - a.score);
+  const prodScored = PRODUCTS.map(p => ({ ...p, score: scoreItem(p) })).sort((a,b) => b.score - a.score).slice(0, 5);
+  const svcScored = SERVICES.map(s => ({ ...s, score: scoreItem(s) })).sort((a,b) => b.score - a.score).slice(0, 5);
+  const doorScored = DOOR_OPENERS.map(d => ({ ...d, score: scoreItem(d) })).sort((a,b) => b.score - a.score).slice(0, 5);
+
+  renderResults(vendorScores, prodScored, svcScored, doorScored);
+}
+
+function scoreBar(score, vendor) {
+  const colors = { ibm: '#6699ff', google: '#66cc88', quantinuum: '#c080ff', rigetti: '#ffc040', ionq: '#00d4ff', multi: '#a0c0e0' };
+  const color = colors[vendor] || '#00d4ff';
+  return `<div class="rec-bar-wrap"><div class="rec-bar" style="width:${score}%;background:${color}"></div></div>`;
+}
+
+function renderResults(vendors, prods, svcs, doors) {
+  document.getElementById('wiz-card').style.display = 'none';
+  const res = document.getElementById('wiz-results');
+  res.style.display = 'block';
+
+  const { industry, challenge, regulation, infra, budget } = wizAnswers;
+  const summaryText = `Industry: <strong>${industry?.toUpperCase()}</strong> · Challenge: <strong>${challenge?.toUpperCase()}</strong> · Regulation: <strong>${regulation?.toUpperCase()}</strong> · Infra: <strong>${infra?.toUpperCase()}</strong> · Budget: <strong>${budget?.toUpperCase()}</strong>`;
+
+  const topVendors = vendors.slice(0, 3).map((v, i) => {
+    const reasons = getVendorReasons(v.v, wizAnswers);
+    return `<div class="rec-card">
+      <div class="rec-rank">#${i+1} VENDOR MATCH</div>
+      <div class="rec-name" style="color:${getVendorColor(v.v)}">${getVendorLabel(v.v).toUpperCase()}</div>
+      ${scoreBar(v.score, v.v)}
+      <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+        <span class="rec-score">${v.score}%</span>
+        <span class="rec-match">MATCH SCORE</span>
+      </div>
+      <ul class="rec-reasons">${reasons.map(r => `<li>${r}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+
+  const prodCards = prods.slice(0, 3).map((p, i) => `<div class="rec-card">
+    <div class="rec-rank">#${i+1} PRODUCT</div>
+    <div class="rec-name">${p.name}</div>
+    <div class="rec-vendor" style="color:${getVendorColor(p.vendor)}">${getVendorLabel(p.vendor)}</div>
+    ${scoreBar(p.score, p.vendor)}
+    <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+      <span class="rec-score">${p.score}%</span>
+      <span class="rec-match">FIT SCORE · ${p.price}</span>
+    </div>
+    <div class="rec-reasons"><li>${p.desc.substring(0,80)}${p.desc.length > 80 ? '...' : ''}</li></div>
+  </div>`).join('');
+
+  const svcCards = svcs.slice(0, 3).map((s, i) => `<div class="rec-card">
+    <div class="rec-rank">#${i+1} SERVICE</div>
+    <div class="rec-name">${s.name}</div>
+    <div class="rec-vendor" style="color:${getVendorColor(s.vendor)}">${s.price}${s.duration ? ' · ' + s.duration : ''}</div>
+    ${scoreBar(s.score, s.vendor)}
+    <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+      <span class="rec-score">${s.score}%</span>
+      <span class="rec-match">FIT SCORE</span>
+    </div>
+    <div class="rec-reasons"><li>${s.desc.substring(0,80)}${s.desc.length > 80 ? '...' : ''}</li></div>
+  </div>`).join('');
+
+  const doorCards = doors.slice(0, 3).map((d, i) => `<div class="rec-card">
+    <div class="rec-rank">#${i+1} DOOR-OPENER</div>
+    <div class="rec-name">${d.name}</div>
+    <div class="rec-vendor" style="color:${getVendorColor(d.vendor)}">${getVendorLabel(d.vendor)} · FREE</div>
+    ${scoreBar(d.score, d.vendor)}
+    <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px">
+      <span class="rec-score">${d.score}%</span>
+      <span class="rec-match">FIT SCORE</span>
+    </div>
+    <div class="rec-reasons"><li style="color:var(--gold)">"${d.pitch?.substring(0,80)}${d.pitch?.length > 80 ? '...' : ''}"</li></div>
+  </div>`).join('');
+
+  res.innerHTML = `
+    <div class="res-head">// RECOMMENDATION RESULTS</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-sec);margin-bottom:20px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;line-height:1.8">${summaryText}</div>
+
+    <div style="margin-bottom:16px">
+      <div class="res-col-head">TOP VENDOR MATCHES</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">${topVendors}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:16px">
+      <div>
+        <div class="res-col-head">TOP PRODUCTS</div>
+        ${prodCards}
+      </div>
+      <div>
+        <div class="res-col-head">TOP SERVICES</div>
+        ${svcCards}
+      </div>
+      <div>
+        <div class="res-col-head">TOP DOOR-OPENERS</div>
+        ${doorCards}
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="wiz-reset" onclick="resetWizard()">← START OVER</button>
+      <button class="wiz-btn wiz-btn-next" onclick="applyWizardToTab()">LOAD INTO SELECTION TOOL →</button>
+    </div>`;
+}
+
+function getVendorReasons(vendor, ans) {
+  const reasons = [];
+  const { industry, challenge, regulation, infra, budget } = ans;
+  if (vendor === 'ibm') {
+    reasons.push('300+ enterprise partners globally');
+    if (industry === 'bfsi') reasons.push('Strong BFSI reference cases');
+    if (infra === 'cloud') reasons.push('AWS, Azure, IBM Cloud access');
+    if (infra === 'legacy') reasons.push('Legacy system integration expertise');
+    if (challenge === 'compliance') reasons.push('Qiskit Functions for compliance workloads');
+  }
+  if (vendor === 'quantinuum') {
+    reasons.push('World highest fidelity (99.9975%)');
+    if (challenge === 'security') reasons.push('Quantum Origin QRNG for encryption');
+    if (infra === 'onprem') reasons.push('Helios available on-premises');
+    if (industry === 'bfsi') reasons.push('Financial analytics on Helios');
+  }
+  if (vendor === 'ionq') {
+    reasons.push('$130M revenue — proven commercial');
+    if (challenge === 'security') reasons.push('Quantum Security Platform / PQC');
+    if (infra === 'cloud') reasons.push('AWS, Azure, GCP all supported');
+    if (industry === 'government') reasons.push('DARPA + KISTI sovereign deployments');
+  }
+  if (vendor === 'google') {
+    reasons.push('Quantum advantage achieved (2025)');
+    if (challenge === 'analytics') reasons.push('Cirq + Vertex AI pipeline');
+    if (budget === 'free') reasons.push('Cirq SDK is completely free');
+  }
+  if (vendor === 'rigetti') {
+    if (infra === 'onprem' || infra === 'edge') reasons.push('Novera — only purchasable QPU');
+    if (industry === 'government') reasons.push('Sovereign/classified deployment');
+    reasons.push('Low-cost AWS Braket entry point');
+  }
+  return reasons.slice(0, 3);
+}
+
+function applyWizardToTab() {
+  const { vendor, budget } = wizAnswers;
+  // Pre-select vendor filter based on top vendor recommendation
+  switchTab('selection');
+}
+
+function resetWizard() {
+  wizAnswers = {};
+  wizStep = 0;
+  buildProgress();
+  renderWizStep();
+  document.getElementById('wiz-results').style.display = 'none';
+  document.getElementById('wiz-card').style.display = 'block';
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'selection') || (i === 1 && tab === 'wizard'));
+  });
+  document.getElementById('tab-selection').classList.toggle('active', tab === 'selection');
+  document.getElementById('tab-wizard').classList.toggle('active', tab === 'wizard');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderAll();
+buildProgress();
+renderWizStep();
+</script>
+</body>
+</html>
