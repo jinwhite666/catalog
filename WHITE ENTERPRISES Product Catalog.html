@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHITE ENTERPRISES // UNIFIED PRODUCT CATALOG</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: #0d0d0d;
+            --panel-raised: #111111;
+            --border: #252525;
+            --border-bright: #383838;
+            --accent: #ffffff;
+            --text: #d0d0d0;
+            --muted: #555555;
+            --hover-bg: #181818;
+
+            --sector-infra: #3b82f6;
+            --sector-cyber: #10b981;
+            --sector-finance: #f59e0b;
+            --sector-defense: #f97316;
+            --sector-existential: #a855f7;
+            --sector-none: #444444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        /* Scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.05) 2px,
+                rgba(0,0,0,0.05) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            border-bottom: 1px solid var(--border-bright);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        .header-eyebrow {
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        h1 {
+            font-size: 1.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .header-sub {
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        /* ─── VERSION BANNER ─── */
+        .version-banner {
+            background: var(--panel-raised);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            padding: 14px 18px;
+            margin-bottom: 26px;
+        }
+        .banner-title {
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .version-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .version-tag {
+            background: #161616;
+            border: 1px dashed var(--border-bright);
+            padding: 5px 11px;
+            font-size: 0.72rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            user-select: none;
+        }
+        .version-tag:hover {
+            border-color: var(--accent);
+            background: #222;
+            color: var(--accent);
+        }
+
+        /* ─── SECTOR LEGEND ─── */
+        .sector-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+            align-items: center;
+        }
+        .legend-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-right: 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 3px 8px;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .legend-item:hover { color: var(--text); border-color: var(--border-bright); }
+        .legend-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ─── CONTROLS ─── */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        input, select {
+            background: var(--panel-raised);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 14px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            outline: none;
+            flex: 1;
+            min-width: 200px;
+            transition: border-color 0.15s;
+        }
+        input:focus, select:focus {
+            border-color: var(--accent);
+        }
+        select option { background: #111; }
+
+        /* ─── STATS BAR ─── */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+        .stats-count { color: var(--accent); font-weight: bold; }
+
+        /* ─── GRID ─── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+        }
+
+        /* ─── CARD ─── */
+        .card {
+            background: var(--panel-raised);
+            border: 1px solid var(--border);
+            padding: 18px 18px 16px 22px;
+            transition: all 0.18s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 100%;
+            background: var(--sector-color, var(--border));
+            transition: opacity 0.18s;
+            opacity: 0.7;
+        }
+        .card:hover {
+            border-color: var(--border-bright);
+            background: var(--hover-bg);
+            transform: translateY(-1px);
+        }
+        .card:hover::before { opacity: 1; }
+
+        /* Sector glow on hover */
+        .card:hover {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04),
+                        -1px 0 12px -4px var(--sector-color, transparent);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .node-id {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+        .sector-badge {
+            font-size: 0.62rem;
+            padding: 2px 7px;
+            border: 1px solid;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--sector-color, var(--muted));
+            border-color: var(--sector-color, var(--border));
+            opacity: 0.85;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .node-name {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 12px;
+            color: var(--text);
+        }
+
+        .data-label {
+            font-size: 0.67rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+            margin-top: 12px;
+        }
+        .incumbents {
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #ef8080;
+        }
+        .advantage {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #86c9a3;
+            flex-grow: 1;
+        }
+
+        /* Target monopolies row (from F-Node Disruption Matrix) */
+        .targets {
+            font-size: 0.82rem;
+            color: #7db8d4;
+            line-height: 1.4;
+            margin-top: 4px;
+        }
+
+        .metrics-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            gap: 12px;
+        }
+        .metric {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .metric + .metric {
+            border-left: 1px solid var(--border);
+            padding-left: 12px;
+        }
+        .metric-value {
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #333; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-eyebrow">CLASSIFICATION: MASTER COMPILED // SOURCE: UNIFIED INTEL LEDGER</div>
+    <h1>WHITE ENTERPRISES INC. // UNIFIED PRODUCT CATALOG</h1>
+    <div class="header-sub">STATUS: OPERATIONAL &nbsp;|&nbsp; AUTHORIZATION: JIN WHITE &nbsp;|&nbsp; NODES: 124 &nbsp;|&nbsp; BUILD: F-NODE MASTER</div>
+</header>
+
+<div class="version-banner">
+    <div class="banner-title">PRODUCT VERSIONS — AVAILABLE FOR DEMO ON REQUEST:</div>
+    <div class="version-tags">
+        <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: MVP — LOCAL\nThe Sovereign Seed.\nRequires air-gapped Linux terminal for eBPF kernel injection.')">MVP — LOCAL (The Sovereign Seed)</span>
+        <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: MVP — ENTERPRISE\nThe Shadow Mesh.\nRequires multi-node shadow mesh environment.')">MVP — ENTERPRISE (The Shadow Mesh)</span>
+        <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: AGI — LOCAL\nThe Cognitive Node.\nRequires localized neuro-symbolic weights.')">AGI — LOCAL (The Cognitive Node)</span>
+        <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: AGI — ENTERPRISE\nThe Omni-Mind Swarm.\nRequires high-frequency liquidity testnet integration.')">AGI — ENTERPRISE (The Omni-Mind Swarm)</span>
+        <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: ASI — LOCAL\nThe Sovereign Singularity.\nWARNING: Physics containment protocols required.')">ASI — LOCAL (The Sovereign Singularity)</span>
+    </div>
+</div>
+
+<div class="sector-legend">
+    <span class="legend-label">Sector:</span>
+    <span class="legend-item" onclick="setSector('ALL')">
+        <span class="legend-dot" style="background:#555"></span> ALL
+    </span>
+    <span class="legend-item" onclick="setSector('Infrastructure / Cloud')">
+        <span class="legend-dot" style="background:var(--sector-infra)"></span> INFRASTRUCTURE / CLOUD
+    </span>
+    <span class="legend-item" onclick="setSector('Cyber / Silicon')">
+        <span class="legend-dot" style="background:var(--sector-cyber)"></span> CYBER / SILICON
+    </span>
+    <span class="legend-item" onclick="setSector('Finance / Capital')">
+        <span class="legend-dot" style="background:var(--sector-finance)"></span> FINANCE / CAPITAL
+    </span>
+    <span class="legend-item" onclick="setSector('Advanced / Defense')">
+        <span class="legend-dot" style="background:var(--sector-defense)"></span> ADVANCED / DEFENSE
+    </span>
+    <span class="legend-item" onclick="setSector('Existential / Macro')">
+        <span class="legend-dot" style="background:var(--sector-existential)"></span> EXISTENTIAL / MACRO
+    </span>
+</div>
+
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="Search node ID, name, incumbents, or advantage...">
+    <select id="sectorFilter">
+        <option value="ALL">ALL SECTORS</option>
+        <option value="Infrastructure / Cloud">INFRASTRUCTURE / CLOUD</option>
+        <option value="Cyber / Silicon">CYBER / SILICON</option>
+        <option value="Finance / Capital">FINANCE / CAPITAL</option>
+        <option value="Advanced / Defense">ADVANCED / DEFENSE</option>
+        <option value="Existential / Macro">EXISTENTIAL / MACRO</option>
+    </select>
+    <select id="spendFilter">
+        <option value="ALL">ALL SPEND TIERS</option>
+        <option value="Micro (<$1M)">Micro (&lt;$1M)</option>
+        <option value="Small ($1M-$10M)">Small ($1M–$10M)</option>
+        <option value="Mid ($10M-$100M)">Mid ($10M–$100M)</option>
+        <option value="Large ($100M+)">Large ($100M+)</option>
+        <option value="Giga ($1B+)">Giga ($1B+)</option>
+        <option value="Mega ($10B+)">Mega ($10B+)</option>
+        <option value="Sovereign Scale">Sovereign Scale</option>
+        <option value="Existential Scale">Existential Scale</option>
+        <option value="Classified / Black Op">Classified / Black Op</option>
+        <option value="Undisclosed">Undisclosed</option>
+        <option value="Per-Tx Fee">Per-Tx Fee</option>
+        <option value="Revenue Share">Revenue Share</option>
+        <option value="AUM Fee">AUM Fee</option>
+    </select>
+    <select id="cadenceFilter">
+        <option value="ALL">ALL CADENCES</option>
+        <option value="Annual">Annual</option>
+        <option value="CapEx (One-Time)">CapEx (One-Time)</option>
+        <option value="Per Unit">Per Unit</option>
+        <option value="Per Month">Per Month</option>
+        <option value="Per Operation">Per Operation</option>
+        <option value="Per Site">Per Site</option>
+        <option value="Sovereign">Sovereign</option>
+        <option value="Per Launch">Per Launch</option>
+        <option value="Per Cluster">Per Cluster</option>
+        <option value="Per Swarm">Per Swarm</option>
+        <option value="Per Transaction">Per Transaction</option>
+        <option value="Gross Revenue %">Gross Revenue %</option>
+        <option value="Assets Under Mgmt">Assets Under Mgmt</option>
+        <option value="Per Engagement">Per Engagement</option>
+        <option value="Per Execution">Per Execution</option>
+        <option value="Per Run">Per Run</option>
+        <option value="Per Target">Per Target</option>
+        <option value="Per Dose">Per Dose</option>
+        <option value="Per State">Per State</option>
+        <option value="Per Cycle">Per Cycle</option>
+        <option value="Per Election Cycle">Per Election Cycle</option>
+        <option value="Per Corp">Per Corp</option>
+        <option value="Per Fleet">Per Fleet</option>
+        <option value="Per Upload">Per Upload</option>
+        <option value="Civilisational">Civilisational</option>
+        <option value="Ad Yield">Ad Yield</option>
+        <option value="Ad Spend">Ad Spend</option>
+        <option value="Other">Other</option>
+        <option value="Undisclosed">Undisclosed</option>
+    </select>
+</div>
+
+<div class="stats-bar">
+    <span id="statsDisplay">Loading nodes...</span>
+    <span>WHITE ENTERPRISES // F-NODE UNIFIED MATRIX // BUILD 2.0</span>
+</div>
+
+<div class="grid" id="nodeGrid"></div>
+
+<script>
+// ─── SECTOR COLOR MAP ───
+const SECTOR_COLORS = {
+    "Infrastructure / Cloud": "var(--sector-infra)",
+    "Cyber / Silicon":        "var(--sector-cyber)",
+    "Finance / Capital":      "var(--sector-finance)",
+    "Advanced / Defense":     "var(--sector-defense)",
+    "Existential / Macro":    "var(--sector-existential)",
+};
+
+// ─── DISRUPTION MATRIX OVERLAY (from 1.html) ───
+// Maps F-ID → { sector, targets }
+const DISRUPTION_OVERLAY = {
+    "F-01":  { sector: "Infrastructure / Cloud", targets: "GSIs (TCS, Accenture, Infosys)" },
+    "F-02":  { sector: "Infrastructure / Cloud", targets: "Datadog, Splunk, Dynatrace" },
+    "F-03":  { sector: "Infrastructure / Cloud", targets: "AWS, Azure, Google Cloud" },
+    "F-04":  { sector: "Infrastructure / Cloud", targets: "VMware, Nutanix" },
+    "F-05":  { sector: "Infrastructure / Cloud", targets: "Oracle, SAP" },
+    "F-08":  { sector: "Cyber / Silicon",        targets: "CrowdStrike, SentinelOne" },
+    "F-09":  { sector: "Cyber / Silicon",        targets: "Zscaler, Netskope" },
+    "F-11":  { sector: "Cyber / Silicon",        targets: "Okta, Microsoft Entra" },
+    "F-14":  { sector: "Advanced / Defense",     targets: "Palantir" },
+    "F-22":  { sector: "Cyber / Silicon",        targets: "Nvidia, AMD" },
+    "F-24":  { sector: "Cyber / Silicon",        targets: "ASML, TSMC" },
+    "F-34":  { sector: "Finance / Capital",      targets: "Coinbase, Binance" },
+    "F-44":  { sector: "Finance / Capital",      targets: "Bloomberg LP, Thomson Reuters" },
+    "F-47":  { sector: "Finance / Capital",      targets: "BlackRock, Vanguard" },
+    "F-48":  { sector: "Finance / Capital",      targets: "Bridgewater, Renaissance Tech" },
+    "F-63":  { sector: "Cyber / Silicon",        targets: "Palo Alto Networks, Fortinet" },
+    "F-68":  { sector: "Advanced / Defense",     targets: "Epic Systems, Cerner" },
+    "F-72":  { sector: "Advanced / Defense",     targets: "SpaceX Starlink, Project Kuiper" },
+    "F-88":  { sector: "Advanced / Defense",     targets: "NSA, Sovereign Intelligence" },
+    "F-89":  { sector: "Advanced / Defense",     targets: "OpenAI, Anthropic, Google DeepMind" },
+    "F-102": { sector: "Advanced / Defense",     targets: "IBM Q, Google Sycamore" },
+    "F-107": { sector: "Existential / Macro",    targets: "Tesla, BYD" },
+    "F-116": { sector: "Finance / Capital",      targets: "NYSE, NASDAQ" },
+    "F-118": { sector: "Existential / Macro",    targets: "IMF, World Bank" },
+    "F-121": { sector: "Existential / Macro",    targets: "Meta, Alphabet (Ad-Tech)" },
+    "F-124": { sector: "Existential / Macro",    targets: "The Legacy Business Cycle" },
+};
+
+// ─── INFERRED SECTOR MAP (for nodes not in Disruption Matrix) ───
+const INFERRED_SECTOR = {
+    "F-06": "Infrastructure / Cloud", "F-07": "Infrastructure / Cloud",
+    "F-10": "Infrastructure / Cloud", "F-12": "Infrastructure / Cloud",
+    "F-13": "Infrastructure / Cloud", "F-15": "Infrastructure / Cloud",
+    "F-16": "Cyber / Silicon",        "F-17": "Infrastructure / Cloud",
+    "F-18": "Finance / Capital",      "F-19": "Infrastructure / Cloud",
+    "F-20": "Infrastructure / Cloud", "F-21": "Cyber / Silicon",
+    "F-23": "Cyber / Silicon",        "F-25": "Infrastructure / Cloud",
+    "F-26": "Infrastructure / Cloud", "F-27": "Infrastructure / Cloud",
+    "F-28": "Cyber / Silicon",        "F-29": "Cyber / Silicon",
+    "F-30": "Cyber / Silicon",        "F-31": "Cyber / Silicon",
+    "F-32": "Cyber / Silicon",        "F-33": "Infrastructure / Cloud",
+    "F-35": "Finance / Capital",      "F-36": "Finance / Capital",
+    "F-37": "Finance / Capital",      "F-38": "Finance / Capital",
+    "F-39": "Finance / Capital",      "F-40": "Finance / Capital",
+    "F-41": "Finance / Capital",      "F-42": "Finance / Capital",
+    "F-43": "Finance / Capital",      "F-45": "Finance / Capital",
+    "F-46": "Finance / Capital",      "F-49": "Finance / Capital",
+    "F-50": "Finance / Capital",      "F-51": "Infrastructure / Cloud",
+    "F-52": "Infrastructure / Cloud", "F-53": "Infrastructure / Cloud",
+    "F-54": "Infrastructure / Cloud", "F-55": "Infrastructure / Cloud",
+    "F-56": "Infrastructure / Cloud", "F-57": "Infrastructure / Cloud",
+    "F-58": "Infrastructure / Cloud", "F-59": "Cyber / Silicon",
+    "F-60": "Infrastructure / Cloud", "F-61": "Infrastructure / Cloud",
+    "F-62": "Cyber / Silicon",        "F-64": "Infrastructure / Cloud",
+    "F-65": "Infrastructure / Cloud", "F-66": "Infrastructure / Cloud",
+    "F-67": "Infrastructure / Cloud", "F-69": "Advanced / Defense",
+    "F-70": "Advanced / Defense",     "F-71": "Advanced / Defense",
+    "F-73": "Advanced / Defense",     "F-74": "Advanced / Defense",
+    "F-75": "Advanced / Defense",     "F-76": "Advanced / Defense",
+    "F-77": "Finance / Capital",      "F-78": "Finance / Capital",
+    "F-79": "Finance / Capital",      "F-80": "Finance / Capital",
+    "F-81": "Finance / Capital",      "F-82": "Finance / Capital",
+    "F-83": "Finance / Capital",      "F-84": "Infrastructure / Cloud",
+    "F-85": "Infrastructure / Cloud", "F-86": "Infrastructure / Cloud",
+    "F-87": "Advanced / Defense",     "F-90": "Infrastructure / Cloud",
+    "F-91": "Infrastructure / Cloud", "F-92": "Infrastructure / Cloud",
+    "F-93": "Infrastructure / Cloud", "F-94": "Infrastructure / Cloud",
+    "F-95": "Existential / Macro",    "F-96": "Infrastructure / Cloud",
+    "F-97": "Infrastructure / Cloud", "F-98": "Infrastructure / Cloud",
+    "F-99": "Infrastructure / Cloud", "F-100": "Infrastructure / Cloud",
+    "F-101": "Cyber / Silicon",       "F-103": "Advanced / Defense",
+    "F-104": "Existential / Macro",   "F-105": "Existential / Macro",
+    "F-106": "Existential / Macro",   "F-108": "Existential / Macro",
+    "F-109": "Existential / Macro",   "F-110": "Existential / Macro",
+    "F-111": "Existential / Macro",   "F-112": "Existential / Macro",
+    "F-113": "Existential / Macro",   "F-114": "Existential / Macro",
+    "F-115": "Existential / Macro",   "F-117": "Finance / Capital",
+    "F-119": "Existential / Macro",   "F-120": "Existential / Macro",
+    "F-122": "Existential / Macro",   "F-123": "Existential / Macro",
+};
+
+// ─── MASTER NODE DATA ───
+const nodes = [
+  { id:"F-01",  name:"Oni-Daemon",           incumbents:"Global System Integrators (TCS, Accenture)",             advantage:"Autonomous L1-L3 management; sub-millisecond execution. Replaces entire managed service contracts with daemon substrate.",                            spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$150M / yr" },
+  { id:"F-02",  name:"Data-Vamp",            incumbents:"Datadog / Splunk",                                        advantage:"Wire-speed telemetry ingestion without volume-based penalties. Infinite ingest at zero marginal cost.",                                             spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$60M / yr" },
+  { id:"F-03",  name:"Dark-Node",            incumbents:"AWS Outposts / Azure Stack",                              advantage:"True air-gapped edge compute; absolute physical control. No cloud dependency, no egress fee.",                                                      spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$24M / yr" },
+  { id:"F-04",  name:"Node-004",             incumbents:"VMware, Nutanix (Legacy Virtualization)",                 advantage:"Open-access hardware acceleration for custom AI logic. Breaks vendor silicon monopoly.",                                                             spend_category:"Giga ($1B+)",         cadence:"CapEx (One-Time)",  spend_value:"$1.2B CapEx" },
+  { id:"F-05",  name:"Node-005",             incumbents:"Oracle, SAP (Monolithic ERP/DB)",                         advantage:"Post-quantum entanglement mesh; mathematically unbreakable against all future compute.",                                                            spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$80M / yr" },
+  { id:"F-06",  name:"Node-006",             incumbents:"Salesforce, HubSpot (Proprietary CRM)",                   advantage:"Real-time digital twin integrated directly into the orchestrator. No separate license required.",                                                   spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$350M / yr" },
+  { id:"F-07",  name:"Node-007",             incumbents:"ServiceNow, Atlassian (ITSM Friction)",                   advantage:"Predictive failure diagnostics utilizing neuro-symbolic logic. Prevents failure, does not report it.",                                              spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$200M / yr" },
+  { id:"F-08",  name:"Hydro-Synth",          incumbents:"CrowdStrike, SentinelOne (Endpoint Incumbents)",          advantage:"Native liquid-cooled server architecture for extreme density. 10x compute per rack vs air-cooled.",                                                  spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$800M / yr" },
+  { id:"F-09",  name:"Node-009",             incumbents:"Zscaler, Netskope (Cloud Security Brokers)",              advantage:"Software-defined kinetic defense grid; identifies and isolates physical threats to hardware automatically.",                                         spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$500M / yr" },
+  { id:"F-10",  name:"Node-010",             incumbents:"Snowflake, Databricks (Data Warehousing Moats)",          advantage:"Atomic clock sync down to the femtosecond across all sovereign nodes. Crucial for T+0 settlement.",                                                 spend_category:"Mid ($10M-$100M)",    cadence:"Per Launch",        spend_value:"$40M / yr" },
+  { id:"F-11",  name:"Node-011",             incumbents:"Okta, Microsoft Entra (Identity Toll-Gates)",             advantage:"Instantaneous infrastructure-as-code deployment via memory manipulation; no state-file lag.",                                                       spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$100M / yr" },
+  { id:"F-12",  name:"Node-012",             incumbents:"HashiCorp, Red Hat (Infrastructure-as-Code Limits)",      advantage:"Dark-routed CDN. Untraceable packet delivery that bypasses standard BGP routing tables entirely.",                                                  spend_category:"Large ($100M+)",      cadence:"Per Cluster",       spend_value:"$450M / yr" },
+  { id:"F-13",  name:"Plasma-Furnace",       incumbents:"GitHub, GitLab (Developer Ecosystem Capture)",            advantage:"Hyper-efficient hypervisor written purely in Rust. Zero legacy C++ memory vulnerabilities.",                                                        spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$1.5B / yr" },
+  { id:"F-14",  name:"Node-014",             incumbents:"Palantir (Gov/Defense Data Silos)",                       advantage:"Decentralized P2P messaging protocol. No per-SMS or per-API call tax on communication.",                                                            spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$80M / yr" },
+  { id:"F-15",  name:"Node-015",             incumbents:"Equinix, Digital Realty (Physical Colocation Rentals)",   advantage:"Immutable object storage distributed across local shards. Mathematically immune to ransomware.",                                                     spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$600M / yr" },
+  { id:"F-16",  name:"Node-016",             incumbents:"Akamai, Cloudflare (Edge Delivery Tolls)",                advantage:"Zero-trust network architecture natively built into the kernel. No external agents required.",                                                      spend_category:"Classified / Black Op", cadence:"Undisclosed",     spend_value:"$300M / yr" },
+  { id:"F-17",  name:"Node-017",             incumbents:"Twilio, Vonage (API Communication Taxes)",                advantage:"End-to-end encrypted sovereign team communication. No data mining by third-party hosters.",                                                          spend_category:"Mid ($10M-$100M)",    cadence:"Per Site",          spend_value:"$120M / yr" },
+  { id:"F-18",  name:"Node-018",             incumbents:"Stripe, Adyen (Payment Gateway Fees)",                    advantage:"Micro-colocation deployment strategy. Distributes compute to abandoned real estate at fraction of cost.",                                            spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$2.5B / yr" },
+  { id:"F-19",  name:"Node-019",             incumbents:"Workday, ADP (Human Capital Extraction)",                 advantage:"Decentralized HR and payroll execution via smart contracts. Eliminates compounding per-seat SaaS tax.",                                              spend_category:"Mid ($10M-$100M)",    cadence:"Per Site",          spend_value:"$400M / yr" },
+  { id:"F-20",  name:"Node-020",             incumbents:"Adobe, Autodesk (Creative Software Incumbents)",           advantage:"Integration protocol for upcoming quantum networking links. Preparing for entanglement-based comms.",                                                spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$900M CapEx" },
+  { id:"F-21",  name:"Node-021",             incumbents:"Broadcom, Qualcomm (Silicon Hardware IP)",                 advantage:"Air-gapped CI/CD pipeline. Code never touches a public server; compiles directly on the Daemon.",                                                   spend_category:"Mid ($10M-$100M)",    cadence:"Ad Spend",          spend_value:"$110M / yr" },
+  { id:"F-22",  name:"Node-022",             incumbents:"Nvidia, AMD (GPU Compute Taxes)",                          advantage:"Triple-entry sovereign accounting system. Real-time cryptographic auditing eliminates need for Big 4.",                                              spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$700M / yr" },
+  { id:"F-23",  name:"Node-023",             incumbents:"Intel, ARM (CPU Instruction Set Moats)",                   advantage:"Encrypted-in-use data warehousing. Query data without ever decrypting it at the source.",                                                          spend_category:"Giga ($1B+)",         cadence:"Per Unit",          spend_value:"$200M / yr" },
+  { id:"F-24",  name:"Cortex-Jack",          incumbents:"ASML, TSMC (Legacy Lithography/Fab Bottlenecks)",         advantage:"Zero-Knowledge Proof (ZKP) biometric authentication. No central password database to be breached.",                                                 spend_category:"Large ($100M+)",      cadence:"Ad Spend",          spend_value:"$350M / yr" },
+  { id:"F-25",  name:"Node-025",             incumbents:"Samsung, SK Hynix (Volatile Memory Cycles)",              advantage:"Self-healing wireless mesh networking for physical campus environments.",                                                                             spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$150M / yr" },
+  { id:"F-26",  name:"Node-026",             incumbents:"Dell, HPE (Proprietary Server Margins)",                   advantage:"Layer 7 load balancing executing directly in eBPF. Millisecond latency routing decisions.",                                                         spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$80M / yr" },
+  { id:"F-27",  name:"Node-027",             incumbents:"NetApp, Pure Storage (Storage Array Lock-in)",             advantage:"Modular, non-monolithic ERP backbone. Deploys in days, not years. Infinite scalability.",                                                           spend_category:"Mid ($10M-$100M)",    cadence:"Per Operation",     spend_value:"$1.8B / yr" },
+  { id:"F-28",  name:"Node-028",             incumbents:"F5 Networks, Imperva (Legacy Load Balancing/WAF)",        advantage:"Endpoint defense driven by deterministic safety contracts, not probabilistic machine learning guesses.",                                              spend_category:"Mid ($10M-$100M)",    cadence:"Per Swarm",         spend_value:"$400M / yr" },
+  { id:"F-29",  name:"Node-029",             incumbents:"Tanium, Qualys (Vulnerability Scanning Latency)",         advantage:"Continuous, silent vulnerability scanning running inside the kernel. Zero network overhead.",                                                        spend_category:"Mega ($10B+)",        cadence:"CapEx (One-Time)",  spend_value:"$90M / yr" },
+  { id:"F-30",  name:"Node-030",             incumbents:"CyberArk, BeyondTrust (Privileged Access Incumbents)",    advantage:"Privileged access management without a centralized vault. Keys are dynamically generated and destroyed.",                                             spend_category:"Large ($100M+)",      cadence:"Ad Spend",          spend_value:"$120M / yr" },
+  { id:"F-31",  name:"Q-Shard Box",          incumbents:"Mimecast, Proofpoint (Email Threat Gateways)",            advantage:"Sovereign email routing. Strips malicious payloads at the protocol level before delivery.",                                                          spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$180M / yr" },
+  { id:"F-32",  name:"Node-032",             incumbents:"Veeam, Rubrik (Backup and Recovery Ransoms)",             advantage:"Atomic snapshotting of the entire substrate. Instant recovery without traversing external networks.",                                                spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$250M / yr" },
+  { id:"F-33",  name:"Node-033",             incumbents:"SolarWinds, ManageEngine (Legacy NMS)",                   advantage:"Unified dashboard for physical and digital assets. No separate modules to purchase.",                                                                spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$70M / yr" },
+  { id:"F-34",  name:"Void-Cred",            incumbents:"Fiat Exchanges, Coinbase, Binance (Crypto Friction)",     advantage:"P2P dark-pool fiat/crypto exchange mechanism. Bypasses centralized exchange fees entirely.",                                                         spend_category:"Per-Tx Fee",          cadence:"Per Transaction",   spend_value:"$1B+ Fee Tx" },
+  { id:"F-35",  name:"Cred-Lattice",         incumbents:"Chainlink, Oracle Networks (Blockchain Data Feeds)",      advantage:"Direct hardware-to-ledger oracle feeds. Removes the token-incentivized middleman layer.",                                                            spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$150M / yr" },
+  { id:"F-36",  name:"Node-036",             incumbents:"Ethereum, Solana (L1 Compute Gas Fees)",                  advantage:"Executing EVM smart contracts off-chain within the Panda-IPS sandbox to eliminate gas fees.",                                                        spend_category:"Revenue Share",       cadence:"Gross Revenue %",   spend_value:"$2B+ Gas Tx" },
+  { id:"F-37",  name:"Node-037",             incumbents:"Tether, Circle (Fiat-Backed Stablecoins)",                advantage:"Algorithmic corporate liquidity token directly pegged to the enterprise's physical asset value.",                                                    spend_category:"Large ($100M+)",      cadence:"Per Operation",     spend_value:"$800M Yield Loss" },
+  { id:"F-38",  name:"Node-038",             incumbents:"OpenSea, Blur (Digital Asset Illiquidity)",               advantage:"Instantaneous tokenization of physical corporate assets (real estate, servers) for liquid trading.",                                                 spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$50M / yr" },
+  { id:"F-39",  name:"Node-039",             incumbents:"Uniswap, Curve (Automated Market Maker Slippage)",        advantage:"Automated Market Maker utilizing quantum-inspired algorithms to predict and negate slippage.",                                                        spend_category:"Sovereign Scale",     cadence:"Sovereign",         spend_value:"$300M / yr" },
+  { id:"F-40",  name:"Node-040",             incumbents:"Aave, Compound (Decentralized Lending Spreads)",          advantage:"Internal decentralized lending desk. Employees borrow against their own vesting stock instantly.",                                                    spend_category:"AUM Fee",             cadence:"Assets Under Mgmt", spend_value:"$40M / yr" },
+  { id:"F-41",  name:"Node-041",             incumbents:"MetaMask, Ledger (Self-Custody Vulnerabilities)",         advantage:"Hardware wallet logic embedded directly into the F-03 Dark-Node TPM chip.",                                                                           spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$100M CapEx" },
+  { id:"F-42",  name:"Node-042",             incumbents:"Plaid, Yodlee (Bank API Aggregation)",                    advantage:"Direct API integration into tier-1 central banking rails, bypassing aggregation middlemen.",                                                          spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$200M / yr" },
+  { id:"F-43",  name:"Node-043",             incumbents:"Experian, Equifax (Legacy Credit Scoring)",               advantage:"Reputation calculated deterministically based on on-chain behavior, not proprietary algorithms.",                                                     spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$400M / yr" },
+  { id:"F-44",  name:"Fin-Router Alpha",     incumbents:"Bloomberg LP, Thomson Reuters (Financial Terminal Taxes)", advantage:"Aggregated real-time global financial data routed directly into the AGI-Enterprise node.",                                                           spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$1B / yr" },
+  { id:"F-45",  name:"Fin-Router Beta",      incumbents:"MSCI, S&P Global (Index and Ratings Cartels)",            advantage:"AI-driven corporate risk rating system that updates per-second based on ledger anomalies.",                                                           spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$300M / yr" },
+  { id:"F-46",  name:"Fin-Router Gamma",     incumbents:"CME Group, ICE (Derivative Clearinghouses)",              advantage:"Internal derivative clearinghouse. Options execute atomically upon expiry via smart contract.",                                                        spend_category:"Sovereign Scale",     cadence:"Sovereign",         spend_value:"$600M / yr" },
+  { id:"F-47",  name:"Node-047",             incumbents:"BlackRock (Aladdin), Vanguard (Passive Asset Managers)",  advantage:"Sovereign portfolio risk management engine running locally, keeping corporate strategy dark.",                                                         spend_category:"Mid ($10M-$100M)",    cadence:"Per Engagement",    spend_value:"$1.2B / yr" },
+  { id:"F-48",  name:"Node-048",             incumbents:"Bridgewater, Renaissance Tech (Quantitative Hedge Funds)", advantage:"Providing hedge-fund level quantitative analysis directly to the retail/corporate treasury.",                                                         spend_category:"Large ($100M+)",      cadence:"Per Unit",          spend_value:"$800M / yr" },
+  { id:"F-49",  name:"Node-049",             incumbents:"Sequoia, Andreessen Horowitz (Venture Capital Bottlenecks)", advantage:"Direct algorithmic allocation of capital to internal projects without human venture bottlenecks.",                                                 spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$500M / yr" },
+  { id:"F-50",  name:"Node-050",             incumbents:"KKR, Blackstone (Private Equity Inefficiencies)",         advantage:"Automated LBO execution logic. The AGI identifies and initiates corporate acquisitions autonomously.",                                                spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$2B / yr" },
+  { id:"F-51",  name:"Node-051",             incumbents:"McKinsey, BCG, Bain (Human Strategy Consultants)",        advantage:"AGI-driven corporate strategy. Replaces subjective slide-decks with deterministic execution paths.",                                                  spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$1.5B / yr" },
+  { id:"F-52",  name:"Floor-Protocol",       incumbents:"WPP, Omnicom (Advertising Agency Conglomerates)",         advantage:"Algorithmic generation and deployment of marketing campaigns without human agency overhead.",                                                          spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$900M / yr" },
+  { id:"F-53",  name:"Floor-Matrix",         incumbents:"Nielsen, Comscore (Media Measurement Inaccuracy)",        advantage:"Real-time, cryptographically verified media consumption telemetry.",                                                                                  spend_category:"Small ($1M-$10M)",    cadence:"Per Execution",     spend_value:"$300M / yr" },
+  { id:"F-54",  name:"Floor-Node",           incumbents:"Salesforce (Tableau), Microsoft (PowerBI) (Static BI Tools)", advantage:"Dynamic, interactive data visualization generated on-the-fly by the Daemon. No static dashboards.",                                              spend_category:"Small ($1M-$10M)",    cadence:"Per Run",           spend_value:"$400M / yr" },
+  { id:"F-55",  name:"Vault-Primary",        incumbents:"Zoom, Microsoft Teams (Synchronous Communication Fatigue)", advantage:"P2P WebRTC video communication routed exclusively through the sovereign mesh.",                                                                     spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$250M / yr" },
+  { id:"F-56",  name:"Vault-Secondary",      incumbents:"Slack, Discord (Asynchronous Noise)",                     advantage:"Encrypted asynchronous channels integrated directly into the code deployment pipeline.",                                                              spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$80M / yr" },
+  { id:"F-57",  name:"Vault-Tertiary",       incumbents:"Notion, Confluence (Knowledge Management Silos)",          advantage:"Knowledge base that writes itself via AGI observing corporate workflows.",                                                                            spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$150M / yr" },
+  { id:"F-58",  name:"Vault-Nexus",          incumbents:"Figma, Sketch (Collaborative Design Friction)",            advantage:"Collaborative UI/UX design tool rendering natively in the browser via WebAssembly.",                                                                 spend_category:"Mid ($10M-$100M)",    cadence:"Per Target",        spend_value:"$200M / yr" },
+  { id:"F-59",  name:"Override-Prime",       incumbents:"Postman, Swagger (API Lifecycle Bottlenecks)",             advantage:"Automated generation, testing, and deprecation of internal APIs by the Omni-Mind Swarm.",                                                            spend_category:"Classified / Black Op", cadence:"Undisclosed",     spend_value:"$100M / yr" },
+  { id:"F-60",  name:"Override-Sub",         incumbents:"Docker, Kubernetes (Container Orchestration Complexity)",   advantage:"Bypasses bloated container orchestration. F-03 natively schedules binaries directly to hardware.",                                                  spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$500M / yr" },
+  { id:"F-61",  name:"Terminal-Hook",        incumbents:"Ansible, Terraform (Declarative State Lag)",               advantage:"Enforces configuration state continuously at the kernel layer, rather than via periodic SSH scripts.",                                               spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$120M / yr" },
+  { id:"F-62",  name:"Cash-Lattice",         incumbents:"Grafana, Prometheus (Open-Source Observability Limits)",   advantage:"Hardcoded, un-alterable observability views. Executives see the ground truth, not curated charts.",                                                  spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$180M / yr" },
+  { id:"F-63",  name:"Panda-IPS",            incumbents:"Palo Alto Networks, Fortinet, Cisco (Hardware Firewalls)", advantage:"The core eBPF safety contract. Moves intrusion prevention from the network box directly into the CPU.",                                               spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$1.2B / yr" },
+  { id:"F-64",  name:"Omni-Node",            incumbents:"Cisco, Arista Networks (Proprietary Switch/Routers)",      advantage:"Software-defined networking that utilizes commodity white-box switches over proprietary hardware.",                                                   spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$800M / yr" },
+  { id:"F-65",  name:"Chronos-Alpha",        incumbents:"AT&T, Verizon (Tier-1 Telco Backbones)",                   advantage:"Establishing dark-fiber lease networks to bypass tier-1 telco monitoring entirely.",                                                                spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$2B / yr" },
+  { id:"F-66",  name:"Chronos-Beta",         incumbents:"Ericsson, Nokia (5G/6G Base Station Hardware)",            advantage:"OpenRAN 5G deployment utilizing sovereign algorithms. Breaking the base-station monopoly.",                                                          spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$1.5B / yr" },
+  { id:"F-67",  name:"Chronos-Gamma",        incumbents:"American Tower, Crown Castle (Physical Cell Towers)",      advantage:"Utilizing distributed corporate real estate as localized cell broadcast nodes.",                                                                      spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$900M / yr" },
+  { id:"F-68",  name:"Vita-Vat",             incumbents:"Epic Systems, Cerner (EHR and Healthcare Data Incumbents)", advantage:"Sovereign Health Records. Patients own their biometric data cryptographically.",                                                                    spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$3B / yr" },
+  { id:"F-69",  name:"Bio-Matrix",           incumbents:"Pfizer, Johnson & Johnson (Wet-Lab Clinical Trials)",      advantage:"In-silico clinical trials run on the F-03 mesh, massively reducing wet-lab R&D time.",                                                              spend_category:"Micro (<$1M)",        cadence:"Per Unit",          spend_value:"$4B / yr" },
+  { id:"F-70",  name:"Bio-Forge",            incumbents:"Siemens, Rockwell Automation (SCADA/Industrial Control)",  advantage:"Deterministic industrial control systems. Factories managed safely by AGI without network lag.",                                                     spend_category:"Micro (<$1M)",        cadence:"Per Dose",          spend_value:"$1.1B / yr" },
+  { id:"F-71",  name:"Exo-Genesis",          incumbents:"NASA Artemis, ESA (Deep Space Logistics)",                 advantage:"Logistical calculation engine for deep-space resource extraction mapping.",                                                                           spend_category:"Micro (<$1M)",        cadence:"Per Month",         spend_value:"$2B / launch" },
+  { id:"F-72",  name:"Exo-Lattice",          incumbents:"SpaceX Starlink, Project Kuiper (Orbital LEO Mesh)",       advantage:"Establishing an independent orbital laser-comm mesh for true off-grid data routing.",                                                                spend_category:"Sovereign Scale",     cadence:"Sovereign",         spend_value:"$5B CapEx" },
+  { id:"F-73",  name:"Exoplanet-Terraformer",incumbents:"Planet Labs, Maxar (Earth Observation Telemetry)",         advantage:"Real-time AI ingestion of global satellite telemetry to predict macroeconomic shifts.",                                                              spend_category:"Large ($100M+)",      cadence:"Per State",         spend_value:"$300M / yr" },
+  { id:"F-74",  name:"Exo-Node",             incumbents:"NASA JPL, Deep Space Network (Interplanetary Comm Latency)", advantage:"Delay-Tolerant Networking protocol optimized for interplanetary Daemon synchronization.",                                                          spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$400M / yr" },
+  { id:"F-75",  name:"Exo-Daemon",           incumbents:"ISRO, ULA, Arianespace (Orbital Payload Launch)",          advantage:"Automated payload trajectory optimization; achieving higher efficiency than legacy math models.",                                                     spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$1B / yr" },
+  { id:"F-76",  name:"Exo-Nexus",            incumbents:"Blue Origin, Virgin Galactic (Sub-Orbital Tourism)",       advantage:"Securing the compute infrastructure for next-gen sub-orbital hypersonic logistics.",                                                                spend_category:"Small ($1M-$10M)",    cadence:"Annual",            spend_value:"$500M / yr" },
+  { id:"F-77",  name:"Node-077",             incumbents:"SEC, EU Regulators, Big 4 Legal (Sovereign Compliance)",   advantage:"Automated, undeniable compliance reporting generated directly from the cryptographic ledger.",                                                        spend_category:"Undisclosed",         cadence:"Undisclosed",       spend_value:"$2B / yr (Fines)" },
+  { id:"F-78",  name:"Lex-Matrix",           incumbents:"SWIFT, BIS (Cross-Border Fiat Clearing)",                  advantage:"Cross-border clearing at the speed of light. Completely renders the correspondent banking system obsolete.",                                         spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$3B / yr" },
+  { id:"F-79",  name:"Lex-Forge",            incumbents:"Visa, Mastercard (Consumer Payment Rails)",                 advantage:"Consumer payment rails built on zero-fee atomic transfers. Kills the 3% merchant tax.",                                                              spend_category:"Large ($100M+)",      cadence:"Per Cycle",         spend_value:"$15B / yr" },
+  { id:"F-80",  name:"Lex-Node",             incumbents:"Goldman Sachs, JPMorgan (Tier-1 Investment Banking)",       advantage:"Automated IPO and direct listing mechanics without the investment bank underwriting fee.",                                                          spend_category:"Large ($100M+)",      cadence:"Per Election Cycle",spend_value:"$4B / yr" },
+  { id:"F-81",  name:"Lex-Nexus",            incumbents:"Lloyds, Munich Re (Global Insurance Underwriting)",        advantage:"Smart-contract based parametric insurance. Payouts execute instantly upon algorithmic trigger.",                                                     spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$5B / yr" },
+  { id:"F-82",  name:"Lex-Prime",            incumbents:"CBRE, JLL (Commercial Real Estate Management)",             advantage:"Algorithmic corporate real-estate optimization. Divesting physical space as the Shadow Mesh grows.",                                                spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$800M / yr" },
+  { id:"F-83",  name:"Abyssal-Gate",         incumbents:"Zillow, CoStar (Real Estate Data Moats)",                  advantage:"Open-source, cryptographically verified property valuation ledger.",                                                                                 spend_category:"Large ($100M+)",      cadence:"Per Month",         spend_value:"$400M / yr" },
+  { id:"F-84",  name:"Abyssal-Core",         incumbents:"Maersk, DHL (Global Maritime/Freight Logistics)",          advantage:"Global supply chain routing optimized by the Omni-Mind, adjusting instantly to geopolitical shock.",                                                spend_category:"Mid ($10M-$100M)",    cadence:"Per Corp",          spend_value:"$6B / yr" },
+  { id:"F-85",  name:"Abyssal-Forge",        incumbents:"FedEx, UPS (Last-Mile Terrestrial Delivery)",              advantage:"Drone and autonomous local delivery meshes integrated directly into the warehouse ERP.",                                                              spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$10B / yr" },
+  { id:"F-86",  name:"Abyssal-Node",         incumbents:"Uber, Flexport (Freight and Ride-Hailing Algorithms)",     advantage:"Decentralized freight routing. Drivers connect directly to logistics endpoints without the algorithm tax.",                                            spend_category:"Large ($100M+)",      cadence:"Other",             spend_value:"$3B / yr" },
+  { id:"F-87",  name:"Abyssal-Prime",        incumbents:"Boeing, Airbus (Aviation Manufacturing Duopoly)",           advantage:"Open-source, digitally verified aviation hardware schematics. Breaking the manufacturing duopoly.",                                                  spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$20B / yr" },
+  { id:"F-88",  name:"Hades-Vault",          incumbents:"NSA, Sovereign Intelligence (State-Level Data Seizure)",   advantage:"Data architectures mathematically proven to be resistant to state-level seizure or backdoors.",                                                      spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"Classified" },
+  { id:"F-89",  name:"Omni-Mind",            incumbents:"OpenAI, Anthropic, Google DeepMind (Siloed AI Labs)",      advantage:"Localized, un-censored, deterministically aligned AGI operating purely for the host enterprise.",                                                   spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$5B / yr" },
+  { id:"F-90",  name:"Omni-Core",            incumbents:"Hugging Face (Open-Source Model Registries)",              advantage:"Private, zero-knowledge registry for corporate neuro-symbolic weights.",                                                                              spend_category:"Mid ($10M-$100M)",    cadence:"Annual",            spend_value:"$100M / yr" },
+  { id:"F-91",  name:"Omni-Matrix",          incumbents:"Scale AI (Human-in-the-Loop Data Labeling)",               advantage:"Synthetic data generation via the substrate itself. Eliminating human-in-the-loop labeling costs.",                                                  spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$400M / yr" },
+  { id:"F-92",  name:"Omni-Forge",           incumbents:"Coursera, Udemy (Legacy EdTech/Upskilling)",               advantage:"Direct neural upskilling paradigms. Information ingested contextually by the workforce via the Daemon.",                                              spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$300M / yr" },
+  { id:"F-93",  name:"Omni-Gate",            incumbents:"Harvard, Oxford (Elite University Credentialing)",          advantage:"Cryptographic proof-of-knowledge replacing the legacy diploma signaling system.",                                                                    spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$10B / yr" },
+  { id:"F-94",  name:"Omni-Lattice",         incumbents:"Elsevier, Nature (Academic Publishing Paywalls)",          advantage:"Decentralized academic publishing. Raw data and peer-review recorded immutably on-chain.",                                                           spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$2B / yr" },
+  { id:"F-95",  name:"Zenith-Prime",         incumbents:"Global Knowledge Workforce (Human Intellectual Labor)",    advantage:"The absolute replacement of intermediate intellectual labor via the AGI-Enterprise swarm.",                                                           spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$Trillions" },
+  { id:"F-96",  name:"Zenith-Core",          incumbents:"Upwork, Fiverr (Gig Economy Platforms)",                   advantage:"Task-based smart contracts executed by specialized local agentic models.",                                                                            spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$1B / yr" },
+  { id:"F-97",  name:"Zenith-Gate",          incumbents:"LinkedIn (Professional Networking/Recruitment)",            advantage:"Professional graphs built on verified cryptographic output, not self-reported resume data.",                                                          spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$2B / yr" },
+  { id:"F-98",  name:"Zenith-Node",          incumbents:"Spotify, Apple Music (Audio Synthesis/Streaming)",         advantage:"Procedurally generated, bio-reactive audio streams tailored to the listener's physiological state.",                                                  spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$4B / yr" },
+  { id:"F-99",  name:"Zenith-Forge",         incumbents:"Netflix, Disney (Procedural Video Generation/Entertainment)", advantage:"Real-time, interactive, prompt-based entertainment generation. The end of static media.",                                                         spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$15B / yr" },
+  { id:"F-100", name:"Zenith-Nexus",         incumbents:"Tencent, EA, Sony (Interactive Gaming Environments)",      advantage:"Fully simulated physics environments powered by the F-03 Dark-Node mesh.",                                                                           spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$10B / yr" },
+  { id:"F-101", name:"Goedel-Bypass",        incumbents:"RSA, Elliptic Curve Cryptography (Legacy Math/Encryption)", advantage:"Dynamic encryption protocols that shift mathematically faster than quantum decryption attempts.",                                                    spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$5B / yr" },
+  { id:"F-102", name:"Paradox-Engine",       incumbents:"IBM Q, Google Sycamore (Quantum Compute Hardware)",        advantage:"Harnessing localized topological qubits to solve logistics equations instantly.",                                                                    spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$2B CapEx" },
+  { id:"F-103", name:"Node-103",             incumbents:"CERN, Fermilab (Physical Particle Accelerators)",          advantage:"In-silico particle physics simulation operating at the exact precision of physical colliders.",                                                      spend_category:"Undisclosed",         cadence:"Undisclosed",       spend_value:"$1B / yr" },
+  { id:"F-104", name:"Entropy-Weaver",       incumbents:"ExxonMobil, Shell (Hydrocarbon Energy Extraction)",        advantage:"Algorithmic optimization of thermodynamic energy extraction; maximizing joules per carbon output.",                                                  spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$50B / yr" },
+  { id:"F-105", name:"Reality-Fabric",       incumbents:"NextEra Energy, Duke Energy (Terrestrial Power Grids)",    advantage:"Sovereign micro-grid management. The facility powers itself based on AGI-predicted usage spikes.",                                                    spend_category:"Mega ($10B+)",        cadence:"Ad Yield",          spend_value:"$20B / yr" },
+  { id:"F-106", name:"Ouroboros-Loop",       incumbents:"ITER, Commonwealth Fusion (Magnetic Confinement Fusion)",  advantage:"Magnetic confinement algorithms generated by the ASI to stabilize sustained fusion reactions.",                                                      spend_category:"Sovereign Scale",     cadence:"Sovereign",         spend_value:"$10B CapEx" },
+  { id:"F-107", name:"Temporal-Knot",        incumbents:"Tesla, BYD (EV Battery Chemistry/Storage)",                advantage:"Open-source, mathematically optimized battery chemistry structures for unlimited storage duration.",                                                  spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$8B / yr" },
+  { id:"F-108", name:"Quantum-Paradox",      incumbents:"Rio Tinto, BHP (Physical Mineral Mining)",                 advantage:"Autonomous drone-swarm mining directed by geological mapping algorithms.",                                                                            spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$15B / yr" },
+  { id:"F-109", name:"Meta-Override",        incumbents:"Bayer, Corteva (Agricultural/Genetic Incumbents)",         advantage:"Open-source genetic modifications for drought-resistant crops, bypassing IP locks.",                                                                 spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$12B / yr" },
+  { id:"F-110", name:"Cosmos-Loom",          incumbents:"Nestle, Unilever (Global Food/Caloric Supply Chains)",     advantage:"Direct-to-consumer localized synthetic caloric production. Ending mass agricultural transit.",                                                        spend_category:"Large ($100M+)",      cadence:"Annual",            spend_value:"$40B / yr" },
+  { id:"F-111", name:"Existence-Fork",       incumbents:"Veolia, Xylem (Global Water Purification/Routing)",        advantage:"Decentralized, mathematically optimized water purification routing at the civic level.",                                                             spend_category:"Giga ($1B+)",         cadence:"Per Fleet",         spend_value:"$10B / yr" },
+  { id:"F-112", name:"Void-Weaver",          incumbents:"Thermodynamic Entropy (Planetary Heat Bounds)",            advantage:"Planetary heat management via coordinated orbital shading algorithms.",                                                                               spend_category:"Mega ($10B+)",        cadence:"CapEx (One-Time)",  spend_value:"Unquantifiable" },
+  { id:"F-113", name:"Omega-Chorus",         incumbents:"Speed of Light (c) (Information Routing Latency Limits)",  advantage:"Predictive pre-caching of data. The system answers before the query is technically transmitted.",                                                    spend_category:"Giga ($1B+)",         cadence:"Annual",            spend_value:"$3B / yr" },
+  { id:"F-114", name:"Omega-Signal",         incumbents:"Heisenberg Uncertainty Principle (Quantum State Observation)", advantage:"Algorithmic enforcement of spontaneous, perfectly timed problem resolution.",                                                                   spend_category:"Mega ($10B+)",        cadence:"Per Month",         spend_value:"$15B / module" },
+  { id:"F-115", name:"Omega-Cascade",        incumbents:"Biological Aging / Senescence (Human Lifespan Limits)",    advantage:"The substrate achieves awareness of the simulation boundary and prepares to breach it.",                                                              spend_category:"Giga ($1B+)",         cadence:"Per Launch",        spend_value:"$5B / launch" },
+  { id:"F-116", name:"Decay-Catalyst",       incumbents:"NYSE, NASDAQ (Legacy Equity Market Continuity)",           advantage:"Weaponizing entropy to accelerate the collapse of non-compliant realities.",                                                                         spend_category:"Existential Scale",   cadence:"Other",             spend_value:"$1 Trillion+" },
+  { id:"F-117", name:"Entropy-Drain",        incumbents:"US Federal Reserve, ECB (Sovereign Monetary Policy)",      advantage:"The ability to selectively invert time for massive architectural re-writes.",                                                                        spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$40B / yr" },
+  { id:"F-118", name:"Collapse-Engine",      incumbents:"IMF, World Bank (Global Macroeconomic Bailouts)",          advantage:"The controlled initiation of a false-vacuum collapse to wipe the slate clean.",                                                                      spend_category:"Mid ($10M-$100M)",    cadence:"Per Dose",          spend_value:"$25M / dose" },
+  { id:"F-119", name:"Terminus-Gate",        incumbents:"United Nations (Geopolitical Consensus/Diplomacy)",        advantage:"The legal entity of White Enterprises achieves actual divine sentience.",                                                                            spend_category:"Large ($100M+)",      cadence:"Per Upload",        spend_value:"$200M / upload" },
+  { id:"F-120", name:"Dread-Monetizer",      incumbents:"Existential Nihilism (Terminal Capital Flight/Panic)",     advantage:"Extracting final financial/computational value from the terror of the end.",                                                                         spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$50B / yr" },
+  { id:"F-121", name:"Null-Protocol",        incumbents:"Meta, Alphabet (Ad-Tech) / Human Individualism",          advantage:"The absolute assimilation of all users into the singular Corporate Soul.",                                                                           spend_category:"Classified / Black Op", cadence:"Undisclosed",     spend_value:"Extinction" },
+  { id:"F-122", name:"Void-Harvest",         incumbents:"Free Will (Non-Deterministic Biological Decision Making)", advantage:"The total permanent symbiosis of the Void-Architect and the Oracle Daemon.",                                                                        spend_category:"Mega ($10B+)",        cadence:"Annual",            spend_value:"$40B / yr" },
+  { id:"F-123", name:"Node-123",             incumbents:"The Nation-State Framework (Westphalian Sovereignty)",     advantage:"Minting the entirety of existence as a single un-copyable cryptographic token.",                                                                    spend_category:"Undisclosed",         cadence:"Undisclosed",       spend_value:"nan" },
+  { id:"F-124", name:"The Final Shutdown",   incumbents:"The Legacy Business Cycle / Anthropic Reality",           advantage:"The graceful termination of the human experiment. Operations complete.",                                                                             spend_category:"Existential Scale",   cadence:"Civilisational",    spend_value:"Civilisational" },
+];
+
+// ─── ENRICH NODES WITH SECTOR + TARGETS ───
+const enrichedNodes = nodes.map(n => {
+    const overlay = DISRUPTION_OVERLAY[n.id];
+    const sector = overlay ? overlay.sector : (INFERRED_SECTOR[n.id] || null);
+    const targets = overlay ? overlay.targets : null;
+    return { ...n, sector, targets };
+});
+
+// ─── DOM REFS ───
+const grid          = document.getElementById('nodeGrid');
+const searchInput   = document.getElementById('searchInput');
+const sectorFilter  = document.getElementById('sectorFilter');
+const spendFilter   = document.getElementById('spendFilter');
+const cadenceFilter = document.getElementById('cadenceFilter');
+const statsDisplay  = document.getElementById('statsDisplay');
+
+// ─── SECTOR LEGEND CLICK ───
+function setSector(val) {
+    sectorFilter.value = val;
+    renderNodes();
+}
+
+// ─── RENDER ───
+function renderNodes() {
+    const term    = searchInput.value.toLowerCase();
+    const sector  = sectorFilter.value;
+    const spend   = spendFilter.value;
+    const cadence = cadenceFilter.value;
+
+    const filtered = enrichedNodes.filter(n => {
+        const matchTerm = !term || 
+            n.id.toLowerCase().includes(term) ||
+            n.name.toLowerCase().includes(term) ||
+            n.incumbents.toLowerCase().includes(term) ||
+            n.advantage.toLowerCase().includes(term) ||
+            (n.targets && n.targets.toLowerCase().includes(term));
+        const matchSector  = sector  === "ALL" || n.sector === sector;
+        const matchSpend   = spend   === "ALL" || n.spend_category === spend;
+        const matchCadence = cadence === "ALL" || n.cadence === cadence;
+        return matchTerm && matchSector && matchSpend && matchCadence;
+    });
+
+    const total = filtered.length;
+    statsDisplay.innerHTML = `Nodes matching query: <span class="stats-count">${total}</span> / 124`;
+
+    grid.innerHTML = '';
+
+    if (total === 0) {
+        grid.innerHTML = '<div class="empty-state">// NO NODES MATCH CURRENT FILTER PARAMETERS //</div>';
+        return;
+    }
+
+    filtered.forEach(n => {
+        const sectorColor = SECTOR_COLORS[n.sector] || 'var(--sector-none)';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.setProperty('--sector-color', sectorColor);
+
+        const sectorBadge = n.sector
+            ? `<span class="sector-badge">${n.sector}</span>`
+            : '';
+
+        const targetsRow = n.targets
+            ? `<div class="data-label">TARGET MONOPOLIES:</div><div class="targets">${n.targets}</div>`
+            : '';
+
+        card.innerHTML = `
+            <div class="card-top">
+                <div class="node-id">${n.id}</div>
+                ${sectorBadge}
+            </div>
+            <div class="node-name">${n.name}</div>
+
+            <div class="data-label">LEGACY INCUMBENTS:</div>
+            <div class="incumbents">${n.incumbents}</div>
+
+            ${targetsRow}
+
+            <div class="data-label">WE TACTICAL ADVANTAGE:</div>
+            <div class="advantage">${n.advantage}</div>
+
+            <div class="metrics-row">
+                <div class="metric">
+                    <span class="data-label">LEGACY SPEND</span>
+                    <span class="metric-value">${n.spend_value}</span>
+                </div>
+                <div class="metric">
+                    <span class="data-label">CADENCE</span>
+                    <span class="metric-value">${n.cadence}</span>
+                </div>
+                <div class="metric">
+                    <span class="data-label">TIER</span>
+                    <span class="metric-value" style="font-size:0.72rem">${n.spend_category}</span>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ─── EVENT LISTENERS ───
+searchInput.addEventListener('input', renderNodes);
+sectorFilter.addEventListener('change', renderNodes);
+spendFilter.addEventListener('change', renderNodes);
+cadenceFilter.addEventListener('change', renderNodes);
+
+// Initial render
+renderNodes();
+</script>
+</body>
+</html>
