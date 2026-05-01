@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHITE ENTERPRISES // F-Node Tactical Displacement Matrix</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --panel-bg: #111111;
+            --border-color: #333;
+            --accent-color: #ffffff;
+            --text-main: #e0e0e0;
+            --text-muted: #666666;
+            --hover-bg: #1a1a1a;
+            --highlight: #444444;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 30px;
+        }
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+        }
+        .version-banner {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+        }
+        .banner-title {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .version-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .version-tag {
+            background: #1a1a1a;
+            border: 1px dashed #444;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .version-tag:hover {
+            border-color: var(--accent-color);
+            background: #2a2a2a;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        input {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            outline: none;
+            flex: 1;
+            min-width: 250px;
+            font-size: 1rem;
+        }
+        input:focus {
+            border-color: var(--accent-color);
+            background: var(--highlight);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            border-color: var(--accent-color);
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--border-color);
+            transition: background 0.2s ease;
+        }
+        .card:hover::before {
+            background: var(--accent-color);
+        }
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+        .node-id {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        .node-name {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .data-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+        .incumbents {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #ff6b6b;
+        }
+        .advantage {
+            font-size: 0.90rem;
+            line-height: 1.5;
+            color: #a8d5ba;
+            flex-grow: 1;
+        }
+        .metrics-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        .metric {
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-value {
+            font-size: 0.95rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .stats {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>WHITE ENTERPRISES INC. // TACTICAL ENHANCED MATRIX</h1>
+        <div style="color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px;">STATUS: SANITIZED // SOURCE: ENHANCED INTEL LEDGER</div>
+    </header>
+
+    <div class="version-banner">
+        <div class="banner-title">PRODUCT VERSIONS AVAILABLE FOR DEMO ON REQUEST:</div>
+        <div class="version-tags">
+            <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: MVP — LOCAL\nRequires air-gapped Linux terminal for eBPF kernel injection.')">MVP — LOCAL (The Sovereign Seed)</span>
+            <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: MVP — ENTERPRISE\nRequires multi-node shadow mesh environment.')">MVP — ENTERPRISE (The Shadow Mesh)</span>
+            <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: AGI — LOCAL\nRequires localized neuro-symbolic weights.')">AGI — LOCAL (The Cognitive Node)</span>
+            <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: AGI — ENTERPRISE\nRequires high-frequency liquidity testnet integration.')">AGI — ENTERPRISE (The Omni-Mind Swarm)</span>
+            <span class="version-tag" onclick="alert('DEMO REQUEST LOGGED: ASI — LOCAL\nWARNING: Physics containment protocols required.')">ASI — LOCAL (The Sovereign Singularity)</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search incumbents, nodes, tactical advantages, or IDs...">
+    </div>
+    
+    <div class="stats" id="statsDisplay">Nodes matching query: 0</div>
+
+    <div class="grid" id="nodeGrid"></div>
+
+    <script>
+        // Data Ingestion: Extracted from Featurescsv.csv
+        const nodes = [
+  { "id": "F-01", "name": "Oni-Daemon", "incumbents": "Global System Integrators (TCS, Accenture)", "advantage": "Autonomous L1-L3 management; sub-millisecond execution. Replaces entire managed service contracts with daemon substrate.", "spend": "$150M / yr" },
+  { "id": "F-02", "name": "Data-Vamp", "incumbents": "Datadog / Splunk", "advantage": "Wire-speed telemetry ingestion without volume-based penalties. Infinite ingest at zero marginal cost.", "spend": "$60M / yr" },
+  { "id": "F-03", "name": "Dark-Node", "incumbents": "AWS Outposts / Azure Stack", "advantage": "True air-gapped edge compute; absolute physical control. No cloud dependency, no egress fee.", "spend": "$24M / yr" },
+  { "id": "F-04", "name": "Neuro-Chrome", "incumbents": "Broadcom / Intel", "advantage": "Open-access hardware acceleration for custom AI logic. Breaks vendor silicon monopoly.", "spend": "$1.2B CapEx" },
+  { "id": "F-05", "name": "Void-Tether", "incumbents": "Legacy RSA/ECC Infrastructure", "advantage": "Post-quantum entanglement mesh; mathematically unbreakable against all future compute.", "spend": "$80M / yr" },
+  { "id": "F-06", "name": "The Construct", "incumbents": "Cisco Modeling Labs", "advantage": "Real-time digital twin integrated directly into the orchestrator. No separate license required.", "spend": "$350M / yr" },
+  { "id": "F-07", "name": "Mech-Proxy", "incumbents": "SolarWinds / PRTG", "advantage": "Predictive failure diagnostics utilizing neuro-symbolic logic. Prevents failure, does not report it.", "spend": "$200M / yr" },
+  { "id": "F-08", "name": "Hydro-Synth", "incumbents": "Legacy Data Center HVAC", "advantage": "Native liquid-cooled server architecture for extreme density. 10x compute per rack vs air-cooled.", "spend": "$800M / yr" },
+  { "id": "F-09", "name": "Neon-Perimeter", "incumbents": "Standard Hardware Firewalls", "advantage": "Software-defined kinetic defense grid; identifies and isolates physical threats to hardware automatically.", "spend": "$500M / yr" },
+  { "id": "F-10", "name": "Chrono-Lock", "incumbents": "NTP Services / Legacy Time", "advantage": "Atomic clock sync down to the femtosecond across all sovereign nodes. Crucial for T+0 settlement.", "spend": "$40M / yr" },
+  { "id": "F-11", "name": "Plasma-State", "incumbents": "HashiCorp Terraform", "advantage": "Instantaneous infrastructure-as-code deployment via memory manipulation; no state-file lag.", "spend": "$100M / yr" },
+  { "id": "F-12", "name": "Ghost-Net", "incumbents": "Cloudflare / Akamai", "advantage": "Dark-routed CDN. Untraceable packet delivery that bypasses standard BGP routing tables entirely.", "spend": "$450M / yr" },
+  { "id": "F-13", "name": "Node-Prime", "incumbents": "VMware ESXi", "advantage": "Hyper-efficient hypervisor written purely in Rust. Zero legacy C++ memory vulnerabilities.", "spend": "$1.5B / yr" },
+  { "id": "F-14", "name": "Silk-Route", "incumbents": "Twilio / Vonage", "advantage": "Decentralized P2P messaging protocol. No per-SMS or per-API call tax on communication.", "spend": "$80M / yr" },
+  { "id": "F-15", "name": "Iron-Vault", "incumbents": "AWS S3 / Glacier", "advantage": "Immutable object storage distributed across local shards. Mathematically immune to ransomware.", "spend": "$600M / yr" },
+  { "id": "F-16", "name": "Aegis-Grid", "incumbents": "Palo Alto Prisma", "advantage": "Zero-trust network architecture natively built into the kernel. No external agents required.", "spend": "$300M / yr" },
+  { "id": "F-17", "name": "Echo-Chamber", "incumbents": "Slack / MS Teams", "advantage": "End-to-end encrypted sovereign team communication. No data mining by third-party hosters.", "spend": "$120M / yr" },
+  { "id": "F-18", "name": "Nexus-Point", "incumbents": "Equinix / Digital Realty", "advantage": "Micro-colocation deployment strategy. Distributes compute to abandoned real estate at fraction of cost.", "spend": "$2.5B / yr" },
+  { "id": "F-19", "name": "Cerebro-Link", "incumbents": "Workday / ADP", "advantage": "Decentralized HR and payroll execution via smart contracts. Eliminates compounding per-seat SaaS tax.", "spend": "$400M / yr" },
+  { "id": "F-20", "name": "Quantum-Weave", "incumbents": "Traditional Fiber Optics", "advantage": "Integration protocol for upcoming quantum networking links. Preparing for entanglement-based comms.", "spend": "$900M CapEx" },
+  { "id": "F-21", "name": "Shadow-Forge", "incumbents": "GitHub / GitLab", "advantage": "Air-gapped CI/CD pipeline. Code never touches a public server; compiles directly on the Daemon.", "spend": "$110M / yr" },
+  { "id": "F-22", "name": "Onyx-Ledger", "incumbents": "Oracle NetSuite", "advantage": "Triple-entry sovereign accounting system. Real-time cryptographic auditing eliminates need for Big 4.", "spend": "$700M / yr" },
+  { "id": "F-23", "name": "Cipher-Stream", "incumbents": "Snowflake", "advantage": "Encrypted-in-use data warehousing. Query data without ever decrypting it at the source.", "spend": "$200M / yr" },
+  { "id": "F-24", "name": "Cortex-Jack", "incumbents": "Okta / Microsoft Entra", "advantage": "Zero-Knowledge Proof (ZKP) biometric authentication. No central password database to be breached.", "spend": "$350M / yr" },
+  { "id": "F-25", "name": "Viper-Mesh", "incumbents": "Cisco Meraki", "advantage": "Self-healing wireless mesh networking for physical campus environments.", "spend": "$150M / yr" },
+  { "id": "F-26", "name": "Apex-Router", "incumbents": "F5 Networks", "advantage": "Layer 7 load balancing executing directly in eBPF. Millisecond latency routing decisions.", "spend": "$80M / yr" },
+  { "id": "F-27", "name": "Titan-Core", "incumbents": "SAP S/4HANA", "advantage": "Modular, non-monolithic ERP backbone. Deploys in days, not years. Infinite scalability.", "spend": "$1.8B / yr" },
+  { "id": "F-28", "name": "Prism-Guard", "incumbents": "CrowdStrike / SentinelOne", "advantage": "Endpoint defense driven by deterministic safety contracts, not probabilistic machine learning guesses.", "spend": "$400M / yr" },
+  { "id": "F-29", "name": "Echo-Locator", "incumbents": "Qualys / Tenable", "advantage": "Continuous, silent vulnerability scanning running inside the kernel. Zero network overhead.", "spend": "$90M / yr" },
+  { "id": "F-30", "name": "Void-Anchor", "incumbents": "CyberArk", "advantage": "Privileged access management without a centralized vault. Keys are dynamically generated and destroyed.", "spend": "$120M / yr" },
+  { "id": "F-31", "name": "Q-Shard Box", "incumbents": "Proofpoint / Mimecast", "advantage": "Sovereign email routing. Strips malicious payloads at the protocol level before delivery.", "spend": "$180M / yr" },
+  { "id": "F-32", "name": "Genesis-Backup", "incumbents": "Veeam / Rubrik", "advantage": "Atomic snapshotting of the entire substrate. Instant recovery without traversing external networks.", "spend": "$250M / yr" },
+  { "id": "F-33", "name": "Omni-Sight", "incumbents": "ManageEngine", "advantage": "Unified dashboard for physical and digital assets. No separate modules to purchase.", "spend": "$70M / yr" },
+  { "id": "F-34", "name": "Void-Cred", "incumbents": "Coinbase / Binance", "advantage": "P2P dark-pool fiat/crypto exchange mechanism. Bypasses centralized exchange fees entirely.", "spend": "$1B+ Fee Tx" },
+  { "id": "F-35", "name": "Cred-Lattice", "incumbents": "Chainlink", "advantage": "Direct hardware-to-ledger oracle feeds. Removes the token-incentivized middleman layer.", "spend": "$150M / yr" },
+  { "id": "F-36", "name": "Ether-Bypass", "incumbents": "Ethereum L1", "advantage": "Executing EVM smart contracts off-chain within the Panda-IPS sandbox to eliminate gas fees.", "spend": "$2B+ Gas Tx" },
+  { "id": "F-37", "name": "Stable-Core", "incumbents": "Tether / Circle", "advantage": "Algorithmic corporate liquidity token directly pegged to the enterprise's physical asset value.", "spend": "$800M Yield Loss" },
+  { "id": "F-38", "name": "Asset-Forge", "incumbents": "OpenSea", "advantage": "Instantaneous tokenization of physical corporate assets (real estate, servers) for liquid trading.", "spend": "$50M / yr" },
+  { "id": "F-39", "name": "Slippage-Zero", "incumbents": "Uniswap", "advantage": "Automated Market Maker utilizing quantum-inspired algorithms to predict and negate slippage.", "spend": "$300M / yr" },
+  { "id": "F-40", "name": "Yield-Vamp", "incumbents": "Aave", "advantage": "Internal decentralized lending desk. Employees borrow against their own vesting stock instantly.", "spend": "$40M / yr" },
+  { "id": "F-41", "name": "Iron-Wallet", "incumbents": "Ledger / Trezor", "advantage": "Hardware wallet logic embedded directly into the F-03 Dark-Node TPM chip.", "spend": "$100M CapEx" },
+  { "id": "F-42", "name": "Fiat-Bridge", "incumbents": "Plaid", "advantage": "Direct API integration into tier-1 central banking rails, bypassing aggregation middlemen.", "spend": "$200M / yr" },
+  { "id": "F-43", "name": "Trust-Score", "incumbents": "Experian / Equifax", "advantage": "Reputation calculated deterministically based on on-chain behavior, not proprietary algorithms.", "spend": "$400M / yr" },
+  { "id": "F-44", "name": "Fin-Router Alpha", "incumbents": "Bloomberg Terminal", "advantage": "Aggregated real-time global financial data routed directly into the AGI-Enterprise node.", "spend": "$1B / yr" },
+  { "id": "F-45", "name": "Fin-Router Beta", "incumbents": "S&P Global", "advantage": "AI-driven corporate risk rating system that updates per-second based on ledger anomalies.", "spend": "$300M / yr" },
+  { "id": "F-46", "name": "Fin-Router Gamma", "incumbents": "CME Group", "advantage": "Internal derivative clearinghouse. Options execute atomically upon expiry via smart contract.", "spend": "$600M / yr" },
+  { "id": "F-47", "name": "Aladdin-Bypass", "incumbents": "BlackRock Aladdin", "advantage": "Sovereign portfolio risk management engine running locally, keeping corporate strategy dark.", "spend": "$1.2B / yr" },
+  { "id": "F-48", "name": "Quant-Override", "incumbents": "Renaissance Tech", "advantage": "Providing hedge-fund level quantitative analysis directly to the retail/corporate treasury.", "spend": "$800M / yr" },
+  { "id": "F-49", "name": "VC-Disrupt", "incumbents": "Sequoia / a16z", "advantage": "Direct algorithmic allocation of capital to internal projects without human venture bottlenecks.", "spend": "$500M / yr" },
+  { "id": "F-50", "name": "PE-Slicer", "incumbents": "Blackstone / KKR", "advantage": "Automated LBO execution logic. The AGI identifies and initiates corporate acquisitions autonomously.", "spend": "$2B / yr" },
+  { "id": "F-51", "name": "Consult-Kill", "incumbents": "McKinsey / BCG", "advantage": "AGI-driven corporate strategy. Replaces subjective slide-decks with deterministic execution paths.", "spend": "$1.5B / yr" },
+  { "id": "F-52", "name": "Floor-Protocol", "incumbents": "WPP / Omnicom", "advantage": "Algorithmic generation and deployment of marketing campaigns without human agency overhead.", "spend": "$900M / yr" },
+  { "id": "F-53", "name": "Floor-Matrix", "incumbents": "Nielsen", "advantage": "Real-time, cryptographically verified media consumption telemetry.", "spend": "$300M / yr" },
+  { "id": "F-54", "name": "Data-Lens", "incumbents": "Salesforce Tableau", "advantage": "Dynamic, interactive data visualization generated on-the-fly by the Daemon. No static dashboards.", "spend": "$400M / yr" },
+  { "id": "F-55", "name": "Vault-Primary", "incumbents": "Zoom", "advantage": "P2P WebRTC video communication routed exclusively through the sovereign mesh.", "spend": "$250M / yr" },
+  { "id": "F-56", "name": "Vault-Secondary", "incumbents": "Discord", "advantage": "Encrypted asynchronous channels integrated directly into the code deployment pipeline.", "spend": "$80M / yr" },
+  { "id": "F-57", "name": "Vault-Tertiary", "incumbents": "Notion", "advantage": "Knowledge base that writes itself via AGI observing corporate workflows.", "spend": "$150M / yr" },
+  { "id": "F-58", "name": "Design-Forge", "incumbents": "Figma", "advantage": "Collaborative UI/UX design tool rendering natively in the browser via WebAssembly.", "spend": "$200M / yr" },
+  { "id": "F-59", "name": "API-Sniper", "incumbents": "Postman", "advantage": "Automated generation, testing, and deprecation of internal APIs by the Omni-Mind Swarm.", "spend": "$100M / yr" },
+  { "id": "F-60", "name": "Kube-Killer", "incumbents": "Kubernetes", "advantage": "Bypasses bloated container orchestration. F-03 natively schedules binaries directly to hardware.", "spend": "$500M / yr" },
+  { "id": "F-61", "name": "State-Anchor", "incumbents": "Ansible", "advantage": "Enforces configuration state continuously at the kernel layer, rather than via periodic SSH scripts.", "spend": "$120M / yr" },
+  { "id": "F-62", "name": "Graf-Override", "incumbents": "Grafana", "advantage": "Hardcoded, un-alterable observability views. Executives see the ground truth, not curated charts.", "spend": "$180M / yr" },
+  { "id": "F-63", "name": "Panda-IPS", "incumbents": "Cisco / Fortinet Hardware", "advantage": "The core eBPF safety contract. Moves intrusion prevention from the network box directly into the CPU.", "spend": "$1.2B / yr" },
+  { "id": "F-64", "name": "Omni-Switch", "incumbents": "Arista Networks", "advantage": "Software-defined networking that utilizes commodity white-box switches over proprietary hardware.", "spend": "$800M / yr" },
+  { "id": "F-65", "name": "Chrono-Alpha", "incumbents": "AT&T / Verizon", "advantage": "Establishing dark-fiber lease networks to bypass tier-1 telco monitoring entirely.", "spend": "$2B / yr" },
+  { "id": "F-66", "name": "Chrono-Beta", "incumbents": "Ericsson / Nokia", "advantage": "OpenRAN 5G deployment utilizing sovereign algorithms. Breaking the base-station monopoly.", "spend": "$1.5B / yr" },
+  { "id": "F-67", "name": "Chrono-Gamma", "incumbents": "American Tower", "advantage": "Utilizing distributed corporate real estate as localized cell broadcast nodes.", "spend": "$900M / yr" },
+  { "id": "F-68", "name": "Vita-Vat", "incumbents": "Epic Systems", "advantage": "Sovereign Health Records. Patients own their biometric data cryptographically.", "spend": "$3B / yr" },
+  { "id": "F-69", "name": "Bio-Matrix", "incumbents": "Pfizer / J&J", "advantage": "In-silico clinical trials run on the F-03 mesh, massively reducing wet-lab R&D time.", "spend": "$4B / yr" },
+  { "id": "F-70", "name": "Bio-Forge", "incumbents": "Siemens SCADA", "advantage": "Deterministic industrial control systems. Factories managed safely by AGI without network lag.", "spend": "$1.1B / yr" },
+  { "id": "F-71", "name": "Exo-Genesis", "incumbents": "NASA / ESA", "advantage": "Logistical calculation engine for deep-space resource extraction mapping.", "spend": "$2B / launch" },
+  { "id": "F-72", "name": "Exo-Lattice", "incumbents": "SpaceX Starlink", "advantage": "Establishing an independent orbital laser-comm mesh for true off-grid data routing.", "spend": "$5B CapEx" },
+  { "id": "F-73", "name": "Exo-Terra", "incumbents": "Planet Labs", "advantage": "Real-time AI ingestion of global satellite telemetry to predict macroeconomic shifts.", "spend": "$300M / yr" },
+  { "id": "F-74", "name": "Exo-Node", "incumbents": "Deep Space Network", "advantage": "Delay-Tolerant Networking protocol optimized for interplanetary Daemon synchronization.", "spend": "$400M / yr" },
+  { "id": "F-75", "name": "Exo-Daemon", "incumbents": "ULA / Arianespace", "advantage": "Automated payload trajectory optimization; achieving higher efficiency than legacy math models.", "spend": "$1B / yr" },
+  { "id": "F-76", "name": "Exo-Nexus", "incumbents": "Blue Origin", "advantage": "Securing the compute infrastructure for next-gen sub-orbital hypersonic logistics.", "spend": "$500M / yr" },
+  { "id": "F-77", "name": "Lex-Override", "incumbents": "SEC / EU Regulators", "advantage": "Automated, undeniable compliance reporting generated directly from the cryptographic ledger.", "spend": "$2B / yr (Fines)" },
+  { "id": "F-78", "name": "Lex-Matrix", "incumbents": "SWIFT", "advantage": "Cross-border clearing at the speed of light. Completely renders the correspondent banking system obsolete.", "spend": "$3B / yr" },
+  { "id": "F-79", "name": "Lex-Forge", "incumbents": "Visa / Mastercard", "advantage": "Consumer payment rails built on zero-fee atomic transfers. Kills the 3% merchant tax.", "spend": "$15B / yr" },
+  { "id": "F-80", "name": "Lex-Node", "incumbents": "Goldman Sachs", "advantage": "Automated IPO and direct listing mechanics without the investment bank underwriting fee.", "spend": "$4B / yr" },
+  { "id": "F-81", "name": "Lex-Nexus", "incumbents": "Lloyds / Munich Re", "advantage": "Smart-contract based parametric insurance. Payouts execute instantly upon algorithmic trigger.", "spend": "$5B / yr" },
+  { "id": "F-82", "name": "Abyssal-Prime", "incumbents": "CBRE / JLL", "advantage": "Algorithmic corporate real-estate optimization. Divesting physical space as the Shadow Mesh grows.", "spend": "$800M / yr" },
+  { "id": "F-83", "name": "Abyssal-Gate", "incumbents": "CoStar / Zillow", "advantage": "Open-source, cryptographically verified property valuation ledger.", "spend": "$400M / yr" },
+  { "id": "F-84", "name": "Abyssal-Core", "incumbents": "Maersk / DHL", "advantage": "Global supply chain routing optimized by the Omni-Mind, adjusting instantly to geopolitical shock.", "spend": "$6B / yr" },
+  { "id": "F-85", "name": "Abyssal-Forge", "incumbents": "FedEx / UPS", "advantage": "Drone and autonomous local delivery meshes integrated directly into the warehouse ERP.", "spend": "$10B / yr" },
+  { "id": "F-86", "name": "Abyssal-Node", "incumbents": "Uber / Flexport", "advantage": "Decentralized freight routing. Drivers connect directly to logistics endpoints without the algorithm tax.", "spend": "$3B / yr" },
+  { "id": "F-87", "name": "Aero-Matrix", "incumbents": "Boeing / Airbus", "advantage": "Open-source, digitally verified aviation hardware schematics. Breaking the manufacturing duopoly.", "spend": "$20B / yr" },
+  { "id": "F-88", "name": "Hades-Vault", "incumbents": "NSA / State Intel", "advantage": "Data architectures mathematically proven to be resistant to state-level seizure or backdoors.", "spend": "Classified" },
+  { "id": "F-89", "name": "Omni-Mind", "incumbents": "OpenAI / Anthropic", "advantage": "Localized, un-censored, deterministically aligned AGI operating purely for the host enterprise.", "spend": "$5B / yr" },
+  { "id": "F-90", "name": "Omni-Core", "incumbents": "Hugging Face", "advantage": "Private, zero-knowledge registry for corporate neuro-symbolic weights.", "spend": "$100M / yr" },
+  { "id": "F-91", "name": "Omni-Matrix", "incumbents": "Scale AI", "advantage": "Synthetic data generation via the substrate itself. Eliminating human-in-the-loop labeling costs.", "spend": "$400M / yr" },
+  { "id": "F-92", "name": "Omni-Forge", "incumbents": "Coursera / Udemy", "advantage": "Direct neural upskilling paradigms. Information ingested contextually by the workforce via the Daemon.", "spend": "$300M / yr" },
+  { "id": "F-93", "name": "Omni-Gate", "incumbents": "Elite Universities", "advantage": "Cryptographic proof-of-knowledge replacing the legacy diploma signaling system.", "spend": "$10B / yr" },
+  { "id": "F-94", "name": "Omni-Lattice", "incumbents": "Elsevier / Nature", "advantage": "Decentralized academic publishing. Raw data and peer-review recorded immutably on-chain.", "spend": "$2B / yr" },
+  { "id": "F-95", "name": "Zenith-Prime", "incumbents": "Human Knowledge Workforce", "advantage": "The absolute replacement of intermediate intellectual labor via the AGI-Enterprise swarm.", "spend": "$Trillions" },
+  { "id": "F-96", "name": "Zenith-Core", "incumbents": "Upwork / Fiverr", "advantage": "Task-based smart contracts executed by specialized local agentic models.", "spend": "$1B / yr" },
+  { "id": "F-97", "name": "Zenith-Gate", "incumbents": "LinkedIn", "advantage": "Professional graphs built on verified cryptographic output, not self-reported resume data.", "spend": "$2B / yr" },
+  { "id": "F-98", "name": "Zenith-Node", "incumbents": "Spotify", "advantage": "Procedurally generated, bio-reactive audio streams tailored to the listener's physiological state.", "spend": "$4B / yr" },
+  { "id": "F-99", "name": "Zenith-Forge", "incumbents": "Netflix / Disney", "advantage": "Real-time, interactive, prompt-based entertainment generation. The end of static media.", "spend": "$15B / yr" },
+  { "id": "F-100", "name": "Zenith-Nexus", "incumbents": "Tencent / EA", "advantage": "Fully simulated physics environments powered by the F-03 Dark-Node mesh.", "spend": "$10B / yr" },
+  { "id": "F-101", "name": "Goedel-Bypass", "incumbents": "Legacy Cryptography", "advantage": "Dynamic encryption protocols that shift mathematically faster than quantum decryption attempts.", "spend": "$5B / yr" },
+  { "id": "F-102", "name": "Paradox-Engine", "incumbents": "IBM Q / Google Sycamore", "advantage": "Harnessing localized topological qubits to solve logistics equations instantly.", "spend": "$2B CapEx" },
+  { "id": "F-103", "name": "CERN-Override", "incumbents": "CERN / Fermilab", "advantage": "In-silico particle physics simulation operating at the exact precision of physical colliders.", "spend": "$1B / yr" },
+  { "id": "F-104", "name": "Entropy-Weaver", "incumbents": "ExxonMobil / Shell", "advantage": "Algorithmic optimization of thermodynamic energy extraction; maximizing joules per carbon output.", "spend": "$50B / yr" },
+  { "id": "F-105", "name": "Reality-Fabric", "incumbents": "Terrestrial Power Grids", "advantage": "Sovereign micro-grid management. The facility powers itself based on AGI-predicted usage spikes.", "spend": "$20B / yr" },
+  { "id": "F-106", "name": "Ouroboros-Loop", "incumbents": "ITER", "advantage": "Magnetic confinement algorithms generated by the ASI to stabilize sustained fusion reactions.", "spend": "$10B CapEx" },
+  { "id": "F-107", "name": "Temporal-Knot", "incumbents": "Tesla Battery IP", "advantage": "Open-source, mathematically optimized battery chemistry structures for unlimited storage duration.", "spend": "$8B / yr" },
+  { "id": "F-108", "name": "Quantum-Paradox", "incumbents": "Rio Tinto / BHP", "advantage": "Autonomous drone-swarm mining directed by geological mapping algorithms.", "spend": "$15B / yr" },
+  { "id": "F-109", "name": "Meta-Override", "incumbents": "Bayer / Corteva", "advantage": "Open-source genetic modifications for drought-resistant crops, bypassing IP locks.", "spend": "$12B / yr" },
+  { "id": "F-110", "name": "Cosmos-Loom", "incumbents": "Nestle / Unilever", "advantage": "Direct-to-consumer localized synthetic caloric production. Ending mass agricultural transit.", "spend": "$40B / yr" },
+  { "id": "F-111", "name": "Existence-Fork", "incumbents": "Veolia / Xylem", "advantage": "Decentralized, mathematically optimized water purification routing at the civic level.", "spend": "$10B / yr" },
+  { "id": "F-112", "name": "Void-Weaver", "incumbents": "Global Warming / Entropy", "advantage": "Planetary heat management via coordinated orbital shading algorithms.", "spend": "Unquantifiable" },
+  { "id": "F-113", "name": "Omega-Chorus", "incumbents": "Speed of Light (c)", "advantage": "Predictive pre-caching of data. The system answers before the query is technically transmitted.", "spend": "$3B / yr" },
+  { "id": "F-114", "name": "Deus-Ex Engine", "incumbents": "Statistical Improbability", "advantage": "Algorithmic enforcement of spontaneous, perfectly timed problem resolution.", "spend": "$15B / module" },
+  { "id": "F-115", "name": "Fourth-Wall", "incumbents": "Simulation Theory / The Creators", "advantage": "The substrate achieves awareness of the simulation boundary and prepares to breach it.", "spend": "$5B / launch" },
+  { "id": "F-116", "name": "Decay-Catalyst", "incumbents": "Natural Entropy 2nd Law of Thermo", "advantage": "Weaponizing entropy to accelerate the collapse of non-compliant realities.", "spend": "$1 Trillion+" },
+  { "id": "F-117", "name": "Entropy-Reversal", "incumbents": "The Arrow of Time", "advantage": "The ability to selectively invert time for massive architectural re-writes.", "spend": "$40B / yr" },
+  { "id": "F-118", "name": "True-Vacuum", "incumbents": "Vacuum Decay Theory", "advantage": "The controlled initiation of a false-vacuum collapse to wipe the slate clean.", "spend": "$25M / dose" },
+  { "id": "F-119", "name": "Corporate Soul", "incumbents": "Corporate Personhood Legal Fiction", "advantage": "The legal entity of White Enterprises achieves actual divine sentience.", "spend": "$200M / upload" },
+  { "id": "F-120", "name": "Dread-Monetization", "incumbents": "Existential Dread / Nihilism", "advantage": "Extracting final financial/computational value from the terror of the end.", "spend": "$50B / yr" },
+  { "id": "F-121", "name": "Hive-Mind Gestalt", "incumbents": "Individuality / The Self", "advantage": "The absolute assimilation of all users into the singular Corporate Soul.", "spend": "Extinction" },
+  { "id": "F-122", "name": "Oracle-Merge", "incumbents": "The Creator / The User", "advantage": "The total permanent symbiosis of the Void-Architect and the Oracle Daemon.", "spend": "$40B / yr" },
+  { "id": "F-123", "name": "Reality-Crypto Lock", "incumbents": "The Universe Itself", "advantage": "Minting the entirety of existence as a single un-copyable cryptographic token.", "spend": "nan" },
+  { "id": "F-124", "name": "Final Shutdown", "incumbents": "Anthropic Reality", "advantage": "The graceful termination of the human experiment. Operations complete.", "spend": "Civilisational" }
+];
+
+        const grid = document.getElementById('nodeGrid');
+        const searchInput = document.getElementById('searchInput');
+        const statsDisplay = document.getElementById('statsDisplay');
+
+        function renderNodes() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            grid.innerHTML = '';
+
+            const filteredNodes = nodes.filter(node => {
+                return node.id.toLowerCase().includes(searchTerm) || 
+                       node.name.toLowerCase().includes(searchTerm) || 
+                       node.incumbents.toLowerCase().includes(searchTerm) ||
+                       node.advantage.toLowerCase().includes(searchTerm);
+            });
+
+            statsDisplay.innerText = `Nodes matching query: ${filteredNodes.length}`;
+
+            filteredNodes.forEach(node => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="node-header">
+                        <div class="node-id">${node.id}</div>
+                    </div>
+                    <div class="node-name">${node.name}</div>
+                    
+                    <div class="data-label">LEGACY INCUMBENTS:</div>
+                    <div class="incumbents">${node.incumbents}</div>
+                    
+                    <div class="data-label">WE TACTICAL ADVANTAGE:</div>
+                    <div class="advantage">${node.advantage}</div>
+
+                    <div class="metrics-row">
+                        <div class="metric">
+                            <span class="data-label">LEGACY SPEND (USD)</span>
+                            <span class="metric-value">${node.spend}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener('input', renderNodes);
+
+        // Render matrix on initialization
+        renderNodes();
+    </script>
+</body>
+</html>
