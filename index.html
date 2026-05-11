@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #09090b; /* Deep Vercel Black */
-            --surface-color: #18181b; /* Subtle Gray */
+            --bg-color: #09090b; 
+            --surface-color: #18181b;
             --border-color: #27272a;
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
@@ -37,7 +37,6 @@
             padding: 60px 24px;
         }
 
-        /* Subtle Background Gradient Mesh */
         .bg-mesh {
             position: fixed;
             top: 0;
@@ -56,7 +55,6 @@
             width: 100%;
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 64px;
@@ -94,7 +92,6 @@
             margin: 0 auto;
         }
 
-        /* Bento Box Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -102,7 +99,6 @@
             margin-bottom: 64px;
         }
 
-        /* Modern Card Styling */
         .card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -150,7 +146,6 @@
             flex-grow: 1;
         }
 
-        /* Specialty Card (Highlights the Profile) */
         .card-featured {
             grid-column: 1 / -1;
             flex-direction: row;
@@ -171,13 +166,6 @@
             color: var(--text-secondary);
         }
 
-        .profile-meta span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Footer */
         footer {
             border-top: 1px solid var(--border-color);
             padding-top: 32px;
@@ -186,11 +174,6 @@
             font-size: 0.75rem;
             max-width: 800px;
             margin: 0 auto;
-        }
-
-        footer strong {
-            color: var(--text-primary);
-            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -206,17 +189,14 @@
 
     <div class="layout-container">
         
-        <!-- Minimal Hero Section -->
         <div class="hero">
             <div class="hero-badge">System Directory</div>
             <h1>WHITE ENTERPRISES INC.</h1>
             <p>Central repository for advanced research, infrastructure blueprints, and stealth operational protocols.</p>
         </div>
 
-        <!-- Modern Bento Grid -->
         <div class="grid">
             
-            <!-- Featured Profile Banner inside the grid -->
             <a href="My_Profile.html" class="card card-featured">
                 <div class="content-wrapper">
                     <div class="card-icon">👤</div>
@@ -230,14 +210,12 @@
                 <div style="color: var(--text-secondary);">View Credentials →</div>
             </a>
 
-            <!-- NEW PRODUCT CATALOG CARD -->
-            <a href="WHITE ENTERPRISES Product Catalog.html" class="card">
+            <a href="White_Enterprises_Product_Catalog.html" class="card">
                 <div class="card-icon">📦</div>
                 <h2>White Enterprises Product Catalog</h2>
                 <p>Commercial products, enterprise offerings, and scalable solutions developed by White Enterprises Inc.</p>
             </a>
 
-            <!-- Standard Cards -->
             <a href="AI_Applications_Catalog.html" class="card">
                 <div class="card-icon">⚡</div>
                 <h2>AI Applications Catalog</h2>
@@ -246,7 +224,7 @@
 
             <a href="AI_Business_Catalog.html" class="card">
                 <div class="card-icon">📈</div>
-                <h2>AI Products Catalog</h2>
+                <h2>AI Product Catalog</h2>
                 <p>Market intelligence, venture frameworks, and business modeling for AI-driven initiatives.</p>
             </a>
 
@@ -270,19 +248,18 @@
 
             <a href="White_DoorOpener_Assessment _Templates.zip" class="card" download>
                 <div class="card-icon">🗂️</div>
-                <h2>Infrastruture Assessment Templates</h2>
+                <h2>Assessment Templates</h2>
                 <p>Downloadable DoorOpener templates for technical discovery and client assessment.</p>
             </a>
 
         </div>
 
-        <!-- Clean Legal Footer -->
         <footer>
             <p style="margin-bottom: 12px;">
                 <strong>Educational Purposes Only:</strong> This directory is an open-source research portal for conceptual exploration. It does not constitute professional financial, legal, or technical advice.
             </p>
             <p>
-                <strong>Speculative Data:</strong> Pricing and metrics are speculative. No warranties implied. Liability limited.
+                Pricing and metrics are speculative. No warranties implied. Liability limited.
             </p>
         </footer>
 
