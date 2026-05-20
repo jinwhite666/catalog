@@ -3,176 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES // CATALOG</title>
+    <title>WHITE ENTERPRISES INC. | SOVEREIGN CATALOG</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
         :root {
-            --bg-color: #050505;
-            --text-main: #f0f0f0;
-            --text-dim: #555555;
-            --accent: #ffffff;
+            --black: #090a0f;
+            --neon-cyan: #00f3ff;
+            --neon-red: #ff003c;
+            --white: #e0e6ed;
+            --grid-color: rgba(0, 243, 255, 0.05);
         }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 40px;
+            padding: 0;
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* CRT Scanline overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            border-left: 4px solid var(--neon-cyan);
+            padding-left: 20px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--white);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .glitch-red { color: var(--neon-red); }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--neon-cyan);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .manifesto {
+            background: rgba(0, 243, 255, 0.03);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 25px;
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            border-radius: 2px;
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.05);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(0,0,0,0.85);
+            border: 1px solid #222;
+            padding: 35px 25px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.3s ease;
+            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
-        #terminal {
-            width: 100%;
-            max-width: 800px;
-            text-align: left;
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--neon-cyan);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
-        .header-block {
-            border-bottom: 1px solid var(--text-dim);
-            padding-bottom: 20px;
-            margin-bottom: 40px;
+
+        .card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+            transform: translateY(-5px);
         }
-        h1 {
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            margin: 0 0 10px 0;
+
+        .card:hover::before { transform: scaleX(1); }
+        
+        .card.red:hover {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.15);
+        }
+        .card.red::before { background: var(--neon-red); }
+
+        .card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+        }
+        .card.red h3 { color: var(--neon-red); }
+
+        .card p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #999;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .card .btn {
+            align-self: flex-start;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
             text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
         }
-        .subtitle {
-            color: var(--text-dim);
-            font-size: 0.9rem;
+        
+        .card.red .btn { border-color: var(--neon-red); color: var(--neon-red); }
+        
+        .card:hover .btn {
+            background: var(--neon-cyan);
+            color: var(--black);
+            font-weight: bold;
         }
-        .directory-list {
-            list-style-type: none;
-            padding: 0;
-            opacity: 0; /* Hidden initially for boot sequence */
-            transition: opacity 1s ease-in;
-        }
-        .directory-list li {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-        }
-        .directory-list a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 1.1rem;
-            position: relative;
-            padding: 5px 10px;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        .directory-list a:hover {
-            border: 1px solid var(--text-dim);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        .directory-list .status {
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            margin-left: auto;
-        }
-        .sys-text {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-top: 50px;
-            border-top: 1px solid var(--text-dim);
-            padding-top: 20px;
-        }
-        /* Blinking cursor effect */
-        .cursor::after {
-            content: '█';
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
+        .card.red:hover .btn { background: var(--neon-red); color: var(--white); }
+
+        .footer {
+            margin-top: 100px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #444;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 30px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>WHITE ENTERPRISES <span class="glitch-red">INC.</span></h1>
+            <h2>Stop Managing Risk. Start Enforcing Immunity.</h2>
+        </header>
 
-    <div id="terminal">
-        <div class="header-block">
-            <h1>WHITE ENTERPRISES INC.</h1>
-            <div class="subtitle">STEALTH R&D // UNIFIED PRODUCT INTELLIGENCE CATALOG</div>
-            <div class="subtitle">AUTHORIZATION: JIN WHITE // OMEGA LEVEL</div>
+        <div class="manifesto">
+            <strong>// THE ALPHA FEE MODEL:</strong> We do not price software. We price survival. By deploying an 8-Level ASI Agent natively at the hardware and kernel level, we collapse the OODA loop to 0.8 milliseconds. Zero breach. Zero friction. Absolute Sovereign Independence.
         </div>
 
-        <div id="boot-sequence" style="color: var(--text-dim); margin-bottom: 30px;">
-            <span id="typewriter" class="cursor"></span>
+        <div class="grid">
+            <a href="IT_Infra_Business_Catalog.html" class="card">
+                <h3>[01] INFRA & SEC OPS</h3>
+                <p>Sovereign Compute, Panda AI-IPS, and Project Crystal blueprints. Target: CISOs and Infrastructure Directors optimizing for deterministic threat neutralization.</p>
+                <div class="btn">Initialize Node</div>
+            </a>
+
+            <a href="AI_Business_Catalog.html" class="card">
+                <h3>[02] AGENTIC HIVE (AI)</h3>
+                <p>L3 Swarm AI and cognitive business transformation catalogs. Target: Chief AI Officers seeking autonomous workforce replacement and macro-orchestration.</p>
+                <div class="btn">Initialize Node</div>
+            </a>
+
+            <a href="Quantum_Catalog.html" class="card">
+                <h3>[03] OMNI-FIN QUANTUM</h3>
+                <p>Next-generation hardware immunity, HFT micro-arbitrage dies, and post-quantum cryptography. Target: Sovereign Wealth and Deep-Tech Investors.</p>
+                <div class="btn">Initialize Node</div>
+            </a>
+
+            <a href="White_DoorOpener_Assessment_Templates.zip" class="card red">
+                <h3>[04] TIER-1 AUDIT DROP</h3>
+                <p>Immediate lead-generation asset. Download the exact assessment frameworks used to audit and dismantle legacy multi-vendor bottlenecks.</p>
+                <div class="btn">Download .ZIP</div>
+            </a>
+
+            <a href="PM_Daily_Handbook.html" class="card">
+                <h3>[05] GSI DELIVERY HUB</h3>
+                <p>Project management frameworks and integration blueprints for GSI Partners deploying the Sovereign Lattice globally.</p>
+                <div class="btn">Initialize Node</div>
+            </a>
+
+            <a href="My_Profile.html" class="card">
+                <h3>[06] FOUNDER ARCHITECTURE</h3>
+                <p>Jin White // Principal Security & AI Infrastructure Architect. 16+ Years Multi-Vendor Orchestration mapping.</p>
+                <div class="btn">Access Records</div>
+            </a>
         </div>
 
-        <ul class="directory-list" id="main-directory">
-            <li>
-                <a href="#">[01] // PROJECT CRYSTAL (Infrastructure Blueprints)</a>
-                <span class="status">STATUS: ONLINE</span>
-            </li>
-            <li>
-                <a href="#">[02] // PANDA AI-IPS (Threat Neutralization Scripts)</a>
-                <span class="status">STATUS: MVP COMPILING</span>
-            </li>
-            <li>
-                <a href="#">[03] // OMNI-FIN LEDGER (Quantum Settlement)</a>
-                <span class="status">STATUS: CLASSIFIED</span>
-            </li>
-            <li>
-                <a href="White_DoorOpener_Assessment_Templates.zip">[04] // GSI DOOR-OPENER (Audit Templates .ZIP)</a>
-                <span class="status">STATUS: PUBLIC DOWNLOAD</span>
-            </li>
-        </ul>
-
-        <div class="sys-text">
-            WARNING: You are accessing a proprietary engineering manifest.<br>
-            All intelligence contained herein is mapped to the Sovereign Lattice architecture.<br>
-            SYSTEM TIME: <span id="clock"></span>
+        <div class="footer">
+            WHITE ENTERPRISES INC. // OMEGA LEVEL CLEARANCE REQUIRED // MUMBAI GCC
         </div>
     </div>
-
-    <script>
-        // Terminal Boot Sequence
-        const bootText = [
-            "Initiating Handshake Protocol...",
-            "Validating L5 Oracle Credentials...",
-            "Decrypting 10,000 Product SKUs...",
-            "Substrate Connection Established."
-        ];
-        
-        let i = 0;
-        let lineIndex = 0;
-        const speed = 30; 
-        const typeWriterElement = document.getElementById("typewriter");
-        const directory = document.getElementById("main-directory");
-
-        function typeWriter() {
-            if (lineIndex < bootText.length) {
-                if (i < bootText[lineIndex].length) {
-                    typeWriterElement.innerHTML += bootText[lineIndex].charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                } else {
-                    typeWriterElement.innerHTML += "<br>";
-                    i = 0;
-                    lineIndex++;
-                    setTimeout(typeWriter, 400); // Pause between lines
-                }
-            } else {
-                typeWriterElement.classList.remove("cursor");
-                directory.style.opacity = 1; // Reveal directory
-            }
-        }
-
-        // Live Clock
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toISOString();
-        }
-        
-        setInterval(updateClock, 1000);
-        updateClock();
-        
-        // Start Boot Sequence
-        window.onload = typeWriter;
-    </script>
 </body>
 </html>
