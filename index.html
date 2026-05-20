@@ -3,267 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | Directory</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>WHITE ENTERPRISES // CATALOG</title>
     <style>
         :root {
-            --bg-color: #09090b; 
-            --surface-color: #18181b;
-            --border-color: #27272a;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --accent-glow: rgba(56, 189, 248, 0.15);
-            --accent-color: #38bdf8;
+            --bg-color: #050505;
+            --text-main: #f0f0f0;
+            --text-dim: #555555;
+            --accent: #ffffff;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
             min-height: 100vh;
-            padding: 60px 24px;
+            overflow-x: hidden;
         }
-
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.03), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.04), transparent 25%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .layout-container {
-            max-width: 1100px;
+        #terminal {
             width: 100%;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 64px;
-            padding: 40px 0;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            background: linear-gradient(180deg, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 64px;
-        }
-
-        .card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 32px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.2s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: #1f1f22;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-glow);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
-        }
-
-        .card p {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            flex-grow: 1;
-        }
-
-        .card-featured {
-            grid-column: 1 / -1;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(145deg, var(--surface-color), #09090b);
-        }
-
-        .card-featured .content-wrapper {
-            max-width: 600px;
-        }
-
-        .card-featured .profile-meta {
-            display: flex;
-            gap: 16px;
-            margin-top: 16px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        footer {
-            border-top: 1px solid var(--border-color);
-            padding-top: 32px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
             max-width: 800px;
-            margin: 0 auto;
+            text-align: left;
         }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .card-featured { flex-direction: column; align-items: flex-start; gap: 24px; }
-            .grid { grid-template-columns: 1fr; }
+        .header-block {
+            border-bottom: 1px solid var(--text-dim);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        .directory-list {
+            list-style-type: none;
+            padding: 0;
+            opacity: 0; /* Hidden initially for boot sequence */
+            transition: opacity 1s ease-in;
+        }
+        .directory-list li {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        .directory-list a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .directory-list a:hover {
+            border: 1px solid var(--text-dim);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .directory-list .status {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+        .sys-text {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 50px;
+            border-top: 1px solid var(--text-dim);
+            padding-top: 20px;
+        }
+        /* Blinking cursor effect */
+        .cursor::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-mesh"></div>
-
-    <div class="layout-container">
-        
-        <div class="hero">
-            <div class="hero-badge">System Directory</div>
+    <div id="terminal">
+        <div class="header-block">
             <h1>WHITE ENTERPRISES INC.</h1>
-            <p>Central repository for advanced research, infrastructure blueprints, and stealth operational protocols.</p>
+            <div class="subtitle">STEALTH R&D // UNIFIED PRODUCT INTELLIGENCE CATALOG</div>
+            <div class="subtitle">AUTHORIZATION: JIN WHITE // OMEGA LEVEL</div>
         </div>
 
-        <div class="grid">
-            
-            <a href="My_Profile.html" class="card card-featured">
-                <div class="content-wrapper">
-                    <div class="card-icon">👤</div>
-                    <h2>Jin White (Arvind Pardeshi)</h2>
-                    <p>Principal Security & AI Infrastructure Architect. 16+ Years Multi-Vendor Orchestration. Founder of stealth R&D initiatives.</p>
-                    <div class="profile-meta">
-                        <span>📍 Mumbai</span>
-                        <span>✉️ arvindpardeshi151@gmail.com</span>
-                    </div>
-                </div>
-                <div style="color: var(--text-secondary);">View Credentials →</div>
-            </a>
-
-            <a href="White_Enterprises_Product_Catalog.html" class="card">
-                <div class="card-icon">📦</div>
-                <h2>White Enterprises Product Catalog</h2>
-                <p>Commercial products, enterprise offerings, and scalable solutions developed by White Enterprises Inc.</p>
-            </a>
-
-            <a href="AI_Applications_Catalog.html" class="card">
-                <div class="card-icon">⚡</div>
-                <h2>AI Applications Catalog</h2>
-                <p>Strategic deployment and integration logic for cross-sector artificial intelligence solutions.</p>
-            </a>
-
-            <a href="AI_Business_Catalog.html" class="card">
-                <div class="card-icon">📈</div>
-                <h2>AI Product Catalog</h2>
-                <p>Market intelligence, venture frameworks, and business modeling for AI-driven initiatives.</p>
-            </a>
-
-            <a href="Quantum_Catalog.html" class="card">
-                <div class="card-icon">⚛️</div>
-                <h2>Quantum Catalog</h2>
-                <p>Exploratory research and specifications for next-generation quantum computing architectures.</p>
-            </a>
-
-            <a href="IT_Infra_Business_Catalog.html" class="card">
-                <div class="card-icon">🔐</div>
-                <h2>Infrastructure Catalog</h2>
-                <p>Comprehensive enterprise architecture designs and multi-vendor security specifications.</p>
-            </a>
-
-            <a href="PM_Daily_Handbook.html" class="card">
-                <div class="card-icon">📋</div>
-                <h2>PM Handbook</h2>
-                <p>Daily project management guidelines, protocols, and standard operating procedures.</p>
-            </a>
-
-            <a href="White_DoorOpener_Assessment _Templates.zip" class="card" download>
-                <div class="card-icon">🗂️</div>
-                <h2>Assessment Templates</h2>
-                <p>Downloadable DoorOpener templates for technical discovery and client assessment.</p>
-            </a>
-
+        <div id="boot-sequence" style="color: var(--text-dim); margin-bottom: 30px;">
+            <span id="typewriter" class="cursor"></span>
         </div>
 
-        <footer>
-            <p style="margin-bottom: 12px;">
-                <strong>Educational Purposes Only:</strong> This directory is an open-source research portal for conceptual exploration. It does not constitute professional financial, legal, or technical advice.
-            </p>
-            <p>
-                Pricing and metrics are speculative. No warranties implied. Liability limited.
-            </p>
-        </footer>
+        <ul class="directory-list" id="main-directory">
+            <li>
+                <a href="#">[01] // PROJECT CRYSTAL (Infrastructure Blueprints)</a>
+                <span class="status">STATUS: ONLINE</span>
+            </li>
+            <li>
+                <a href="#">[02] // PANDA AI-IPS (Threat Neutralization Scripts)</a>
+                <span class="status">STATUS: MVP COMPILING</span>
+            </li>
+            <li>
+                <a href="#">[03] // OMNI-FIN LEDGER (Quantum Settlement)</a>
+                <span class="status">STATUS: CLASSIFIED</span>
+            </li>
+            <li>
+                <a href="White_DoorOpener_Assessment_Templates.zip">[04] // GSI DOOR-OPENER (Audit Templates .ZIP)</a>
+                <span class="status">STATUS: PUBLIC DOWNLOAD</span>
+            </li>
+        </ul>
 
+        <div class="sys-text">
+            WARNING: You are accessing a proprietary engineering manifest.<br>
+            All intelligence contained herein is mapped to the Sovereign Lattice architecture.<br>
+            SYSTEM TIME: <span id="clock"></span>
+        </div>
     </div>
 
+    <script>
+        // Terminal Boot Sequence
+        const bootText = [
+            "Initiating Handshake Protocol...",
+            "Validating L5 Oracle Credentials...",
+            "Decrypting 10,000 Product SKUs...",
+            "Substrate Connection Established."
+        ];
+        
+        let i = 0;
+        let lineIndex = 0;
+        const speed = 30; 
+        const typeWriterElement = document.getElementById("typewriter");
+        const directory = document.getElementById("main-directory");
+
+        function typeWriter() {
+            if (lineIndex < bootText.length) {
+                if (i < bootText[lineIndex].length) {
+                    typeWriterElement.innerHTML += bootText[lineIndex].charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    typeWriterElement.innerHTML += "<br>";
+                    i = 0;
+                    lineIndex++;
+                    setTimeout(typeWriter, 400); // Pause between lines
+                }
+            } else {
+                typeWriterElement.classList.remove("cursor");
+                directory.style.opacity = 1; // Reveal directory
+            }
+        }
+
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toISOString();
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // Start Boot Sequence
+        window.onload = typeWriter;
+    </script>
 </body>
 </html>
