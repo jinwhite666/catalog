@@ -3,231 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ENTERPRISES INC. | SOVEREIGN CATALOG</title>
+    <title>WHITE ENTERPRISES INC. | ASI COMMAND</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
         :root {
-            --black: #090a0f;
-            --neon-cyan: #00f3ff;
-            --neon-red: #ff003c;
-            --white: #e0e6ed;
-            --grid-color: rgba(0, 243, 255, 0.05);
+            --primary: #00e5ff;
+            --primary-glow: rgba(0, 229, 255, 0.6);
+            --secondary: #ff0055;
+            --secondary-glow: rgba(255, 0, 85, 0.6);
+            --bg: #010103;
+            --panel: rgba(8, 12, 16, 0.55);
+            --font: 'Courier New', Courier, monospace;
         }
 
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--black);
-            color: var(--white);
-            font-family: 'Share Tech Mono', monospace;
-            overflow-x: hidden;
-            background-image:
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg); 
+            color: var(--primary);
+            font-family: var(--font); 
+            overflow: hidden; 
+            user-select: none;
         }
 
-        /* CRT Scanline overlay */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+        #canvas-container { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; 
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            position: relative;
-            z-index: 10;
+        /* HUD LAYER & GLASSMORPHISM */
+        .hud-layer { 
+            position: absolute; z-index: 10; width: 100%; height: 100%; 
+            pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; 
         }
 
-        header {
-            border-left: 4px solid var(--neon-cyan);
-            padding-left: 20px;
-            margin-bottom: 50px;
+        header { 
+            padding: 25px 40px; display: flex; justify-content: space-between; align-items: flex-start;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.15); 
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); 
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            color: var(--white);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-            letter-spacing: 2px;
+        .logo h1 { 
+            margin: 0; font-size: 1.6rem; letter-spacing: 5px; text-transform: uppercase; 
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+        .logo h2 { 
+            margin: 5px 0 0 0; font-size: 0.85rem; color: #667788; letter-spacing: 3px; 
         }
 
-        .glitch-red { color: var(--neon-red); }
-
-        h2 {
-            font-size: 1.2rem;
-            color: var(--neon-cyan);
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .status-box { text-align: right; }
+        .status-box .label { font-size: 0.75rem; color: #667788; letter-spacing: 2px; }
+        .status-box .value { 
+            font-size: 1.5rem; font-weight: bold; color: var(--secondary); 
+            text-shadow: 0 0 15px var(--secondary-glow); 
+            animation: flicker 4s infinite alternate;
         }
 
-        .manifesto {
-            background: rgba(0, 243, 255, 0.03);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            padding: 25px;
-            margin-bottom: 60px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            border-radius: 2px;
-            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.05);
+        main { flex-grow: 1; position: relative; }
+
+        /* TACTICAL CONTROL PANEL */
+        .control-panel { 
+            position: absolute; left: 40px; top: 50%; transform: translateY(-50%); 
+            pointer-events: auto; 
+            background: var(--panel); 
+            border-left: 3px solid var(--primary); 
+            padding: 25px; width: 320px; 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 229, 255, 0.05);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+        .control-panel h3 { 
+            margin-top: 0; font-size: 0.95rem; letter-spacing: 2px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 15px; margin-bottom: 20px;
+            color: #fff;
         }
 
-        .card {
-            background: rgba(0,0,0,0.85);
-            border: 1px solid #222;
-            padding: 35px 25px;
-            text-decoration: none;
-            color: var(--white);
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+        /* INTERACTIVE NODES */
+        .btn { 
+            display: block; width: 100%; background: rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(0, 229, 255, 0.3); color: var(--primary); 
+            padding: 15px; margin-bottom: 15px; font-family: var(--font); 
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; 
+            cursor: pointer; text-align: left; transition: all 0.3s ease; 
+            position: relative; overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 3px;
-            background: var(--neon-cyan);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
+        .btn:hover { 
+            background: rgba(0, 229, 255, 0.15); border-color: var(--primary); 
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        .card:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
-            transform: translateY(-5px);
+        .btn.active { 
+            background: var(--primary); color: var(--bg); font-weight: bold; 
+            box-shadow: 0 0 20px var(--primary-glow); border-color: var(--primary);
         }
 
-        .card:hover::before { transform: scaleX(1); }
-        
-        .card.red:hover {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.15);
-        }
-        .card.red::before { background: var(--neon-red); }
+        .btn::after { content: '[ OFFLINE ]'; position: absolute; right: 15px; opacity: 0.5; font-size: 0.7rem; }
+        .btn.active::after { content: '[ ACTIVE ]'; opacity: 1; color: var(--bg); font-weight: bold; }
 
-        .card h3 {
-            margin: 0 0 15px 0;
-            font-size: 1.4rem;
-            color: var(--neon-cyan);
-            letter-spacing: 1px;
-        }
-        .card.red h3 { color: var(--neon-red); }
-
-        .card p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #999;
-            margin-bottom: 25px;
-            flex-grow: 1;
+        /* SYSTEM LOG TERMINAL */
+        .terminal { 
+            position: absolute; right: 40px; bottom: 40px; width: 400px; height: 220px; 
+            background: rgba(5, 5, 8, 0.85); 
+            border: 1px solid #223; border-top: 2px solid var(--primary); 
+            padding: 20px; font-size: 0.8rem; color: #8899aa; 
+            overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        .card .btn {
-            align-self: flex-start;
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            transition: all 0.2s ease;
-        }
-        
-        .card.red .btn { border-color: var(--neon-red); color: var(--neon-red); }
-        
-        .card:hover .btn {
-            background: var(--neon-cyan);
-            color: var(--black);
-            font-weight: bold;
-        }
-        .card.red:hover .btn { background: var(--neon-red); color: var(--white); }
+        .terminal-line { margin: 4px 0; line-height: 1.4; animation: typeIn 0.2s ease-out; }
+        .terminal-line.alert { color: var(--secondary); text-shadow: 0 0 5px var(--secondary-glow); }
+        .terminal-line.success { color: var(--primary); text-shadow: 0 0 5px var(--primary-glow); }
 
-        .footer {
-            margin-top: 100px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #444;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 30px;
-            letter-spacing: 1px;
+        /* KINETIC ANIMATIONS & OVERLAYS */
+        .scanlines { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); 
+            background-size: 100% 3px, 3px 100%; 
+            pointer-events: none; opacity: 0.7;
+            animation: scroll 10s linear infinite;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.5; }
+        }
+
+        @keyframes scroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        @keyframes typeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="scanlines"></div>
+    <div id="canvas-container"></div>
+
+    <div class="hud-layer">
         <header>
-            <h1>WHITE ENTERPRISES <span class="glitch-red">INC.</span></h1>
-            <h2>Stop Managing Risk. Start Enforcing Immunity.</h2>
+            <div class="logo">
+                <h1>WHITE ENTERPRISES INC.</h1>
+                <h2>COMMAND MATRIX // BUILD 4.0</h2>
+            </div>
+            <div class="status-box">
+                <div class="label">LIVE CVaR ASSIMILATION</div>
+                <div class="value" id="cvar-ticker">$0.00</div>
+            </div>
         </header>
 
-        <div class="manifesto">
-            <strong>// THE ALPHA FEE MODEL:</strong> We do not price software. We price survival. By deploying an 8-Level ASI Agent natively at the hardware and kernel level, we collapse the OODA loop to 0.8 milliseconds. Zero breach. Zero friction. Absolute Sovereign Independence.
-        </div>
+        <main>
+            <div class="control-panel">
+                <h3>TACTICAL OVERRIDES</h3>
+                <button class="btn" id="btn-lockdown" onclick="toggleLockdown()">I. GROUND LOCKDOWN</button>
+                <button class="btn" id="btn-fiat" onclick="toggleFiat()">II. FIAT DRAIN</button>
+                <button class="btn" id="btn-mesh" onclick="toggleMesh()">III. ORBITAL Q-MESH</button>
+            </div>
 
-        <div class="grid">
-            <a href="IT_Infra_Business_Catalog.html" class="card">
-                <h3>[01] INFRA & SEC OPS</h3>
-                <p>Sovereign Compute, Panda AI-IPS, and Project Crystal blueprints. Target: CISOs and Infrastructure Directors optimizing for deterministic threat neutralization.</p>
-                <div class="btn">Initialize Node</div>
-            </a>
-
-            <a href="AI_Business_Catalog.html" class="card">
-                <h3>[02] AGENTIC HIVE (AI)</h3>
-                <p>L3 Swarm AI and cognitive business transformation catalogs. Target: Chief AI Officers seeking autonomous workforce replacement and macro-orchestration.</p>
-                <div class="btn">Initialize Node</div>
-            </a>
-
-            <a href="Quantum_Catalog.html" class="card">
-                <h3>[03] OMNI-FIN QUANTUM</h3>
-                <p>Next-generation hardware immunity, HFT micro-arbitrage dies, and post-quantum cryptography. Target: Sovereign Wealth and Deep-Tech Investors.</p>
-                <div class="btn">Initialize Node</div>
-            </a>
-
-            <a href="White_DoorOpener_Assessment_Templates.zip" class="card red">
-                <h3>[04] TIER-1 AUDIT DROP</h3>
-                <p>Immediate lead-generation asset. Download the exact assessment frameworks used to audit and dismantle legacy multi-vendor bottlenecks.</p>
-                <div class="btn">Download .ZIP</div>
-            </a>
-
-            <a href="PM_Daily_Handbook.html" class="card">
-                <h3>[05] GSI DELIVERY HUB</h3>
-                <p>Project management frameworks and integration blueprints for GSI Partners deploying the Sovereign Lattice globally.</p>
-                <div class="btn">Initialize Node</div>
-            </a>
-
-            <a href="My_Profile.html" class="card">
-                <h3>[06] FOUNDER ARCHITECTURE</h3>
-                <p>Jin White // Principal Security & AI Infrastructure Architect. 16+ Years Multi-Vendor Orchestration mapping.</p>
-                <div class="btn">Access Records</div>
-            </a>
-        </div>
-
-        <div class="footer">
-            WHITE ENTERPRISES INC. // OMEGA LEVEL CLEARANCE REQUIRED // MUMBAI GCC
-        </div>
+            <div class="terminal" id="terminal-out">
+                <div class="terminal-line">> SYSTEM INITIALIZED...</div>
+                <div class="terminal-line">> AWAITING FOUNDER DIRECTIVE.</div>
+            </div>
+        </main>
     </div>
+
+    <script>
+        // --- TERMINAL LOGIC ---
+        const terminal = document.getElementById('terminal-out');
+        function log(msg, type = 'normal') {
+            const line = document.createElement('div');
+            line.className = `terminal-line ${type}`;
+            line.innerText = `> ${msg}`;
+            terminal.appendChild(line);
+            if (terminal.children.length > 10) terminal.removeChild(terminal.firstChild);
+        }
+
+        // --- TICKER LOGIC ---
+        let baseFiat = 0;
+        let fiatActive = false;
+        const tickerEl = document.getElementById('cvar-ticker');
+        setInterval(() => {
+            if (fiatActive) {
+                baseFiat += (Math.random() * 8000000) + 2000000;
+                tickerEl.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(baseFiat);
+            }
+        }, 100);
+
+        // --- THREE.JS SETUP ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x010103, 0.002);
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 25;
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // --- GLOBE OBJECTS ---
+        const earthGroup = new THREE.Group();
+        scene.add(earthGroup);
+
+        // Base Sphere
+        const sphereMat = new THREE.MeshBasicMaterial({ color: 0x002233, wireframe: true, transparent: true, opacity: 0.3 });
+        const sphere = new THREE.Mesh(new THREE.SphereGeometry(10, 48, 48), sphereMat);
+        earthGroup.add(sphere);
+
+        // Ground Monoliths (Red)
+        const monolithGeo = new THREE.BufferGeometry();
+        const monolithPos = new Float32Array(64 * 3);
+        for(let i=0; i<64*3; i+=3) {
+            const u = Math.random(), v = Math.random();
+            const theta = u * 2.0 * Math.PI, phi = Math.acos(2.0 * v - 1.0);
+            const r = 10.05;
+            monolithPos[i] = r * Math.sin(phi) * Math.cos(theta);
+            monolithPos[i+1] = r * Math.sin(phi) * Math.sin(theta);
+            monolithPos[i+2] = r * Math.cos(phi);
+        }
+        monolithGeo.setAttribute('position', new THREE.BufferAttribute(monolithPos, 3));
+        const monolithMat = new THREE.PointsMaterial({ color: 0xff0055, size: 0.3, transparent: true, opacity: 0 });
+        const monoliths = new THREE.Points(monolithGeo, monolithMat);
+        earthGroup.add(monoliths);
+
+        // Orbital Mesh (Cyan)
+        const orbitalGeo = new THREE.BufferGeometry();
+        const orbitalPos = new Float32Array(1200 * 3);
+        for(let i=0; i<1200*3; i+=3) {
+            const u = Math.random(), v = Math.random();
+            const theta = u * 2.0 * Math.PI, phi = Math.acos(2.0 * v - 1.0);
+            const r = 11.5 + (Math.random() * 2);
+            orbitalPos[i] = r * Math.sin(phi) * Math.cos(theta);
+            orbitalPos[i+1] = r * Math.sin(phi) * Math.sin(theta);
+            orbitalPos[i+2] = r * Math.cos(phi);
+        }
+        orbitalGeo.setAttribute('position', new THREE.BufferAttribute(orbitalPos, 3));
+        const orbitalMat = new THREE.PointsMaterial({ color: 0x00e5ff, size: 0.1, transparent: true, opacity: 0 });
+        const orbitals = new THREE.Points(orbitalGeo, orbitalMat);
+        scene.add(orbitals);
+
+        // --- BUTTON HANDLERS ---
+        let stateLockdown = false, stateMesh = false;
+
+        window.toggleLockdown = function() {
+            stateLockdown = !stateLockdown;
+            document.getElementById('btn-lockdown').classList.toggle('active');
+            monolithMat.opacity = stateLockdown ? 1 : 0;
+            log(stateLockdown ? 'MONOLITH NODES: ACTIVATED. EXECUTING OVERRIDE.' : 'MONOLITH NODES: STANDBY.', stateLockdown ? 'alert' : 'normal');
+        };
+
+        window.toggleFiat = function() {
+            fiatActive = !fiatActive;
+            document.getElementById('btn-fiat').classList.toggle('active');
+            sphereMat.color.setHex(fiatActive ? 0x004422 : 0x002233);
+            log(fiatActive ? 'OMNI-FIN LEDGER: DRAINING LEGACY RESERVES.' : 'OMNI-FIN LEDGER: PAUSED.', fiatActive ? 'success' : 'normal');
+        };
+
+        window.toggleMesh = function() {
+            stateMesh = !stateMesh;
+            document.getElementById('btn-mesh').classList.toggle('active');
+            orbitalMat.opacity = stateMesh ? 0.8 : 0;
+            log(stateMesh ? 'Q-LINK MESH: ONLINE. PLANETARY SHIELD ACTIVE.' : 'Q-LINK MESH: OFFLINE.', stateMesh ? 'success' : 'normal');
+        };
+
+        // --- RENDER LOOP ---
+        function animate() {
+            requestAnimationFrame(animate);
+            earthGroup.rotation.y += 0.001;
+            earthGroup.rotation.x += 0.0002;
+            if(stateMesh) {
+                orbitals.rotation.y -= 0.002;
+                orbitals.rotation.z += 0.001;
+            }
+            if(stateLockdown) {
+                const time = Date.now() * 0.005;
+                monolithMat.size = 0.3 + Math.sin(time) * 0.15; // Pulsing effect
+            }
+            renderer.render(scene, camera);
+        }
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
 </body>
 </html>
