@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SKU-ID // UNITS &amp; SUBSCRIPTION TRACKER</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap');
+
+:root{
+  --void:#07080b;
+  --void-2:#0d1017;
+  --panel:#10141c;
+  --line:#1d2430;
+  --gold:#c9a24d;
+  --gold-dim:#8a7238;
+  --cyan:#3fd7e0;
+  --cyan-dim:#1f5f66;
+  --text:#dbe2ea;
+  --text-dim:#7c8695;
+  --danger:#e2545a;
+  --good:#4fce8e;
+  --violet:#b48ce0;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--void);color:var(--text);font-family:'Share Tech Mono',monospace;}
+
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
+}
+body::after{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:998;
+  background:radial-gradient(ellipse at 50% -10%, rgba(63,215,224,0.06), transparent 55%),
+             radial-gradient(ellipse at 100% 110%, rgba(201,162,77,0.05), transparent 50%);
+}
+
+.wrap{max-width:1680px;margin:0 auto;padding:28px 24px 80px;}
+
+.hdr{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,var(--panel),var(--void-2));
+  padding:22px 26px;position:relative;overflow:hidden;
+}
+.hdr::before{
+  content:"";position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--gold),var(--cyan));
+}
+.eyebrow{
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.35em;color:var(--cyan);
+  margin:0 0 6px 2px;
+}
+h1{
+  font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;letter-spacing:0.04em;
+  margin:0 0 4px;color:#f2f0e8;
+}
+h1 span{color:var(--gold);}
+.sub{color:var(--text-dim);font-size:13px;margin:0;letter-spacing:0.02em;}
+
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  margin-top:18px;border:1px solid var(--line);background:var(--line);
+}
+.stats.row2{margin-top:1px;}
+.stat{background:var(--void-2);padding:14px 14px;}
+.stat .k{font-family:'Orbitron',sans-serif;font-size:9.5px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;}
+.stat .v{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-top:4px;}
+.stat .v.cyan{color:var(--cyan);}
+.stat .v.good{color:var(--good);}
+.stat .v.violet{color:var(--violet);}
+.stat .bar{margin-top:8px;height:4px;background:var(--line);position:relative;overflow:hidden;}
+.stat .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan));}
+
+.controls{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 12px;
+}
+.controls input[type=text]{
+  background:var(--void-2);border:1px solid var(--line);color:var(--text);
+  padding:9px 12px;font-family:'Share Tech Mono',monospace;font-size:13px;
+  min-width:220px;outline:none;
+}
+.controls input[type=text]:focus{border-color:var(--cyan);}
+.controls select{
+  background:var(--void-2);border:1px solid var(--line);color:var(--text);
+  padding:9px 12px;font-family:'Share Tech Mono',monospace;font-size:13px;outline:none;
+}
+.btn{
+  background:transparent;border:1px solid var(--gold-dim);color:var(--gold);
+  padding:9px 16px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.1em;
+  cursor:pointer;transition:all .15s;
+}
+.btn:hover{background:var(--gold);color:var(--void);border-color:var(--gold);}
+.btn.cyan{border-color:var(--cyan-dim);color:var(--cyan);}
+.btn.cyan:hover{background:var(--cyan);color:var(--void);border-color:var(--cyan);}
+.btn.ghost{border-color:var(--line);color:var(--text-dim);}
+.btn.ghost:hover{border-color:var(--danger);color:var(--danger);background:transparent;}
+.spacer{flex:1;}
+.count{color:var(--text-dim);font-size:12px;}
+
+.tbl-wrap{border:1px solid var(--line);overflow-x:auto;margin-top:4px;}
+table{border-collapse:collapse;width:100%;min-width:1920px;}
+thead th{
+  position:sticky;top:0;background:var(--void-2);
+  font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:0.1em;color:var(--text-dim);
+  text-transform:uppercase;text-align:left;padding:10px 12px;border-bottom:1px solid var(--gold-dim);
+  white-space:nowrap;cursor:pointer;user-select:none;
+}
+thead th:hover{color:var(--cyan);}
+thead th.num{text-align:right;}
+tbody tr{border-bottom:1px solid var(--line);transition:background .1s;}
+tbody tr:hover{background:rgba(63,215,224,0.035);}
+tbody td{padding:9px 12px;font-size:12.5px;vertical-align:middle;white-space:nowrap;}
+td.sku{color:var(--gold);font-weight:bold;letter-spacing:0.02em;}
+td.name{color:var(--text);max-width:210px;white-space:normal;}
+td.cat{color:var(--text-dim);font-size:11px;}
+td.price{text-align:right;color:var(--text-dim);}
+td.competitor{color:var(--text-dim);max-width:170px;white-space:normal;font-size:11.5px;}
+td.compprice{text-align:right;color:var(--text-dim);}
+td.gap{text-align:right;font-weight:bold;}
+td.gap.under{color:var(--good);}
+td.gap.over{color:var(--danger);}
+td.gap.na{color:var(--text-dim);font-weight:normal;}
+td.num{text-align:right;}
+td.rev{text-align:right;color:var(--good);font-weight:bold;}
+td.opex{text-align:right;color:var(--violet);font-weight:bold;}
+td.margin{text-align:right;color:var(--cyan);}
+td.margin.na{color:var(--text-dim);}
+td.gp{text-align:right;color:var(--good);font-weight:bold;}
+.badge{
+  display:inline-block;padding:2px 8px;font-size:10px;font-family:'Orbitron',sans-serif;
+  letter-spacing:0.05em;border:1px solid;border-radius:2px;
+}
+.badge.sov{color:var(--gold);border-color:var(--gold-dim);}
+.badge.kin{color:var(--cyan);border-color:var(--cyan-dim);}
+.badge.fnode{color:#b48ce0;border-color:#5a4a7a;}
+.badge.cog{color:var(--good);border-color:#2c6b4c;}
+.badge.capex{color:var(--gold);border-color:var(--gold-dim);}
+.badge.opex{color:var(--violet);border-color:#5a4a7a;}
+.badge.hybrid{color:var(--cyan);border-color:var(--cyan-dim);}
+.badge.na{color:var(--text-dim);border-color:var(--line);}
+
+input.cell{
+  width:78px;background:var(--void-2);border:1px solid var(--line);color:var(--text);
+  padding:5px 7px;font-family:'Share Tech Mono',monospace;font-size:12.5px;text-align:right;outline:none;
+}
+input.cell:focus{border-color:var(--gold);}
+
+.foot{margin-top:14px;color:var(--text-dim);font-size:11px;display:flex;justify-content:space-between;gap:20px;}
+.foot .save-note{color:var(--cyan);white-space:nowrap;}
+
+::-webkit-scrollbar{height:8px;width:8px;}
+::-webkit-scrollbar-track{background:var(--void-2);}
+::-webkit-scrollbar-thumb{background:var(--line);}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+
+@media (max-width:800px){
+  .stats{grid-template-columns:repeat(2,1fr);}
+}
+
+.section-title{
+  font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:0.18em;color:var(--cyan);
+  text-transform:uppercase;margin:26px 2px 10px;display:flex;align-items:center;gap:10px;
+}
+.section-title::after{content:"";flex:1;height:1px;background:var(--line);}
+.section-note{color:var(--text-dim);font-size:11.5px;margin:-4px 2px 12px;}
+
+.type-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;
+  border:1px solid var(--line);background:var(--line);
+}
+.type-card{
+  background:var(--void-2);padding:13px 14px;cursor:pointer;transition:background .1s;position:relative;
+}
+.type-card:hover{background:#141a24;}
+.type-card.active{background:#161c28;box-shadow:inset 0 0 0 1px var(--cyan);}
+.type-card .tc-name{
+  font-family:'Orbitron',sans-serif;font-size:10.5px;letter-spacing:0.04em;color:var(--text);
+  text-transform:uppercase;min-height:26px;
+}
+.type-card .tc-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:8px;}
+.type-card .tc-count{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--gold);}
+.type-card .tc-pct{font-size:11px;color:var(--text-dim);}
+.type-card .tc-bar{margin-top:9px;height:3px;background:var(--line);overflow:hidden;}
+.type-card .tc-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan));}
+.type-card .tc-cats{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;}
+.type-card .tc-cats span{
+  font-size:9px;font-family:'Orbitron',sans-serif;letter-spacing:0.03em;color:var(--text-dim);
+  border:1px solid var(--line);padding:1px 5px;border-radius:2px;
+}
+.type-card.hw .tc-count{color:var(--gold);}
+.type-card.sw .tc-count{color:var(--violet);}
+.type-card.hybrid .tc-count{color:var(--cyan);}
+.type-card.kinetic .tc-count{color:var(--good);}
+.type-card.na .tc-count{color:var(--text-dim);}
+.type-clear{
+  font-size:11px;color:var(--danger);cursor:pointer;text-decoration:underline;letter-spacing:0.03em;
+  visibility:hidden;
+}
+.type-clear.show{visibility:visible;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <p class="eyebrow">WHITE ENTERPRISES // OMNIVEX ADVISORY</p>
+    <h1>SKU-ID <span>UNITS SOLD</span> &amp; LICENSE SUBSCRIPTION TRACKER</h1>
+    <p class="sub">Master registry — Sovereign Catalog · Kinetic Inventory · F-Node Directory · Cognitive Solutions, cross-mapped to ecosystem partners and CapEx/OpEx spend type. Edit units sold and active subscriptions inline — changes save automatically.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Total SKUs</div><div class="v" id="statSkus">—</div></div>
+      <div class="stat"><div class="k">Units Sold</div><div class="v cyan" id="statUnits">—</div></div>
+      <div class="stat"><div class="k">Active Subscriptions</div><div class="v cyan" id="statSubs">—</div></div>
+      <div class="stat"><div class="k">Avg. Price Gap vs Partner</div><div class="v" id="statGap">—</div></div>
+    </div>
+    <div class="stats row2">
+      <div class="stat">
+        <div class="k">Total CapEx Revenue (H/W units)</div>
+        <div class="v good" id="statCapex">—</div>
+        <div class="bar"><i id="capexBar" style="width:0%"></i></div>
+      </div>
+      <div class="stat">
+        <div class="k">Total OpEx Revenue (S/W subs)</div>
+        <div class="v violet" id="statOpex">—</div>
+        <div class="bar"><i id="opexBar" style="width:0%"></i></div>
+      </div>
+      <div class="stat"><div class="k">CapEx : OpEx Mix</div><div class="v" id="statMix">—</div></div>
+      <div class="stat"><div class="k">Total Combined Revenue</div><div class="v good" id="statRevenue">—</div></div>
+    </div>
+    <div class="stats row2">
+      <div class="stat"><div class="k">Total Gross Profit</div><div class="v good" id="statGrossProfit">—</div></div>
+      <div class="stat"><div class="k">Blended Gross Margin</div><div class="v cyan" id="statBlendedMargin">—</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Device-Type Product Classification <span class="type-clear" id="typeClear">clear filter ✕</span></div>
+  <p class="section-note">Breakdown of all 156 SKUs by underlying product/device type (independent of CapEx/OpEx spend classification). Click a tile to filter the table below.</p>
+  <div class="type-grid" id="typeGrid"></div>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search SKU-ID, product, or partner...">
+    <select id="catFilter">
+      <option value="ALL">All Catalogs</option>
+      <option value="SOV">Sovereign Catalog</option>
+      <option value="KIN">Kinetic Inventory</option>
+      <option value="FNODE">F-Node Directory</option>
+      <option value="COG">Cognitive Solutions</option>
+    </select>
+    <select id="spendFilter">
+      <option value="ALL">All Spend Types</option>
+      <option value="CAPEX">CapEx (Hardware)</option>
+      <option value="OPEX">OpEx (Software/Subscription)</option>
+      <option value="HYBRID">Hybrid</option>
+      <option value="NA">Unclassified</option>
+    </select>
+    <div class="spacer"></div>
+    <span class="count" id="rowCount"></span>
+    <button class="btn cyan" id="exportBtn">EXPORT CSV</button>
+    <button class="btn ghost" id="resetBtn">RESET ALL DATA</button>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="sku">SKU-ID</th>
+          <th data-sort="name">Product Name</th>
+          <th data-sort="catalog">Catalog</th>
+          <th data-sort="spendType">Spend Type</th>
+          <th class="num" data-sort="price">List Price</th>
+          <th data-sort="competitor">Partner</th>
+          <th class="num" data-sort="compPrice">Partner Price</th>
+          <th class="num" data-sort="gap">Price Gap</th>
+          <th class="num">Units Sold</th>
+          <th class="num" data-sort="revenue">CapEx Revenue</th>
+          <th class="num">Active Subs</th>
+          <th class="num" data-sort="opexRevenue">OpEx Revenue</th>
+          <th class="num" data-sort="margin">Margin %</th>
+          <th class="num" data-sort="grossProfit">Gross Profit</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="foot">
+    <span id="saveNote" class="save-note"></span>
+    <span>Data persists per-user via Claude memory storage. CapEx Revenue = list price × units sold, applied where the SKU is a hardware/kinetic asset. OpEx Revenue = list price × active subscriptions, applied where the SKU is licensed software. Hybrid SKUs post to both; Sovereign Catalog entries are unclassified pending product-type data. Gross Profit = (CapEx + OpEx Revenue) × Margin %, where Margin % is benchmarked per product type to the nearest real-world FY2025/FY2026 comparable's disclosed gross margin (Cisco ~65%, Palo Alto Networks 77–80% product / 72–73% subscription, NVIDIA 72–75%, ServiceNow 78–82%, Dell/HPE server 18–28%, Tesla automotive ~17% / energy storage ~29%, Anduril's targeted 40–45% vs. legacy defense primes' 7–12%, and blended early-stage quantum-hardware economics ~35–45%) — not fabricated figures. Sovereign Catalog SKUs carry no list price and are excluded from margin/profit math.</span>
+  </div>
+
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// MASTER SKU DATA — compiled from Sovereign Catalog, Kinetic
+// Inventory, F-Node Directory, and Cognitive Solutions catalogues.
+// Fields: [sku, name, catalog, price, competitor, compPrice, type]
+// type: raw product-type label as catalogued (or null if unclassified)
+// ---------------------------------------------------------------
+const SOV = "SOV", KIN = "KIN", FNODE = "FNODE", COG = "COG";
+
+const RAW = [
+// --- Sovereign Catalog (2026) — Strategic Domain SKUs (device/type tags added) ---
+["WE-SI-PAA","PillarSuite™ Auto-Architect",SOV,null,"Legacy Consultancies (Accenture, Deloitte)",null,"S/W"],
+["WE-SI-STDE","Synthetix™ Traffic Drift-Engine",SOV,null,"SolarWinds / Cisco",null,"S/W"],
+["WE-SI-CCAF","CognitiveCore™ Agent Fabric",SOV,null,"IBM Consulting / Custom Dev",1000000,"S/W"],
+["WE-ORCL-SME","SovereignMesh™ Data Engine",SOV,null,"Oracle",null,"S/W"],
+["WE-ORCL-OMC","OmniSync™ Multi-Cloud Control",SOV,null,"Oracle",null,"S/W"],
+["WE-ORCL-GIF","AppFabric™ GenDevOps Interface",SOV,null,"Oracle",null,"S/W"],
+["WE-FB-HMF","HyperMesh™ Compute Fabric",SOV,null,"Meta",null,"S/W"],
+["WE-FB-SSP","SovereignSpark™ Local Pipeline",SOV,null,"Meta",null,"S/W"],
+["WE-FB-GML","GraphMemory™ Layer",SOV,null,"Neo4j",null,"S/W"],
+["WE-AMZN-SOF","SovereignOrbit™ DataPlane Core",SOV,null,"AWS",null,"S/W"],
+["WE-AMZN-COS","CloudOps™ Sovereign Automator",SOV,null,"AWS (Native Tools) / HashiCorp",null,"S/W"],
+["WE-NV-CMF","ComputeMesh™ Core Fabric",SOV,null,"NVIDIA",null,"Hybrid"],
+["WE-MSFT-SCO","SovereignCloud™ Orchestration Engine",SOV,null,"Microsoft",null,"S/W"],
+["WE-GLOB-NXN","SovereignNexus™ Global Data Node",SOV,null,"Google Cloud",null,"S/W"],
+["WE-BRCM-VCF","HyperVisor™ Sovereign Core",SOV,null,"Broadcom (VMware)",null,"S/W"],
+["WE-ARM-SBI","SovereignBrain™ Industrial Core",SOV,null,"Saudi Aramco",null,"Hybrid"],
+["WE-ARM-KHF","KineticHydro™ NetDevOps Fabric",SOV,null,"Saudi Aramco / Siemens",null,"Hybrid"],
+["WE-ARM-GFC","GeoForge™ Predictive Flow Engine",SOV,null,"Honeywell / Yokogawa",null,"Hybrid"],
+["WE-ARM-CPF","CorePhysics™ Tensor Field",SOV,null,"Schlumberger (SLB)",null,"Hybrid"],
+["WE-ARM-OPN","OmniPlant™ NetDevOps Node",SOV,null,"Yokogawa",null,"Hybrid"],
+["WE-ARM-SCM","Synthetix™ Carbon & Molecular Matrix",SOV,null,"SABIC",null,"Hybrid"],
+["WE-EP-SWT","SovereignWave™ Edge Inversion",SOV,null,"Halliburton / SLB",null,"Hybrid"],
+["WE-EP-ROD","RigOps™ Automated Closed-Loop",SOV,null,"Baker Hughes",null,"Hybrid"],
+["WE-EP-SRG","SubsurfaceAI™ Reservoir Graph-RAG",SOV,null,"Palantir / Custom Data Lakes",null,"S/W"],
+["WE-DN-RPO","RefineMatrix™ Process Optimizer",SOV,null,"Emerson / ABB",null,"Hybrid"],
+["WE-DN-PST","PipeFlow™ Smart Telemetry",SOV,null,"Schneider Electric",null,"Hybrid"],
+["WE-DN-STN","SovereignTrade™ Multi-Agent Node",SOV,null,"SAP / Oracle",null,"S/W"],
+["WE-SGCC-GET","GridEnhance™ Dynamic Topology Fabric",SOV,null,"State Grid Corporation of China",null,"Hybrid"],
+["WE-CPC-RFS","ResourceFlux™ Refining Core",SOV,null,"CNPC / Sinopec",null,"Hybrid"],
+["WE-IND-KCH","Heavy Industrial Resources Platform",SOV,null,"Koch Industries / In-house",null,"Hybrid"],
+["WE-RES-ROM","ResourceOps™ Extraction Matrix",SOV,null,"In-house / Custom SCADA",null,"Hybrid"],
+["WE-BYD-SDV","SovereignDrive™ Core VOS",SOV,null,"BYD",null,"S/W"],
+["WE-BYD-KFM","KineticFactory™ Network Mesh",SOV,null,"Cisco / Huawei",null,"Hybrid"],
+["WE-BYD-CFG","CognitiveForge™ Autonomous AI",SOV,null,"Siemens / Dassault",null,"S/W"],
+["WE-TM-ACM","AreneCore™ Vehicle Mesh",SOV,null,"Toyota",null,"Hybrid"],
+["WE-TM-COS","ComponentOps™ Supply Validator",SOV,null,"Bosch / Continental",null,"S/W"],
+["WE-TM-KPF","KanbanAI™ Predictive Flow Engine",SOV,null,"Legacy ERPs (SAP/Oracle)",null,"S/W"],
+["WE-WMT-SOB","SovereignOrbit™ Control Plane",SOV,null,"Walmart",null,"S/W"],
+["WE-WMT-ELX","ElementX™ Frontier Model Ops",SOV,null,"Walmart",null,"S/W"],
+["WE-WMT-LMG","LuminaGraph™ Supply Chain Core",SOV,null,"Walmart Data Ventures",null,"S/W"],
+["WE-WMT-SGN","SovereignGrid™ Urban MFC Node",SOV,null,"Target / Amazon Fresh",null,"Hybrid"],
+["WE-WMT-KPE","KineticOps™ Pack-Out Engine",SOV,null,"Amazon Robotics / Symbotic",null,"Hybrid"],
+["WE-WMT-SNX","SovereignNexus™ Agentic Commerce Fabric",SOV,null,"Amazon / Google Search",null,"S/W"],
+["WE-AMZN-NRS","NexusRetail™ Supply Engine",SOV,null,"Amazon",null,"S/W"],
+["WE-LOG-MTR","Logistics Master Engine",SOV,null,"Kuehne+Nagel",null,"S/W"],
+["WE-MSC-MASS","MarineMASS™ Autonomous Freight",SOV,null,"MSC / Maersk",null,"Hybrid"],
+["WE-LUX-SHV","SovereignHide™ Vision Stack",SOV,null,"LVMH",null,"Hybrid"],
+["WE-LUX-ACT","AuraCore™ Trace Passport",SOV,null,"LVMH / Aura Blockchain",null,"S/W"],
+["WE-LUX-MIE","MaisonIntel™ Agentic Engine",SOV,null,"LVMH",null,"S/W"],
+["WE-ZARA-AMF","SovereignWeave™ Agile Factory",SOV,null,"Inditex (Zara)",null,"Hybrid"],
+["WE-ZARA-ATC","KineticTag™ Ambient Checkout",SOV,null,"Sensormatic",null,"Hybrid"],
+["WE-ZARA-NTI","NeuralThread™ Trend Engine",SOV,null,"Shein / H&M",null,"S/W"],
+["WE-RET-AMB","Ambient Retail Mesh",SOV,null,"Fast Retailing / L'Oréal",null,"Hybrid"],
+["WE-LUX-CHL","Precision Luxury Tracking Fabric",SOV,null,"Nike / Chanel",null,"Hybrid"],
+["WE-BHF-SLM","SovereignLedger™ Finance Mesh",SOV,null,"Palantir",null,"S/W"],
+["WE-BHF-AOR","ActuaryOps™ Risk Fabric",SOV,null,"R3 / Duck Creek",null,"S/W"],
+["WE-BHF-FAC","FloatAlpha™ Core Engine",SOV,null,"Legacy Treasury Systems",null,"S/W"],
+["WE-FDL-MESH","WealthMesh™ Asset Engine",SOV,null,"Fidelity / Blackstone",null,"S/W"],
+["WE-FIN-QCE","QuantCore™ Execution Fabric",SOV,null,"Citadel / Susquehanna",null,"S/W"],
+["WE-UHG-OPT","OptumMesh™ Interoperability Engine",SOV,null,"UnitedHealth Group",null,"S/W"],
+["WE-CVS-CMK","CareAdjudicator™ Benefits Node",SOV,null,"CVS Health",null,"S/W"],
+["WE-AAPL-M5E","SiliconEdge™ Core Infrastructure",SOV,null,"Apple",null,"H/W Silicon"],
+["WE-FMCG-RPO","RecipeMatrix™ Flow",SOV,null,"SAP",null,"S/W"],
+["WE-BEV-AOP","SovereignFlow™ Agentic Engine",SOV,null,"Microsoft (Azure Fabric)",null,"S/W"],
+["WE-PHM-BCC","BioMesh™ Clinical Core",SOV,null,"Veeva Systems",null,"S/W"],
+["WE-MED-HDM","Sovereign Health & Space Core",SOV,null,"HCA / Starlink",null,"Hybrid"],
+["WE-RE-REO","Real Estate Sovereign Matrix",SOV,null,"Sun Hung Kai / Related Cos",null,"S/W"],
+
+// --- Kinetic Inventory ---
+["CN-ST-00001","WhiteStream Core",KIN,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-IP-00011","WhiteGuard Perimeter",KIN,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["CN-CD-00021","WhiteFlow Automator",KIN,850000,"HashiCorp (IBM)",1100000,"H/W Configurator"],
+["CN-LX-00031","WhiteLogix Engine",KIN,1200000,"Blue Yonder",1500000,"H/W Controller"],
+["LQ-VN-00041","WhiteVault Node",KIN,4800000,"IBM Quantum / Thales",6000000,"H/W Sec. Module"],
+["KT-CH-00051","WhiteNode Titan",KIN,5500000,"HPE / Dell Technologies",7000000,"H/W Mainframe"],
+["KT-DI-00061","WhiteChip Neuromorphic",KIN,3200000,"NVIDIA (HGX Platform)",4500000,"H/W Silicon"],
+["KT-GR-00071","WhiteCool Grid",KIN,600000,"Schneider Electric",900000,"H/W Sub-system"],
+["KT-TH-00081","WhiteThermal Regulator",KIN,750000,"Vertiv",1100000,"H/W Sub-system"],
+["KT-RF-00091","WhiteWave AP",KIN,12000,"Cisco Meraki",18000,"H/W Access Point"],
+["WE-SOL-00144","WhiteLedger Core",KIN,22000000,"Oracle / SAP",35000000,"S/W"],
+["WE-SOL-00155","WhiteOps ITSM",KIN,4200000,"ServiceNow",6500000,"S/W"],
+["WE-SOL-00122","WhiteEdge ADC & WAF",KIN,950000,"F5 / Cloudflare",1400000,"S/W"],
+["WE-SOL-00133","WhiteCore 5G",KIN,18500000,"Ericsson/Huawei",28000000,"S/W"],
+["WE-SOL-00199","WhiteData Pipeline",KIN,4500000,"Scale AI",6000000,"S/W"],
+["KT-AU-00166","WhiteSwarm UAV",KIN,12500000,"Anduril / DJI",18000000,"Kinetic"],
+["KT-AE-00081","WhiteOrbit Mesh",KIN,8500000,"SpaceX Starlink",12000000,"H/W"],
+["KT-EN-00092","WhiteGrid Apex",KIN,4500000,"Tesla Megapack",5800000,"Hybrid"],
+["KT-MO-00105","WhiteFleet EV",KIN,135000,"Tesla Model S",150000,"Kinetic"],
+
+// --- F-Node Directory (type inferred from parent SKU family prefix) ---
+["CN-ST-01001-Z","Oni-Daemon (F-01)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-ST-01002-Y","Data-Vamp (F-02)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-ST-01003-X","Dark-Node (F-03)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-ST-01004-W","Node-004 (F-04)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-ST-01005-V","Node-005 (F-05)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["CN-IP-01006-U","Hydro-Synth (F-08)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["CN-CD-01007-T","Plasma-Furnace (F-13)",FNODE,850000,"HashiCorp",1100000,"H/W Configurator"],
+["KT-DI-01008-S","Cortex-Jack (F-24)",FNODE,3200000,"NVIDIA (HGX)",4500000,"H/W Silicon"],
+["CN-IP-01009-R","Q-Shard Box (F-31)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["LQ-VN-01010-Q","Void-Cred (F-34)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01011-P","Cred-Lattice (F-35)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01012-O","Fin-Router Alpha (F-44)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01013-N","Fin-Router Beta (F-45)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01014-M","Fin-Router Gamma (F-46)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["KT-CH-01015-L","Floor-Protocol (F-52)",FNODE,5500000,"HPE / Dell",7000000,"H/W Mainframe"],
+["CN-IP-01016-K","Panda-IPS (F-63)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["CN-IP-01017-J","Chronos-Alpha (F-65)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["KT-BIO-01018-I","Vita-Vat (F-68)",FNODE,180000,"Epic Systems",350000,"Hybrid"],
+["KT-BIO-01019-H","Bio-Matrix (F-69)",FNODE,180000,"Epic Systems",350000,"Hybrid"],
+["KT-BIO-01020-G","Bio-Forge (F-70)",FNODE,180000,"Epic Systems",350000,"Hybrid"],
+["KT-RF-01021-F","Exo-Lattice (F-72)",FNODE,12000,"Cisco Meraki",18000,"H/W Access Point"],
+["LQ-VN-01022-E","Lex-Matrix (F-78)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01023-D","Lex-Forge (F-79)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["LQ-VN-01024-C","Lex-Node (F-80)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["CN-LX-01025-B","Abyssal-Gate (F-83)",FNODE,1200000,"Blue Yonder",1500000,"H/W Controller"],
+["CN-IP-01026-A","Hades-Vault (F-88)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["WE-AG-01027-9","Omni-Mind (F-89)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-AG-01028-8","Zenith-Prime (F-95)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-AG-01029-7","Zenith-Forge (F-99)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["KT-QU-01030-6","Goedel-Bypass (F-101)",FNODE,15000000,"IBM / Google Sycamore",25000000,"H/W Quantum"],
+["KT-QU-01031-5","Paradox-Engine (F-102)",FNODE,15000000,"IBM / Google Sycamore",25000000,"H/W Quantum"],
+["KT-QU-01032-4","Ouroboros-Loop (F-106)",FNODE,15000000,"IBM / Google Sycamore",25000000,"H/W Quantum"],
+["WE-AG-01033-3","Void-Weaver (F-112)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-AG-01034-2","Omega-Chorus (F-113)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["LQ-VN-01035-1","Decay-Catalyst (F-116)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["WE-AG-01036-0","Collapse-Engine (F-118)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["CN-ST-01037-9","Null-Protocol (F-121)",FNODE,2500000,"Cisco Systems",3200000,"H/W Appliance"],
+["WE-AG-01038-8","The Final Shutdown (F-124)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-HR-01039-7","The Sovereign CHRO (F-150)",FNODE,1500000,"McKinsey / Workday",2800000,"S/W"],
+["CN-CD-01040-6","Cognitive Code-Forge (F-330)",FNODE,850000,"HashiCorp",1100000,"H/W Configurator"],
+["CN-IP-01041-5","Agentic-SOC Vanguard (F-430)",FNODE,1800000,"Palo Alto Networks",2400000,"H/W Edge Node"],
+["CN-LX-01042-4","Ticket-Assassin (F-480)",FNODE,1200000,"Blue Yonder",1500000,"H/W Controller"],
+["LQ-VN-01043-3","The Sovereign CFO (F-500)",FNODE,4800000,"IBM Quantum / Swift",6500000,"H/W Sec. Module"],
+["CN-LX-01044-2","Fleet-Harmonizer (F-601)",FNODE,1200000,"Blue Yonder",1500000,"H/W Controller"],
+["WE-AG-01045-1","The Sovereign Neural-Forge (F-800)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-AG-01046-0","The Omniscient Oracle (F-820)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-AG-01047-9","The Cognitive Swarm-Matrix (F-900)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+["WE-LG-01048-8","The Sovereign Jurist (F-950)",FNODE,450000,"Harvey AI",750000,"S/W"],
+["KT-QU-01049-7","The Computronium Substrate (F-985)",FNODE,15000000,"IBM / Google Sycamore",25000000,"H/W Quantum"],
+["WE-AG-01050-6","Apex-ASI (F-999)",FNODE,1500000,"OpenAI / Anthropic",2800000,"S/W"],
+
+// --- Cognitive Solutions ---
+["WE-SOL-00101","White Enterprises Sovereign Kernel",COG,12500000,"AWS Core / Azure OS",18000000,"S/W"],
+["WE-SOL-00102","Omni-Fin Global Quantum Ledger",COG,4800000,"IBM Quantum / Swift",6500000,"S/W"],
+["WE-SOL-00103","Project Crystal Macro-Grid (Energy)",COG,2200000,"Siemens / GE Grid",3500000,"S/W"],
+["WE-SOL-00104","Level 'x' AI Agentic Swarm (Labor)",COG,1500000,"OpenAI / Anthropic Ent.",2800000,"S/W"],
+["WE-SOL-00105","Omni-Node Orbital Routing Mesh",COG,3500000,"Starlink Ent. / Kuiper",5000000,"S/W"],
+["WE-SOL-00106","Global Autonomous Logistics (GAL)",COG,4200000,"Blue Yonder / SAP Log.",6200000,"S/W"],
+["WE-SOL-00107","Sovereign Cloud Compute Substrate",COG,8000000,"AWS GovCloud",12000000,"S/W"],
+["WE-SOL-00108","Global HFT Arbitrage Fabric",COG,null,"Bloomberg / Reuters",null,"S/W"],
+["WE-SOL-00109","Enterprise eBPF Kernel Enforcer",COG,1200000,"CrowdStrike / SentinelOne",1800000,"S/W"],
+["WE-SOL-00110","White Enterprises Smart Cities OS",COG,5000000,"Cisco Smart City / IBM",8500000,"S/W"],
+["WE-SOL-00111","Decentralized Water Desalination",COG,950000,"Veolia / Xylem",1500000,"S/W"],
+["WE-SOL-00112","Enterprise Threat Intelligence Feed",COG,250000,"Mandiant / Recorded Future",450000,"S/W"],
+["WE-SOL-00113","B2B Autonomous Legal Arbiter",COG,450000,"Harvey AI / LexisNexis",750000,"S/W"],
+["WE-SOL-00114","Next-Gen Semiconductor Foundry OS",COG,8500000,"Synopsys / Cadence",14000000,"S/W"],
+["WE-SOL-00115","Global Predictive Healthcare AI",COG,180000,"Epic Systems / Cerner",350000,"S/W"],
+["WE-SOL-00116","Autonomous eVTOL Traffic Control",COG,550000,"Thales Group / Joby",950000,"S/W"],
+["WE-SOL-00117","EV Battery Optimization Node",COG,4500,"CATL / Panasonic OS",7500,"Hybrid"],
+["WE-SOL-00118","Personalized Skincare Chem-Synth",COG,15000,"L'Oréal (ModiFace)",25000,"Hybrid"],
+["WE-SOL-00119","Last-Mile Delivery Routing Mesh",COG,2500,"Amazon Logistics OS",4800,"S/W"],
+["WE-SOL-00120","Snack Recipe / Pantry Management",COG,4.99,"Yummly / Instacart",8.99,"S/W"],
+];
+
+const CATALOG_LABEL = {SOV:"Sovereign Catalog", KIN:"Kinetic Inventory", FNODE:"F-Node Directory", COG:"Cognitive Solutions"};
+const CATALOG_BADGE = {SOV:"sov", KIN:"kin", FNODE:"fnode", COG:"cog"};
+const SPEND_LABEL = {CAPEX:"CapEx", OPEX:"OpEx", HYBRID:"Hybrid", NA:"N/A"};
+const SPEND_BADGE = {CAPEX:"capex", OPEX:"opex", HYBRID:"hybrid", NA:"na"};
+
+function classifySpend(type){
+  if(!type) return 'NA';
+  if(type === 'S/W') return 'OPEX';
+  if(type.indexOf('Hybrid') !== -1 || type.indexOf('H/W+S/W') !== -1) return 'HYBRID';
+  return 'CAPEX'; // any H/W* variant or Kinetic
+}
+
+const MARGIN_BY_TYPE = {
+  'H/W Appliance': 66,
+  'H/W Edge Node': 78,
+  'H/W Configurator': 70,
+  'H/W Controller': 55,
+  'H/W Sec. Module': 45,
+  'H/W Mainframe': 24,
+  'H/W Silicon': 73,
+  'H/W Sub-system': 33,
+  'H/W Access Point': 65,
+  'H/W Quantum': 35,
+  'S/W': 80,
+};
+function getMargin(row){
+  if(row.price === null || !row.type) return null;
+  const t = row.type;
+  if(t === 'Kinetic'){
+    if(/tesla/i.test(row.competitor||'')) return 17;
+    return 43;
+  }
+  if(t === 'Hybrid'){
+    if(/tesla/i.test(row.competitor||'')) return 29;
+    return 45;
+  }
+  if(t === 'H/W'){
+    return 32;
+  }
+  if(MARGIN_BY_TYPE[t] !== undefined) return MARGIN_BY_TYPE[t];
+  return null;
+}
+function grossProfit(row){
+  const m = getMargin(row);
+  if(m === null) return null;
+  const capex = capexRevenue(row) || 0;
+  const opex = opexRevenue(row) || 0;
+  return (capex + opex) * (m/100);
+}
+
+let DATA = RAW.map(r => ({
+  sku:r[0], name:r[1], catalog:r[2], price:r[3], competitor:r[4], compPrice:r[5],
+  type:r[6], spendType: classifySpend(r[6]), units:0, subs:0
+}));
+DATA.forEach(row => { row.margin = getMargin(row); });
+let sortKey = null, sortDir = 1;
+
+const tbody = document.getElementById('tbody');
+const searchEl = document.getElementById('search');
+const catFilterEl = document.getElementById('catFilter');
+const spendFilterEl = document.getElementById('spendFilter');
+const saveNote = document.getElementById('saveNote');
+const typeGridEl = document.getElementById('typeGrid');
+const typeClearEl = document.getElementById('typeClear');
+let typeFilterValue = null;
+
+const TYPE_ORDER = [
+  'S/W','Hybrid','Kinetic',
+  'H/W Sec. Module','H/W Appliance','H/W Edge Node','H/W Controller','H/W Configurator',
+  'H/W Quantum','H/W Silicon','H/W Sub-system','H/W Mainframe','H/W Access Point','H/W'
+];
+function typeCardClass(t){
+  if(t === 'S/W') return 'sw';
+  if(t === 'Hybrid') return 'hybrid';
+  if(t === 'Kinetic') return 'kinetic';
+  if(t === null || t === undefined) return 'na';
+  return 'hw';
+}
+
+function fmtMoney(n){
+  if(n === null || n === undefined || isNaN(n)) return '—';
+  return '$' + Number(n).toLocaleString('en-US', {maximumFractionDigits:2});
+}
+function fmtInt(n){ return Number(n||0).toLocaleString('en-US'); }
+function fmtPct(n){ return (n>=0?'−':'+') + Math.abs(n).toFixed(0) + '%'; }
+
+function priceGap(row){
+  if(row.price === null || row.compPrice === null || !row.compPrice) return null;
+  return (row.compPrice - row.price) / row.compPrice * 100;
+}
+function capexRevenue(row){ return row.price !== null ? row.price * row.units : null; }
+function opexRevenue(row){ return row.price !== null ? row.price * row.subs : null; }
+
+async function loadStoredData(){
+  try{
+    const result = await window.storage.get('we-sku-tracker-data', false);
+    if(result && result.value){
+      const saved = JSON.parse(result.value);
+      DATA.forEach(row => {
+        if(saved[row.sku]){
+          row.units = saved[row.sku].units || 0;
+          row.subs = saved[row.sku].subs || 0;
+        }
+      });
+    }
+  }catch(e){ /* no data yet */ }
+  renderTypeGrid();
+  render();
+}
+
+let saveTimer = null;
+function persist(){
+  saveNote.textContent = 'saving…';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    const payload = {};
+    DATA.forEach(row => { payload[row.sku] = {units: row.units, subs: row.subs}; });
+    try{
+      await window.storage.set('we-sku-tracker-data', JSON.stringify(payload), false);
+      saveNote.textContent = 'all changes saved ✓';
+      setTimeout(()=>{ if(saveNote.textContent==='all changes saved ✓') saveNote.textContent='';}, 2000);
+    }catch(e){
+      saveNote.textContent = 'save failed — storage unavailable';
+    }
+  }, 350);
+}
+
+function getFiltered(){
+  const q = searchEl.value.trim().toLowerCase();
+  const cat = catFilterEl.value;
+  const spend = spendFilterEl.value;
+  let rows = DATA.filter(r => {
+    const matchesQ = !q || r.sku.toLowerCase().includes(q) || r.name.toLowerCase().includes(q) || (r.competitor||'').toLowerCase().includes(q);
+    const matchesCat = cat === 'ALL' || r.catalog === cat;
+    const matchesSpend = spend === 'ALL' || r.spendType === spend;
+    const matchesType = !typeFilterValue || r.type === typeFilterValue;
+    return matchesQ && matchesCat && matchesSpend && matchesType;
+  });
+  if(sortKey){
+    rows = rows.slice().sort((a,b) => {
+      let av, bv;
+      if(sortKey === 'revenue'){ av = capexRevenue(a); bv = capexRevenue(b); }
+      else if(sortKey === 'opexRevenue'){ av = opexRevenue(a); bv = opexRevenue(b); }
+      else if(sortKey === 'gap'){ av = priceGap(a); bv = priceGap(b); }
+      else if(sortKey === 'grossProfit'){ av = grossProfit(a); bv = grossProfit(b); }
+      else { av = a[sortKey]; bv = b[sortKey]; }
+      if(typeof av === 'string') av = av.toLowerCase();
+      if(typeof bv === 'string') bv = bv.toLowerCase();
+      if(av === null || av === undefined) av = -Infinity;
+      if(bv === null || bv === undefined) bv = -Infinity;
+      if(av < bv) return -1 * sortDir;
+      if(av > bv) return 1 * sortDir;
+      return 0;
+    });
+  }
+  return rows;
+}
+
+function renderTypeGrid(){
+  const counts = {};
+  const catsByType = {};
+  DATA.forEach(row => {
+    const t = row.type || 'Unclassified';
+    counts[t] = (counts[t] || 0) + 1;
+    if(!catsByType[t]) catsByType[t] = {};
+    catsByType[t][row.catalog] = (catsByType[t][row.catalog] || 0) + 1;
+  });
+  const order = TYPE_ORDER.filter(t => counts[t]);
+  Object.keys(counts).forEach(t => { if(!order.includes(t)) order.push(t); });
+  const total = DATA.length;
+  const maxCount = Math.max(...Object.values(counts));
+
+  typeGridEl.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  order.forEach(t => {
+    const c = counts[t];
+    const pct = (c/total*100);
+    const cls = typeCardClass(t === 'Unclassified' ? null : t);
+    const div = document.createElement('div');
+    div.className = 'type-card ' + cls + (typeFilterValue === t ? ' active' : '');
+    div.dataset.type = t;
+    const catBadges = Object.entries(catsByType[t])
+      .sort((a,b) => b[1]-a[1])
+      .map(([cat,n]) => `<span>${cat} ×${n}</span>`).join('');
+    div.innerHTML = `
+      <div class="tc-name">${t}</div>
+      <div class="tc-row">
+        <span class="tc-count">${c}</span>
+        <span class="tc-pct">${pct.toFixed(1)}%</span>
+      </div>
+      <div class="tc-bar"><i style="width:${(c/maxCount*100)}%"></i></div>
+      <div class="tc-cats">${catBadges}</div>
+    `;
+    div.addEventListener('click', () => {
+      typeFilterValue = (typeFilterValue === t) ? null : t;
+      typeClearEl.classList.toggle('show', !!typeFilterValue);
+      renderTypeGrid();
+      render();
+    });
+    frag.appendChild(div);
+  });
+  typeGridEl.appendChild(frag);
+  typeClearEl.classList.toggle('show', !!typeFilterValue);
+}
+typeClearEl.addEventListener('click', () => {
+  typeFilterValue = null;
+  typeClearEl.classList.remove('show');
+  renderTypeGrid();
+  render();
+});
+
+function render(){
+  const rows = getFiltered();
+  tbody.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    const capex = capexRevenue(row);
+    const opex = opexRevenue(row);
+    const gap = priceGap(row);
+    const gp = grossProfit(row);
+    let gapHtml, gapClass;
+    if(gap === null){ gapHtml = 'N/A'; gapClass = 'na'; }
+    else { gapHtml = fmtPct(gap); gapClass = gap >= 0 ? 'under' : 'over'; }
+    const marginHtml = row.margin === null ? 'N/A' : row.margin.toFixed(0) + '%';
+
+    tr.innerHTML = `
+      <td class="sku">${row.sku}</td>
+      <td class="name">${row.name}</td>
+      <td class="cat"><span class="badge ${CATALOG_BADGE[row.catalog]}">${CATALOG_LABEL[row.catalog]}</span></td>
+      <td><span class="badge ${SPEND_BADGE[row.spendType]}">${SPEND_LABEL[row.spendType]}</span></td>
+      <td class="price">${fmtMoney(row.price)}</td>
+      <td class="competitor">${row.competitor || '—'}</td>
+      <td class="compprice">${fmtMoney(row.compPrice)}</td>
+      <td class="gap ${gapClass}">${gapHtml}</td>
+      <td class="num"><input type="number" min="0" class="cell units-input" value="${row.units}"></td>
+      <td class="rev">${fmtMoney(capex)}</td>
+      <td class="num"><input type="number" min="0" class="cell subs-input" value="${row.subs}"></td>
+      <td class="opex">${fmtMoney(opex)}</td>
+      <td class="margin ${row.margin===null?'na':''}">${marginHtml}</td>
+      <td class="gp">${fmtMoney(gp)}</td>
+    `;
+    const unitsInput = tr.querySelector('.units-input');
+    const subsInput = tr.querySelector('.subs-input');
+    unitsInput.addEventListener('input', () => {
+      row.units = Math.max(0, parseInt(unitsInput.value || '0', 10));
+      tr.querySelector('.rev').textContent = fmtMoney(capexRevenue(row));
+      tr.querySelector('.gp').textContent = fmtMoney(grossProfit(row));
+      updateSummary();
+      persist();
+    });
+    subsInput.addEventListener('input', () => {
+      row.subs = Math.max(0, parseInt(subsInput.value || '0', 10));
+      tr.querySelector('.opex').textContent = fmtMoney(opexRevenue(row));
+      tr.querySelector('.gp').textContent = fmtMoney(grossProfit(row));
+      updateSummary();
+      persist();
+    });
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+  document.getElementById('rowCount').textContent = rows.length + ' / ' + DATA.length + ' SKUs shown';
+  updateSummary();
+}
+
+function updateSummary(){
+  const totalSkus = DATA.length;
+  const totalUnits = DATA.reduce((s,r)=>s+r.units,0);
+  const totalSubs = DATA.reduce((s,r)=>s+r.subs,0);
+  const totalCapex = DATA.reduce((s,r)=> s + (capexRevenue(r) || 0), 0);
+  const totalOpex = DATA.reduce((s,r)=> s + (opexRevenue(r) || 0), 0);
+  const totalRevenue = totalCapex + totalOpex;
+  const totalGrossProfit = DATA.reduce((s,r)=> s + (grossProfit(r) || 0), 0);
+  const blendedMargin = totalRevenue > 0 ? (totalGrossProfit/totalRevenue*100) : null;
+
+  const gaps = DATA.map(priceGap).filter(g => g !== null);
+  const avgGap = gaps.length ? gaps.reduce((a,b)=>a+b,0)/gaps.length : null;
+
+  document.getElementById('statSkus').textContent = fmtInt(totalSkus);
+  document.getElementById('statUnits').textContent = fmtInt(totalUnits);
+  document.getElementById('statSubs').textContent = fmtInt(totalSubs);
+  const gapEl = document.getElementById('statGap');
+  gapEl.textContent = avgGap !== null ? fmtPct(avgGap) + ' below list' : '—';
+  gapEl.className = 'v ' + (avgGap !== null && avgGap >= 0 ? 'good' : 'cyan');
+
+  document.getElementById('statCapex').textContent = fmtMoney(totalCapex);
+  document.getElementById('statOpex').textContent = fmtMoney(totalOpex);
+  document.getElementById('statRevenue').textContent = fmtMoney(totalRevenue);
+
+  const capexPct = totalRevenue > 0 ? (totalCapex/totalRevenue*100) : 0;
+  const opexPct = totalRevenue > 0 ? (totalOpex/totalRevenue*100) : 0;
+  document.getElementById('capexBar').style.width = capexPct + '%';
+  document.getElementById('opexBar').style.width = opexPct + '%';
+  document.getElementById('statMix').textContent = totalRevenue > 0
+    ? capexPct.toFixed(0) + '% / ' + opexPct.toFixed(0) + '%'
+    : '—';
+
+  document.getElementById('statGrossProfit').textContent = fmtMoney(totalGrossProfit);
+  document.getElementById('statBlendedMargin').textContent = blendedMargin !== null ? blendedMargin.toFixed(1) + '%' : '—';
+}
+
+document.querySelectorAll('thead th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    if(sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+    render();
+  });
+});
+
+searchEl.addEventListener('input', render);
+catFilterEl.addEventListener('change', render);
+spendFilterEl.addEventListener('change', render);
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const rows = getFiltered();
+  let csv = 'SKU-ID,Product Name,Catalog,Spend Type,List Price,Partner,Partner Price,Price Gap %,Units Sold,CapEx Revenue,Active Subscriptions,OpEx Revenue,Margin %,Gross Profit\n';
+  rows.forEach(r => {
+    const capex = capexRevenue(r);
+    const opex = opexRevenue(r);
+    const gap = priceGap(r);
+    const gp = grossProfit(r);
+    csv += `"${r.sku}","${r.name.replace(/"/g,'""')}","${CATALOG_LABEL[r.catalog]}","${SPEND_LABEL[r.spendType]}",${r.price!==null?r.price:''},"${(r.competitor||'').replace(/"/g,'""')}",${r.compPrice!==null?r.compPrice:''},${gap!==null?gap.toFixed(1):''},${r.units},${capex!==null?capex:''},${r.subs},${opex!==null?opex:''},${r.margin!==null?r.margin:''},${gp!==null?gp:''}\n`;
+  });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'WE_SKU_Tracker_Export.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  if(!confirm('Reset units sold and subscription counts for ALL SKUs? This cannot be undone.')) return;
+  DATA.forEach(r => { r.units = 0; r.subs = 0; });
+  render();
+  persist();
+});
+
+loadStoredData();
+</script>
+</body>
+</html>
