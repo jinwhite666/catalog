@@ -5,19 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C:\WHITE_ENTERPRISES>_</title>
     <style>
-        body {
-            background-color: #000000;
-            color: #00FF00;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 40px;
-            max-width: 800px;
+        :root {
+            --neon-green: #00FF41;
+            --dark-bg: #050505;
+            --glitch-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
         }
-        h1 { font-size: 20px; margin-bottom: 20px; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: " ";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        header { border-bottom: 1px solid var(--neon-green); padding-bottom: 20px; margin-bottom: 20px; }
+        h1 { font-size: 24px; text-shadow: var(--glitch-shadow); }
+
+        .container { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+
         ul { list-style-type: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        a { color: #00FF00; text-decoration: none; }
-        a:hover { background-color: #00FF00; color: #000000; }
-        .prompt::before { content: "> "; }
+        li { margin-bottom: 12px; }
+        a { color: var(--neon-green); text-decoration: none; display: block; padding: 5px; border-left: 3px solid transparent; transition: 0.3s; }
+        a:hover { background-color: rgba(0, 255, 65, 0.1); border-left: 3px solid var(--neon-green); padding-left: 15px; }
+
+        .sidebar { border: 1px solid #004400; padding: 20px; background: #0a0a0a; font-size: 12px; }
         
         .legal-box {
             margin-top: 50px;
@@ -25,34 +50,48 @@
             border: 1px solid #008800;
             font-size: 10px;
             color: #00AA00;
-            background-color: #050505;
+            background-color: rgba(0, 20, 0, 0.5);
             text-align: justify;
         }
     </style>
 </head>
 <body>
 
-    <h1>C:\WHITE_ENTERPRISES> DIR</h1>
-    
-    <ul>
-        <li class="prompt"><a href="AI_Applications_Catalog.html">AI_Applications_Catalog.html</a></li>
-        <li class="prompt"><a href="AI_Business_Catalog.html">AI_Business_Catalog.html</a></li>
-        <li class="prompt"><a href="Customer_Pain_Points.html">Customer_Pain_Points.html</a></li>
-        <li class="prompt"><a href="Enterprise_IT_Sales_Intelligence.html">Enterprise_IT_Sales_Intelligence.html</a></li>
-        <li class="prompt"><a href="IT_Infra_Business_Catalog.html">IT_Infra_Business_Catalog.html</a></li>
-        <li class="prompt"><a href="My_Portfolio.html">My_Portfolio.html</a></li>
-        <li class="prompt"><a href="My_Profile.html">My_Profile.html</a></li>
-        <li class="prompt"><a href="PM_Daily_Handbook.html">PM_Daily_Handbook.html</a></li>
-        <li class="prompt"><a href="Quantum_Catalog.html">Quantum_Catalog.html</a></li>
-        <li class="prompt"><a href="White_DoorOpener_Assessment _Templates.zip">White_DoorOpener_Assessment _Templates.zip</a></li>
-        <li class="prompt"><a href="White_Enterprises_Product_Catalog.html">White_Enterprises_Product_Catalog.html</a></li>
-    </ul>
+    <header>
+        <h1>[SYSTEM ROOT ACCESS: WHITE_ENTERPRISES]</h1>
+        <p>> STATUS: OPERATIONAL | UPLINK: STABLE | NODE: JINWHITE666</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="AI_Applications_Catalog.html">>> AI_Applications_Catalog.html</a></li>
+                <li><a href="AI_Business_Catalog.html">>> AI_Business_Catalog.html</a></li>
+                <li><a href="Customer_Pain_Points.html">>> Customer_Pain_Points.html</a></li>
+                <li><a href="Enterprise_IT_Sales_Intelligence.html">>> Enterprise_IT_Sales_Intelligence.html</a></li>
+                <li><a href="IT_Infra_Business_Catalog.html">>> IT_Infra_Business_Catalog.html</a></li>
+                <li><a href="My_Portfolio.html">>> My_Portfolio.html</a></li>
+                <li><a href="My_Profile.html">>> My_Profile.html</a></li>
+                <li><a href="PM_Daily_Handbook.html">>> PM_Daily_Handbook.html</a></li>
+                <li><a href="Quantum_Catalog.html">>> Quantum_Catalog.html</a></li>
+                <li><a href="Service_Offering.html">>> Service_Offering.html</a></li>
+                <li><a href="White_Enterprises_Product_Catalog.html">>> White_Enterprises_Product_Catalog.html</a></li>
+                <li><a href="White_DoorOpener_Assessment _Templates.zip">>> White_DoorOpener_Assessment _Templates.zip</a></li>
+            </ul>
+        </nav>
+
+        <aside class="sidebar">
+            <h3>SYSTEM_DIAGNOSTICS</h3>
+            <p><strong>Latency:</strong> 14ms</p>
+            <p><strong>Security:</strong> AES-256 Active</p>
+            <p><strong>Auth:</strong> User Verified</p>
+            <hr style="border: 0; border-top: 1px solid #004400;">
+            <p><i>"Information is the only currency that matters."</i></p>
+        </aside>
+    </div>
 
     <div class="legal-box">
-        <strong>LEGAL DISCLAIMER & LIMITATION OF LIABILITY:</strong><br>
-        The documents, research, architectural blueprints, and intelligence catalogs provided in this repository are for informational, theoretical, and R&D purposes only. All materials are provided on an "as-is" basis without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, operational stability, or fitness for a particular purpose. WHITE ENTERPRISES INC., its founders, and associated entities assume no responsibility or liability for any errors, omissions, or any direct, indirect, incidental, punitive, or consequential damages resulting from the use, implementation, or interpretation of this infrastructure intelligence. By accessing this repository, you acknowledge that you are operating within a high-risk research environment and accept full responsibility for any outcomes, including but not limited to system downtime, data corruption, or architectural failure.<br><br>
-        <strong>JURISDICTION & COMPLIANCE:</strong><br>
-        Access to and utilization of this repository are governed by and construed in accordance with the applicable federal and state laws of the United States of America, as well as the laws of the United Kingdom (England and Wales), without giving effect to any principles of conflicts of law. Users are solely responsible for ensuring compliance with all local, national, and international laws, including data protection regulations, GDPR, and export controls relevant to AI, cryptographic research, and sovereign network infrastructure. Use of these materials in restricted jurisdictions or for non-compliant activities is strictly prohibited.
+        <strong>LEGAL DISCLAIMER & LIMITATION OF LIABILITY:</strong> Access to this repository is restricted to authorized personnel. Use of these materials is subject to the terms defined in the WHITE ENTERPRISES INC. EULA. Unauthorized extraction of proprietary intelligence, architectural blueprints, or cryptographic research will result in immediate system lockout and reporting to the appropriate authorities. 
     </div>
 
 </body>
