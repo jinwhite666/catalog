@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Consulting Skills Catalog</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2a2f3a;
+    --text: #e8eaed;
+    --text-dim: #9aa1ac;
+    --accent: #5eb1ff;
+    --accent-2: #7c5cff;
+    --tag-bg: #22283a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    padding: 28px 32px 18px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #171a21 0%, #1a1f2e 100%);
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  header p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 13.5px;
+  }
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .stat b { color: var(--text); font-size: 15px; }
+  .controls {
+    padding: 16px 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  #search {
+    flex: 1;
+    min-width: 220px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+  }
+  #search:focus { border-color: var(--accent); }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 14px 32px 0;
+  }
+  .tab {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .tab:hover { color: var(--text); border-color: #3a4152; }
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #071018;
+    font-weight: 600;
+  }
+  .tab .count {
+    opacity: 0.75;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  main {
+    padding: 20px 32px 60px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  thead th {
+    text-align: left;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-2);
+  }
+  tbody td {
+    padding: 11px 16px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--panel-2); }
+  .id-cell {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .domain-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .domain-tag {
+    background: var(--tag-bg);
+    color: #b8c0ff;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+  .kind-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background: rgba(94,177,255,0.12);
+    color: var(--accent);
+    display: inline-block;
+  }
+  .empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 40px;
+    font-size: 14px;
+  }
+  mark {
+    background: rgba(124,92,255,0.35);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 1px;
+  }
+  .sheet-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+  .sheet-title span {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 13px;
+  }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .explainer {
+    margin: 16px 32px 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .explainer-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 16px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .explainer-toggle:hover { background: var(--panel-2); }
+  .explainer-toggle .chevron {
+    color: var(--text-dim);
+    transition: transform 0.15s ease;
+    font-size: 11px;
+  }
+  .explainer.open .chevron { transform: rotate(180deg); }
+  .explainer-body {
+    display: none;
+    padding: 4px 20px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .explainer.open .explainer-body { display: block; }
+  .explainer-body p { margin: 12px 0; }
+  .explainer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 14px 0 4px;
+  }
+  .explainer-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .explainer-card h4 {
+    margin: 0 0 5px;
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .explainer-card p { margin: 0; font-size: 12.5px; }
+  .explainer-body code {
+    background: var(--tag-bg);
+    color: #b8c0ff;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .desc-cell {
+    color: var(--text-dim);
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: 420px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IT Consulting Skills Catalog</h1>
+  <p>Competency inventory across presales, technical, and delivery domains</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="explainer" id="explainer">
+  <button class="explainer-toggle" id="explainerToggle">
+    <span>ℹ️ What is this catalog, and how do I read it?</span>
+    <span class="chevron">▼</span>
+  </button>
+  <div class="explainer-body">
+    <p>This is a competency inventory of individual "skills" — discrete areas of expertise — organized into 12 domain sheets, from Presales/GTM/Commercial to AI/ML Infrastructure, Zero Trust, Firewall, and more. Each row is one named skill that could be matched against a project, RFP, or staffing need.</p>
+    <div class="explainer-grid">
+      <div class="explainer-card">
+        <h4>ID</h4>
+        <p>A unique identifier for the skill. Most are numeric sequence IDs; some (prefixed <code>P-</code>) mark later-added strategic/executive skills.</p>
+      </div>
+      <div class="explainer-card">
+        <h4>Competency Area</h4>
+        <p>The name of the specific skill or capability, e.g. "SD-WAN Architecture &amp; Design" or "AI Model Explainability &amp; Interpretability Tooling".</p>
+      </div>
+      <div class="explainer-card">
+        <h4>Description</h4>
+        <p>A plain-language, one-line explanation of what the skill actually involves in practice.</p>
+      </div>
+      <div class="explainer-card">
+        <h4>Kind</h4>
+        <p>Currently all entries are tagged <code>Unique</code>, meaning each skill is a distinct, non-overlapping competency in the catalog.</p>
+      </div>
+      <div class="explainer-card">
+        <h4>Matched Domain(s)</h4>
+        <p>The broader practice area(s) the skill belongs to. A skill can map to more than one domain — shown as separate tags — when it spans disciplines (e.g. both Zero Trust and Compliance).</p>
+      </div>
+    </div>
+    <p>Use the <strong>tabs</strong> below to jump to a specific domain sheet, or leave "All" selected to browse everything. The <strong>search box</strong> filters live across IDs, skill names, and domain tags — matches are highlighted in place.</p>
+  </div>
+</div>
+
+<div class="controls">
+  <input id="search" type="text" placeholder="Search skills, IDs, or domains..." />
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<main id="main"></main>
+
+<script>
+const DATA = {"Presales  GTM  Commercial": {"header": ["Skill ID", "Competency Area", "Kind", "Domain / Focus", "Description"], "rows": [["1", "RFP/RFI Technical Writing", "Unique", "Presales / GTM / Commercial", "Drafting clear, compliant, and persuasive technical responses to formal RFP/RFI documents."], ["100", "Presales Engineering Team Mentorship", "Unique", "Presales / GTM / Commercial", "Coaching and developing junior presales engineers to grow their technical and client-facing skills."], ["113", "Presales Technical Discovery Questionnaires Framework Design", "Unique", "Presales / GTM / Commercial", "Designing structured questionnaires that surface a client's true technical requirements during discovery."], ["114", "Bid Margin Financial Guardrails and Resource Sizing", "Unique", "Presales / GTM / Commercial", "Setting margin thresholds and sizing rules that keep bid resourcing financially sound."], ["119", "Vendor Professional Services SOW Scope Verification", "Unique", "Presales / GTM / Commercial", "Checking vendor SOWs against agreed scope to catch gaps before contracts are signed."], ["124", "Technical RFP Executive Summary Pitch Deck Generation", "Unique", "Presales / GTM / Commercial", "Turning dense RFP content into a concise executive summary deck for leadership sign-off."], ["125", "Technical Sales & Product Demos", "Unique", "Presales / GTM / Commercial", "Running live product demonstrations and technical sales sessions tailored to prospect needs."], ["126", "Proof of Concept (PoC) Execution", "Unique", "Presales / GTM / Commercial", "Planning and delivering proof-of-concept engagements that validate a solution before purchase."], ["127", "Commercial Structuring & Pricing Models", "Unique", "Presales / GTM / Commercial", "Building commercial structures and pricing models that balance competitiveness with margin."], ["128", "TCO & ROI Analysis", "Unique", "Presales / GTM / Commercial", "Modeling total cost of ownership and return on investment to support the business case."], ["129", "Large Deal Strategy & Structuring", "Unique", "Presales / GTM / Commercial", "Structuring and negotiating large, complex, multi-stakeholder deals."], ["130", "Competitive Intelligence & Positioning", "Unique", "Presales / GTM / Commercial", "Tracking competitor offerings and shaping messaging to position against them effectively."], ["131", "C-Level Technology Advisory", "Unique", "Presales / GTM / Commercial", "Advising C-level clients on technology direction and strategic fit."], ["132", "Digital Transformation Strategy", "Unique", "Presales / GTM / Commercial", "Defining digital transformation roadmaps and strategy for client organizations."], ["14", "Cross-Functional Bid Collaboration", "Unique", "Presales / GTM / Commercial", "Coordinating presales, delivery, legal, and finance teams during a bid response."], ["19", "Presales Solution Costing", "Unique", "Presales / GTM / Commercial", "Estimating and costing proposed solutions accurately for presales submissions."], ["2", "Discovery & Solution Design Workshops", "Unique", "Presales / GTM / Commercial", "Facilitating workshops that translate client needs into a solution design."], ["20", "Executive & Board-Level Reporting", "Unique", "Presales / GTM / Commercial", "Preparing reporting and briefings for executive and board-level stakeholders."], ["38", "Proposal Pricing Strategy & Margin Analysis", "Unique", "Presales / GTM / Commercial", "Setting pricing strategy and analyzing margin across proposal options."], ["4", "Client Stakeholder Engagement", "Unique", "Presales / GTM / Commercial", "Managing relationships and expectations with client-side stakeholders."], ["40", "Vendor Contract & SOW Negotiation Support", "Unique", "Presales / GTM / Commercial", "Supporting negotiation of vendor contracts and statements of work."], ["54", "RFP Response Governance & Quality Review", "Unique", "Presales / GTM / Commercial", "Reviewing RFP responses for quality, consistency, and governance before submission."], ["57", "Stakeholder Communication Plans for Transformation Projects", "Unique", "Presales / GTM / Commercial", "Building communication plans to keep stakeholders aligned during transformation projects."], ["74", "Mentorship of Presales/Solution Architect Career Path", "Unique", "Presales / GTM / Commercial", "Mentoring team members progressing along the presales/solution architect career path."], ["87", "Presales Strategy: Value-Based Selling", "Unique", "Presales / GTM / Commercial", "Applying value-based selling techniques that tie technical solutions to business outcomes."], ["97", "Bid Defense Oral Presentations", "Unique", "Presales / GTM / Commercial", "Presenting and defending a bid in front of a client evaluation panel."], ["99", "Executive Technology Advisory Coaching", "Unique", "Presales / GTM / Commercial", "Coaching executives on how to advise clients credibly on technology decisions."], ["P-601", "Value-Based ROI Modeling & Business Case Construction", "Unique", "Financial/Strategic", "Building ROI models and business cases that justify investment in value terms."], ["P-602", "Executive Stakeholder Alignment & Storytelling", "Unique", "Executive Advising", "Aligning executive stakeholders and crafting a compelling narrative for a deal."], ["P-603", "Commercial Deal Strategy & Enterprise Objection Handling", "Unique", "Bid & Deal Strategy", "Shaping commercial deal strategy and handling objections in enterprise negotiations."], ["P-604", "Goal-Oriented Proof of Concept (POC) Architecture", "Unique", "Technical Sales", "Architecting a proof-of-concept scoped tightly around the client's success criteria."], ["P-605", "Cloud & Hybrid Security Commercial Positioning", "Unique", "Technical Sales", "Positioning cloud and hybrid security offerings in commercial terms clients understand."], ["P-606", "AI-Native Defense Value Proposition & GRC Alignment", "Unique", "Executive Advising", "Framing AI-native defense capabilities and GRC alignment as a value proposition."], ["P-607", "Strategic Industry Domain Knowledge (e.g., FinTech/Defense)", "Unique", "Bid & Deal Strategy", "Applying deep domain knowledge (e.g. FinTech, Defense) to shape deal strategy."], ["P-608", "Presales-to-Delivery Handover & Risk Management", "Unique", "Commercial/Delivery", "Managing the handover from presales to delivery while flagging and mitigating risk."], ["P-609", "Organizational Change Management for IT/Security", "Unique", "Organizational Change Management", "Leading organizational change initiatives tied to IT or security transformation."], ["P-610", "Infrastructure Optimization & Auto-Scaling Strategy", "Unique", "Operational Excellence", "Setting strategy for optimizing infrastructure spend and auto-scaling efficiency."], ["P-611", "Enterprise Regulatory & Compliance Framework Mapping", "Unique", "Regulatory & Compliance Strategy", "Mapping enterprise requirements against regulatory and compliance frameworks."], ["P-612", "Post-Sales Value Realization & Customer Retention", "Unique", "Customer Success & Retention", "Driving value realization and retention with clients after the sale closes."], ["P-613", "Strategic Vendor Partnership & Ecosystem Development", "Unique", "Ecosystem & Partnership Development", "Developing strategic partnerships and ecosystem relationships with vendors."], ["P-614", "Cyber-Resilience & Crisis Management Planning", "Unique", "Cyber-Resilience & Crisis Management", "Planning for cyber-resilience and how to manage a crisis when it occurs."], ["P-615", "Cross-Departmental Security Culture Transformation", "Unique", "Organizational Change Management", "Leading culture change across departments to strengthen security posture."], ["P-616", "Global Multi-Vendor Network Performance Benchmarking", "Unique", "Operational Excellence", "Benchmarking network performance across multiple vendors on a global scale."], ["P-617", "Data Privacy & Sovereign Compliance Strategy", "Unique", "Regulatory & Compliance Strategy", "Setting strategy for data privacy and sovereign compliance requirements."], ["P-618", "Managed Services & Support Lifecycle Alignment", "Unique", "Customer Success & Retention", "Aligning managed services offerings with the client's support lifecycle needs."], ["P-619", "Joint Go-To-Market (GTM) Strategic Planning", "Unique", "Ecosystem & Partnership Development", "Planning joint go-to-market strategy in partnership with vendors or allies."], ["P-620", "Executive Incident Communication Strategy", "Unique", "Cyber-Resilience & Crisis Management", "Preparing executive communications for use during a security incident."], ["P-700", "Finalized Executive Technical Strategy Integration", "Unique", "Executive Advising", "Integrating finalized technical strategy into a coherent executive narrative."]]}, "AIML": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["123", "High-Throughput Storage Area Network (SAN) & NVMe-oF Fabric Design", "Unique", "AI/ML Infrastructure; Storage / High-Perf Networking", "Designing high-throughput SAN and NVMe-oF fabrics to feed data-hungry AI workloads."], ["386", "Fine-Tuning Methodologies (LoRA, QLoRA) for Domain Adaptation", "Unique", "AI/ML Infrastructure", "Applying LoRA/QLoRA techniques to fine-tune models efficiently for a specific domain."], ["446", "Advanced RAG Ingestion Pipeline Engineering (Hierarchical Chunking)", "Unique", "AI/ML Infrastructure", "Engineering RAG ingestion pipelines with hierarchical chunking for better retrieval quality."], ["501", "Distributed ML Workflow Orchestration", "Unique", "AI/ML Infrastructure", "Orchestrating distributed machine learning workflows across compute clusters."], ["502", "Real-Time AI Model Inference & Serving Optimization", "Unique", "AI/ML Infrastructure", "Optimizing real-time inference and model serving for low latency at scale."], ["503", "ML Feature Store Engineering & Data Management", "Unique", "AI/ML Infrastructure", "Building and managing feature stores that serve consistent data to ML models."], ["504", "Continuous Integration & Delivery (CI/CD) for ML Pipelines", "Unique", "AI/ML Infrastructure", "Setting up CI/CD pipelines that automate testing and deployment of ML models."], ["505", "AI/ML Observability, Monitoring & Drift Detection", "Unique", "AI/ML Infrastructure", "Monitoring AI/ML systems in production, including detecting model or data drift."], ["506", "Automated Hyperparameter Tuning & Neural Architecture Search", "Unique", "AI/ML Infrastructure", "Automating hyperparameter tuning and neural architecture search to improve models."], ["507", "High-Performance GPU Cluster Provisioning & Management", "Unique", "AI/ML Infrastructure", "Provisioning and managing high-performance GPU clusters for training and inference."], ["508", "AI/ML Workload Scheduling & Resource Allocation", "Unique", "AI/ML Infrastructure", "Scheduling AI/ML workloads and allocating compute resources efficiently."], ["509", "Distributed Training Frameworks (DeepSpeed, Megatron)", "Unique", "AI/ML Infrastructure", "Working with distributed training frameworks such as DeepSpeed and Megatron."], ["510", "Model Quantization and Compression Techniques", "Unique", "AI/ML Infrastructure", "Applying quantization and compression to shrink models without losing accuracy."], ["511", "Vector Database Architecture & Scaling (Milvus, Pinecone)", "Unique", "AI/ML Infrastructure", "Architecting and scaling vector databases such as Milvus or Pinecone."], ["512", "Multi-Cloud AI Workload Portability", "Unique", "AI/ML Infrastructure", "Making AI workloads portable across multiple cloud providers."], ["513", "Data Parallelism & Tensor Parallelism Optimization", "Unique", "AI/ML Infrastructure", "Optimizing data and tensor parallelism strategies for large-scale training."], ["514", "MLOps Pipeline Automation & CI/CD for ML", "Unique", "AI/ML Infrastructure", "Automating MLOps pipelines end-to-end, including CI/CD for ML."], ["515", "Edge AI Model Deployment & Optimization", "Unique", "AI/ML Infrastructure", "Deploying and optimizing AI models for edge devices with limited resources."], ["516", "Secure Federated Learning Infrastructure", "Unique", "AI/ML Infrastructure", "Building infrastructure for secure federated learning across distributed data."], ["517", "LLM Prompt Engineering & Context Window Management", "Unique", "AI/ML Infrastructure", "Engineering prompts and managing context windows for large language models."], ["519", "AI Model Versioning & Artifact Registry Management", "Unique", "AI/ML Infrastructure", "Managing AI model versions and artifact registries throughout their lifecycle."], ["521", "AI/ML Cost Optimization & FinOps", "Unique", "AI/ML Infrastructure", "Optimizing AI/ML spend and applying FinOps discipline to infrastructure costs."], ["522", "Real-Time Streaming Analytics for AI Inference", "Unique", "AI/ML Infrastructure", "Building real-time streaming analytics pipelines for AI inference workloads."], ["523", "Privacy-Preserving Machine Learning (Homomorphic Encryption)", "Unique", "AI/ML Infrastructure", "Applying privacy-preserving techniques such as homomorphic encryption to ML."], ["524", "Zero-Trust Security for AI Infrastructure", "Unique", "AI/ML Infrastructure", "Securing AI infrastructure using zero-trust principles."], ["525", "Synthetic Data Generation Pipeline Architecture", "Unique", "AI/ML Infrastructure", "Architecting pipelines that generate synthetic data for training and testing."], ["526", "AI Model Explainability & Interpretability Tooling", "Unique", "AI/ML Infrastructure", "Building tooling to explain and interpret AI model decisions."], ["527", "Serverless ML Inference Architecture", "Unique", "AI/ML Infrastructure", "Architecting serverless infrastructure for on-demand ML inference."], ["528", "AI/ML Disaster Recovery & High Availability Design", "Unique", "AI/ML Infrastructure", "Designing disaster recovery and high-availability strategies for AI/ML systems."], ["529", "Containerized ML Workload Orchestration (Kubernetes/Kubeflow)", "Unique", "AI/ML Infrastructure", "Orchestrating containerized ML workloads with Kubernetes and Kubeflow."], ["530", "Foundation Model Fine-Tuning Infrastructure", "Unique", "AI/ML Infrastructure", "Building infrastructure to fine-tune large foundation models."], ["531", "AI Governance, Risk, and Compliance (GRC) Frameworks", "Unique", "AI/ML Infrastructure", "Applying AI governance, risk, and compliance frameworks to ML systems."], ["532", "Automated Data Labeling & Annotation Pipelines", "Unique", "AI/ML Infrastructure", "Automating data labeling and annotation pipelines for training data."], ["533", "Graph Neural Network (GNN) Infrastructure", "Unique", "AI/ML Infrastructure", "Building infrastructure to support graph neural network workloads."], ["534", "Reinforcement Learning Environment Simulation Scaling", "Unique", "AI/ML Infrastructure", "Scaling reinforcement learning environment simulations for training agents."], ["535", "AI/ML Data Lineage & Metadata Tracking", "Unique", "AI/ML Infrastructure", "Tracking data lineage and metadata across AI/ML pipelines."], ["536", "Multi-Modal AI System Architecture", "Unique", "AI/ML Infrastructure", "Architecting systems that combine multiple modalities (text, image, audio) of AI."], ["537", "Neuromorphic Computing Infrastructure Integration", "Unique", "AI/ML Infrastructure", "Integrating neuromorphic computing hardware into AI infrastructure."], ["538", "Low-Latency Inference Caching Strategies", "Unique", "AI/ML Infrastructure", "Designing caching strategies that reduce inference latency."], ["539", "AI Model A/B Testing & Shadow Deployment", "Unique", "AI/ML Infrastructure", "Running A/B tests and shadow deployments to validate AI model changes safely."], ["540", "Hybrid Cloud AI Infrastructure Architecture", "Unique", "AI/ML Infrastructure", "Architecting hybrid cloud infrastructure for AI workloads spanning on-prem and cloud."], ["541", "Deep Learning Framework Optimization (PyTorch, TensorFlow)", "Unique", "AI/ML Infrastructure", "Optimizing deep learning frameworks such as PyTorch and TensorFlow for performance."], ["542", "AI Workload Telemetry & Distributed Tracing", "Unique", "AI/ML Infrastructure", "Instrumenting AI workloads with telemetry and distributed tracing."], ["543", "Model Drift & Data Drift Remediation Automation", "Unique", "AI/ML Infrastructure", "Automating detection and remediation of model and data drift."], ["544", "High-Bandwidth Interconnects (NVLink, InfiniBand) for AI", "Unique", "AI/ML Infrastructure", "Designing high-bandwidth interconnects like NVLink and InfiniBand for AI clusters."], ["545", "AI-Driven Infrastructure Auto-Scaling", "Unique", "AI/ML Infrastructure", "Building auto-scaling infrastructure driven by AI-based demand prediction."], ["546", "Energy-Efficient AI Data Center Design", "Unique", "AI/ML Infrastructure", "Designing energy-efficient data centers optimized for AI workloads."], ["547", "Immutable ML Infrastructure as Code (IaC)", "Unique", "AI/ML Infrastructure", "Managing ML infrastructure as immutable, version-controlled code."], ["548", "AI Agent Swarm Orchestration", "Unique", "AI/ML Infrastructure", "Orchestrating swarms of cooperating AI agents."], ["549", "Semantic Search Engine Infrastructure", "Unique", "AI/ML Infrastructure", "Building infrastructure for semantic search engines."], ["550", "Multi-Tenant AI Cluster Security Isolation", "Unique", "AI/ML Infrastructure", "Isolating tenants securely within shared AI compute clusters."], ["551", "Advanced RAG Evaluation & Benchmarking Systems", "Unique", "AI/ML Infrastructure", "Evaluating and benchmarking RAG systems for accuracy and relevance."], ["552", "AI Model Registry & Lifecycle Management", "Unique", "AI/ML Infrastructure", "Managing the registry and lifecycle of deployed AI models."], ["553", "Decentralized AI Compute Networks", "Unique", "AI/ML Infrastructure", "Designing decentralized networks of AI compute resources."], ["554", "Quantum Machine Learning Algorithm Integration", "Unique", "AI/ML Infrastructure", "Integrating quantum computing algorithms into machine learning workflows."], ["555", "Cognitive Architecture Design for Autonomous Agents", "Unique", "AI/ML Infrastructure", "Designing cognitive architectures for autonomous AI agents."]]}, "Compliance": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["12", "Regulatory & Compliance Alignment", "Unique", "Compliance / Regulatory", "Aligning IT systems and processes with applicable regulatory and compliance requirements."], ["24", "Security Audit & Pen Test Remediation", "Unique", "Compliance / Regulatory", "Remediating findings from security audits and penetration tests."], ["72", "Network Access Control Policy Auditing", "Unique", "Compliance / Regulatory; Zero Trust / IAM", "Auditing network access control policies against compliance standards."], ["85", "Cross-Border Regulatory Compliance (GDPR/Data Sovereignty)", "Unique", "Compliance / Regulatory", "Navigating cross-border regulatory requirements such as GDPR and data sovereignty rules."], ["96", "Enterprise Micro-Segmentation Auditing", "Unique", "Compliance / Regulatory; Zero Trust / IAM", "Auditing micro-segmentation controls across the enterprise network."], ["106", "Zero Trust Microsegmentation for PCI-DSS Scopes", "Unique", "Compliance / Regulatory; Zero Trust / IAM", "Applying zero-trust microsegmentation to meet PCI-DSS scope requirements."], ["118", "Network Vulnerability Posture Scoring (CIS Benchmarks)", "Unique", "Compliance / Regulatory", "Scoring network vulnerability posture using CIS benchmark standards."], ["526", "APRA CPS 234 Banking Security Framework Network Alignment", "Unique", "Compliance / Regulatory; Financial Services / BFSI", "Aligning network security architecture with APRA CPS 234 banking requirements."], ["50", "Industry Vertical Expertise: Banking & Financial Services", "Unique", "Financial Services / BFSI", "Applying deep expertise in banking and financial services as an industry vertical."]]}, "DC Cloud": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["15", "Multi-Cloud Network Integration", "Unique", "Data Center / Cloud Networking", "Integrating networking across multiple cloud providers into a coherent architecture."], ["29", "Data Center Migration Planning", "Unique", "Data Center / Cloud Networking", "Planning the migration of data center workloads to new environments."], ["81", "Cloud Native Transit Gateway Architecture", "Unique", "Data Center / Cloud Networking", "Architecting cloud-native transit gateways for scalable connectivity."], ["84", "SD-Access & Fabric Campus Deployments", "Unique", "Data Center / Cloud Networking; Wireless / Campus", "Deploying SD-Access and fabric-based campus network designs."], ["86", "High-Performance Data Center Interconnect (DCI)", "Unique", "Data Center / Cloud Networking", "Designing high-performance interconnects between data centers."], ["90", "Multi-Cloud Secure Landing Zones", "Unique", "Data Center / Cloud Networking", "Building secure landing zones for multi-cloud environments."], ["103", "Multi-Cloud Egress Optimization & ExpressRoute/Direct Connect Design", "Unique", "Data Center / Cloud Networking", "Optimizing egress traffic and designing ExpressRoute/Direct Connect links."], ["121", "Cloud Landing Zone Network Expansion Blueprints", "Unique", "Data Center / Cloud Networking", "Creating blueprints for expanding cloud landing zone networks."], ["122", "Cloud-Native Load Balancing", "Unique", "Data Center / Cloud Networking", "Designing cloud-native load balancing architectures."], ["123", "Container Networking Interface (CNI) Design", "Unique", "Data Center / Cloud Networking", "Designing container networking interfaces (CNI) for containerized workloads."], ["124", "Kubernetes Service Mesh Architecture", "Unique", "Data Center / Cloud Networking", "Architecting service mesh solutions for Kubernetes environments."], ["125", "Multi-Cloud DNS Routing", "Unique", "Data Center / Cloud Networking", "Designing DNS routing strategies across multiple clouds."], ["126", "Hybrid Cloud IPAM", "Unique", "Data Center / Cloud Networking", "Managing IP address allocation across hybrid cloud environments."], ["127", "Data Center Fabric Automation", "Unique", "Data Center / Cloud Networking", "Automating data center fabric configuration and operations."], ["128", "BGP EVPN Fabric Design", "Unique", "Data Center / Cloud Networking", "Designing BGP EVPN fabrics for data center networking."], ["129", "VXLAN Overlay Architecture", "Unique", "Data Center / Cloud Networking", "Architecting VXLAN overlay networks for scalable data center fabrics."], ["130", "Spine-Leaf Topology Scaling", "Unique", "Data Center / Cloud Networking", "Scaling spine-leaf network topologies in the data center."], ["131", "Cloud Gateway Routing", "Unique", "Data Center / Cloud Networking", "Designing routing for cloud gateway architectures."], ["132", "Serverless Network Configuration", "Unique", "Data Center / Cloud Networking", "Configuring serverless network environments."], ["133", "VPC Peering & Transit Architecture", "Unique", "Data Center / Cloud Networking", "Architecting VPC peering and transit gateway connectivity."], ["134", "Microsegmentation in the Cloud", "Unique", "Data Center / Cloud Networking", "Applying microsegmentation strategies within cloud environments."], ["135", "Cloud Network Firewall Policies", "Unique", "Data Center / Cloud Networking", "Designing firewall policies for cloud-native network environments."], ["136", "Cloud Flow Logs Analysis", "Unique", "Data Center / Cloud Networking", "Analyzing cloud flow logs to understand and troubleshoot traffic."], ["137", "Distributed Denial of Service (DDoS) Cloud Protection", "Unique", "Data Center / Cloud Networking", "Protecting cloud environments against distributed denial-of-service attacks."], ["138", "Network Function Virtualization (NFV) in DC", "Unique", "Data Center / Cloud Networking", "Implementing network function virtualization within the data center."], ["139", "Software-Defined Data Center (SDDC) Networking", "Unique", "Data Center / Cloud Networking", "Designing software-defined data center (SDDC) networking architectures."], ["140", "Cloud Network Performance Monitoring", "Unique", "Data Center / Cloud Networking", "Monitoring performance of cloud network infrastructure."], ["141", "Anycast Routing for Cloud Services", "Unique", "Data Center / Cloud Networking", "Designing anycast routing for resilient cloud service delivery."], ["142", "Cloud Edge Networking", "Unique", "Data Center / Cloud Networking", "Architecting networking at the cloud edge."], ["143", "Data Center Interconnect (DCI) Encryption", "Unique", "Data Center / Cloud Networking", "Encrypting data center interconnect links for secure transport."], ["144", "MACsec over WAN", "Unique", "Data Center / Cloud Networking", "Deploying MACsec encryption over wide-area network links."], ["145", "Cloud Traffic Mirroring", "Unique", "Data Center / Cloud Networking", "Mirroring cloud traffic for analysis and troubleshooting."], ["146", "Zero Trust Network Access (ZTNA) in Cloud", "Unique", "Data Center / Cloud Networking", "Deploying zero-trust network access (ZTNA) within cloud environments."], ["147", "Global Server Load Balancing (GSLB)", "Unique", "Data Center / Cloud Networking", "Architecting global server load balancing (GSLB) across regions."], ["148", "Cloud Route Table Management", "Unique", "Data Center / Cloud Networking", "Managing cloud route tables and traffic paths."], ["149", "Network Automation via Terraform/Ansible", "Unique", "Data Center / Cloud Networking", "Automating network configuration using Terraform and Ansible."], ["150", "Infrastructure as Code (IaC) Networking", "Unique", "Data Center / Cloud Networking", "Managing network infrastructure as code (IaC)."], ["151", "Cloud Network Cost Optimization", "Unique", "Data Center / Cloud Networking", "Optimizing cloud networking costs."], ["152", "API Gateway Network Design", "Unique", "Data Center / Cloud Networking", "Designing API gateway network architectures."], ["153", "Cloud Provider Backbone Routing", "Unique", "Data Center / Cloud Networking", "Understanding and optimizing routing across cloud provider backbones."], ["154", "Data Center QoS and Traffic Engineering", "Unique", "Data Center / Cloud Networking", "Engineering QoS and traffic engineering policies in the data center."], ["155", "RoCE (RDMA over Converged Ethernet)", "Unique", "Data Center / Cloud Networking", "Implementing RDMA over Converged Ethernet (RoCE) for low-latency transport."], ["156", "Storage Area Network (SAN) Extension", "Unique", "Data Center / Cloud Networking", "Extending storage area networks (SAN) across sites."], ["157", "Cloud VPN & IPsec Tunneling", "Unique", "Data Center / Cloud Networking", "Configuring cloud VPN and IPsec tunnels for secure connectivity."], ["158", "Multi-Region Cloud Network Failover", "Unique", "Data Center / Cloud Networking", "Designing multi-region failover strategies for cloud networks."], ["159", "IPv6 Migration in Data Centers", "Unique", "Data Center / Cloud Networking", "Migrating data center networks to IPv6."], ["160", "Cloud Network Compliance Auditing", "Unique", "Data Center / Cloud Networking", "Auditing cloud networks for compliance with policy and regulation."], ["161", "Data Center Power & Cooling Network Impacts", "Unique", "Data Center / Cloud Networking", "Assessing how power and cooling systems affect data center networking."], ["162", "Bare Metal Cloud Networking", "Unique", "Data Center / Cloud Networking", "Designing networking for bare metal cloud environments."], ["163", "Colocation Facility Network Integration", "Unique", "Data Center / Cloud Networking", "Integrating colocation facility networks with enterprise infrastructure."], ["164", "Cloud-Native Network Telemetry", "Unique", "Data Center / Cloud Networking", "Implementing cloud-native network telemetry for visibility."], ["165", "Intent-Based Networking (IBN)", "Unique", "Data Center / Cloud Networking", "Applying intent-based networking (IBN) principles to automate network state."], ["166", "Data Center Rack Scale Architecture", "Unique", "Data Center / Cloud Networking", "Architecting rack-scale designs for data center infrastructure."], ["167", "Cloud Network Incident Response", "Unique", "Data Center / Cloud Networking", "Responding to and resolving incidents affecting cloud networks."], ["168", "Virtual Switch (vSwitch) Optimization", "Unique", "Data Center / Cloud Networking", "Optimizing virtual switch (vSwitch) performance."], ["169", "Cloud Overlay Network Troubleshooting", "Unique", "Data Center / Cloud Networking", "Troubleshooting issues within cloud overlay networks."], ["170", "Data Center Network Time Protocol (NTP) Sync", "Unique", "Data Center / Cloud Networking", "Synchronizing data center network time using NTP."], ["171", "Cloud Network Capacity Planning", "Unique", "Data Center / Cloud Networking", "Planning capacity for growth in cloud network infrastructure."]]}, "OT": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["51", "Industry Vertical Expertise: Automotive/Manufacturing", "Unique", "OT / Industrial", "Applying deep expertise in the automotive and manufacturing industry vertical."], ["78", "OT Security Framework Isolation (Purdue Model)", "Unique", "OT / Industrial", "Isolating OT security zones using the Purdue Model framework."], ["111", "High-Density Wi-Fi 6E/7 Design for IoT & Smart Factories", "Unique", "OT / Industrial; Wireless / Campus", "Designing high-density Wi-Fi 6E/7 networks for IoT and smart factory environments."], ["112", "OT/IT Cyber-Physical Systems Risk Assessments", "Unique", "OT / Industrial", "Assessing cyber-physical systems risk across converged OT/IT environments."]]}, "Quantum": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["116", "Centralized Key Management & MACsec Layer-2 Encryption", "Unique", "Post-Quantum Crypto / Quantum", "Managing encryption keys centrally and applying MACsec Layer-2 encryption."], ["316", "Post-Quantum Cryptography (PQC) Handshake Readiness", "Unique", "Post-Quantum Crypto / Quantum", "Preparing network handshakes for post-quantum cryptography (PQC) readiness."]]}, "DNS  IPAM  DDoS  BGP": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["43", "DDoS Mitigation Architecture", "Unique", "DNS / IPAM / DDoS / BGP", "Architecting mitigation strategies to defend against DDoS attacks."], ["77", "DNS Security & IPAM Automation", "Unique", "DNS / IPAM / DDoS / BGP; Network Automation / NetDevOps", "Automating DNS security and IP address management (IPAM)."], ["79", "BGP Traffic Engineering & Anycast Routing", "Unique", "DNS / IPAM / DDoS / BGP; Load Balancing / App Delivery", "Engineering BGP traffic and anycast routing for performance and resilience."], ["107", "Service Provider BGP Peer Mitigation & Blackholing", "Unique", "DNS / IPAM / DDoS / BGP", "Mitigating and blackholing malicious traffic at the service provider BGP peer level."], ["108", "Carrier-Grade NAT (CGNAT) Configuration & Architecture", "Unique", "DNS / IPAM / DDoS / BGP", "Configuring carrier-grade NAT (CGNAT) architecture for service providers."], ["117", "Hyperscale Load Balancing with Anycast & F5 BIG-IP DNS", "Unique", "DNS / IPAM / DDoS / BGP; Data Center / Cloud Networking; Load Balancing / App Delivery", "Designing hyperscale load balancing using anycast and F5 BIG-IP DNS."]]}, "Zero Trust": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["9", "Zero Trust / NAC Architecture", "Unique", "Zero Trust / IAM", "Architecting zero-trust and network access control (NAC) solutions."], ["26", "Network Segmentation & Micro-Segmentation Strategy", "Unique", "Zero Trust / IAM", "Designing network segmentation and micro-segmentation strategy."], ["75", "Zero Trust Network Access (ZTNA) Deployment", "Unique", "Zero Trust / IAM", "Deploying zero-trust network access (ZTNA) solutions."], ["95", "Identity & Access Management (IAM) Network Integration", "Unique", "Zero Trust / IAM", "Integrating identity and access management (IAM) with network infrastructure."]]}, "Firewall": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["8", "Firewall Policy Optimization & Rule Governance", "Unique", "Firewall / Perimeter Security", "Optimizing firewall policies and governing rule sets for clarity and safety."], ["80", "Web Application Firewall (WAF) Policy Tuning", "Unique", "Firewall / Perimeter Security", "Tuning web application firewall (WAF) policies to reduce false positives."], ["91", "Stateful Firewall Clustering & Load Balancing", "Unique", "Firewall / Perimeter Security; Load Balancing / App Delivery", "Clustering stateful firewalls for high availability and load balancing."], ["120", "Cloud-Native Web Application Firewall (WAF) Rule Rationalization", "Unique", "Firewall / Perimeter Security", "Rationalizing WAF rules for cloud-native application environments."], ["17", "Load Balancer & Application Delivery Design", "Unique", "Load Balancing / App Delivery", "Designing load balancer and application delivery architectures."]]}, "Network": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["13", "Automation & Operational Efficiency", "Unique", "Network Automation / NetDevOps", "Improving operational efficiency through network automation."], ["41", "Network Monitoring & Observability Tooling", "Unique", "Observability / Telemetry / SOC", "Deploying tooling for network monitoring and observability."], ["42", "SIEM Integration & Security Operations Alignment", "Unique", "Observability / Telemetry / SOC", "Integrating SIEM platforms to align network and security operations."], ["47", "Network Automation with Ansible/Python", "Unique", "Network Automation / NetDevOps", "Automating network configuration using Ansible and Python."], ["76", "Infrastructure as Code (IaC) for Security Gateways", "Unique", "Network Automation / NetDevOps", "Managing security gateway configuration as infrastructure as code (IaC)."], ["82", "Network Telemetry & Streamed Analytics", "Unique", "Observability / Telemetry / SOC", "Streaming network telemetry for real-time analytics."], ["83", "SOAR Integration for Network Defense", "Unique", "Observability / Telemetry / SOC", "Integrating SOAR platforms to automate network defense response."], ["98", "Zero-Touch Provisioning (ZTP) Infrastructure", "Unique", "Network Automation / NetDevOps", "Building zero-touch provisioning (ZTP) infrastructure for device rollout."], ["109", "Network Automation Frameworks via Netmiko/Nornir", "Unique", "Network Automation / NetDevOps", "Building network automation frameworks using Netmiko and Nornir."], ["110", "CI/CD Pipeline Integration for Network Changes (GitLab/GitHub Actions)", "Unique", "Network Automation / NetDevOps", "Integrating CI/CD pipelines for network change management."], ["115", "Network Observability via eBPF Kernel Telemetry", "Unique", "Observability / Telemetry / SOC", "Implementing network observability using eBPF kernel telemetry."], ["336", "Low-Overhead Kernel Telemetry Ingestion via eBPF Flow Profiling", "Unique", "Observability / Telemetry / SOC", "Ingesting low-overhead kernel telemetry via eBPF flow profiling."]]}, "SD-WAN": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["25", "SD-WAN Architecture & Design", "Unique", "SASE / SD-WAN", "Architecting and designing SD-WAN solutions."], ["28", "SASE Solution Design", "Unique", "SASE / SD-WAN", "Designing SASE (Secure Access Service Edge) solutions."], ["101", "SD-WAN Multi-Transport Traffic Steering", "Unique", "SASE / SD-WAN", "Steering traffic across multiple transports in an SD-WAN deployment."], ["102", "SASE Threat Prevention Profile Tuning", "Unique", "SASE / SD-WAN", "Tuning SASE threat prevention profiles."], ["122", "Legacy MPLS-to-SDWAN Dual-Production Coexistence Strategies", "Unique", "SASE / SD-WAN", "Managing coexistence strategies during legacy MPLS-to-SD-WAN migrations."]]}, "Storage": {"header": ["Skill Sequential ID", "Core Competency Area", "Kind", "Matched Domain(s)", "Description"], "rows": [["34", "Change Management & CAB Process Leadership", "Unique", "Storage / High-Perf Networking", "Leading change management and CAB (Change Advisory Board) processes."], ["326", "Lossless RDMA over Converged Ethernet (RoCEv2) Cluster Engineering", "Unique", "Storage / High-Perf Networking", "Engineering lossless RDMA over Converged Ethernet (RoCEv2) clusters."]]}};
+
+const sheetNames = Object.keys(DATA);
+let activeSheet = "ALL";
+let query = "";
+
+function totalRows() {
+  return sheetNames.reduce((sum, s) => sum + DATA[s].rows.length, 0);
+}
+
+function renderStats() {
+  const statsEl = document.getElementById('stats');
+  statsEl.innerHTML = `
+    <div class="stat"><b>${totalRows()}</b> total skills</div>
+    <div class="stat"><b>${sheetNames.length}</b> competency areas</div>
+  `;
+}
+
+function renderTabs() {
+  const tabsEl = document.getElementById('tabs');
+  let html = `<div class="tab ${activeSheet==='ALL'?'active':''}" data-sheet="ALL">All <span class="count">${totalRows()}</span></div>`;
+  for (const name of sheetNames) {
+    html += `<div class="tab ${activeSheet===name?'active':''}" data-sheet="${escapeAttr(name)}">${escapeHtml(name.trim())} <span class="count">${DATA[name].rows.length}</span></div>`;
+  }
+  tabsEl.innerHTML = html;
+  tabsEl.querySelectorAll('.tab').forEach(el => {
+    el.addEventListener('click', () => {
+      activeSheet = el.getAttribute('data-sheet');
+      renderTabs();
+      renderTable();
+    });
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+function highlight(text, q) {
+  if (!q) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const escapedQ = escapeHtml(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try {
+    const re = new RegExp('(' + escapedQ + ')', 'ig');
+    return escaped.replace(re, '<mark>$1</mark>');
+  } catch(e) { return escaped; }
+}
+
+function renderTable() {
+  const mainEl = document.getElementById('main');
+  const q = query.trim().toLowerCase();
+  const sheetsToShow = activeSheet === 'ALL' ? sheetNames : [activeSheet];
+
+  let out = '';
+  for (const sheetName of sheetsToShow) {
+    const sheet = DATA[sheetName];
+    const rows = sheet.rows.filter(row => {
+      if (!q) return true;
+      return row.some(cell => String(cell).toLowerCase().includes(q));
+    });
+    if (rows.length === 0) continue;
+
+    out += `<h2 class="sheet-title">${escapeHtml(sheetName.trim())} <span>(${rows.length} skill${rows.length===1?'':'s'})</span></h2>`;
+    out += `<table><thead><tr>
+      <th style="width:80px">ID</th>
+      <th style="width:22%">Competency Area</th>
+      <th>Description</th>
+      <th style="width:90px">Kind</th>
+      <th style="width:18%">Matched Domain(s)</th>
+    </tr></thead><tbody>`;
+
+    for (const row of rows) {
+      const [id, area, kind, domains, description] = row;
+      const domainTags = String(domains).split(';').map(d => d.trim()).filter(Boolean)
+        .map(d => `<span class="domain-tag">${highlight(d, q)}</span>`).join('');
+      out += `<tr>
+        <td class="id-cell">${highlight(id, q)}</td>
+        <td>${highlight(area, q)}</td>
+        <td class="desc-cell">${highlight(description || '', q)}</td>
+        <td><span class="kind-badge">${escapeHtml(kind)}</span></td>
+        <td><div class="domain-tags">${domainTags}</div></td>
+      </tr>`;
+    }
+    out += `</tbody></table><div style="height:28px"></div>`;
+  }
+
+  if (!out) {
+    out = `<div class="empty">No skills match "${escapeHtml(query)}"</div>`;
+  }
+  mainEl.innerHTML = out;
+}
+
+document.getElementById('search').addEventListener('input', (e) => {
+  query = e.target.value;
+  renderTable();
+});
+
+document.getElementById('explainerToggle').addEventListener('click', () => {
+  document.getElementById('explainer').classList.toggle('open');
+});
+
+renderStats();
+renderTabs();
+renderTable();
+</script>
+
+</body>
+</html>
