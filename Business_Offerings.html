@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OMNIVEX / NexTier — AI-Native Security & Advisory for BFSI and Defense</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05080a;
+    --void-2:#0a1014;
+    --panel:#0d1418;
+    --gold:#C9A84C;
+    --gold-soft:#e8c97a;
+    --cyan:#00D4FF;
+    --cyan-soft:#3fd7e0;
+    --text:#d9e2e4;
+    --text-dim:#7c8a8d;
+    --line:rgba(201,168,76,0.2);
+    --line-cyan:rgba(0,212,255,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Share Tech Mono', monospace;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+    z-index:200;
+  }
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{font-size:11px; letter-spacing:5px; color:var(--cyan-soft); text-transform:uppercase;}
+  h1,h2,h3,h4{font-family:'Orbitron', sans-serif;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 40px;}
+  section{position:relative;}
+  ::selection{background:var(--gold); color:var(--void);}
+
+  /* ---------------- NAV ---------------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(5,8,10,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:70px; padding-left:40px; padding-right:40px;}
+  .logo{font-family:'Orbitron',sans-serif; font-weight:900; font-size:18px; letter-spacing:2px; color:var(--gold-soft);}
+  .logo span{color:var(--cyan);}
+  .nav-links{display:flex; gap:34px; font-size:12px; letter-spacing:1.5px; color:var(--text-dim);}
+  .nav-links a:hover{color:var(--cyan-soft);}
+  .nav-cta{
+    font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:1.5px;
+    border:1px solid var(--gold); color:var(--gold-soft);
+    padding:9px 18px; transition:all .15s;
+  }
+  .nav-cta:hover{background:var(--gold); color:var(--void);}
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding-top:70px;
+    background:
+      radial-gradient(ellipse 1000px 550px at 10% -10%, rgba(0,212,255,0.09), transparent 60%),
+      radial-gradient(ellipse 1000px 650px at 100% 110%, rgba(201,168,76,0.09), transparent 60%),
+      var(--void);
+  }
+  .hero .wrap{display:grid; grid-template-columns:1.15fr 0.85fr; gap:60px; align-items:center; padding-top:60px; padding-bottom:60px;}
+  .hero h1{
+    font-size:clamp(34px,4.4vw,58px);
+    font-weight:900;
+    line-height:1.18;
+    color:var(--text);
+    letter-spacing:0.5px;
+    margin-top:18px;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold-soft); text-shadow:0 0 24px rgba(201,168,76,0.3);}
+  .hero .sub{
+    font-size:15px; color:var(--text-dim); line-height:1.7;
+    max-width:520px; margin-top:22px;
+  }
+  .hero .ctas{display:flex; gap:16px; margin-top:34px;}
+  .btn-primary{
+    font-family:'Orbitron',sans-serif; font-size:12px; letter-spacing:1.5px;
+    background:var(--gold); color:var(--void); padding:14px 26px;
+    border:1px solid var(--gold); transition:all .15s;
+  }
+  .btn-primary:hover{background:transparent; color:var(--gold-soft);}
+  .btn-ghost{
+    font-family:'Orbitron',sans-serif; font-size:12px; letter-spacing:1.5px;
+    background:transparent; color:var(--cyan-soft); padding:14px 26px;
+    border:1px solid var(--line-cyan); transition:all .15s;
+  }
+  .btn-ghost:hover{border-color:var(--cyan); background:rgba(0,212,255,0.06);}
+
+  /* hero signature: live scan panel */
+  .scan-panel{
+    border:1px solid var(--line);
+    background:var(--void-2);
+    position:relative;
+    padding:0;
+    height:400px;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .scan-panel::before, .scan-panel::after{content:"";position:absolute;width:16px;height:16px;border:1px solid var(--gold);}
+  .scan-panel::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+  .scan-panel::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+  .scan-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 18px; border-bottom:1px solid var(--line);
+    font-size:10.5px; letter-spacing:1.5px; color:var(--text-dim);
+  }
+  .scan-head .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan); display:inline-block; margin-right:6px; animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .scan-log{flex:1; padding:16px 18px; font-size:11.5px; line-height:2; color:var(--cyan-soft); overflow:hidden;}
+  .scan-log .row{display:flex; justify-content:space-between; opacity:0; animation:fadein .4s forwards;}
+  .scan-log .row .name{color:var(--text);}
+  .scan-log .row .status{color:var(--gold-soft); font-size:10px; letter-spacing:1px;}
+  @keyframes fadein{to{opacity:1;}}
+  .scan-foot{
+    border-top:1px solid var(--line); padding:12px 18px;
+    display:flex; justify-content:space-between; font-size:10px; letter-spacing:1px; color:var(--text-dim);
+  }
+  .scan-foot b{color:var(--gold-soft);}
+
+  /* ---------------- TICKER ---------------- */
+  .ticker-strip{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--panel);
+    padding:16px 0;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ticker-strip .label{
+    display:inline-block; font-size:10.5px; letter-spacing:2px; color:var(--text-dim);
+    padding:0 40px 0 40px; vertical-align:middle;
+  }
+  .ticker-track{display:inline-flex; gap:0; animation:scroll 38s linear infinite; vertical-align:middle;}
+  .ticker-track span{
+    font-size:12px; color:var(--cyan-soft); padding:0 26px; border-right:1px solid var(--line);
+    letter-spacing:0.5px;
+  }
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* ---------------- SECTION HEADERS ---------------- */
+  .sec{padding:110px 0;}
+  .sec-head{max-width:640px; margin-bottom:56px;}
+  .sec-head h2{font-size:clamp(26px,3vw,38px); color:var(--gold-soft); letter-spacing:0.5px; margin-top:14px; line-height:1.25;}
+  .sec-head p{font-size:14px; color:var(--text-dim); line-height:1.7; margin-top:16px;}
+
+  /* ---------------- ENGINES ---------------- */
+  .engines{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .engine-card{
+    border:1px solid var(--line); background:linear-gradient(180deg, rgba(0,212,255,0.03), transparent 60%);
+    padding:36px 34px; transition:border-color .2s;
+  }
+  .engine-card:hover{border-color:var(--cyan);}
+  .engine-card .tag{font-family:'Orbitron',sans-serif; font-size:10.5px; letter-spacing:2px; color:var(--void); background:var(--gold); display:inline-block; padding:4px 11px; margin-bottom:16px;}
+  .engine-card h3{font-size:22px; color:var(--gold-soft); letter-spacing:0.5px; margin-bottom:12px;}
+  .engine-card p{font-size:13.5px; color:var(--text-dim); line-height:1.75;}
+  .engine-card ul{margin-top:18px; list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .engine-card li{font-size:13px; color:var(--cyan-soft); padding-left:18px; position:relative;}
+  .engine-card li::before{content:"›"; position:absolute; left:0; color:var(--gold);}
+
+  /* ---------------- MARKET FOCUS ---------------- */
+  .focus-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .focus-card{border:1px solid var(--line); padding:30px 20px; text-align:center;}
+  .focus-card .code{font-size:26px; color:var(--cyan); text-shadow:0 0 14px rgba(0,212,255,0.4);}
+  .focus-card .label{font-size:11.5px; color:var(--text-dim); letter-spacing:1px; margin-top:10px;}
+
+  /* ---------------- COVERAGE ---------------- */
+  .cov-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .cov-card{border:1px solid var(--line); padding:24px 22px; background:var(--void-2);}
+  .cov-card .count{font-size:28px; color:var(--gold-soft); font-family:'Orbitron',sans-serif;}
+  .cov-card h4{font-size:12.5px; letter-spacing:1px; color:var(--cyan-soft); margin-top:8px; margin-bottom:8px;}
+  .cov-card p{font-size:11.5px; color:var(--text-dim); line-height:1.6;}
+
+  /* ---------------- WHY US ---------------- */
+  .diff-grid{display:grid; grid-template-columns:1fr 1fr; gap:34px 50px;}
+  .diff{border-top:1px solid var(--line); padding-top:18px;}
+  .diff .idx{font-family:'Orbitron',sans-serif; font-size:11px; color:var(--gold); letter-spacing:2px;}
+  .diff h4{font-size:16px; color:var(--text); margin:10px 0 8px; font-weight:500; letter-spacing:0.3px;}
+  .diff p{font-size:13px; color:var(--text-dim); line-height:1.7;}
+
+  /* ---------------- CTA ---------------- */
+  .cta-band{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 700px 300px at 50% 0%, rgba(201,168,76,0.08), transparent 60%),
+      var(--panel);
+    padding:90px 0; text-align:center;
+  }
+  .cta-band h2{font-size:clamp(26px,3.4vw,42px); color:var(--gold-soft); line-height:1.3;}
+  .cta-band p{font-size:14px; color:var(--text-dim); margin:18px auto 34px; max-width:520px; line-height:1.7;}
+  .cta-band .ctas{display:flex; gap:16px; justify-content:center;}
+
+  /* ---------------- FOOTER ---------------- */
+  footer{padding:50px 0 40px;}
+  footer .wrap{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:24px;}
+  .foot-brand{font-family:'Orbitron',sans-serif; font-weight:900; font-size:16px; color:var(--gold-soft); letter-spacing:2px;}
+  .foot-brand span{color:var(--cyan);}
+  .foot-meta{font-size:11px; color:var(--text-dim); letter-spacing:1px; line-height:2;}
+  .foot-meta b{color:var(--cyan-soft); font-weight:normal;}
+
+  @media (max-width:880px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .engines,.focus-grid,.cov-grid,.diff-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .wrap{padding:0 22px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">OMNIVEX<span>/</span>NEXTIER</div>
+    <div class="nav-links">
+      <a href="#engines">Product & Services</a>
+      <a href="#focus">Market Focus</a>
+      <a href="#coverage">Coverage</a>
+      <a href="#why">Why Us</a>
+    </div>
+    <a class="nav-cta" href="#contact">BOOK A BRIEFING</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">AI-Native Security · Global Advisory</div>
+      <h1>Secure and modernize infrastructure that <em>can't afford blind spots.</em></h1>
+      <div class="sub">OMNIVEX Advisory builds the platform. NexTier Global Advisory delivers it. One partner for BFSI and Defense clients across India, the GCC, and Asia-Pacific — kernel-level enforcement backed by a 50-practice-area advisory bench.</div>
+      <div class="ctas">
+        <a class="btn-primary" href="#contact">BOOK A BRIEFING</a>
+        <a class="btn-ghost" href="#engines">SEE THE PLATFORM ›</a>
+      </div>
+    </div>
+    <div class="scan-panel">
+      <div class="scan-head"><span><span class="dot"></span>LIVE COVERAGE SCAN</span><span>CRYSTAL AI-IPS</span></div>
+      <div class="scan-log" id="scanLog"></div>
+      <div class="scan-foot"><span>68 categories mapped</span><span><b>108</b> vendors tracked</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-strip">
+  <span class="label">FLUENT ACROSS</span>
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<section class="sec" id="engines">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The Offering</div>
+      <h2>Two engines, one mandate.</h2>
+      <p>A platform that enforces, and a practice that delivers — built to work together or stand alone.</p>
+    </div>
+    <div class="engines">
+      <div class="engine-card">
+        <span class="tag">PRODUCT</span>
+        <h3>OMNIVEX Advisory</h3>
+        <p>AI-native cybersecurity platform for enterprises that can't afford blind spots — kernel-level enforcement, threat intelligence, and cognitive automation in one stack.</p>
+        <ul>
+          <li>CRYSTAL AI-IPS — eBPF/XDP intrusion prevention</li>
+          <li>PANDA — network threat intelligence dashboard</li>
+          <li>DigiCognitive — AI reasoning & automation layer</li>
+        </ul>
+      </div>
+      <div class="engine-card">
+        <span class="tag">SERVICES</span>
+        <h3>NexTier Global Advisory</h3>
+        <p>Services-led consulting practice covering the full transformation lifecycle — from network security architecture to cloud FinOps and GSI partnership strategy.</p>
+        <ul>
+          <li>50 practice areas / 250 service lines</li>
+          <li>NGFW, F5, Zscaler & Tufin architecture</li>
+          <li>FinOps, cloud cost & margin recovery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="focus" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Where We Play</div>
+      <h2>Sector and regional focus, by design.</h2>
+      <p>Concentration over sprawl — depth in the sectors where clearance, uptime, and regulatory fluency matter most.</p>
+    </div>
+    <div class="focus-grid">
+      <div class="focus-card"><div class="code">BFSI</div><div class="label">Banking, Financial Services & Insurance</div></div>
+      <div class="focus-card"><div class="code">DEF</div><div class="label">Defense & Government</div></div>
+      <div class="focus-card"><div class="code">GCC</div><div class="label">Gulf Cooperation Council</div></div>
+      <div class="focus-card"><div class="code">APAC</div><div class="label">Asia-Pacific</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="coverage">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Positioning Map</div>
+      <h2>Full-spectrum coverage, mapped and named.</h2>
+      <p>68 market-positioning categories and 108 reference vendors, organized so a client can see exactly where we sit.</p>
+    </div>
+    <div class="cov-grid">
+      <div class="cov-card"><div class="count">15</div><h4>STRATEGY & CONSULTING</h4><p>IT services consulting, digital transformation strategy, global advisory.</p></div>
+      <div class="cov-card"><div class="count">9</div><h4>CLOUD, DATA & AI</h4><p>Hybrid cloud, cognitive IT services, data & AI consulting.</p></div>
+      <div class="cov-card"><div class="count">3</div><h4>CYBERSECURITY & DEFENSE</h4><p>Cybersecurity solutions, defense & intelligence IT.</p></div>
+      <div class="cov-card"><div class="count">22</div><h4>DIGITAL ENGINEERING & SOFTWARE</h4><p>Custom development, platform engineering, system integration.</p></div>
+      <div class="cov-card"><div class="count">11</div><h4>IT INFRASTRUCTURE & MANAGED SERVICES</h4><p>Enterprise IT, network technologies, managed support.</p></div>
+      <div class="cov-card"><div class="count">8</div><h4>SPECIALIZED VERTICALS</h4><p>SAP, AV/IT, logistics automation, B2B tech marketing.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="why" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why Us</div>
+      <h2>Platform depth, delivery credibility.</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff"><div class="idx">01</div><h4>UK DV-cleared founder</h4><p>Rare clearance depth for defense and regulated BFSI engagements across UK, GCC, and India.</p></div>
+      <div class="diff"><div class="idx">02</div><h4>19+ years enterprise delivery</h4><p>Flagship engagements spanning Westpac, Daimler, Kotak Life, Telstra, and College of American Pathologists.</p></div>
+      <div class="diff"><div class="idx">03</div><h4>Product and services, not one or the other</h4><p>CRYSTAL AI-IPS and DigiCognitive give the advisory practice something most consultancies lack: shippable IP.</p></div>
+      <div class="diff"><div class="idx">04</div><h4>Multi-vendor fluency</h4><p>Deep, hands-on experience across Cisco, Palo Alto, Check Point, Fortinet, F5, Zscaler, and Tufin.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="contact">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center; display:flex;">Let's Talk</div>
+    <h2>Ready to scope the first engagement.</h2>
+    <p>Whether it's a CRYSTAL AI-IPS pilot, a NexTier advisory sprint, or a GSI partnership conversation — this is the starting point.</p>
+    <div class="ctas">
+      <a class="btn-primary" href="mailto:hello@omnivex.example">BOOK A BRIEFING</a>
+      <a class="btn-ghost" href="#engines">EXPLORE THE PLATFORM ›</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">OMNIVEX<span>/</span>NEXTIER</div>
+    <div class="foot-meta">
+      <div><b>Founder</b> — Arvind Pardeshi (Jin3)</div>
+      <div><b>Base</b> — Mumbai, India</div>
+      <div><b>Focus</b> — BFSI · Defense · GCC · APAC</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // hero live-scan log
+  const items = [
+    ["AWS GovCloud","VERIFIED"],["Palo Alto Networks","MAPPED"],["SAP / Oracle","MAPPED"],
+    ["Cisco Systems","VERIFIED"],["OpenAI / Anthropic","MAPPED"],["CrowdStrike / SentinelOne","VERIFIED"],
+    ["Saudi Aramco","MAPPED"],["ServiceNow","VERIFIED"],["Microsoft Azure","MAPPED"],
+    ["NVIDIA HGX","VERIFIED"],["F5 / Cloudflare","MAPPED"],["Zscaler","VERIFIED"]
+  ];
+  const log = document.getElementById('scanLog');
+  let i = 0;
+  function addRow(){
+    if(log.children.length > 6) log.removeChild(log.firstChild);
+    const [name, status] = items[i % items.length];
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="name">${name}</span><span class="status">${status}</span>`;
+    log.appendChild(row);
+    i++;
+  }
+  for(let k=0;k<6;k++) setTimeout(addRow, k*180);
+  setInterval(addRow, 1600);
+
+  // ticker
+  const vendors = ["AWS","Microsoft Azure","Google Cloud","SAP","Oracle","Cisco Systems","Palo Alto Networks",
+    "CrowdStrike","NVIDIA","OpenAI / Anthropic","Palantir","ServiceNow","F5 / Cloudflare","Zscaler",
+    "Saudi Aramco","Siemens","HashiCorp","VMware","Ericsson","Honeywell"];
+  const track = document.getElementById('tickerTrack');
+  const doubled = [...vendors, ...vendors];
+  track.innerHTML = doubled.map(v => `<span>${v}</span>`).join('');
+</script>
+
+</body>
+</html>
