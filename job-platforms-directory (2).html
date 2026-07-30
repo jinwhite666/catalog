@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Platform Intelligence Directory — NexTier / OMNIVEX</title>
+<style>
+  :root{
+    --void:#05070a;
+    --void-2:#0a0e14;
+    --panel:#0d1117;
+    --panel-2:#111721;
+    --border:#1c2530;
+    --gold:#C9A84C;
+    --gold-dim:#8a7439;
+    --cyan:#00D4FF;
+    --cyan-dim:#0a4a5c;
+    --text:#dfe6ee;
+    --text-dim:#8b97a8;
+    --danger:#ff4d6d;
+    --good:#3ddc97;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, rgba(0,212,255,0.06), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(201,168,76,0.06), transparent 40%),
+      var(--void);
+    color:var(--text);
+    font-family:'Share Tech Mono', 'Courier New', monospace;
+    line-height:1.5;
+    padding-bottom:80px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap');
+  h1,h2,h3,.brand{font-family:'Orbitron',sans-serif;}
+
+  header{
+    padding:56px 6vw 40px;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, rgba(0,212,255,0.04), transparent);
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(0,212,255,0.035) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,212,255,0.035) 1px, transparent 1px);
+    background-size:36px 36px;
+    pointer-events:none;
+  }
+  .eyebrow{
+    color:var(--cyan); letter-spacing:4px; font-size:11px; text-transform:uppercase;
+    margin-bottom:14px; position:relative;
+  }
+  h1{
+    font-size:clamp(28px,4vw,46px); font-weight:900; color:var(--text);
+    letter-spacing:1px; position:relative;
+  }
+  h1 span{color:var(--gold);}
+  .sub{
+    color:var(--text-dim); max-width:760px; margin-top:16px; font-size:14px; position:relative;
+  }
+  .meta-row{
+    display:flex; gap:28px; margin-top:28px; flex-wrap:wrap; position:relative;
+  }
+  .meta-chip{
+    border:1px solid var(--border); background:var(--panel);
+    padding:10px 18px; font-size:11px; color:var(--text-dim); letter-spacing:1px;
+    border-left:2px solid var(--gold);
+  }
+  .meta-chip b{color:var(--cyan); display:block; font-size:16px; font-family:'Orbitron',sans-serif; margin-top:2px;}
+
+  nav.toc{
+    display:flex; flex-wrap:wrap; gap:10px;
+    padding:20px 6vw; border-bottom:1px solid var(--border);
+    background:var(--void-2); position:sticky; top:0; z-index:20;
+    backdrop-filter:blur(6px);
+  }
+  nav.toc a{
+    color:var(--text-dim); text-decoration:none; font-size:11px; letter-spacing:0.5px;
+    border:1px solid var(--border); padding:8px 14px; transition:all .2s;
+    text-transform:uppercase;
+  }
+  nav.toc a:hover{color:var(--void); background:var(--cyan); border-color:var(--cyan);}
+
+  main{padding:0 6vw;}
+  section.category{
+    padding:48px 0 20px; border-bottom:1px solid var(--border);
+  }
+  .cat-head{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    margin-bottom:6px;
+  }
+  .cat-num{color:var(--gold); font-size:12px; letter-spacing:3px;}
+  .cat-title{font-size:24px; color:var(--text); margin:6px 0 4px;}
+  .cat-desc{color:var(--text-dim); font-size:13px; max-width:800px; margin-bottom:26px;}
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--border);
+    padding:20px; position:relative; transition:border-color .2s, transform .2s;
+  }
+  .card:hover{border-color:var(--cyan); transform:translateY(-2px);}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .card-name{font-family:'Orbitron',sans-serif; font-size:15px; color:var(--text); font-weight:700;}
+  .card-name a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--gold-dim);}
+  .card-name a:hover{color:var(--cyan); border-color:var(--cyan);}
+  .rank{
+    font-size:10px; color:var(--void); background:var(--gold);
+    padding:2px 7px; letter-spacing:1px; white-space:nowrap; font-family:'Orbitron',sans-serif;
+  }
+  .card-desc{color:var(--text-dim); font-size:12.5px; margin:10px 0 14px; line-height:1.6;}
+  .tags{display:flex; flex-wrap:wrap; gap:6px;}
+  .tag{
+    font-size:9.5px; letter-spacing:0.5px; text-transform:uppercase;
+    padding:3px 8px; border:1px solid var(--cyan-dim); color:var(--cyan);
+    background:rgba(0,212,255,0.05);
+  }
+  .tag.gold{border-color:var(--gold-dim); color:var(--gold); background:rgba(201,168,76,0.06);}
+  .tag.fit{border-color:var(--good); color:var(--good); background:rgba(61,220,151,0.06);}
+
+  .fit-note{
+    margin-top:12px; padding-top:12px; border-top:1px dashed var(--border);
+    font-size:11.5px; color:var(--text-dim);
+  }
+  .fit-note b{color:var(--gold);}
+
+  .clients-note{
+    margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);
+    font-size:11.5px; color:var(--text-dim);
+  }
+  .clients-note b{color:var(--cyan);}
+
+  .original-badge{
+    display:inline-block; font-size:9px; color:var(--void); background:var(--text-dim);
+    padding:2px 6px; letter-spacing:1px; margin-left:6px; vertical-align:middle;
+  }
+
+  table.strategy{
+    width:100%; border-collapse:collapse; margin-top:20px; font-size:12.5px;
+  }
+  table.strategy th{
+    text-align:left; color:var(--gold); font-family:'Orbitron',sans-serif; font-size:11px;
+    letter-spacing:1px; padding:10px 12px; border-bottom:2px solid var(--gold-dim); text-transform:uppercase;
+  }
+  table.strategy td{
+    padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-dim); vertical-align:top;
+  }
+  table.strategy tr:hover td{background:var(--panel-2); color:var(--text);}
+
+  .priority-box{
+    background:var(--panel-2); border:1px solid var(--border); border-left:3px solid var(--cyan);
+    padding:24px 28px; margin:28px 0;
+  }
+  .priority-box h3{color:var(--cyan); font-size:15px; margin-bottom:12px; letter-spacing:1px;}
+  .priority-box ol{margin-left:18px; color:var(--text-dim); font-size:13px;}
+  .priority-box li{margin-bottom:8px;}
+  .priority-box b{color:var(--text);}
+
+  footer{
+    margin-top:60px; padding:40px 6vw; border-top:1px solid var(--border);
+    color:var(--text-dim); font-size:11px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  footer .brand{color:var(--gold); font-size:13px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">NexTier Global Advisory // Talent Channel Intelligence</div>
+  <h1>Job Platform <span>Directory</span> & Deep-Dive</h1>
+  <p class="sub">A consolidated map of general, niche cybersecurity/defense, GCC/APAC, and executive-consulting talent channels — extending your original 17-platform shortlist with category deep-dives, fit notes against OMNIVEX/NexTier's BFSI · Defense · GCC · APAC focus, and a suggested engagement priority order.</p>
+  <div class="meta-row">
+    <div class="meta-chip">Coverage<b>129 Platforms</b></div>
+    <div class="meta-chip">Categories<b>10</b></div>
+    <div class="meta-chip">Compiled<b>17 Jul 2026</b></div>
+    <div class="meta-chip">Focus<b>BFSI · Defense · GCC · APAC</b></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#general">01 · General &amp; Freelance</a>
+  <a href="#cyber">02 · Cybersecurity Niche</a>
+  <a href="#india">03 · India</a>
+  <a href="#gcc">04 · GCC / Middle East</a>
+  <a href="#cleared">05 · Defense &amp; Cleared (UK/US)</a>
+  <a href="#executive">06 · Executive / Fractional Consulting</a>
+  <a href="#remote">07 · Global Remote</a>
+  <a href="#gsi-majors">08 · Global GSI Majors</a>
+  <a href="#boutique-dev">09 · Boutique/Nearshore Dev</a>
+  <a href="#gcc-si">10 · GCC Regional SIs</a>
+  <a href="#strategy">Engagement Strategy</a>
+</nav>
+
+<main>
+
+<!-- 01 GENERAL -->
+<section class="category" id="general">
+  <div class="cat-head">
+    <div>
+      <div class="cat-num">CATEGORY 01</div>
+      <h2 class="cat-title">General &amp; Freelance Platforms</h2>
+    </div>
+  </div>
+  <p class="cat-desc">Your original core list — broad-reach networks and freelance marketplaces. Kept here as the baseline layer beneath the specialized channels below.</p>
+  <div class="grid">
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.linkedin.com/jobs/" target="_blank">LinkedIn Jobs</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Default professional network; strongest for BFSI/consulting decision-maker visibility and warm-intro pathing into Westpac/Daimler/Kotak-tier accounts.</p>
+      <div class="tags"><span class="tag gold">Networking</span><span class="tag">Global</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.toptal.com/" target="_blank">Toptal</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Top-3% vetted freelance/fractional network, now extending into fractional-exec placements. Strong for short technical or advisory engagements, $79/mo client access fee.</p>
+      <div class="tags"><span class="tag">Freelance</span><span class="tag gold">Fractional</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.turing.com/" target="_blank">Turing</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">AI-matched remote developer marketplace, increasingly used by US enterprises for offshore engineering pods — relevant if OMNIVEX ever staffs delivery pods.</p>
+      <div class="tags"><span class="tag">Remote Dev</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.deel.com/" target="_blank">Deel</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Global payroll/EOR platform with a jobs marketplace layer — most useful once NexTier needs to legally contract international consultants.</p>
+      <div class="tags"><span class="tag">EOR / Payroll</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://remote.com/" target="_blank">Remote.com</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Deel competitor for EOR/contractor management; job board is secondary to its compliance infrastructure.</p>
+      <div class="tags"><span class="tag">EOR / Payroll</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.upwork.com/" target="_blank">Upwork</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Largest open freelance marketplace; weaker signal-to-noise for senior advisory work but useful for door-opener micro-engagements and quick proof-of-concept gigs.</p>
+      <div class="tags"><span class="tag">Freelance</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.hiremount.com/" target="_blank">HireMount</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Boutique tech-recruiting/staffing platform; smaller footprint, worth periodic monitoring rather than active investment.</p>
+      <div class="tags"><span class="tag">Niche</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://arc.dev/" target="_blank">Arc.dev</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Remote software-engineering matching platform with salary/rate benchmarking tools built in.</p>
+      <div class="tags"><span class="tag">Remote Dev</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.hackerone.com/" target="_blank">HackerOne</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Bug-bounty/pentest gig platform — relevant for CRYSTAL AI-IPS credibility building and offensive-security proof points, not primary consulting pipeline.</p>
+      <div class="tags"><span class="tag gold">Cyber Adjacent</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://cyberjobhunt.com/" target="_blank">CyberJobHunt</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Smaller cyber-specific board; see Category 02 for stronger alternatives with larger listing volume.</p>
+      <div class="tags"><span class="tag">Cyber Niche</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CYBERSECURITY NICHE -->
+<section class="category" id="cyber">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 02 — NEW</div><h2 class="cat-title">Cybersecurity-Specific Boards</h2></div>
+  </div>
+  <p class="cat-desc">Purpose-built cyber boards outrank general platforms for CRYSTAL AI-IPS / DigiCognitive talent and advisory searches — recruiters increasingly post here first for GRC, SOC, and architect roles.</p>
+  <div class="grid">
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://infosec-jobs.com/" target="_blank">infosec-jobs.com</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="1-1">A dedicated cybersecurity job board covering roles for clients and candidates specifically within the security space.</cite> Curated, entry-level-to-senior, remote-friendly.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag">Global Remote</span></div>
+      <div class="fit-note"><b>Fit:</b> Strong for CRYSTAL/PANDA hiring and personal visibility as a cyber-native founder.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">ClearanceJobs</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US/UK defense-intelligence cyber roles requiring active clearance — see Category 05 for full detail, cross-listed here for its cyber-heavy posting mix.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">Cleared</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">IT Job Board (itjobboard.net)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="6-1">A niche IT/security board where security professionals specifically search, spanning offensive security, defensive security, compliance, and security engineering roles.</cite></p>
+      <div class="tags"><span class="tag">US-Centric</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">CyberSN</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US cyber-specific recruiting network cited across multiple 2026 market reports for engineer/pentester placement volume and salary benchmarking data.</p>
+      <div class="tags"><span class="tag">US-Centric</span><span class="tag">Benchmarking</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">bug bounty / CTF adjunct: Bugcrowd</div><span class="rank">NEW</span></div>
+      <p class="card-desc">HackerOne's closest competitor; useful secondary channel for offensive-security credibility and researcher outreach around CRYSTAL.</p>
+      <div class="tags"><span class="tag gold">Cyber Adjacent</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 INDIA -->
+<section class="category" id="india">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 03</div><h2 class="cat-title">India Platforms</h2></div>
+  </div>
+  <p class="cat-desc">Your original India shortlist — retained in full as the home-market layer, given Mumbai base of operations.</p>
+  <div class="grid">
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.naukri.com/" target="_blank">Naukri.com</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">India's largest job board; best volume for consulting/BFSI-adjacent roles and resume database visibility.</p>
+      <div class="tags"><span class="tag gold">Domestic</span></div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.foundit.in/" target="_blank">Foundit (Monster)</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Rebranded Monster India; broad mid-to-senior coverage across enterprise IT/consulting.</p>
+      <div class="tags"><span class="tag gold">Domestic</span></div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.instahyre.com/" target="_blank">Instahyre</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">AI-matched platform skewed toward tech/product talent at India startups and GCCs.</p>
+      <div class="tags"><span class="tag gold">Domestic</span></div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.iimjobs.com/" target="_blank">iimjobs.com</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Premium India board for management/consulting roles — closest domestic equivalent to the executive-consulting marketplaces in Category 06.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">Consulting</span></div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.shine.com/" target="_blank">Shine.com</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">HT Media-owned board; broad mid-market coverage, useful for volume applications.</p>
+      <div class="tags"><span class="tag gold">Domestic</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GCC -->
+<section class="category" id="gcc">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 04 — NEW</div><h2 class="cat-title">GCC / Middle East Platforms</h2></div>
+  </div>
+  <p class="cat-desc">Directly maps to OMNIVEX/NexTier's Gulf Cooperation Council market focus — these are the three portals every Gulf recruiter and ATS pipeline actually runs through.</p>
+  <div class="grid">
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.bayt.com/" target="_blank">Bayt.com</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="11-1">The overall leading MENA job platform, founded in 2000, with the region's largest employer network and AI-driven recruitment matching.</cite> <cite index="10-1">Carries thousands of live GCC-region listings across the Gulf.</cite></p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">GCC Anchor</span></div>
+      <div class="fit-note"><b>Fit:</b> First-priority GCC channel — largest CV database and salary benchmarking tools for market entry pricing.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.naukrigulf.com/" target="_blank">Naukrigulf</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="8-1">Caters specifically to the expatriate community, with many listings naming preferred nationalities including Indian applicants, across 55,000+ vacancies region-wide.</cite></p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">Expat / Indian-Origin</span></div>
+      <div class="fit-note"><b>Fit:</b> Best positioned for an India-based founder pursuing GCC BFSI/Defense clients — nationality-aware listings reduce mismatch.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.gulftalent.com/" target="_blank">GulfTalent</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="14-1">Leading Middle East job site spanning Kuwait, Saudi Arabia, Bahrain, Oman, Qatar, Lebanon, Jordan and the UAE</cite>, with a verification layer that <cite index="8-1">guarantees registered companies and postings are certified and legitimate</cite>, plus built-in salary benchmarking.</p>
+      <div class="tags"><span class="tag">Verified Listings</span><span class="tag">Benchmarking</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Dubai/Abu Dhabi government pipelines (TAMM, Nafis, FAHR)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="9-1">Government-side portals increasingly sit alongside Bayt, Naukrigulf, and GulfTalent in a recruiter's actual pipeline, on top of ATS systems like Workday, Oracle iRecruitment, and SuccessFactors.</cite></p>
+      <div class="tags"><span class="tag">Gov / Emiratisation</span></div>
+      <div class="fit-note"><b>Fit:</b> Lower priority for a foreign consultancy, but useful for reading Gulf procurement/Emiratisation signal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CLEARED -->
+<section class="category" id="cleared">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 05 — NEW</div><h2 class="cat-title">Defense &amp; Security-Cleared Platforms (UK / US)</h2></div>
+  </div>
+  <p class="cat-desc">Directly leverages your UK DV clearance — this is the highest-signal category missing from the original list, given Defense is a named focus sector.</p>
+  <div class="grid">
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.securityclearedjobs.com/" target="_blank">SecurityClearedJobs.com</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="24-1">A UK-based board designed for candidates who are security cleared or meet the criteria for Security Clearance, across all industry sectors.</cite> <cite index="17-1">Advertises 1,000+ jobs daily to 70,000+ registered cleared candidates, at SC and DV level.</cite></p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">DV Direct Match</span></div>
+      <div class="fit-note"><b>Fit:</b> Single strongest platform for your DV clearance — largest UK cleared-candidate pool, dedicated DV/SC filters.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.clearancejobs.com/" target="_blank">ClearanceJobs</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="18-1">Lists overseas security-clearance roles based in the UK, working for US defense and intelligence companies</cite> — the primary bridge platform between UK-based clearance holders and US primes operating in the UK.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">US-UK Bridge</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://clearedjobs.net/" target="_blank">ClearedJobs.Net</a></div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="25-1">A veteran-owned board connecting cleared candidates directly with recruiters and hiring managers from top defense, intelligence, and government-contractor employers.</cite></p>
+      <div class="tags"><span class="tag">US-Centric</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Electus Recruitment (Cleared Specialist)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="23-1">A specialist recruiter placing DV, SC, CTC, and NATO-cleared engineering and cyber talent into UK Ministry of Defence, NATO, Homeland Security, and Critical National Infrastructure roles since 2003.</cite></p>
+      <div class="tags"><span class="tag gold">Boutique Recruiter</span><span class="tag">CNI / NATO</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 EXECUTIVE -->
+<section class="category" id="executive">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 06 — NEW</div><h2 class="cat-title">Executive / Fractional Consulting Marketplaces</h2></div>
+  </div>
+  <p class="cat-desc">The category most aligned with NexTier Global Advisory as a services-led practice — these platforms place independent consultants and fractional executives directly into enterprise engagements, competing with (or feeding) your own advisory pipeline.</p>
+  <div class="grid">
+
+    <div class="card"><div class="card-top"><div class="card-name">GLG (Gerson Lehrman Group)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="26-1">The largest expert network by revenue and size, with 1M+ professionals, deep compliance infrastructure for regulated industries, and the fastest turnaround for expert-call scheduling — but enterprise-only pricing with $25K–$500K+ annual contracts.</cite></p>
+      <div class="tags"><span class="tag gold">Enterprise Only</span><span class="tag">Expert Calls</span></div>
+      <div class="fit-note"><b>Fit:</b> Good for BFSI/PE primary-research calls, not a direct project-delivery channel.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Catalant</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="30-1">A project-based consulting marketplace connecting enterprises with independent consultants — largely ex-McKinsey, Bain, BCG, and Big Four — for multi-week to multi-month engagements, run more like contracting than a research call.</cite> Commission runs <cite index="29-1">roughly 20–30% on client engagement value.</cite></p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">Strategy Delivery</span></div>
+      <div class="fit-note"><b>Fit:</b> Strong positioning match for OMNIVEX GTM/governance deliverables; premium client base overlaps with Westpac/Daimler-tier accounts.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Business Talent Group (BTG)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="28-1">Competes directly with Catalant, skewing toward interim leadership roles — CFOs, CMOs, heads of operations — with a dedicated talent manager presenting 2–3 curated candidates and roughly 1–2 week matching cycles.</cite> Project minimums start near $15K.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">Interim Leadership</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Toptal (Fractional Executive track)</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="33-1">Originally a freelance-developer platform, now expanded into fractional-executive placement, accepting only the top 3% of applicants through rigorous screening — strongest in technology and finance talent.</cite></p>
+      <div class="tags"><span class="tag">Tech/Finance Skew</span></div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">A.Team</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="33-1">Positions itself around assembling cross-functional teams of senior talent — typically 2 to 5 experts working together on one problem — rather than placing individual executives.</cite></p>
+      <div class="tags"><span class="tag">Team-Based</span></div>
+      <div class="fit-note"><b>Fit:</b> Relevant if OMNIVEX pitches multi-disciplinary delivery pods rather than solo advisory.</div>
+    </div>
+
+    <div class="card"><div class="card-top"><div class="card-name">Maven / Expert360</div><span class="rank">NEW</span></div>
+      <p class="card-desc"><cite index="26-1">Expert360 leads for APAC-region consulting placements</cite>, directly relevant to your Asia-Pacific focus market; Maven skews toward budget-conscious self-serve expert calls and market research.</p>
+      <div class="tags"><span class="tag fit">High Fit</span><span class="tag gold">APAC</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 REMOTE -->
+<section class="category" id="remote">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 07</div><h2 class="cat-title">Global Remote Boards</h2></div>
+  </div>
+  <p class="cat-desc">Your two originally-listed remote-first boards, retained as the always-on baseline for distributed/remote sourcing.</p>
+  <div class="grid">
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://weworkremotely.com/" target="_blank">We Work Remotely</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">One of the largest fully-remote job boards; strong for distributed technical hiring and self-posting visibility.</p>
+      <div class="tags"><span class="tag">Remote-First</span></div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name"><a href="https://www.ziprecruiter.in/" target="_blank">ZipRecruiter (India)</a></div><span class="rank original-badge">ORIGINAL</span></div>
+      <p class="card-desc">Broad-reach aggregator with AI matching; decent volume play for India-facing roles.</p>
+      <div class="tags"><span class="tag gold">Domestic</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="category" id="gsi-majors">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 08 — NEW</div><h2 class="cat-title">Global GSI &amp; IT Services Majors</h2></div>
+  </div>
+  <p class="cat-desc">Tier-1 systems integrators and Big Four technology arms — the delivery-scale competitors and potential subcontracting/alliance partners for OMNIVEX/NexTier's larger BFSI and Defense engagements.</p>
+  <div class="grid">
+    <div class="card"><div class="card-top"><div class="card-name">Accenture</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Full-spectrum strategy-to-technology GSI with the broadest BFSI and Defense enterprise reach.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span><span class="tag">BFSI/Defense</span></div>
+      <div class="clients-note"><b>Clients:</b> Unilever, Marriott, Fortune 500, government agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">TCS (Tata Consultancy Services)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with a large BFSI outsourcing footprint globally.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span><span class="tag">BFSI</span></div>
+      <div class="clients-note"><b>Clients:</b> NetApp, ICMR, Fortune 500 companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Deloitte (Digital/Tech arm)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Big Four consulting-led technology and cyber advisory arm.</p>
+      <div class="tags"><span class="tag gold">Big Four</span></div>
+      <div class="clients-note"><b>Clients:</b> Fortune 500 companies, MetLife, US Gov, Boeing</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">EY (Consulting Tech)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Big Four technology consulting practice with a strong regulatory/BFSI angle.</p>
+      <div class="tags"><span class="tag gold">Big Four</span></div>
+      <div class="clients-note"><b>Clients:</b> Global banks, Fortune 500, government agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Cognizant</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US-headquartered GSI with a deep India delivery base.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> JP Morgan, Wells Fargo, global healthcare organizations</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Capgemini</div><span class="rank">NEW</span></div>
+      <p class="card-desc">European-headquartered GSI, strong in digital transformation delivery.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> HOYER GmbH, Transavia, Daimler Group, Hellmann Worldwide Logistics</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">PwC (Tech Consulting)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Big Four tech consulting practice, regulatory-heavy engagements.</p>
+      <div class="tags"><span class="tag gold">Big Four</span></div>
+      <div class="clients-note"><b>Clients:</b> Fortune 500, global banks, government agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Infosys</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI focused on enterprise digital and cloud delivery.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Posten Norge, Ferroglobe, Equatex, Avnet, AT&T</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">IBM Consulting</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Enterprise technology consulting tied to IBM's hybrid-cloud/AI stack.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Boots UK, Salesforce, Audi, Coca-Cola, Delta Air Lines</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Wipro</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with broad enterprise IT services coverage.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> NHS, Cisco, Microsoft, leading airport authorities</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">HCLTech</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with engineering and infrastructure services strength.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Energy companies, consumer goods, global camera manufacturers</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">NTT Data</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Japan-headquartered GSI with a global delivery network.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> BMW, Vatican Library, global financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Tech Mahindra</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with a telecom and enterprise services legacy.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Stockmann, UBI, Thomson Reuters</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">DXC Technology</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US-headquartered GSI built on the legacy HPE/CSC infrastructure services base.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> AT&T, global government and defense agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Genpact</div><span class="rank">NEW</span></div>
+      <p class="card-desc">BPO-to-digital transformation firm with a strong analytics/finance-ops practice.</p>
+      <div class="tags"><span class="tag">BPO/Analytics</span></div>
+      <div class="clients-note"><b>Clients:</b> GE, Walmart, global financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Fujitsu</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Japan-headquartered GSI with a strong government/public-sector base.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Lowe's, UK Government, Siemens, City of Lahti</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Atos</div><span class="rank">NEW</span></div>
+      <p class="card-desc">European GSI with cybersecurity and infrastructure services focus.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span><span class="tag gold">Cyber Adjacent</span></div>
+      <div class="clients-note"><b>Clients:</b> Olympic Games, Siemens, global government agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">NEC Corporation</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Japan-headquartered technology/GSI with public-safety and biometrics strength.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Global telecom, government, and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">CGI</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Canada-headquartered GSI with government and BFSI delivery focus.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Jordbruksverket, Eversight, Skillsoft, COPFS</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Kyndryl</div><span class="rank">NEW</span></div>
+      <p class="card-desc">IBM infrastructure-services spinoff operating at managed-services scale.</p>
+      <div class="tags"><span class="tag">Managed Services</span></div>
+      <div class="clients-note"><b>Clients:</b> Dow, global banking and manufacturing firms</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">LTIMindtree</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI formed from the L&T Infotech / Mindtree merger.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Barclays, global banking and insurance firms</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">EPAM Systems</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Engineering-led digital product development GSI.</p>
+      <div class="tags"><span class="tag">Digital Engineering</span></div>
+      <div class="clients-note"><b>Clients:</b> Google, Expedia, UBS, Sephora</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Sopra Steria</div><span class="rank">NEW</span></div>
+      <p class="card-desc">European GSI with a strong public-sector/BFSI presence.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Cleveland Police Force, VW Financial Services</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">EXL Service</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Analytics-led BPO/digital operations firm for BFSI and insurance.</p>
+      <div class="tags"><span class="tag">BPO/Analytics</span></div>
+      <div class="clients-note"><b>Clients:</b> Global insurance and healthcare companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Booz Allen Hamilton</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US government/defense-focused consulting and technology firm.</p>
+      <div class="tags"><span class="tag gold">Defense Focus</span><span class="tag">US Gov</span></div>
+      <div class="clients-note"><b>Clients:</b> US Dept of Defense (DoD), US Dept of Homeland Security (DHS), US Navy</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">KPMG Lighthouse</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Big Four data/AI-focused consulting practice.</p>
+      <div class="tags"><span class="tag gold">Big Four</span></div>
+      <div class="clients-note"><b>Clients:</b> Global banks, government agencies, healthcare organizations</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Stefanini</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Brazil-headquartered global IT services provider.</p>
+      <div class="tags"><span class="tag">Global IT Services</span></div>
+      <div class="clients-note"><b>Clients:</b> Ford, CaixaBank, Boticario, global manufacturers</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Mphasis</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with BFSI-focused digital services.</p>
+      <div class="tags"><span class="tag gold">Tier-1 GSI</span><span class="tag">BFSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Citi, JP Morgan, global banking and financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Globant</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Latin America-headquartered digital-native engineering firm.</p>
+      <div class="tags"><span class="tag">Digital Engineering</span></div>
+      <div class="clients-note"><b>Clients:</b> Google, Electronic Arts, Santander</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Hexaware</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered mid-tier GSI with automation-led delivery.</p>
+      <div class="tags"><span class="tag">Mid-Tier GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Fannie Mae, global airlines, financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">T-Systems</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Deutsche Telekom's enterprise IT services arm.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Shell, global automotive and manufacturing companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Hitachi</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Japan-headquartered conglomerate with enterprise IT/OT services.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Global manufacturing, rail, and energy companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Persistent Systems</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered engineering and digital services firm.</p>
+      <div class="tags"><span class="tag">Digital Engineering</span></div>
+      <div class="clients-note"><b>Clients:</b> IBM, Cisco, Intuit, Salesforce</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Syntel (Atos)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Legacy BFSI-focused GSI, now absorbed into Atos.</p>
+      <div class="tags"><span class="tag">BFSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Global insurance leaders, telecom companies, financial services</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Coforge</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with insurance/BFSI vertical strength.</p>
+      <div class="tags"><span class="tag gold">Mid-Tier GSI</span><span class="tag">BFSI</span></div>
+      <div class="clients-note"><b>Clients:</b> British Airways, Sabre, global financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Unisys</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US-headquartered GSI with a cloud and security services legacy.</p>
+      <div class="tags"><span class="tag">Tier-1 GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> NI, Leading health and security services firms, TIES</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SoftServe</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Eastern Europe-headquartered digital consulting/engineering firm.</p>
+      <div class="tags"><span class="tag">Digital Engineering</span></div>
+      <div class="clients-note"><b>Clients:</b> Cisco, IBM, Panasonic, global enterprises</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Slalom</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US-headquartered boutique consulting and technology firm.</p>
+      <div class="tags"><span class="tag">Boutique Consulting</span></div>
+      <div class="clients-note"><b>Clients:</b> AWS, Microsoft, global tech and retail companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Birlasoft</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered mid-tier GSI with ERP/digital services focus.</p>
+      <div class="tags"><span class="tag">Mid-Tier GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Cummins, global manufacturing and automotive companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Zensar Technologies</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered mid-tier digital/IT services firm.</p>
+      <div class="tags"><span class="tag">Mid-Tier GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Cisco, Avis, global retail and manufacturing companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">ThoughtWorks</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Engineering-led technology consultancy with agile/DevOps pedigree.</p>
+      <div class="tags"><span class="tag">Digital Engineering</span></div>
+      <div class="clients-note"><b>Clients:</b> PayPal, Delta Air Lines, global tech companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">GFT Technologies</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Germany-headquartered, BFSI-focused technology consultancy.</p>
+      <div class="tags"><span class="tag gold">BFSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Standard Chartered, global financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Otsuka Corporation</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Japan-headquartered IT solutions and systems integrator.</p>
+      <div class="tags"><span class="tag">Regional SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Japanese SMEs and corporate clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Vanderlande</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Netherlands-headquartered logistics/material-handling automation integrator.</p>
+      <div class="tags"><span class="tag">Automation/OT</span></div>
+      <div class="clients-note"><b>Clients:</b> Amazon, global airports and parcel delivery companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Sonata Software</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered GSI with a platform engineering focus.</p>
+      <div class="tags"><span class="tag">Mid-Tier GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> TUI, Microsoft, Retail & CPG companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Mastek</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India-headquartered mid-tier GSI with UK public-sector delivery strength.</p>
+      <div class="tags"><span class="tag">Mid-Tier GSI</span></div>
+      <div class="clients-note"><b>Clients:</b> Morrisons, Inflectra, Healthcare providers</div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="category" id="boutique-dev">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 09 — NEW</div><h2 class="cat-title">Boutique &amp; Nearshore Software Engineering Studios</h2></div>
+  </div>
+  <p class="cat-desc">Smaller custom-development and nearshore engineering firms — relevant as build-partner options for CRYSTAL AI-IPS engineering capacity rather than as advisory-channel competitors.</p>
+  <div class="grid">
+    <div class="card"><div class="card-top"><div class="card-name">Andersen</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Eastern Europe-based custom software development outsourcing firm.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Samsung, Siemens, global healthcare and financial firms</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Euvic</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Poland-headquartered IT services and software development group.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Global European enterprises and mid-market companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">ELEKS</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Ukraine-headquartered custom software engineering firm.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Aramex, TAITRA, GRU Airport, global enterprises</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Itransition</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Belarus/Eastern Europe-based custom software development company.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Toyota, PayPal, global retail companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">ScienceSoft</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US/Eastern Europe-based IT consulting and software development firm.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> IBM, eBay, Robert Half, Ford, Viber</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Trigent Software</div><span class="rank">NEW</span></div>
+      <p class="card-desc">India/US-based custom software and QA outsourcing firm.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Navistar, Honeywell, global software vendors</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Trango Tech</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Pakistan-headquartered mobile/web app development firm.</p>
+      <div class="tags"><span class="tag">Nearshore Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> Global startups and mid-market enterprises</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="category" id="gcc-si">
+  <div class="cat-head">
+    <div><div class="cat-num">CATEGORY 10 — NEW</div><h2 class="cat-title">GCC / Middle East Regional System Integrators</h2></div>
+  </div>
+  <p class="cat-desc">Boutique and mid-size systems integrators operating directly in the Gulf — the local delivery layer that OMNIVEX/NexTier would either partner with or compete against when landing GCC BFSI/Defense engagements.</p>
+  <div class="grid">
+    <div class="card"><div class="card-top"><div class="card-name">BIOS Middle East</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UAE-based IT infrastructure and systems integration firm.</p>
+      <div class="tags"><span class="tag gold">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Middle East enterprises and healthcare organizations</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Integrated Global Solutions Limited</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UK/Middle East-facing IT integration and staffing firm.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Hong Kong government and financial institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Riseup Labs</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Bangladesh-based software development and outsourcing firm.</p>
+      <div class="tags"><span class="tag">Regional Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> UNICEF, global NGOs and tech companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Goji Labs</div><span class="rank">NEW</span></div>
+      <p class="card-desc">US-based custom software and mobile app development studio.</p>
+      <div class="tags"><span class="tag">Boutique Dev</span></div>
+      <div class="clients-note"><b>Clients:</b> WHO, global startups and healthcare organizations</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">BIZENI</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Middle East-based digital transformation consultancy.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> South Korean mid-market and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">JET IT Services</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UAE-based IT services and systems integration provider.</p>
+      <div class="tags"><span class="tag gold">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Hong Kong SMEs and corporate clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SSI Schaefer</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Germany-headquartered warehouse/intralogistics systems integrator with GCC presence.</p>
+      <div class="tags"><span class="tag">Automation/OT</span></div>
+      <div class="clients-note"><b>Clients:</b> IKEA, global logistics and retail companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Integrated Management Systems (IMS)</div><span class="rank">NEW</span></div>
+      <p class="card-desc">GCC-based IT and management systems integrator.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Hong Kong enterprises and retail companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SISTech</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Regional systems integration and technology solutions provider.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> South Korean enterprises and government agencies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Oasis Enterprises</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Middle East-based enterprise technology and facilities solutions firm.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Middle East broadcasting and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">MDS UAE</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UAE-based IT distribution and systems integration company.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> UAE government agencies and large enterprises</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Alrowad IT Solutions</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Saudi Arabia-based IT systems integrator and reseller.</p>
+      <div class="tags"><span class="tag gold">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> UAE public sector and educational institutions</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">The Visionaire Group</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Middle East-based IT/technology solutions and staffing group.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Middle East corporate and educational clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Emitac Enterprise Solutions</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UAE-based enterprise IT systems integrator (Al-Futtaim Group).</p>
+      <div class="tags"><span class="tag gold">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> UAE healthcare, government, and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Smartworld</div><span class="rank">NEW</span></div>
+      <p class="card-desc">UAE-based smart-technology systems integrator.</p>
+      <div class="tags"><span class="tag gold">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Dubai Airports, UAE government and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">solutions by stc</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Saudi Telecom Company's digital/enterprise technology solutions arm.</p>
+      <div class="tags"><span class="tag gold">GCC Anchor</span><span class="tag">Telecom</span></div>
+      <div class="clients-note"><b>Clients:</b> Saudi government agencies and large enterprises</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SYSTEM SECURITY SOLUTIONS COMPANY</div><span class="rank">NEW</span></div>
+      <p class="card-desc">GCC-based cybersecurity and systems integration firm.</p>
+      <div class="tags"><span class="tag">GCC SI</span><span class="tag gold">Cyber Adjacent</span></div>
+      <div class="clients-note"><b>Clients:</b> Saudi public sector and corporate clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SEIDOR MIDDLE EAST</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Spain-headquartered ERP/IT consultancy with GCC operations.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Middle East mid-market and enterprise clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Systems Arabia</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Saudi Arabia-based IT systems integrator.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Saudi enterprise and government organizations</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">ITM</div><span class="rank">NEW</span></div>
+      <p class="card-desc">GCC-based IT managed-services and systems integration provider.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Saudi public and private sector clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">TLVTech</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Israel-headquartered engineering and technology solutions firm.</p>
+      <div class="tags"><span class="tag">Regional SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Israeli startups and global tech companies</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SAGE Marketing</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Middle East-based marketing technology/digital solutions firm.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Global B2B tech companies and startups</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">Dofinity</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Digital transformation and software solutions provider.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> Israeli enterprises and public sector clients</div>
+    </div>
+    <div class="card"><div class="card-top"><div class="card-name">SCA Inc.</div><span class="rank">NEW</span></div>
+      <p class="card-desc">Systems and consulting integration firm.</p>
+      <div class="tags"><span class="tag">GCC SI</span></div>
+      <div class="clients-note"><b>Clients:</b> South Korean corporate clients</div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<section class="category" id="strategy" style="border-bottom:none;">
+  <div class="cat-head">
+    <div><div class="cat-num">SYNTHESIS</div><h2 class="cat-title">Engagement Strategy by Objective</h2></div>
+  </div>
+  <p class="cat-desc">Cross-mapping platform categories against what OMNIVEX/NexTier is actually trying to accomplish in each channel.</p>
+
+  <table class="strategy">
+    <tr><th>Objective</th><th>Priority Platforms</th><th>Why</th></tr>
+    <tr>
+      <td>Win GCC BFSI/Defense advisory engagements</td>
+      <td>Bayt, Naukrigulf, GulfTalent</td>
+      <td>Largest verified employer networks and salary benchmarking in the exact target geography.</td>
+    </tr>
+    <tr>
+      <td>Monetize UK DV clearance directly</td>
+      <td>SecurityClearedJobs.com, ClearanceJobs, Electus Recruitment</td>
+      <td>Purpose-built cleared-candidate pools; DV-specific filters put you ahead of generalist applicants.</td>
+    </tr>
+    <tr>
+      <td>Land Catalant/BTG-style project consulting</td>
+      <td>Catalant, Business Talent Group, Expert360 (APAC)</td>
+      <td>Positions NexTier as an independent senior operator rather than competing on price against Big Four alumni pools.</td>
+    </tr>
+    <tr>
+      <td>Build CRYSTAL AI-IPS technical credibility</td>
+      <td>infosec-jobs.com, HackerOne, Bugcrowd</td>
+      <td>Cyber-native audiences that will actually evaluate product claims and offensive-security proof points.</td>
+    </tr>
+    <tr>
+      <td>Domestic India volume &amp; visibility</td>
+      <td>Naukri, iimjobs.com, LinkedIn</td>
+      <td>iimjobs is the closest India-native equivalent to the Western executive-consulting marketplaces.</td>
+    </tr>
+  </table>
+
+  <div class="priority-box">
+    <h3>◆ Suggested 90-Day Sequencing</h3>
+    <ol>
+      <li><b>Weeks 1–2:</b> Register on Bayt, Naukrigulf, GulfTalent, and SecurityClearedJobs.com — these four alone cover both named focus sectors (GCC + Defense) and carry the highest signal-to-effort ratio.</li>
+      <li><b>Weeks 3–5:</b> Build a Catalant and Business Talent Group profile positioning NexTier as an independent senior advisory practice — expect 1–2 week matching cycles, so start early relative to any pipeline deadline.</li>
+      <li><b>Weeks 6–8:</b> Layer in infosec-jobs.com and HackerOne presence to reinforce CRYSTAL AI-IPS technical credibility alongside the consulting narrative.</li>
+      <li><b>Ongoing:</b> Maintain LinkedIn and iimjobs.com as always-on visibility layers; treat Upwork/Toptal as opportunistic door-openers rather than core channels given NexTier's senior-advisory positioning.</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div><span class="brand">NexTier Global Advisory</span> — Talent Channel Intelligence Directory</div>
+  <div>129 platforms · 10 categories · Compiled 17 July 2026</div>
+</footer>
+
+</body>
+</html>

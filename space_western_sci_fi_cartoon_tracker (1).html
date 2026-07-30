@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Western & Sci-Fi Cartoon Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap');
+
+  :root{
+    --void:#0a0a12;
+    --panel:#12121c;
+    --panel2:#181826;
+    --line:#2a2a3d;
+    --gold:#c9a84c;
+    --cyan:#00d4ff;
+    --text:#d8d6e6;
+    --dim:#7a7a94;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(0,212,255,0.07), transparent 50%),
+      radial-gradient(ellipse at 80% 0%, rgba(201,168,76,0.06), transparent 50%),
+      var(--void);
+    color:var(--text);
+    font-family:'Share Tech Mono', monospace;
+    padding:32px 20px 80px;
+  }
+  
+  h1{
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:clamp(22px,3.5vw,34px);
+    text-align:center;
+    margin:0 0 6px;
+    background:linear-gradient(90deg,var(--gold),var(--cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .sub{
+    text-align:center;
+    color:var(--dim);
+    font-size:13px;
+    margin-bottom:26px;
+  }
+  .stats{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 20px;
+    text-align:center;
+    min-width:90px;
+  }
+  .stat .n{
+    font-family:'Orbitron',sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:var(--cyan);
+  }
+  .stat.gold .n{color:var(--gold);}
+  .stat .l{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
+
+  .progress-wrap{max-width:640px;margin:0 auto 26px;}
+  .progress-bar{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;border:1px solid var(--line);}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--cyan));width:0%;transition:width .4s ease;}
+
+  .controls{
+    max-width:1100px;
+    margin:0 auto 24px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  input[type=text]{
+    flex:1;
+    min-width:220px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:13px;
+  }
+  input[type=text]:focus{outline:none;border-color:var(--cyan);}
+  select{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:13px;
+  }
+  .filter-group{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px;}
+  .filter-btn{
+    background:transparent;
+    border:none;
+    color:var(--dim);
+    padding:6px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:12px;
+  }
+  .filter-btn.active{background:var(--panel2);color:var(--cyan);}
+  
+  .action-btn {
+    background: var(--panel);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  .action-btn:hover {
+    background: rgba(201,168,76,0.1);
+    box-shadow: 0 0 8px rgba(201,168,76,0.3);
+  }
+
+  .grid{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    position:relative;
+    transition:border-color .2s, transform .2s;
+  }
+  .card:hover{border-color:var(--gold);}
+  .card.watched{border-color:rgba(0,212,255,0.4);background:linear-gradient(180deg, rgba(0,212,255,0.05), var(--panel));}
+  .card.new-add{border-color:rgba(201,168,76,0.55);}
+  
+  .poster{
+    position:relative;
+    width:100%;
+    aspect-ratio:2/3;
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:12px;
+    border:1px solid var(--line);
+    box-shadow:inset 0 0 30px rgba(0,0,0,0.5);
+    background-color: var(--panel2); /* Fallback */
+  }
+  .poster.custom-poster {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .poster .flicker{
+    position:absolute;inset:0;
+    background:rgba(255,255,255,0.06);
+    opacity:0;
+    pointer-events:none;
+    animation:flickerAnim 6s infinite;
+  }
+  @keyframes flickerAnim{
+    0%,100%{opacity:0;}
+    2%{opacity:.55;}
+    3%{opacity:.05;}
+    4%{opacity:.4;}
+    5%{opacity:0;}
+    45%{opacity:0;}
+    46%{opacity:.3;}
+    47%{opacity:0;}
+  }
+  .poster .signal{
+    position:absolute;
+    bottom:6px;left:6px;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 6px var(--cyan);
+    animation:signalBlink 1.6s ease-in-out infinite;
+  }
+  @keyframes signalBlink{
+    0%,100%{opacity:1;}
+    50%{opacity:.15;}
+  }
+  .poster .scan{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .poster .vign{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 30%, transparent 40%, rgba(0,0,0,0.55) 100%);
+    pointer-events:none;
+  }
+  .poster .icon{
+    position:absolute;
+    top:14%;left:50%;
+    transform:translateX(-50%);
+    font-size:34px;
+    filter:drop-shadow(0 0 8px rgba(0,0,0,0.6));
+  }
+  .poster .mono{
+    position:absolute;
+    bottom:8px;left:0;right:0;
+    text-align:center;
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    font-size:11px;
+    letter-spacing:1.5px;
+    color:rgba(255,255,255,0.92);
+    text-shadow:0 0 6px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.9);
+    padding:0 6px;
+    line-height:1.25;
+    text-transform:uppercase;
+    white-space:normal;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+  }
+  .poster .yr{
+    position:absolute;
+    top:6px;right:6px;
+    font-family:'Orbitron',sans-serif;
+    font-size:9px;
+    font-weight:700;
+    color:var(--gold);
+    background:rgba(10,10,18,0.85);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:2px 5px;
+    z-index:2;
+  }
+
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;color:var(--text);line-height:1.3;}
+  .year{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:13px;white-space:nowrap;}
+  .studio{color:var(--cyan);font-size:11px;margin:4px 0 8px;letter-spacing:.5px;}
+  .desc{font-size:12.5px;color:var(--text);line-height:1.5;margin-bottom:8px;}
+  .gimmick{font-size:11px;color:var(--dim);border-top:1px dashed var(--line);padding-top:8px;margin-bottom:10px;}
+  .gimmick b{color:var(--gold);font-weight:normal;}
+  .row-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+  .stars{cursor:pointer;letter-spacing:2px;font-size:14px;color:var(--line);user-select:none;}
+  .stars span.filled{color:var(--gold);}
+  .watch-toggle{
+    background:var(--panel2);
+    border:1px solid var(--line);
+    color:var(--dim);
+    padding:5px 12px;
+    border-radius:6px;
+    font-family:inherit;
+    font-size:11px;
+    cursor:pointer;
+  }
+  .watch-toggle.on{background:rgba(0,212,255,0.15);border-color:var(--cyan);color:var(--cyan);}
+  .action-btns{display:flex;gap:8px;}
+  .text-btn{
+    background:transparent;
+    border:none;
+    color:var(--dim);
+    font-family:inherit;
+    font-size:11px;
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0;
+  }
+  .text-btn:hover{color:var(--text);}
+  
+  textarea.notes, input.poster-input{
+    width:100%;
+    margin-top:8px;
+    background:var(--panel2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:var(--text);
+    font-family:inherit;
+    display:none;
+  }
+  textarea.notes{
+    font-size:11.5px;
+    padding:8px;
+    resize:vertical;
+    min-height:50px;
+  }
+  input.poster-input{
+    font-size:11.5px;
+    padding:6px 8px;
+  }
+  input.poster-input:focus{outline:none;border-color:var(--cyan);}
+  
+  .badge-new{
+    position:absolute;
+    top:-8px;
+    right:12px;
+    background:var(--gold);
+    color:#1a1400;
+    font-family:'Orbitron',sans-serif;
+    font-size:9px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:10px;
+    letter-spacing:1px;
+    animation:badgeBlink 1.8s ease-in-out infinite;
+    z-index:3;
+  }
+  @keyframes badgeBlink{
+    0%,100%{opacity:1; box-shadow:0 0 6px rgba(201,168,76,0.7);}
+    50%{opacity:.55; box-shadow:0 0 0 rgba(201,168,76,0);}
+  }
+  .empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:40px;}
+  .footer-note{text-align:center;color:var(--dim);font-size:11px;margin-top:34px;}
+</style>
+</head>
+<body>
+
+<h1>⚡ SPACE WESTERN & SCI-FI CARTOON TRACKER ⚡</h1>
+<div class="sub" id="subtitle">BraveStarr and its kin — frontier sci-fi across five decades</div>
+
+<div class="stats">
+  <div class="stat"><div class="n" id="statTotal">0</div><div class="l">Total</div></div>
+  <div class="stat gold"><div class="n" id="statWatched">0</div><div class="l">Watched</div></div>
+  <div class="stat"><div class="n" id="statRemaining">0</div><div class="l">Remaining</div></div>
+  <div class="stat gold"><div class="n" id="statPct">0%</div><div class="l">Complete</div></div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search title, gimmick, studio...">
+  <select id="sortSel">
+    <option value="year-desc">Year (Newest first)</option>
+    <option value="year-asc">Year (Oldest first)</option>
+    <option value="title-asc">Title (A-Z)</option>
+  </select>
+  <button id="fetchPostersBtn" class="action-btn">Auto-Fetch Posters</button>
+  <div class="filter-group">
+    <button class="filter-btn active" data-f="all">All</button>
+    <button class="filter-btn" data-f="unwatched">Unwatched</button>
+    <button class="filter-btn" data-f="watched">Watched</button>
+    <button class="filter-btn" data-f="newadd">Newly Added</button>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="footer-note">Data persists locally to your account — check a box, add a custom poster URL, leave a note, come back anytime.</div>
+
+<script>
+const ORIGINAL = [
+["Beast Machines: Transformers",1999,"Mainframe Entertainment","Sequel to Beast Wars with organic-mechanical fusion themes","—"],
+["Roughnecks: Starship Troopers Chronicles",1999,"Foundation Imaging","CGI military sci-fi following mobile infantry against alien bugs","Powered armor"],
+["Trigun",1998,"Madhouse","Legendary pacifist gunman with lost alien tech and a hidden cybernetic arm","Thomas — giant two-legged desert bird"],
+["Extreme Dinosaurs",1997,"DIC","Spin-off dino-hybrid heroes with extreme-sports attitude","—"],
+["Beast Wars: Transformers",1996,"Mainframe Entertainment","CGI Transformers that scan and transform into prehistoric animals","—"],
+["Cybersix",1995,"TMS Entertainment","Genetically-engineered heroine battles her creator's monstrous experiments","Data — a black panther"],
+["Street Sharks",1994,"DIC","Genetically-mutated shark-human hybrid brothers fight crime","Street Cycles"],
+["Skeleton Warriors",1994,"DIC","Dark sorcery transforms villains into living skeleton warlords","Baron Dark's forces"],
+["ReBoot",1994,"Mainframe Entertainment","Sentient programs defend a computer world (Mainframe) from viruses","Enzo, Frisket"],
+["VR Troopers",1994,"Saban","Teens use virtual-reality tech to battle evil in a digital dimension","VR gear"],
+["BattleTech: The Animated Series",1994,"Saban","Giant piloted mechs (BattleMechs) fight for control of the galaxy","BattleMechs"],
+["Exosquad",1993,"Universal","Modular military exo-frames (E-Frames) used in interplanetary war","E-Frame mechs"],
+["Mighty Max",1993,"Film Roman","A boy with a magic cap travels through portals to fight ancient evil","Norman & Virgil"],
+["Biker Mice from Mars",1993,"Marvel Films","Alien mice bikers defend Earth on customized motorcycles","Custom motorcycles"],
+["SWAT Kats: The Radical Squadron",1993,"Hanna-Barbera","Vigilante fighter-jet pilots built from junkyard parts defend Megakat City","The Turbokat (jet)"],
+["Wild West C.O.W.-Boys of Moo Mesa",1992,"Marvel/Universal","Anthropomorphic, heavily-armed bovine cowboys keeping frontier peace","Horses & steam-powered engines"],
+["Tekkaman Blade",1992,"Tatsunoko","Alien-tech armored warrior defends Earth from a cyborg invasion","Pegas — living spacecraft"],
+["Bucky O'Hare and the Toad Wars",1991,"Continuity Studios","Anthropomorphic space-faring rabbit captain leads a multi-species crew","The Righteous Indignation (ship)"],
+["The Pirates of Dark Water",1991,"Hanna-Barbera","Prince leads a ragtag crew hunting 13 Treasures to stop a sentient dark ooze","The Wraith (ship)"],
+["Widget, the World Watcher",1990,"DIC","Shapeshifting alien watches over Earth's environment","—"],
+["Captain N: The Game Master",1989,"DIC/Nintendo","Teen pulled into video-game world teams up with Nintendo icons","Duke the dog"],
+["C.O.P.S.",1988,"DIC/Hasbro","Futuristic police force battles the criminal gang Crooks","Specialized patrol vehicles"],
+["Dino-Riders",1988,"Marvel Productions","Time-displaced humans ride armored, weaponized dinosaurs","Armored dinosaurs"],
+["RoboCop: The Animated Series",1988,"Marvel Productions","Cybernetic police officer battles crime in a near-future city","—"],
+["Saber Rider Companion: Star Sheriffs Comics",1988,"World Events","Tie-in comic expanding the Star Sheriffs frontier lore","—"],
+["BraveStarr",1987,"Filmation","Shamanic animal-spirit powers (hawk eyes, wolf ears, puma speed, bear strength) + laser weaponry","Thirty/Thirty — talking cyborg horse"],
+["Saber Rider and the Star Sheriffs",1987,"World Events/Studio Pierrot","Interstellar lawmen piloting transforming mecha and exosuits","Ramrod — robotic battleship"],
+["Visionaries: Knights of the Magical Light",1987,"Sunbow/Hasbro","Armor with holographic banners that transform knights into animal totems","Staff totems & attack vehicles"],
+["Bionic Six",1987,"TMS Entertainment","A family gains individual bionic powers after a radioactive accident","Robot gorilla ally (F.L.U.F.F.I.)"],
+["Dinosaucers",1987,"Nelvana","Alien dinosaur warriors crash-land and adopt human cadets","Dino-tech vehicles"],
+["Starcom: The U.S. Space Force",1987,"DIC","Astronaut brigade fights alien invasions with magnetic-lock tech toys","Starcom spacecraft"],
+["Spiral Zone",1987,"DIC","Hazmat-suited heroes fight a mutagenic fog and its monowheel vehicles","Monowheel vehicles"],
+["Sky Commanders",1987,"Kenner/DIC","High-tech zipline cable-routing combat across mountain terrain","Zipline rigs"],
+["TigerSharks",1987,"Rankin/Bass","Undersea heroes with shark-hybrid transformation abilities","Aqua vehicles"],
+["Silver Star",1987,"Toei Animation","Teen martial artist bonds with a mystic power-granting star","—"],
+["The Adventures of the Galaxy Rangers",1986,"Rankin/Bass","Series-5 cybernetic badge implants granting unique superpowers","Robotic cyber-steeds"],
+["The Centurions",1986,"Ruby-Spears/Sunrise","Modular Exo-Frame armor that bolts on jet, tank, or sub components","Jet/tank/sub weapon systems"],
+["SilverHawks",1986,"Rankin/Bass","Metallic bodies with deployable wings, bionic abilities and weapons","Individual flight gear"],
+["Inhumanoids",1986,"Sunbow/Marvel","Mystic subterranean monster threats vs. armored Earth Corps","Earth Corps vehicles"],
+["Rambo: The Force of Freedom",1986,"Ruby-Spears","Elite commando team vs. the terrorist organization S.A.V.A.G.E.","Military hardware"],
+["Defenders of the Earth",1986,"Marvel Productions","Flash Gordon, Mandrake, and the Phantom team up against Ming","Team vehicles"],
+["Rock Lords",1986,"DIC","Sentient transforming rock-creature warriors","—"],
+["She-Ra: Princess of Power",1985,"Filmation","Sword-and-sorcery heroine with mystic allies and a secret identity","Swift Wind — flying unicorn"],
+["Sectaurs",1985,"Coleco/Marvel","Insect-warrior hybrid heroes riding giant bugs across an alien frontier","Giant insect mounts"],
+["M.A.S.K.",1985,"DIC/Kenner","Helmets grant powers; specialized vehicles transform for combat","Modular combat vehicles"],
+["ThunderCats",1985,"Rankin/Bass","Feline humanoids flee a dying planet and crash-land on Third Earth","Snarf"],
+["Robotech",1985,"Harmony Gold","Transforming Veritech fighters across three generational sagas","Veritech fighters"],
+["Jayce and the Wheeled Warriors",1985,"Sunbow/Mattel","Living plant-machine hybrid vehicles fight against Monster Minds","Wheeled Warrior vehicles"],
+["Robotix",1985,"Marvel Productions","Warring robot factions battle over a mysterious energy resource","Modular robot builds"],
+["Manta Force",1985,"Bohbot Entertainment","Undersea military team piloting submersible battle vehicles","Manta submersibles"],
+["Galtar and the Golden Lance",1985,"Filmation","Sword-and-sorcery warrior wielding a magic lance against an evil overlord","Thundair — flying steed"],
+["Star Musketeer Bismark",1984,"Studio Pierrot","Original Japanese source anime that Saber Rider was adapted from","—"],
+["Transformers",1984,"Sunbow/Toei","Sentient alien robots that disguise themselves as vehicles","—"],
+["Voltron: Defender of the Universe",1984,"World Events Productions","Five robot lions combine into a giant defending mecha","Robot lions"],
+["Mighty Orbots",1984,"TMS Entertainment","Five young pilots combine robots into one giant defender","Orbot components"],
+["Challenge of the GoBots",1984,"Hanna-Barbera","Transforming alien robots battle for control of Earth","—"],
+["Robo Force",1984,"CBS/Ideal","Silver-armored heroic robots battle a rival evil faction","—"],
+["Turbo Teen",1984,"Ruby-Spears","Teenager transforms into a sentient sports car","—"],
+["He-Man and the Masters of the Universe",1983,"Filmation","Prince transforms into a musclebound sword-and-sorcery hero","Battle Cat"],
+["G.I. Joe: A Real American Hero",1983,"Sunbow/Marvel","Elite military unit battles the terrorist organization Cobra","Specialized vehicles & vehicles"],
+["Dungeons & Dragons",1983,"Marvel Productions","Kids transported to a magical realm, each gifted a game-inspired power","Uni the baby unicorn"],
+["The Mysterious Cities of Gold",1982,"Studio Pierrot/DIC","Children search for lost golden cities using a solar-powered flying machine","The Solaris (golden condor)"],
+["Blackstar",1981,"Filmation","Stranded astronaut wielding a magic Star Sword on a frontier world","Warlock — dragon-like flyer"],
+["Ulysses 31",1981,"DIC/Studio Pierrot","Greek myth of Odysseus retold in a futuristic space setting","Nono, the robot companion"],
+["Thundarr the Barbarian",1980,"Ruby-Spears","Post-apocalyptic sorcery-and-mutants frontier wasteland","Ookla the Mok"],
+["Battle of the Planets",1978,"Sandy Frank/Tatsunoko","Bird-costumed teen team pilots a transforming spacecraft","The Phoenix (ship)"],
+["Space Sentinels",1977,"Filmation","Myth-powered heroes — an early prototype of the Filmation formula","—"]
+];
+
+const NEW_ADDITIONS = [
+["Voltron: Legendary Defender",2016,"DreamWorks/Studio Mir","Modern reboot: five pilots and their lions reunite to form the giant defender","Robot lions"],
+["Sym-Bionic Titan",2010,"Cartoon Network Studios","Exiled alien princess and soldier fuse with a human teen to pilot a giant titan","Titan mech"],
+["Storm Hawks",2007,"Nerd Corps Entertainment","Sky-pirate squadron rides transforming skimmers through an air-frontier world","Transforming skimmers"],
+["Dino Squad",2007,"SIP Animation","Teens exposed to a mutagen morph into dinosaurs to fight an eco-villain","Dino-morph ability"],
+["Zoids: Chaotic Century",1999,"Xebec","Boy pilots a scrapyard mechanical beast (Zoid) across a frontier at war","Zoids — mechanical beasts"],
+["Max Steel",2000,"Mattel/Foxkids","Teen gains a techno-organic exosuit granting bio-electric powers","N-Tek exosuit"],
+["Roswell Conspiracies",1999,"Alliance Atlantis","Secret agency battles a rogue alien faction hiding among humans","Shapeshifting alien tech"],
+["Men in Black: The Series",1997,"Adelaide Productions","Secret agency polices alien immigrants and threats on Earth","Neuralyzers & alien tech"],
+["Jonny Quest: The Real Adventures",1996,"Hanna-Barbera","Globe-trotting adventurer's family investigates sci-fi mysteries and lost tech","QuestWorld VR system"],
+["Big Bad Beetleborgs",1996,"Saban","Kids granted armored insect-hero forms by a haunted-house wizard","Beetleborg armor"],
+["Masked Rider",1995,"Saban","Exiled alien prince defends Earth using a shapeshifting battle armor","Ferbus — shapeshifting sidekick"],
+["Voltron: The Third Dimension",1998,"Netter Digital/World Events","CGI-era sequel continuing the war for Arus with the five robot lions","Robot lions"],
+["Alienators: Evolution Continues",2001,"Universal Cartoon Studios","A boy and mutated animal allies defend Earth from an alien invasion","Mutant alien creatures"],
+["The New Adventures of He-Man",1990,"Jetlag Productions/Mattel","Sci-fi reboot moves Eternia's heroes into a galaxy-spanning space war","Cyber-armor & starships"],
+["Force Five",1980,"Toei Animation (syndication)","Anthology of dubbed Japanese super-robot serials airing under one banner","Giant combining robots"],
+["Star Trek: The Animated Series",1973,"Filmation","The Enterprise crew's frontier missions continue in animated form","U.S.S. Enterprise"],
+["Star Blazers",1979,"Group TAC (dub: Westchester Films)","Earth's last warship races across the galaxy for a cure to save the planet","The Argo/Yamato battleship"],
+["The Herculoids",1967,"Hanna-Barbera","A family and their creature allies defend an alien frontier planet","Zok — dragon-like flying ship"],
+["Space Ghost",1966,"Hanna-Barbera","Power-band-wielding space hero patrols the galaxy with young wards","Phantom Cruiser"],
+["Power Rangers: Mighty Morphin",1993,"Saban","Teens morph into armored heroes piloting giant Zord vehicles","Dinozord vehicles"],
+["Mysterious Cities of Gold: The Legacy",2012,"Mediatoon/Method Animation","Sequel continuing the children's search for lost solar-powered relics","The Solaris (golden condor)"],
+["Bass X Machina",2026,"Studio Mir/Netflix","Adult animated sci-fi Western: a father metes out frontier justice amid outlaws and terrifying machines","Steampunk war-machines"],
+["Transformers: EarthSpark",2022,"Nickelodeon/Entertainment One","New generation of Transformers, born on Earth, bond with a human family","Terran — self-scanning Transformer"],
+["Masters of the Universe: Revolution",2024,"Netflix/Mattel","Sequel continuing the Revelation saga's war for Eternia's magic and power","Battle Cat / Cringer"],
+["He-Man and the Masters of the Universe",2021,"Netflix/Mattel","CGI reboot following Prince Adam's origin as he claims the Power Sword","Battle Cat"],
+["Star Trek: Prodigy",2021,"Nickelodeon/Paramount+","A crew of alien youths escape captivity aboard a stolen Starfleet ship","U.S.S. Protostar"],
+["Star Wars: The Bad Batch",2021,"Lucasfilm Animation","An elite squad of genetically-varied clone troopers takes mercenary work across the galaxy","The Marauder (ship)"],
+["Masters of the Universe: Revelation",2021,"Netflix/Mattel","Sequel picking up after He-Man and Skeletor's final battle for Eternia","Battle Cat"],
+["Kipo and the Age of Wonderbeasts",2020,"DreamWorks/Netflix","A girl surfaces from an underground bunker into a jungle world ruled by mutant animals","Mega Wonderbeasts"],
+["Transformers: War for Cybertron Trilogy",2020,"Rooster Teeth/Netflix","CGI prequel chronicling the Autobot-Decepticon civil war on Cybertron","—"],
+["Gen:Lock",2019,"Rooster Teeth","Young pilots neurally link into giant mechs (Holons) to fight a fascist AI empire","Holon mechs"],
+["Zoids Wild",2018,"OLM/DMM.futureworks","A boy partners with a wild mechanical beast to survive a frontier world at war","Wild Zoids — mechanical beasts"],
+["Final Space",2018,"Titmouse/TBS","A prisoner and a tiny alien escape into deep space, hunted across a hostile frontier","Chibi Alien"],
+["She-Ra and the Princesses of Power",2018,"DreamWorks/Netflix","Reboot: an orphan soldier claims a sword and transforms into a legendary heroine","Swift Wind — flying unicorn"]
+];
+
+function hashStr(str){
+  let h = 0;
+  for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+  return h;
+}
+
+const POSTER_ICONS = ['🐎','🚀','🛸','⭐','⚡','🌌','🤖','👽','🌠','🔫','🪐','🦖','🗡️','🌑','🛰️'];
+
+function posterHTML(s, entryState){
+  // Check if a custom poster URL is provided
+  if(entryState && entryState.posterUrl) {
+    return `
+      <div class="poster custom-poster" style="background-image:url('${entryState.posterUrl}')">
+        <div class="vign"></div>
+        <div class="scan"></div>
+        <div class="yr">${s.year}</div>
+      </div>
+    `;
+  }
+  
+  // Fallback to procedural poster
+  const h = hashStr(s.title);
+  const hue1 = h % 360;
+  const hue2 = (hue1 + 55 + (h % 40)) % 360;
+  const angle = 100 + (h % 120);
+  const icon = POSTER_ICONS[h % POSTER_ICONS.length];
+  const bg = `linear-gradient(${angle}deg, hsl(${hue1},55%,10%) 0%, hsl(${hue2},60%,16%) 55%, hsl(${hue1},40%,6%) 100%)`;
+  const flickerDelay = (h % 50) / 10;
+  const signalDelay = (h % 30) / 10;
+  return `
+    <div class="poster" style="background:${bg}">
+      <div class="icon">${icon}</div>
+      <div class="vign"></div>
+      <div class="scan"></div>
+      <div class="flicker" style="animation-delay:${flickerDelay}s"></div>
+      <div class="signal" style="animation-delay:${signalDelay}s"></div>
+      <div class="yr">${s.year}</div>
+      <div class="mono">${s.title}</div>
+    </div>
+  `;
+}
+
+function makeItem(arr, isNew){
+  const [title,year,studio,desc,gimmick] = arr;
+  return {id: title.replace(/[^a-z0-9]/gi,'_').toLowerCase(), title, year, studio, desc, gimmick, isNew: !!isNew};
+}
+
+const SHOWS = [...ORIGINAL.map(a=>makeItem(a,false)), ...NEW_ADDITIONS.map(a=>makeItem(a,true))];
+
+let state = {}; // {id: {watched:bool, rating:0-5, notes:'', posterUrl:''}}
+let currentFilter = 'all';
+let isFetchingPosters = false;
+
+async function loadState(){
+  try{
+    if(typeof window !== 'undefined' && window.storage && window.storage.get){
+      const res = await window.storage.get('tracker-state', false);
+      if(res && res.value){ state = JSON.parse(res.value); }
+    } else {
+      const res = localStorage.getItem('tracker-state');
+      if(res) state = JSON.parse(res);
+    }
+  }catch(e){ state = {}; }
+  render();
+}
+
+async function saveState(){
+  try{
+    if(typeof window !== 'undefined' && window.storage && window.storage.set){
+      await window.storage.set('tracker-state', JSON.stringify(state), false);
+    } else {
+      localStorage.setItem('tracker-state', JSON.stringify(state));
+    }
+  }catch(e){ console.error('save failed', e); }
+}
+
+function getEntry(id){
+  if(!state[id]) state[id] = {watched:false, rating:0, notes:'', posterUrl:''};
+  return state[id];
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const sortMode = document.getElementById('sortSel').value;
+
+  let list = SHOWS.filter(s=>{
+    const e = getEntry(s.id);
+    if(currentFilter==='watched' && !e.watched) return false;
+    if(currentFilter==='unwatched' && e.watched) return false;
+    if(currentFilter==='newadd' && !s.isNew) return false;
+    if(q){
+      const hay = (s.title+' '+s.studio+' '+s.desc+' '+s.gimmick).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  list.sort((a,b)=>{
+    if(sortMode==='year-desc') return b.year-a.year;
+    if(sortMode==='year-asc') return a.year-b.year;
+    if(sortMode==='title-asc') return a.title.localeCompare(b.title);
+    return 0;
+  });
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  if(list.length===0){
+    grid.innerHTML = '<div class="empty">No shows match your search.</div>';
+  }
+
+  list.forEach(s=>{
+    const e = getEntry(s.id);
+    const card = document.createElement('div');
+    card.className = 'card' + (e.watched?' watched':'') + (s.isNew?' new-add':'');
+    if(s.isNew){
+      const b = document.createElement('div');
+      b.className='badge-new';
+      b.textContent='NEW';
+      card.appendChild(b);
+    }
+
+    let starsHtml = '';
+    for(let i=1;i<=5;i++){
+      starsHtml += `<span data-i="${i}" class="${i<=e.rating?'filled':''}">★</span>`;
+    }
+
+    card.innerHTML += `
+      ${posterHTML(s, e)}
+      <div class="card-top">
+        <div class="title">${s.title}</div>
+        <div class="year">${s.year}</div>
+      </div>
+      <div class="studio">${s.studio}</div>
+      <div class="desc">${s.desc}</div>
+      <div class="gimmick"><b>Gimmick/Companion:</b> ${s.gimmick}</div>
+      <div class="row-bottom">
+        <div class="stars" data-id="${s.id}">${starsHtml}</div>
+        <button class="watch-toggle ${e.watched?'on':''}" data-id="${s.id}">${e.watched?'✓ Watched':'Mark watched'}</button>
+        <div class="action-btns">
+            <button class="text-btn" data-target="notes" data-id="${s.id}">+ notes</button>
+            <button class="text-btn" data-target="poster" data-id="${s.id}">+ poster</button>
+        </div>
+      </div>
+      <textarea class="notes" data-id="${s.id}" placeholder="Your notes...">${e.notes||''}</textarea>
+      <input type="text" class="poster-input" data-id="${s.id}" placeholder="Paste image URL here..." value="${e.posterUrl||''}">
+    `;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.stars').forEach(starEl=>{
+    starEl.querySelectorAll('span').forEach(sp=>{
+      sp.addEventListener('click', ()=>{
+        const id = starEl.dataset.id;
+        const i = parseInt(sp.dataset.i);
+        const e = getEntry(id);
+        e.rating = (e.rating===i) ? 0 : i;
+        saveState();
+        render();
+      });
+    });
+  });
+
+  grid.querySelectorAll('.watch-toggle').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      const e = getEntry(id);
+      e.watched = !e.watched;
+      saveState();
+      render();
+      updateStats();
+    });
+  });
+
+  grid.querySelectorAll('.text-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.id;
+      const target = btn.dataset.target;
+      
+      // Hide all inputs for this card first to keep it clean
+      const ta = grid.querySelector(`textarea.notes[data-id="${id}"]`);
+      const pi = grid.querySelector(`input.poster-input[data-id="${id}"]`);
+      
+      if (target === 'notes') {
+        const isHidden = ta.style.display !== 'block';
+        pi.style.display = 'none'; // Close poster input if open
+        ta.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) ta.focus();
+      } else if (target === 'poster') {
+        const isHidden = pi.style.display !== 'block';
+        ta.style.display = 'none'; // Close notes input if open
+        pi.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) pi.focus();
+      }
+    });
+  });
+
+  grid.querySelectorAll('textarea.notes').forEach(ta=>{
+    ta.addEventListener('change', ()=>{
+      const id = ta.dataset.id;
+      const e = getEntry(id);
+      e.notes = ta.value;
+      saveState();
+    });
+  });
+  
+  grid.querySelectorAll('input.poster-input').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      const id = inp.dataset.id;
+      const e = getEntry(id);
+      e.posterUrl = inp.value.trim();
+      saveState();
+      render(); // Immediately re-render to display the newly linked poster
+    });
+  });
+
+  updateStats();
+}
+
+function updateStats(){
+  const total = SHOWS.length;
+  const watched = SHOWS.filter(s=>getEntry(s.id).watched).length;
+  const remaining = total - watched;
+  const pct = total ? Math.round((watched/total)*100) : 0;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statWatched').textContent = watched;
+  document.getElementById('statRemaining').textContent = remaining;
+  document.getElementById('statPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('subtitle').textContent =
+    `BraveStarr and its kin — ${total} shows across five decades of frontier sci-fi (${NEW_ADDITIONS.length} newly added)`;
+}
+
+async function fetchPosterForShow(show) {
+    const entry = getEntry(show.id);
+    if (entry.posterUrl) return; // Skip if already has a poster
+
+    // Clean up title for better search results
+    let searchTitle = show.title.replace(/:/g, '');
+    
+    try {
+        // Step 1: Search Wikipedia for the page title
+        const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTitle + ' animated series')}&utf8=&format=json&origin=*`;
+        const searchRes = await fetch(searchUrl);
+        const searchData = await searchRes.json();
+
+        if (searchData.query && searchData.query.search.length > 0) {
+            const pageTitle = searchData.query.search[0].title;
+            
+            // Step 2: Get the page images
+            const imageQueryUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${encodeURIComponent(pageTitle)}&pithumbsize=500&format=json&origin=*`;
+            const imageRes = await fetch(imageQueryUrl);
+            const imageData = await imageRes.json();
+            
+            const pages = imageData.query.pages;
+            const pageId = Object.keys(pages)[0];
+            
+            if (pages[pageId].thumbnail && pages[pageId].thumbnail.source) {
+                entry.posterUrl = pages[pageId].thumbnail.source;
+                saveState();
+                return true; // Indicate success
+            }
+        }
+    } catch (e) {
+        console.log(`Failed to fetch poster for ${show.title}`, e);
+    }
+    return false;
+}
+
+document.getElementById('fetchPostersBtn').addEventListener('click', async () => {
+    if (isFetchingPosters) return;
+    isFetchingPosters = true;
+    const btn = document.getElementById('fetchPostersBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Fetching...';
+    btn.style.opacity = '0.7';
+
+    // To avoid hitting API limits too hard, we'll fetch in batches or one by one with a small delay
+    const unposteredShows = SHOWS.filter(s => !getEntry(s.id).posterUrl);
+    
+    if(unposteredShows.length === 0) {
+        btn.textContent = 'All posters loaded!';
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.opacity = '1';
+            isFetchingPosters = false;
+        }, 2000);
+        return;
+    }
+
+    let updatedCount = 0;
+    for (const show of unposteredShows) {
+        btn.textContent = `Fetching... (${updatedCount}/${unposteredShows.length})`;
+        const success = await fetchPosterForShow(show);
+        if (success) {
+            updatedCount++;
+            render(); // Re-render to show the new poster
+        }
+        // Small delay to be polite to Wikipedia API
+        await new Promise(resolve => setTimeout(resolve, 300)); 
+    }
+
+    btn.textContent = `Found ${updatedCount} new posters!`;
+    setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.opacity = '1';
+        isFetchingPosters = false;
+    }, 3000);
+});
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('sortSel').addEventListener('change', render);
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.f;
+    render();
+  });
+});
+
+loadState();
+</script>
+</body>
+</html>
