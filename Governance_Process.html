@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Enterprises | Global Governance Process Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 500: '#14b8a6', 
+                            600: '#0d9488', 900: '#134e4a', 950: '#042f2e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; }
+        
+        .hero-pattern {
+            background-color: #042f2e;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(13, 148, 136, 0.2);
+            border-color: #14b8a6;
+        }
+
+        /* Modal Animations */
+        .modal-enter { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .modal-exit { animation: modalFadeOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes modalFadeOut {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.95) translateY(10px); }
+        }
+        .backdrop-enter { animation: backdropFadeIn 0.3s ease-out forwards; }
+        .backdrop-exit { animation: backdropFadeOut 0.2s ease-out forwards; }
+        @keyframes backdropFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes backdropFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .fade-in { animation: simpleFadeIn 0.3s ease-in forwards; }
+        @keyframes simpleFadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="bg-brand-600 text-white p-2 rounded-lg">
+                        <i class="ph ph-buildings text-2xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-950 uppercase">White Enterprises</span>
+                </div>
+                <div>
+                    <a href="#catalog" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition shadow-sm hover:shadow-md">
+                        Access Catalog
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-pattern text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-950/90"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-block bg-brand-500/20 border border-brand-500/30 rounded-full px-4 py-1.5 text-sm font-semibold text-brand-100 mb-6 tracking-wide uppercase">
+                Enterprise & Public Sector Framework
+            </div>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                Global Governance <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-200">Process Catalog</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                The definitive matrix of <strong>250 mandatory governance workflows</strong> and approval pathways spanning 25 critical domains. Standardize authority and eliminate operational ambiguity.
+            </p>
+        </div>
+    </header>
+
+    <!-- The Catalog Section -->
+    <section id="catalog" class="py-16 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">The Asset Library</h2>
+                    <p class="text-slate-600">Showing <span id="docCount" class="font-bold text-brand-600">250</span> verified governance workflows.</p>
+                </div>
+                
+                <div class="w-full md:w-96 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-slate-400 text-lg"></i>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="filterCards()" 
+                           class="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition shadow-sm" 
+                           placeholder="Search domains, processes, jurisdictions...">
+                </div>
+            </div>
+
+            <!-- Asset Grid -->
+            <div id="cardGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Cards injected by JS -->
+            </div>
+
+            <div id="emptyState" class="hidden text-center py-20">
+                <i class="ph ph-files text-6xl text-slate-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-slate-700">No processes found</h3>
+                <p class="text-slate-500 mt-2">Try adjusting your search terms.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Modal Overlay -->
+    <div id="previewModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6">
+        <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <div id="modalContent" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-slate-200 flex flex-col">
+            
+            <div class="sticky top-0 bg-white border-b border-slate-100 p-6 flex justify-between items-start z-10">
+                <div class="flex gap-4 items-start pr-8">
+                    <div id="modalIcon" class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="ph ph-scales text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-2" id="modalBadges"></div>
+                        <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 leading-tight">Process Title</h3>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition bg-slate-100 hover:bg-slate-200 rounded-full p-1.5">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+
+            <!-- View 1: Modal Details -->
+            <div id="modalDetails" class="p-6">
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Process Purpose</h4>
+                    <p id="modalDesc" class="text-slate-700 text-lg leading-relaxed"></p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 mb-8">
+                    <h4 class="text-sm font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Governance Specifications</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-briefcase"></i> Domain</span>
+                            <span id="modalDomain" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-user-circle-gear"></i> Authority Level</span>
+                            <span id="modalAuthority" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-file-code"></i> Format</span>
+                            <span class="font-medium text-slate-800">XLSX / Import Ready</span>
+                        </div>
+                        
+                        <div class="md:col-span-2 lg:col-span-3 pt-2 border-t border-slate-200 mt-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-globe-hemisphere-west"></i> Jurisdiction Note / Framework</span>
+                            <span id="modalJurisdiction" class="font-medium text-slate-800 leading-relaxed block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 2: Request Form -->
+            <div id="modalRequestForm" class="p-8 hidden fade-in">
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-slate-900 mb-2">Request Process Template</h4>
+                    <p class="text-sm text-slate-600">Please provide your details below. A request will be securely routed to the administrator.</p>
+                </div>
+                
+                <form id="accessForm" class="space-y-5" onsubmit="event.preventDefault(); submitRequest();">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Your Corporate Email <span class="text-red-500">*</span></label>
+                        <input type="email" id="requestEmail" value="arvindpardeshi151@gmail.com" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Intended Use Case <span class="text-red-500">*</span></label>
+                        <select id="requestUseCase" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
+                            <option value="">Select a use case...</option>
+                            <option value="Enterprise Governance Mapping">Enterprise Governance Mapping</option>
+                            <option value="Audit & Compliance Readiness">Audit & Compliance Readiness</option>
+                            <option value="Client / Consulting Engagement">Client / Consulting Engagement</option>
+                            <option value="Digital Transformation Planning">Digital Transformation Planning</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Company / Organization</label>
+                        <input type="text" id="requestCompany" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" placeholder="e.g., Acme Corp">
+                    </div>
+                    <input type="hidden" id="hiddenProcessName">
+
+                    <button type="submit" id="btnSubmitRequest" class="w-full mt-4 px-5 py-3 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-md rounded-lg flex items-center justify-center gap-2 transition">
+                        <i class="ph ph-paper-plane-right text-lg"></i> Send Access Request
+                    </button>
+                </form>
+            </div>
+
+            <!-- View 3: Success State -->
+            <div id="modalSuccess" class="p-10 text-center hidden fade-in my-auto">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-200">
+                    <i class="ph ph-check text-4xl font-bold"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-slate-900 mb-3">Request Sent Successfully</h4>
+                <p class="text-slate-600 text-base mb-8 max-w-sm mx-auto">
+                    Your request has been forwarded directly to <strong>arvindpardeshi151@gmail.com</strong>. The consulting team will provision secure access shortly.
+                </p>
+                <button onclick="closeModal()" class="px-6 py-2.5 text-sm font-bold text-slate-700 bg-slate-100 border border-slate-200 hover:bg-slate-200 rounded-lg transition">
+                    Return to Catalog
+                </button>
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="modalFooter" class="mt-auto p-6 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 rounded-b-2xl">
+                <button onclick="closeModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition">Cancel</button>
+                <button onclick="showRequestForm()" class="px-5 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-sm rounded-lg flex items-center gap-2 transition">
+                    <i class="ph ph-lock-key"></i> Request Template Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="ph ph-buildings text-xl text-slate-500"></i>
+                <span class="font-semibold text-slate-300 tracking-wider uppercase text-sm">White Enterprises Inc.</span>
+            </div>
+            <div class="text-sm">
+                &copy; 2026 All rights reserved. Confidential and Proprietary.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // The 250 Governance Processes
+        const docData = [
+  {"id": 1, "domain": "Digital Adoption & Transformation", "process": "Digital Authorization Process (DAP)", "purpose": "Controlled digital sign-off for budgets/initiatives with cryptographic verification.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework — see OMNIVEX DAP"},
+  {"id": 2, "domain": "Digital Adoption & Transformation", "process": "Digital Service Onboarding Approval", "purpose": "Gate for launching new citizen/customer-facing digital services.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 3, "domain": "Digital Adoption & Transformation", "process": "Legacy System Decommissioning Sign-Off", "purpose": "Formal authorization to retire legacy platforms.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 4, "domain": "Digital Adoption & Transformation", "process": "Cloud Migration Authorization", "purpose": "Approval gate for moving workloads to cloud environments.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 5, "domain": "Digital Adoption & Transformation", "process": "Digital Identity Enrollment Governance", "purpose": "Controls for issuing/verifying digital identity credentials.", "authority": "Executive/Mandatory", "jurisdiction": "India (Aadhaar), EU (eIDAS), Estonia (e-Identity)"},
+  {"id": 6, "domain": "Digital Adoption & Transformation", "process": "Interoperability Standards Approval", "purpose": "Certifies systems against national/enterprise interoperability standards.", "authority": "Analytical/Strategic", "jurisdiction": "Global framework"},
+  {"id": 7, "domain": "Digital Adoption & Transformation", "process": "Digital Transformation Roadmap Sign-Off", "purpose": "Executive approval of multi-year digital strategy.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 8, "domain": "Digital Adoption & Transformation", "process": "Open Data Publication Approval", "purpose": "Review/approval before releasing datasets publicly.", "authority": "Compliance", "jurisdiction": "UK (data.gov.uk), EU (Open Data Directive)"},
+  {"id": 9, "domain": "Digital Adoption & Transformation", "process": "E-Governance Platform Certification", "purpose": "Certifies platforms meet accessibility/security baselines before go-live.", "authority": "Compliance", "jurisdiction": "India (GIGW), EU (EN 301 549)"},
+  {"id": 10, "domain": "Digital Adoption & Transformation", "process": "Digital Payments Integration Approval", "purpose": "Gate for connecting to national payment rails.", "authority": "Executive/Mandatory", "jurisdiction": "India (UPI/NPCI), EU (PSD2), Singapore (PayNow)"},
+  {"id": 11, "domain": "Defence Acquisition", "process": "Capability Requirement Approval", "purpose": "Sign-off validating a defined military capability gap.", "authority": "Executive/Mandatory", "jurisdiction": "US (JCIDS), India (SQR), UK (Capability Approach)"},
+  {"id": 12, "domain": "Defence Acquisition", "process": "Acquisition Category (ACAT) Milestone Review", "purpose": "Formal milestone gate before program advancement.", "authority": "Executive/Mandatory", "jurisdiction": "US (DoD 5000 series)"},
+  {"id": 13, "domain": "Defence Acquisition", "process": "Request for Proposal (RFP) Release Authorization", "purpose": "Approval to release solicitation to industry.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 14, "domain": "Defence Acquisition", "process": "Source Selection Approval", "purpose": "Formal decision authority sign-off on contract award.", "authority": "Executive/Mandatory", "jurisdiction": "US, India (DAP 2020), UK (DE&S)"},
+  {"id": 15, "domain": "Defence Acquisition", "process": "Export Control / ITAR Clearance", "purpose": "Approval gate for technology transfer or foreign sale.", "authority": "Compliance", "jurisdiction": "US (ITAR/EAR), EU (Dual-Use Regulation)"},
+  {"id": 16, "domain": "Defence Acquisition", "process": "Test & Evaluation Master Plan Approval", "purpose": "Sign-off on system testing strategy before fielding.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 17, "domain": "Defence Acquisition", "process": "Offset Obligation Compliance Sign-Off", "purpose": "Verifies industrial offset commitments are met.", "authority": "Compliance", "jurisdiction": "India (DAP Offset Guidelines), Gulf states (GCC offset programs)"},
+  {"id": 18, "domain": "Defence Acquisition", "process": "Security Accreditation for Classified Systems", "purpose": "Formal accreditation before classified system operation.", "authority": "Compliance", "jurisdiction": "UK DV clearance regime, US (RMF/ATO), NATO (SECAN)"},
+  {"id": 19, "domain": "Defence Acquisition", "process": "Full-Rate Production Decision", "purpose": "Executive gate authorizing mass production.", "authority": "Executive/Mandatory", "jurisdiction": "US (DoD), India (CCS approval)"},
+  {"id": 20, "domain": "Defence Acquisition", "process": "Disposal / Demilitarization Authorization", "purpose": "Sign-off for decommissioning or transferring defense assets.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 21, "domain": "Data Access & Privacy", "process": "Data Sharing Agreement Approval", "purpose": "Governance gate before inter-agency or third-party data sharing.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 22, "domain": "Data Access & Privacy", "process": "Data Privacy Impact Assessment (DPIA) Sign-Off", "purpose": "Formal approval of privacy risk assessment before processing.", "authority": "Compliance", "jurisdiction": "EU (GDPR Art.35), India (DPDP Act 2023), UK (ICO)"},
+  {"id": 23, "domain": "Data Access & Privacy", "process": "Cross-Border Data Transfer Authorization", "purpose": "Approval for transferring personal data across jurisdictions.", "authority": "Compliance", "jurisdiction": "EU (SCCs), India (DPDP), Singapore (PDPA)"},
+  {"id": 24, "domain": "Data Access & Privacy", "process": "Data Subject Access Request (DSAR) Fulfillment", "purpose": "Controlled process for responding to individual data requests.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 25, "domain": "Data Access & Privacy", "process": "Consent Management Sign-Off", "purpose": "Approval of consent capture/withdrawal mechanisms.", "authority": "Compliance", "jurisdiction": "EU (GDPR), India (DPDP), Brazil (LGPD)"},
+  {"id": 26, "domain": "Data Access & Privacy", "process": "Data Breach Notification Authorization", "purpose": "Sign-off before notifying regulators/affected individuals.", "authority": "Executive/Mandatory", "jurisdiction": "EU (72-hour rule), US state laws, India (CERT-In)"},
+  {"id": 27, "domain": "Data Access & Privacy", "process": "Data Localization Compliance Review", "purpose": "Verifies data residency requirements are met.", "authority": "Compliance", "jurisdiction": "India (RBI data localization), Russia, China (PIPL)"},
+  {"id": 28, "domain": "Data Access & Privacy", "process": "Anonymization / De-Identification Approval", "purpose": "Sign-off certifying data meets anonymization threshold before reuse.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 29, "domain": "Data Access & Privacy", "process": "Data Retention & Deletion Authorization", "purpose": "Approval gate for scheduled purge of personal data.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 30, "domain": "Data Access & Privacy", "process": "Third-Party Data Processor Approval", "purpose": "Due-diligence sign-off before engaging a data processor.", "authority": "Compliance", "jurisdiction": "EU (GDPR Art.28), Global framework"},
+  {"id": 31, "domain": "Public Procurement", "process": "Sole-Source Justification Approval", "purpose": "Sign-off justifying non-competitive procurement.", "authority": "Executive/Mandatory", "jurisdiction": "US (FAR), India (GFR), UK (PCR)"},
+  {"id": 32, "domain": "Public Procurement", "process": "Tender Evaluation Committee Sign-Off", "purpose": "Formal approval of bid evaluation outcomes.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 33, "domain": "Public Procurement", "process": "Contract Award Authorization", "purpose": "Executive approval before contract execution.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 34, "domain": "Public Procurement", "process": "Emergency Procurement Approval", "purpose": "Expedited sign-off bypassing standard cycle in emergencies.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 35, "domain": "Public Procurement", "process": "Vendor Blacklisting / Debarment Decision", "purpose": "Formal decision to exclude a vendor from future bids.", "authority": "Executive/Mandatory", "jurisdiction": "India (CVC guidelines), US (SAM exclusions), EU (exclusion grounds)"},
+  {"id": 36, "domain": "Public Procurement", "process": "Framework Agreement Call-Off Approval", "purpose": "Sign-off for drawing down against a pre-approved framework.", "authority": "Operational/Daily", "jurisdiction": "UK (Crown Commercial Service), EU"},
+  {"id": 37, "domain": "Public Procurement", "process": "Local Content / Vendor Development Compliance", "purpose": "Verifies local sourcing quotas are met.", "authority": "Compliance", "jurisdiction": "GCC (In-Country Value/ICV), Saudi Arabia (Vision 2030)"},
+  {"id": 38, "domain": "Public Procurement", "process": "Procurement Risk Assessment Sign-Off", "purpose": "Approval of pre-award risk profiling for high-value contracts.", "authority": "Analytical/Strategic", "jurisdiction": "Global framework"},
+  {"id": 39, "domain": "Public Procurement", "process": "Change Order / Contract Amendment Approval", "purpose": "Authorization for modifying an active contract's scope/value.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 40, "domain": "Public Procurement", "process": "Post-Award Contract Performance Review", "purpose": "Periodic formal review sign-off against SLAs/KPIs.", "authority": "Analytical/Strategic", "jurisdiction": "Global framework"},
+  {"id": 41, "domain": "Cybersecurity Governance", "process": "Security Architecture Review Board Approval", "purpose": "Gate requiring architecture sign-off before deployment.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 42, "domain": "Cybersecurity Governance", "process": "Authority to Operate (ATO)", "purpose": "Formal risk acceptance before a system goes live.", "authority": "Executive/Mandatory", "jurisdiction": "US (FedRAMP/RMF), India (empanelled CERT-In auditor sign-off)"},
+  {"id": 43, "domain": "Cybersecurity Governance", "process": "Critical Infrastructure Cyber Resilience Certification", "purpose": "Sign-off certifying essential-service resilience posture.", "authority": "Compliance", "jurisdiction": "EU (NIS2), US (CISA), India (NCIIPC)"},
+  {"id": 44, "domain": "Cybersecurity Governance", "process": "Incident Severity Escalation Approval", "purpose": "Executive sign-off elevating incident response tier.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 45, "domain": "Cybersecurity Governance", "process": "Penetration Test Authorization (Rules of Engagement)", "purpose": "Formal approval before offensive security testing begins.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 46, "domain": "Cybersecurity Governance", "process": "Zero-Trust Architecture Migration Sign-Off", "purpose": "Approval gate for phased zero-trust rollout.", "authority": "Analytical/Strategic", "jurisdiction": "US (OMB M-22-09), Global framework"},
+  {"id": 47, "domain": "Cybersecurity Governance", "process": "Cyber Insurance Coverage Approval", "purpose": "Executive sign-off on cyber risk transfer terms.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 48, "domain": "Cybersecurity Governance", "process": "SOC/MSSP Onboarding Authorization", "purpose": "Approval to transition monitoring to a managed provider.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 49, "domain": "Cybersecurity Governance", "process": "Ransomware Payment Decision Authorization", "purpose": "Highest-level sign-off on whether to pay ransom demands.", "authority": "Executive/Mandatory", "jurisdiction": "US (OFAC considerations), Global framework"},
+  {"id": 50, "domain": "Cybersecurity Governance", "process": "National Cybersecurity Strategy Compliance Attestation", "purpose": "Periodic attestation against national cyber strategy mandates.", "authority": "Compliance", "jurisdiction": "EU (NIS2), India (National Cyber Security Policy), Saudi Arabia (NCA ECC)"},
+  {"id": 51, "domain": "AI Governance", "process": "AI System Risk Classification Sign-Off", "purpose": "Formal classification of AI system risk tier before deployment.", "authority": "Compliance", "jurisdiction": "EU (AI Act), Global framework"},
+  {"id": 52, "domain": "AI Governance", "process": "Algorithmic Impact Assessment Approval", "purpose": "Sign-off on assessed bias/fairness/impact of an AI system.", "authority": "Compliance", "jurisdiction": "Canada (AIA), EU (AI Act), Global framework"},
+  {"id": 53, "domain": "AI Governance", "process": "Model Deployment Authorization", "purpose": "Executive gate before releasing a model to production.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 54, "domain": "AI Governance", "process": "Training Data Provenance Approval", "purpose": "Sign-off verifying lawful basis and quality of training data.", "authority": "Compliance", "jurisdiction": "EU (AI Act), Global framework"},
+  {"id": 55, "domain": "AI Governance", "process": "Human Oversight Mechanism Certification", "purpose": "Confirms required human-in-the-loop controls exist.", "authority": "Compliance", "jurisdiction": "EU (AI Act Art.14), Global framework"},
+  {"id": 56, "domain": "AI Governance", "process": "AI Vendor Due-Diligence Sign-Off", "purpose": "Risk approval before procuring third-party AI/LLM services.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 57, "domain": "AI Governance", "process": "High-Risk AI Use Case Registration", "purpose": "Formal registration of AI systems meeting high-risk criteria.", "authority": "Compliance", "jurisdiction": "EU (AI Act Annex III), Global framework"},
+  {"id": 58, "domain": "AI Governance", "process": "Generative AI Acceptable Use Approval", "purpose": "Sign-off establishing internal guardrails for GenAI tools.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 59, "domain": "AI Governance", "process": "AI Incident Reporting Authorization", "purpose": "Approval gate for reporting AI-related incidents to regulators.", "authority": "Compliance", "jurisdiction": "EU (AI Act), Global framework"},
+  {"id": 60, "domain": "AI Governance", "process": "Autonomous System Safety Case Approval", "purpose": "Formal safety sign-off before autonomous system operation.", "authority": "Executive/Mandatory", "jurisdiction": "US (DoD AI Ethics), Global framework"},
+  {"id": 61, "domain": "Healthcare Regulation", "process": "Clinical Trial Protocol Approval", "purpose": "Ethics/regulatory sign-off before trial commencement.", "authority": "Compliance", "jurisdiction": "US (FDA/IRB), EU (EMA), India (CDSCO)"},
+  {"id": 62, "domain": "Healthcare Regulation", "process": "Medical Device Market Authorization", "purpose": "Approval to sell/deploy a medical device.", "authority": "Compliance", "jurisdiction": "US (FDA 510k), EU (MDR), India (CDSCO)"},
+  {"id": 63, "domain": "Healthcare Regulation", "process": "Hospital Accreditation Sign-Off", "purpose": "Formal certification of care-quality standards.", "authority": "Compliance", "jurisdiction": "US (Joint Commission), India (NABH), UK (CQC)"},
+  {"id": 64, "domain": "Healthcare Regulation", "process": "Electronic Health Record (EHR) Interoperability Certification", "purpose": "Certifies EHR systems meet data exchange standards.", "authority": "Compliance", "jurisdiction": "US (ONC), India (ABDM), EU (EHDS)"},
+  {"id": 65, "domain": "Healthcare Regulation", "process": "Drug Pricing / Reimbursement Approval", "purpose": "Sign-off on inclusion in national formulary/pricing schedule.", "authority": "Executive/Mandatory", "jurisdiction": "UK (NICE), India (NPPA)"},
+  {"id": 66, "domain": "Healthcare Regulation", "process": "Telemedicine Licensing Authorization", "purpose": "Approval for cross-border/cross-state telehealth practice.", "authority": "Compliance", "jurisdiction": "US (state licensure), India (Telemedicine Guidelines)"},
+  {"id": 67, "domain": "Healthcare Regulation", "process": "Pandemic Emergency Use Authorization", "purpose": "Expedited approval pathway during public health emergencies.", "authority": "Executive/Mandatory", "jurisdiction": "US (FDA EUA), India (CDSCO), Global (WHO EUL)"},
+  {"id": 68, "domain": "Healthcare Regulation", "process": "Healthcare Data Consent Governance", "purpose": "Sign-off on patient data sharing consent frameworks.", "authority": "Compliance", "jurisdiction": "India (ABDM consent manager), EU (GDPR health data)"},
+  {"id": 69, "domain": "Healthcare Regulation", "process": "Public Health Emergency Declaration Process", "purpose": "Executive authorization declaring a health emergency.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 70, "domain": "Healthcare Regulation", "process": "Vaccine Procurement & Allocation Approval", "purpose": "Sign-off on national vaccine procurement and distribution plan.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 71, "domain": "Financial Services & BFSI", "process": "Banking License Grant Approval", "purpose": "Central bank sign-off authorizing a new bank to operate.", "authority": "Executive/Mandatory", "jurisdiction": "India (RBI), EU (ECB), US (OCC)"},
+  {"id": 72, "domain": "Financial Services & BFSI", "process": "Anti-Money Laundering (AML) Program Certification", "purpose": "Formal sign-off on AML control effectiveness.", "authority": "Compliance", "jurisdiction": "Global framework (FATF-aligned)"},
+  {"id": 73, "domain": "Financial Services & BFSI", "process": "Core Banking System Change Approval", "purpose": "Governance gate for changes to critical banking infrastructure.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 74, "domain": "Financial Services & BFSI", "process": "Basel Capital Adequacy Attestation", "purpose": "Periodic regulatory sign-off on capital ratios.", "authority": "Compliance", "jurisdiction": "Global (Basel III), country-specific regulators"},
+  {"id": 75, "domain": "Financial Services & BFSI", "process": "Payment System Operator Authorization", "purpose": "Approval to operate a payment system/network.", "authority": "Executive/Mandatory", "jurisdiction": "India (RBI PSO), EU (PSD2), US (state MTL)"},
+  {"id": 76, "domain": "Financial Services & BFSI", "process": "Insurance Product Filing Approval", "purpose": "Regulatory sign-off before launching an insurance product.", "authority": "Compliance", "jurisdiction": "India (IRDAI), US (state DOI), EU (Solvency II)"},
+  {"id": 77, "domain": "Financial Services & BFSI", "process": "Fintech Sandbox Entry Approval", "purpose": "Gate for admitting a fintech into regulatory sandbox.", "authority": "Executive/Mandatory", "jurisdiction": "UK (FCA Sandbox), India (RBI Sandbox), Singapore (MAS)"},
+  {"id": 78, "domain": "Financial Services & BFSI", "process": "Suspicious Transaction Report (STR) Filing Sign-Off", "purpose": "Approval before filing STR/SAR with financial intelligence unit.", "authority": "Compliance", "jurisdiction": "Global framework (FIU-aligned)"},
+  {"id": 79, "domain": "Financial Services & BFSI", "process": "Cross-Border Remittance Corridor Approval", "purpose": "Sign-off authorizing a new remittance corridor.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 80, "domain": "Financial Services & BFSI", "process": "Digital Currency / CBDC Pilot Authorization", "purpose": "Executive approval to participate in central bank digital currency pilot.", "authority": "Executive/Mandatory", "jurisdiction": "India (e-Rupee), EU (Digital Euro), China (e-CNY)"},
+  {"id": 81, "domain": "Environmental Compliance", "process": "Environmental Impact Assessment (EIA) Approval", "purpose": "Sign-off before proceeding with a project affecting environment.", "authority": "Compliance", "jurisdiction": "Global framework (national EIA regimes)"},
+  {"id": 82, "domain": "Environmental Compliance", "process": "Emissions Permit Issuance", "purpose": "Regulatory approval to emit pollutants within limits.", "authority": "Compliance", "jurisdiction": "US (EPA), EU (ETS), India (CPCB)"},
+  {"id": 83, "domain": "Environmental Compliance", "process": "Carbon Credit Verification Sign-Off", "purpose": "Approval certifying carbon offset claims.", "authority": "Compliance", "jurisdiction": "Global (Verra, Gold Standard)"},
+  {"id": 84, "domain": "Environmental Compliance", "process": "Hazardous Waste Disposal Authorization", "purpose": "Sign-off before disposal of regulated hazardous materials.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 85, "domain": "Environmental Compliance", "process": "Renewable Energy Project Clearance", "purpose": "Approval gate for renewable infrastructure development.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 86, "domain": "Environmental Compliance", "process": "Water Usage Permit Approval", "purpose": "Sign-off authorizing industrial/agricultural water extraction.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 87, "domain": "Environmental Compliance", "process": "Protected Area Development Exception", "purpose": "Rare sign-off permitting development in protected zones.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 88, "domain": "Environmental Compliance", "process": "ESG Disclosure Attestation", "purpose": "Executive sign-off on annual ESG reporting accuracy.", "authority": "Compliance", "jurisdiction": "EU (CSRD), US (SEC climate rule), Global framework"},
+  {"id": 89, "domain": "Environmental Compliance", "process": "Deforestation-Free Supply Chain Certification", "purpose": "Approval verifying supply chain deforestation compliance.", "authority": "Compliance", "jurisdiction": "EU (EUDR), Global framework"},
+  {"id": 90, "domain": "Environmental Compliance", "process": "Climate Risk Disclosure Sign-Off", "purpose": "Formal approval of climate risk statements in financial filings.", "authority": "Compliance", "jurisdiction": "EU (CSRD), US (SEC), Global (TCFD-aligned)"},
+  {"id": 91, "domain": "Energy & Utilities", "process": "Power Purchase Agreement (PPA) Approval", "purpose": "Executive sign-off on long-term energy procurement contract.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 92, "domain": "Energy & Utilities", "process": "Grid Interconnection Authorization", "purpose": "Technical/regulatory approval to connect to national grid.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 93, "domain": "Energy & Utilities", "process": "Nuclear Facility Licensing Sign-Off", "purpose": "Highest-tier regulatory approval for nuclear operation.", "authority": "Executive/Mandatory", "jurisdiction": "US (NRC), France (ASN), India (AERB)"},
+  {"id": 94, "domain": "Energy & Utilities", "process": "Tariff Revision Approval", "purpose": "Regulatory sign-off on utility pricing changes.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 95, "domain": "Energy & Utilities", "process": "Critical Energy Infrastructure Protection Certification", "purpose": "Sign-off on resilience/security controls for energy assets.", "authority": "Compliance", "jurisdiction": "US (NERC CIP), EU (NIS2), Global framework"},
+  {"id": 96, "domain": "Energy & Utilities", "process": "Oil & Gas Exploration License Approval", "purpose": "Executive authorization to explore/extract hydrocarbons.", "authority": "Executive/Mandatory", "jurisdiction": "GCC (national oil authorities), Global framework"},
+  {"id": 97, "domain": "Energy & Utilities", "process": "Demand Response Program Authorization", "purpose": "Approval to enroll consumers in grid demand-response schemes.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 98, "domain": "Energy & Utilities", "process": "Energy Storage Deployment Sign-Off", "purpose": "Approval for grid-scale battery/storage installation.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 99, "domain": "Energy & Utilities", "process": "Utility Merger / Acquisition Regulatory Clearance", "purpose": "Sign-off from energy regulator on utility consolidation.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 100, "domain": "Energy & Utilities", "process": "Smart Meter Rollout Authorization", "purpose": "Approval gate for large-scale smart metering deployment.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 101, "domain": "Telecommunications", "process": "Spectrum License Allocation Approval", "purpose": "Executive sign-off allocating radio spectrum to operators.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (national telecom regulators)"},
+  {"id": 102, "domain": "Telecommunications", "process": "Network Interconnection Agreement Approval", "purpose": "Sign-off on inter-operator interconnection terms.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 103, "domain": "Telecommunications", "process": "Lawful Interception Compliance Certification", "purpose": "Confirms operator meets lawful intercept obligations.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 104, "domain": "Telecommunications", "process": "5G Infrastructure Deployment Authorization", "purpose": "Approval for national 5G rollout milestones.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 105, "domain": "Telecommunications", "process": "Undersea Cable Landing Rights Approval", "purpose": "Sign-off granting rights to land international cables.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 106, "domain": "Telecommunications", "process": "Number Portability Compliance Sign-Off", "purpose": "Approval certifying MNP process compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 107, "domain": "Telecommunications", "process": "Foreign Direct Investment (FDI) Clearance in Telecom", "purpose": "Regulatory sign-off on foreign ownership in telecom.", "authority": "Executive/Mandatory", "jurisdiction": "India (DoT/FDI policy), Global framework"},
+  {"id": 108, "domain": "Telecommunications", "process": "Satellite Communication License Approval", "purpose": "Executive authorization for satcom operations.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 109, "domain": "Telecommunications", "process": "Net Neutrality Compliance Attestation", "purpose": "Sign-off confirming non-discriminatory traffic management.", "authority": "Compliance", "jurisdiction": "EU, India (TRAI), Global framework"},
+  {"id": 110, "domain": "Telecommunications", "process": "Emergency Alert System Integration Approval", "purpose": "Sign-off authorizing carrier integration with national alert systems.", "authority": "Executive/Mandatory", "jurisdiction": "US (WEA), EU (EU-Alert), Global framework"},
+  {"id": 111, "domain": "Judicial & Legal", "process": "Judicial Appointment Confirmation Process", "purpose": "Formal process confirming appointment of judges.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (varies by constitution)"},
+  {"id": 112, "domain": "Judicial & Legal", "process": "Case Management System Rollout Approval", "purpose": "Sign-off deploying digital case management to courts.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 113, "domain": "Judicial & Legal", "process": "E-Filing System Certification", "purpose": "Approval certifying electronic court filing system readiness.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 114, "domain": "Judicial & Legal", "process": "Legal Aid Program Authorization", "purpose": "Executive sign-off establishing/funding legal aid services.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 115, "domain": "Judicial & Legal", "process": "Alternative Dispute Resolution (ADR) Panel Approval", "purpose": "Sign-off approving arbitrators/mediators panel.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 116, "domain": "Judicial & Legal", "process": "Court Digitization Rollout Sign-Off", "purpose": "Approval for phased digitization of court records.", "authority": "Executive/Mandatory", "jurisdiction": "India (e-Courts Mission), Global framework"},
+  {"id": 117, "domain": "Judicial & Legal", "process": "Extradition Request Authorization", "purpose": "Executive-level sign-off on extradition proceedings.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 118, "domain": "Judicial & Legal", "process": "Mutual Legal Assistance Treaty (MLAT) Request Approval", "purpose": "Sign-off on cross-border evidence/data requests.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 119, "domain": "Judicial & Legal", "process": "Judicial Data Privacy Governance", "purpose": "Approval of data handling standards for court records.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 120, "domain": "Judicial & Legal", "process": "Public Defender Resource Allocation Approval", "purpose": "Executive sign-off on legal defense resourcing.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 121, "domain": "Elections & Electoral", "process": "Electoral Roll Certification", "purpose": "Formal sign-off certifying voter roll accuracy.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 122, "domain": "Elections & Electoral", "process": "Voting System Certification", "purpose": "Technical/security certification of voting machines/software.", "authority": "Compliance", "jurisdiction": "US (EAC), India (ECI/EVM certification), Global framework"},
+  {"id": 123, "domain": "Elections & Electoral", "process": "Election Result Declaration Authorization", "purpose": "Formal sign-off declaring official election results.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 124, "domain": "Elections & Electoral", "process": "Campaign Finance Disclosure Approval", "purpose": "Sign-off on candidate/party finance disclosure compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 125, "domain": "Elections & Electoral", "process": "Postal/Remote Voting Authorization", "purpose": "Approval enabling remote voting mechanisms.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 126, "domain": "Elections & Electoral", "process": "Election Observer Accreditation Process", "purpose": "Sign-off accrediting domestic/international observers.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 127, "domain": "Elections & Electoral", "process": "Redistricting / Delimitation Approval", "purpose": "Executive sign-off on electoral boundary changes.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 128, "domain": "Elections & Electoral", "process": "Election Cybersecurity Readiness Certification", "purpose": "Sign-off confirming election infrastructure security posture.", "authority": "Compliance", "jurisdiction": "US (CISA), Global framework"},
+  {"id": 129, "domain": "Elections & Electoral", "process": "Political Party Registration Approval", "purpose": "Formal approval registering a new political party.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 130, "domain": "Elections & Electoral", "process": "Election Dispute Resolution Process", "purpose": "Formal process for adjudicating result challenges.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 131, "domain": "Taxation & Revenue", "process": "Tax Policy Change Approval", "purpose": "Executive/legislative sign-off enacting tax rate/rule changes.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 132, "domain": "Taxation & Revenue", "process": "Tax Refund Authorization", "purpose": "Sign-off releasing taxpayer refunds above threshold.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 133, "domain": "Taxation & Revenue", "process": "Advance Tax Ruling Approval", "purpose": "Formal sign-off providing binding tax treatment guidance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 134, "domain": "Taxation & Revenue", "process": "Transfer Pricing Audit Sign-Off", "purpose": "Approval finalizing transfer pricing audit findings.", "authority": "Compliance", "jurisdiction": "Global framework (OECD-aligned)"},
+  {"id": 135, "domain": "Taxation & Revenue", "process": "Tax Amnesty Scheme Authorization", "purpose": "Executive approval launching a tax amnesty program.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 136, "domain": "Taxation & Revenue", "process": "Digital Tax Filing System Certification", "purpose": "Approval certifying e-filing platform readiness.", "authority": "Compliance", "jurisdiction": "India (GSTN), Global framework"},
+  {"id": 137, "domain": "Taxation & Revenue", "process": "Customs Duty Exemption Approval", "purpose": "Sign-off granting duty exemption for specific imports.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 138, "domain": "Taxation & Revenue", "process": "Tax Treaty Ratification Process", "purpose": "Formal process ratifying bilateral tax treaties.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 139, "domain": "Taxation & Revenue", "process": "Large Taxpayer Audit Escalation Approval", "purpose": "Executive sign-off escalating high-value audit cases.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 140, "domain": "Taxation & Revenue", "process": "Revenue Forecast Sign-Off", "purpose": "Approval of official government revenue projections.", "authority": "Analytical/Strategic", "jurisdiction": "Global framework"},
+  {"id": 141, "domain": "Trade & Customs", "process": "Free Trade Agreement Ratification Process", "purpose": "Formal legislative/executive process ratifying an FTA.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 142, "domain": "Trade & Customs", "process": "Import/Export License Approval", "purpose": "Sign-off authorizing controlled goods trade.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 143, "domain": "Trade & Customs", "process": "Customs Valuation Dispute Resolution", "purpose": "Formal process resolving valuation disagreements.", "authority": "Compliance", "jurisdiction": "Global framework (WTO-aligned)"},
+  {"id": 144, "domain": "Trade & Customs", "process": "Anti-Dumping Duty Imposition Approval", "purpose": "Executive sign-off imposing anti-dumping tariffs.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (WTO-aligned)"},
+  {"id": 145, "domain": "Trade & Customs", "process": "Authorized Economic Operator (AEO) Certification", "purpose": "Approval granting trusted-trader status.", "authority": "Compliance", "jurisdiction": "Global framework (WCO SAFE)"},
+  {"id": 146, "domain": "Trade & Customs", "process": "Sanctions Screening Compliance Sign-Off", "purpose": "Approval confirming trade counterpart sanctions screening.", "authority": "Compliance", "jurisdiction": "Global framework (OFAC/EU/UN lists)"},
+  {"id": 147, "domain": "Trade & Customs", "process": "Special Economic Zone (SEZ) Establishment Approval", "purpose": "Executive sign-off establishing an SEZ.", "authority": "Executive/Mandatory", "jurisdiction": "India (SEZ Act), UAE (Free Zones), Global framework"},
+  {"id": 148, "domain": "Trade & Customs", "process": "Rules of Origin Certification", "purpose": "Sign-off certifying goods origin for preferential tariffs.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 149, "domain": "Trade & Customs", "process": "Strategic Trade Control License", "purpose": "Approval for export of dual-use/strategic goods.", "authority": "Compliance", "jurisdiction": "Global framework (Wassenaar-aligned)"},
+  {"id": 150, "domain": "Trade & Customs", "process": "Trade Facilitation Digital Platform Certification", "purpose": "Approval certifying single-window trade platform readiness.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 151, "domain": "Immigration & Border", "process": "Visa Policy Change Approval", "purpose": "Executive sign-off amending visa categories/rules.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 152, "domain": "Immigration & Border", "process": "Biometric Border Control System Certification", "purpose": "Approval certifying biometric ID systems at borders.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 153, "domain": "Immigration & Border", "process": "Refugee Status Determination Approval", "purpose": "Formal sign-off granting/denying refugee status.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (UNHCR-aligned)"},
+  {"id": 154, "domain": "Immigration & Border", "process": "Work Permit Quota Approval", "purpose": "Executive sign-off setting annual work permit quotas.", "authority": "Executive/Mandatory", "jurisdiction": "GCC (Kafala-linked quotas), Global framework"},
+  {"id": 155, "domain": "Immigration & Border", "process": "Border Watchlist Integration Authorization", "purpose": "Sign-off integrating security watchlists into border systems.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 156, "domain": "Immigration & Border", "process": "Citizenship-by-Investment Program Approval", "purpose": "Executive sign-off approving investor citizenship applications.", "authority": "Executive/Mandatory", "jurisdiction": "Caribbean states, Malta, Global framework"},
+  {"id": 157, "domain": "Immigration & Border", "process": "Deportation Order Authorization", "purpose": "Formal sign-off authorizing deportation proceedings.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 158, "domain": "Immigration & Border", "process": "E-Visa Platform Certification", "purpose": "Approval certifying online visa issuance system.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 159, "domain": "Immigration & Border", "process": "Cross-Border Data Sharing for Immigration Enforcement", "purpose": "Sign-off on inter-agency/inter-country data sharing for enforcement.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 160, "domain": "Immigration & Border", "process": "Diplomatic/Official Passport Issuance Approval", "purpose": "Sign-off authorizing issuance of official travel documents.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 161, "domain": "Land & Property", "process": "Land Title Digitization Approval", "purpose": "Sign-off authorizing digital land records rollout.", "authority": "Executive/Mandatory", "jurisdiction": "India (DILRMP), Global framework"},
+  {"id": 162, "domain": "Land & Property", "process": "Compulsory Land Acquisition Authorization", "purpose": "Executive sign-off on government land acquisition.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 163, "domain": "Land & Property", "process": "Zoning / Land Use Change Approval", "purpose": "Formal approval altering permitted land use.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 164, "domain": "Land & Property", "process": "Property Registration System Certification", "purpose": "Approval certifying digital registry platform readiness.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 165, "domain": "Land & Property", "process": "Real Estate Foreign Ownership Approval", "purpose": "Sign-off permitting foreign ownership of property.", "authority": "Executive/Mandatory", "jurisdiction": "GCC (freehold zones), Global framework"},
+  {"id": 166, "domain": "Land & Property", "process": "Urban Master Plan Approval", "purpose": "Executive sign-off adopting a city/regional master plan.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 167, "domain": "Land & Property", "process": "Heritage Site Development Exception Approval", "purpose": "Rare sign-off permitting development near protected heritage sites.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 168, "domain": "Land & Property", "process": "Land Dispute Mediation Process Approval", "purpose": "Formal process for resolving land ownership disputes.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 169, "domain": "Land & Property", "process": "Cadastral Survey Certification", "purpose": "Sign-off certifying accuracy of land survey data.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 170, "domain": "Land & Property", "process": "Affordable Housing Allocation Approval", "purpose": "Executive sign-off allocating subsidized housing units.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 171, "domain": "Intellectual Property", "process": "Patent Grant Approval", "purpose": "Formal sign-off granting patent protection.", "authority": "Compliance", "jurisdiction": "Global framework (WIPO-aligned)"},
+  {"id": 172, "domain": "Intellectual Property", "process": "Trademark Registration Approval", "purpose": "Sign-off registering a trademark.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 173, "domain": "Intellectual Property", "process": "Compulsory License Grant Authorization", "purpose": "Executive sign-off granting compulsory IP licensing (e.g., health emergencies).", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (TRIPS-aligned)"},
+  {"id": 174, "domain": "Intellectual Property", "process": "IP Infringement Enforcement Authorization", "purpose": "Sign-off authorizing enforcement action against infringement.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 175, "domain": "Intellectual Property", "process": "Technology Transfer Agreement Approval", "purpose": "Executive sign-off on cross-border tech transfer terms.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 176, "domain": "Intellectual Property", "process": "Geographical Indication (GI) Registration Approval", "purpose": "Sign-off certifying regional product GI status.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 177, "domain": "Intellectual Property", "process": "Trade Secret Protection Program Certification", "purpose": "Approval of internal trade-secret protection controls.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 178, "domain": "Intellectual Property", "process": "IP Licensing Royalty Approval", "purpose": "Executive sign-off on royalty rate/terms for IP licensing.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 179, "domain": "Intellectual Property", "process": "Software Copyright Registration Sign-Off", "purpose": "Approval registering software copyright claims.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 180, "domain": "Intellectual Property", "process": "National IP Strategy Adoption Approval", "purpose": "Executive sign-off adopting a national IP policy.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 181, "domain": "Critical Infrastructure Protection", "process": "Critical Infrastructure Designation Approval", "purpose": "Formal sign-off designating an asset as critical infrastructure.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 182, "domain": "Critical Infrastructure Protection", "process": "Physical Security Hardening Sign-Off", "purpose": "Approval of physical security upgrade plans for critical sites.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 183, "domain": "Critical Infrastructure Protection", "process": "Resilience Stress-Test Certification", "purpose": "Sign-off certifying infrastructure passed resilience testing.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 184, "domain": "Critical Infrastructure Protection", "process": "Interdependency Risk Assessment Approval", "purpose": "Executive sign-off on cross-sector infrastructure dependency risk.", "authority": "Analytical/Strategic", "jurisdiction": "Global framework"},
+  {"id": 185, "domain": "Critical Infrastructure Protection", "process": "Continuity of Operations Plan (COOP) Approval", "purpose": "Executive sign-off on government continuity planning.", "authority": "Executive/Mandatory", "jurisdiction": "US (FCD-1), Global framework"},
+  {"id": 186, "domain": "Critical Infrastructure Protection", "process": "Foreign Investment Screening in Critical Infrastructure", "purpose": "Regulatory sign-off screening foreign investment in critical assets.", "authority": "Executive/Mandatory", "jurisdiction": "US (CFIUS), EU (FDI Screening Regulation), India (Press Note 3)"},
+  {"id": 187, "domain": "Critical Infrastructure Protection", "process": "Emergency Powers Activation for Infrastructure Protection", "purpose": "Executive authorization activating emergency infrastructure controls.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 188, "domain": "Critical Infrastructure Protection", "process": "Critical Supplier Risk Certification", "purpose": "Sign-off assessing risk from critical infrastructure suppliers.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 189, "domain": "Critical Infrastructure Protection", "process": "Infrastructure Cyber-Physical Convergence Approval", "purpose": "Sign-off on integrated IT/OT security governance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 190, "domain": "Critical Infrastructure Protection", "process": "National Risk Register Update Approval", "purpose": "Executive sign-off updating the national critical risk register.", "authority": "Executive/Mandatory", "jurisdiction": "UK (National Risk Register), Global framework"},
+  {"id": 191, "domain": "Space & Aerospace", "process": "Satellite Launch License Approval", "purpose": "Executive/regulatory sign-off authorizing a launch.", "authority": "Executive/Mandatory", "jurisdiction": "US (FAA/FCC), India (IN-SPACe), Global framework"},
+  {"id": 192, "domain": "Space & Aerospace", "process": "Orbital Slot Allocation Approval", "purpose": "Sign-off allocating geostationary orbital slots.", "authority": "Executive/Mandatory", "jurisdiction": "Global (ITU-aligned)"},
+  {"id": 193, "domain": "Space & Aerospace", "process": "Space Debris Mitigation Compliance Certification", "purpose": "Approval certifying compliance with debris mitigation guidelines.", "authority": "Compliance", "jurisdiction": "Global framework (UN COPUOS)"},
+  {"id": 194, "domain": "Space & Aerospace", "process": "Remote Sensing Data Licensing Approval", "purpose": "Sign-off authorizing commercial sale of satellite imagery.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 195, "domain": "Space & Aerospace", "process": "Commercial Spaceport Licensing Approval", "purpose": "Executive sign-off authorizing spaceport operations.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 196, "domain": "Space & Aerospace", "process": "Astronaut/Crew Safety Certification", "purpose": "Formal sign-off certifying crewed mission safety readiness.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 197, "domain": "Space & Aerospace", "process": "Dual-Use Space Technology Export Approval", "purpose": "Compliance sign-off on export of dual-use space tech.", "authority": "Compliance", "jurisdiction": "Global framework (Wassenaar/MTCR-aligned)"},
+  {"id": 198, "domain": "Space & Aerospace", "process": "National Space Policy Adoption Approval", "purpose": "Executive sign-off adopting national space strategy.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 199, "domain": "Space & Aerospace", "process": "Satellite Constellation Interference Coordination Approval", "purpose": "Sign-off coordinating frequency interference mitigation.", "authority": "Compliance", "jurisdiction": "Global (ITU-aligned)"},
+  {"id": 200, "domain": "Space & Aerospace", "process": "Space Object Registration Approval", "purpose": "Formal registration of launched space objects.", "authority": "Compliance", "jurisdiction": "Global (UN Registration Convention)"},
+  {"id": 201, "domain": "Education Governance", "process": "Curriculum Framework Approval", "purpose": "Executive sign-off adopting a national/institutional curriculum.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 202, "domain": "Education Governance", "process": "Institution Accreditation Sign-Off", "purpose": "Formal certification of educational institution quality.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 203, "domain": "Education Governance", "process": "Examination Board Result Certification", "purpose": "Sign-off certifying official examination results.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 204, "domain": "Education Governance", "process": "Online Learning Platform Approval", "purpose": "Approval certifying e-learning platform meets standards.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 205, "domain": "Education Governance", "process": "Student Data Privacy Governance Approval", "purpose": "Sign-off on student data handling policy.", "authority": "Compliance", "jurisdiction": "US (FERPA), EU (GDPR), Global framework"},
+  {"id": 206, "domain": "Education Governance", "process": "Foreign University Campus Licensing Approval", "purpose": "Executive sign-off permitting foreign campus establishment.", "authority": "Executive/Mandatory", "jurisdiction": "India (UGC regulations), GCC (Education City models)"},
+  {"id": 207, "domain": "Education Governance", "process": "Scholarship / Grant Disbursement Authorization", "purpose": "Sign-off releasing education funding to recipients.", "authority": "Operational/Daily", "jurisdiction": "Global framework"},
+  {"id": 208, "domain": "Education Governance", "process": "Vocational Certification Standards Approval", "purpose": "Sign-off adopting national vocational skill standards.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 209, "domain": "Education Governance", "process": "School Safety Compliance Certification", "purpose": "Approval certifying institution safety compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 210, "domain": "Education Governance", "process": "Education Technology Procurement Approval", "purpose": "Executive sign-off on large-scale EdTech procurement.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 211, "domain": "Transportation & Aviation", "process": "Airworthiness Certification", "purpose": "Regulatory sign-off certifying aircraft safety compliance.", "authority": "Compliance", "jurisdiction": "US (FAA), EU (EASA), India (DGCA)"},
+  {"id": 212, "domain": "Transportation & Aviation", "process": "Air Operator Certificate (AOC) Approval", "purpose": "Executive sign-off authorizing an airline to operate.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 213, "domain": "Transportation & Aviation", "process": "Airspace Management Change Approval", "purpose": "Sign-off approving changes to controlled airspace structure.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 214, "domain": "Transportation & Aviation", "process": "Public Transit Fare Change Approval", "purpose": "Executive/regulatory sign-off on fare adjustments.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 215, "domain": "Transportation & Aviation", "process": "Autonomous Vehicle Testing Authorization", "purpose": "Approval permitting autonomous vehicle trials on public roads.", "authority": "Executive/Mandatory", "jurisdiction": "US (state DMV), UK (CCAV), Global framework"},
+  {"id": 216, "domain": "Transportation & Aviation", "process": "Port Authority Concession Approval", "purpose": "Executive sign-off granting port operation concessions.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 217, "domain": "Transportation & Aviation", "process": "Rail Safety Certification", "purpose": "Regulatory sign-off certifying rail system safety compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 218, "domain": "Transportation & Aviation", "process": "Drone / UAS Operation License Approval", "purpose": "Approval authorizing commercial drone operations.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 219, "domain": "Transportation & Aviation", "process": "Cross-Border Transport Corridor Agreement Approval", "purpose": "Executive sign-off on international transport corridor terms.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 220, "domain": "Transportation & Aviation", "process": "Vehicle Emissions Standard Compliance Certification", "purpose": "Sign-off certifying vehicles meet emissions standards.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 221, "domain": "Water & Natural Resources", "process": "Water Rights Allocation Approval", "purpose": "Executive sign-off allocating water usage rights.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 222, "domain": "Water & Natural Resources", "process": "Dam Safety Certification", "purpose": "Regulatory sign-off certifying dam structural safety.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 223, "domain": "Water & Natural Resources", "process": "Mining Concession Approval", "purpose": "Executive sign-off granting mineral extraction rights.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 224, "domain": "Water & Natural Resources", "process": "Fisheries Quota Allocation Approval", "purpose": "Sign-off setting/allocating fishing quotas.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 225, "domain": "Water & Natural Resources", "process": "Desalination Plant Licensing Approval", "purpose": "Executive sign-off authorizing desalination facility operation.", "authority": "Executive/Mandatory", "jurisdiction": "GCC (heavy desalination reliance), Global framework"},
+  {"id": 226, "domain": "Water & Natural Resources", "process": "Transboundary Water Sharing Agreement Approval", "purpose": "Executive sign-off on international water-sharing treaties.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 227, "domain": "Water & Natural Resources", "process": "Forest Clearance Approval", "purpose": "Regulatory sign-off permitting forest land diversion.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 228, "domain": "Water & Natural Resources", "process": "Groundwater Extraction Permit Approval", "purpose": "Sign-off authorizing groundwater usage above threshold.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 229, "domain": "Water & Natural Resources", "process": "Natural Resource Revenue Sharing Approval", "purpose": "Executive sign-off on resource revenue distribution formula.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 230, "domain": "Water & Natural Resources", "process": "Biodiversity Offset Program Certification", "purpose": "Sign-off certifying biodiversity offset compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 231, "domain": "Labour & Employment", "process": "Minimum Wage Revision Approval", "purpose": "Executive sign-off revising statutory minimum wage.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 232, "domain": "Labour & Employment", "process": "Foreign Worker Quota Approval", "purpose": "Executive sign-off setting foreign labor quotas.", "authority": "Executive/Mandatory", "jurisdiction": "GCC (Kafala-linked), Global framework"},
+  {"id": 233, "domain": "Labour & Employment", "process": "Workplace Safety Certification", "purpose": "Regulatory sign-off certifying workplace safety compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 234, "domain": "Labour & Employment", "process": "Collective Bargaining Agreement Ratification", "purpose": "Formal sign-off ratifying labor union agreements.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 235, "domain": "Labour & Employment", "process": "Gig Economy Worker Classification Approval", "purpose": "Regulatory sign-off on worker classification rules.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 236, "domain": "Labour & Employment", "process": "Mass Layoff Notification Compliance Approval", "purpose": "Sign-off confirming compliance before large-scale layoffs.", "authority": "Compliance", "jurisdiction": "US (WARN Act), EU (Collective Redundancies Directive)"},
+  {"id": 237, "domain": "Labour & Employment", "process": "Pension Fund Regulatory Approval", "purpose": "Executive sign-off on pension scheme regulatory compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 238, "domain": "Labour & Employment", "process": "Remote Work Policy Compliance Approval", "purpose": "Sign-off on cross-border remote work tax/labor compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 239, "domain": "Labour & Employment", "process": "Skills Certification Framework Approval", "purpose": "Executive sign-off adopting national skills framework.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework"},
+  {"id": 240, "domain": "Labour & Employment", "process": "Occupational Licensing Reciprocity Approval", "purpose": "Sign-off recognizing licenses across jurisdictions.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 241, "domain": "Anti-Corruption & Ethics", "process": "Conflict of Interest Disclosure Approval", "purpose": "Sign-off reviewing and clearing disclosed conflicts.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 242, "domain": "Anti-Corruption & Ethics", "process": "Whistleblower Protection Program Certification", "purpose": "Approval certifying whistleblower protection controls.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 243, "domain": "Anti-Corruption & Ethics", "process": "Gift & Hospitality Register Approval", "purpose": "Sign-off reviewing declared gifts above threshold.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 244, "domain": "Anti-Corruption & Ethics", "process": "Anti-Bribery Due Diligence Sign-Off", "purpose": "Approval of third-party anti-bribery risk assessment.", "authority": "Compliance", "jurisdiction": "Global framework (FCPA/UK Bribery Act-aligned)"},
+  {"id": 245, "domain": "Anti-Corruption & Ethics", "process": "Asset Declaration Verification Approval", "purpose": "Sign-off verifying public official asset declarations.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 246, "domain": "Anti-Corruption & Ethics", "process": "Integrity Pact Adoption Approval", "purpose": "Executive sign-off adopting procurement integrity pacts.", "authority": "Executive/Mandatory", "jurisdiction": "Global framework (Transparency International model)"},
+  {"id": 247, "domain": "Anti-Corruption & Ethics", "process": "Lobbying Disclosure Compliance Approval", "purpose": "Sign-off certifying lobbying activity disclosure compliance.", "authority": "Compliance", "jurisdiction": "US (LDA), EU (Transparency Register)"},
+  {"id": 248, "domain": "Anti-Corruption & Ethics", "process": "Ethics Committee Investigation Sign-Off", "purpose": "Formal approval closing an ethics investigation.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 249, "domain": "Anti-Corruption & Ethics", "process": "Political Donation Compliance Certification", "purpose": "Sign-off certifying political donation reporting compliance.", "authority": "Compliance", "jurisdiction": "Global framework"},
+  {"id": 250, "domain": "Anti-Corruption & Ethics", "process": "Anti-Corruption Training Completion Attestation", "purpose": "Sign-off confirming mandatory ethics training completion.", "authority": "Compliance", "jurisdiction": "Global framework"}
+];
+
+        function getAuthColor(auth) {
+            if(auth.includes("Executive")) return "bg-red-100 text-red-800 border-red-200";
+            if(auth.includes("Compliance")) return "bg-blue-100 text-blue-800 border-blue-200";
+            if(auth.includes("Operational")) return "bg-emerald-100 text-emerald-800 border-emerald-200";
+            return "bg-slate-100 text-slate-800 border-slate-200";
+        }
+
+        function getIcon(domain) {
+            const d = domain.toLowerCase();
+            if (d.includes('cyber') || d.includes('data')) return 'ph-shield-check';
+            if (d.includes('digital') || d.includes('ai ')) return 'ph-cpu';
+            if (d.includes('procurement') || d.includes('trade')) return 'ph-shopping-cart';
+            if (d.includes('tax') || d.includes('financial')) return 'ph-bank';
+            if (d.includes('infrastructure') || d.includes('energy') || d.includes('water')) return 'ph-bridge';
+            if (d.includes('law') || d.includes('judicial') || d.includes('ethics')) return 'ph-scales';
+            if (d.includes('health')) return 'ph-heartbeat';
+            if (d.includes('space') || d.includes('aviation')) return 'ph-airplane-tilt';
+            if (d.includes('defence')) return 'ph-shield-chevron';
+            return 'ph-file-text';
+        }
+
+        // Render Cards with pure inline HTML onclick logic
+        function renderCards(data) {
+            const grid = document.getElementById('cardGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if(data.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                document.getElementById('docCount').innerText = '0';
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            document.getElementById('docCount').innerText = data.length;
+            
+            const htmlString = data.map(item => `
+                <div onclick="openModal(${item.id})" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm card-hover flex flex-col h-full relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-brand-500 opacity-80 group-hover:opacity-100 transition"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+                            <i class="ph ${getIcon(item.domain)} text-xl"></i>
+                        </div>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getAuthColor(item.authority)}">
+                            ${item.authority.split('/')[0]}
+                        </span>
+                    </div>
+                    <div class="text-xs text-brand-600 font-bold uppercase tracking-wider mb-2">${item.domain}</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 leading-tight">${item.process}</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed flex-grow">${item.purpose}</p>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+                        <span class="text-sm font-semibold text-brand-600 group-hover:text-brand-800 transition flex items-center gap-1">
+                            Preview Process <i class="ph ph-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = htmlString;
+        }
+
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = docData.filter(item => {
+                return item.process.toLowerCase().includes(query) || 
+                       item.domain.toLowerCase().includes(query) || 
+                       item.jurisdiction.toLowerCase().includes(query);
+            });
+            renderCards(filteredData);
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('previewModal');
+        const backdrop = document.getElementById('modalBackdrop');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal(id) {
+            const item = docData.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('modalDetails').classList.remove('hidden');
+            document.getElementById('modalRequestForm').classList.add('hidden');
+            document.getElementById('modalSuccess').classList.add('hidden');
+            document.getElementById('modalFooter').classList.remove('hidden');
+
+            document.getElementById('modalTitle').innerText = item.process;
+            document.getElementById('hiddenProcessName').value = item.process;
+            document.getElementById('modalDesc').innerText = item.purpose;
+            
+            document.getElementById('modalIcon').innerHTML = `<i class="ph ${getIcon(item.domain)} text-2xl"></i>`;
+            
+            document.getElementById('modalBadges').innerHTML = `
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${getAuthColor(item.authority)}">
+                    <i class="ph ph-shield-check mr-1"></i> ${item.authority}
+                </span>
+            `;
+
+            document.getElementById('modalDomain').innerText = item.domain;
+            document.getElementById('modalAuthority').innerText = item.authority;
+            document.getElementById('modalJurisdiction').innerText = item.jurisdiction;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            backdrop.classList.remove('backdrop-exit');
+            backdrop.classList.add('backdrop-enter');
+            modalContent.classList.remove('modal-exit');
+            modalContent.classList.add('modal-enter');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function showRequestForm() {
+            document.getElementById('modalDetails').classList.add('hidden');
+            document.getElementById('modalFooter').classList.add('hidden');
+            document.getElementById('modalRequestForm').classList.remove('hidden');
+        }
+
+        function submitRequest() {
+            const btn = document.getElementById('btnSubmitRequest');
+            const originalContent = btn.innerHTML;
+            
+            const processName = document.getElementById('hiddenProcessName').value;
+            const requesterEmail = document.getElementById('requestEmail').value;
+            const useCase = document.getElementById('requestUseCase').value;
+            const company = document.getElementById('requestCompany').value || 'Not provided';
+            
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-lg"></i> Sending Request...`;
+            btn.disabled = true;
+
+            fetch("https://formsubmit.co/ajax/arvindpardeshi151@gmail.com", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    _subject: `New Governance Template Request: ${processName}`,
+                    Process_Requested: processName,
+                    Requester_Email: requesterEmail,
+                    Intended_Use_Case: useCase,
+                    Company: company,
+                    _replyto: requesterEmail,
+                    _captcha: "false"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modalRequestForm').classList.add('hidden');
+                document.getElementById('modalSuccess').classList.remove('hidden');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                document.getElementById('accessForm').reset();
+                document.getElementById('requestEmail').value = 'arvindpardeshi151@gmail.com'; 
+            })
+            .catch(error => {
+                console.error("API failed, falling back to mailto", error);
+                const subject = encodeURIComponent(`Governance Access Request: ${processName}`);
+                const body = encodeURIComponent(`Hello,\n\nI would like to request access to the following governance template:\n\nProcess: ${processName}\nRequester Email: ${requesterEmail}\nIntended Use Case: ${useCase}\nCompany: ${company}\n\nThank you.`);
+                window.location.href = `mailto:arvindpardeshi151@gmail.com?subject=${subject}&body=${body}`;
+                
+                document.getElementById('modalRequestForm').classList.add('hidden');
+                document.getElementById('modalSuccess').classList.remove('hidden');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                document.getElementById('accessForm').reset();
+                document.getElementById('requestEmail').value = 'arvindpardeshi151@gmail.com';
+            });
+        }
+
+        function closeModal() {
+            backdrop.classList.remove('backdrop-enter');
+            backdrop.classList.add('backdrop-exit');
+            modalContent.classList.remove('modal-enter');
+            modalContent.classList.add('modal-exit');
+
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 200);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Initialize grid on load
+        renderCards(docData);
+    </script>
+</body>
+</html>
