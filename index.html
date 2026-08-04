@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>White Enterprises | Enterprise Intelligence Portal</title>
+    <title>White Enterprises | Global Solutions & Capabilities</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #0A2540;
-            --accent-blue: #635BFF;
-            --light-blue: #F6F9FC;
-            --border-color: #E6E8EB;
-            --text-main: #333942;
-            --text-muted: #6B7280;
-            --white: #FFFFFF;
-            --badge-bg: #E0E6ED;
-            --badge-text: #4A5568;
-            --badge-new-bg: #E1FCEF;
-            --badge-new-text: #00875A;
+            --brand-primary: #051C2C; /* Deep Corporate Navy */
+            --brand-accent: #0056D2;  /* Action Blue */
+            --brand-accent-hover: #0043A8;
+            --bg-light: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #1E293B;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --status-green: #10B981;
         }
 
         * {
@@ -28,388 +26,461 @@
         }
 
         body {
-            background-color: var(--light-blue);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-light);
             color: var(--text-main);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            line-height: 1.5;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            line-height: 1.6;
         }
 
-        /* Executive Header */
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 20px 40px;
+        /* Top Utility Bar */
+        .utility-bar {
+            background: #020b12;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 8px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .brand h1 {
-            font-size: 20px;
+        .utility-bar span { margin-right: 20px; }
+        .status-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            background: var(--status-green);
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Main Navigation */
+        header {
+            background: var(--surface);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            color: var(--brand-primary);
+            letter-spacing: -0.5px;
         }
 
-        .sys-status {
-            font-size: 12px;
-            color: #A3B8CC;
-            font-weight: 400;
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
         }
 
-        .header-meta {
-            text-align: right;
-            font-size: 12px;
-            color: #A3B8CC;
-        }
-
-        .header-meta strong {
-            color: var(--white);
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
             font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
         }
 
-        /* Container & Layout */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex-grow: 1;
-            width: 100%;
+        nav a:hover { color: var(--brand-accent); }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, #0a2d47 100%);
+            color: white;
+            padding: 80px 5% 100px;
+            text-align: center;
         }
 
-        .search-container {
-            margin-bottom: 30px;
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #CBD5E1;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .search-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
         }
 
         .search-input {
             width: 100%;
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 15px;
-            padding: 14px 20px;
+            padding: 18px 25px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             outline: none;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .search-input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        /* Main Content Architecture */
+        .container {
+            padding: 60px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .search-input::placeholder {
-            color: var(--text-muted);
+        .section-header {
+            margin-bottom: 40px;
         }
 
-        .main-layout {
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--brand-primary);
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
             display: grid;
-            grid-template-columns: 2.5fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
+            margin-bottom: 80px;
         }
 
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Card Based Categories */
-        .category-group {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        .category-title {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-            color: var(--primary-blue);
-            border-bottom: 2px solid var(--light-blue);
-            padding-bottom: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        a {
-            color: var(--text-main);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        a:hover {
-            background-color: var(--light-blue);
-            color: var(--accent-blue);
-        }
-
-        /* Badges */
-        .badge {
-            font-size: 11px;
-            padding: 4px 8px;
+        /* Architecture Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            font-weight: 600;
-            background: var(--badge-bg);
-            color: var(--badge-text);
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .badge-new {
-            background: var(--badge-new-bg);
-            color: var(--badge-new-text);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: #CBD5E1;
         }
 
-        /* Sidebar Panels */
-        .sidebar-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .panel {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        .panel h3 {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--primary-blue);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--light-blue);
-            padding-bottom: 8px;
-        }
-
-        .diagnostics p {
-            font-size: 13px;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .diagnostics strong {
-            color: var(--text-main);
-        }
-
-        /* Modernized Terminal / Logs */
-        .activity-feed {
-            height: 180px;
-            overflow-y: auto;
+        .card-label {
             font-size: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            color: var(--text-muted);
-        }
-
-        .log-entry {
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--light-blue);
-        }
-
-        .log-time {
-            font-size: 10px;
-            color: #9CA3AF;
-            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--brand-accent);
+            font-weight: 700;
+            margin-bottom: 15px;
             display: block;
         }
 
-        /* Footer / Legal */
-        footer {
-            background-color: var(--white);
-            border-top: 1px solid var(--border-color);
-            padding: 30px 40px;
-            margin-top: auto;
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--brand-primary);
         }
 
-        .legal-box {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: justify;
-            max-width: 1200px;
-            margin: 0 auto;
+        .card p.desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 25px;
+            min-height: 45px;
+        }
+
+        /* Asset Links */
+        .asset-list {
+            list-style: none;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .asset-list li {
+            margin-bottom: 12px;
+        }
+
+        .asset-list a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: var(--bg-light);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .asset-list a:hover {
+            background: var(--brand-accent);
+            color: white;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.05);
+            color: inherit;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--brand-primary);
+            color: #94A3B8;
+            padding: 60px 5% 30px;
+            font-size: 14px;
         }
         
-        .legal-box strong {
-            color: var(--text-main);
+        .footer-legal {
+            border-top: 1px solid #1E293B;
+            padding-top: 20px;
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">
-            <h1>WHITE ENTERPRISES</h1>
-            <div class="sys-status">Enterprise Intelligence Portal | Cloud Node: AWS-AP-SOUTH-1</div>
+    <!-- Global Utility Ticker -->
+    <div class="utility-bar">
+        <div>
+            <span class="status-dot"></span> GLOBAL CLOUD INFRASTRUCTURE: OPERATIONAL
+            <span id="sysLoad" style="margin-left: 20px; color: #475569;">Compute Load: 2.4%</span>
         </div>
-        <div class="header-meta">
-            <div>System Time: <strong id="clock">00:00:00 UTC</strong></div>
-            <div>Clearance: <strong>Alpha Level (JINWHITE666)</strong></div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="search-container">
-            <input type="text" id="fileSearch" class="search-input" placeholder="Search enterprise repository (documents, policies, intelligence)..." onkeyup="filterFiles()">
-        </div>
-
-        <div class="main-layout">
-            <main id="directoryContainer">
-                
-                <!-- Category: AI & Cybersecurity Intelligence -->
-                <div class="category-group" data-cat="ai-cyber">
-                    <div class="category-title">AI & Cybersecurity Intelligence</div>
-                    <ul>
-                        <li><a href="Cybersecurity_AI_ML_Reference.html"><span>Cybersecurity AI & ML Reference</span><span class="badge badge-new">Synced 9m ago</span></a></li>
-                        <li><a href="AI_Cybersecurity.html"><span>AI Cybersecurity Protocols</span><span class="badge badge-new">Synced 14m ago</span></a></li>
-                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Doctrine Strategy</span><span class="badge badge-new">Synced 14m ago</span></a></li>
-                        <li><a href="Cybersecurity_Products.html"><span>Cybersecurity Product Suite</span><span class="badge badge-new">Synced 14m ago</span></a></li>
-                        <li><a href="Live_Threat_Tracker.html"><span>Live Threat Intelligence Tracker</span><span class="badge badge-new">Synced 14m ago</span></a></li>
-                        <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intelligence Matrix</span><span class="badge">Updated 5d ago</span></a></li>
-                        <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span><span class="badge">Catalog</span></a></li>
-                        <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span class="badge">Strategy</span></a></li>
-                        <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span><span class="badge">Research</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Category: Executive Portfolio & Identity -->
-                <div class="category-group" data-cat="profile">
-                    <div class="category-title">Executive Portfolio & Identity</div>
-                    <ul>
-                        <li><a href="Master_Competency_Directory.html"><span>Master Competency Directory</span><span class="badge badge-new">Synced 45m ago</span></a></li>
-                        <li><a href="My_Profile.html"><span>Executive Biography</span><span class="badge">Bio</span></a></li>
-                        <li><a href="My_Portfolio.html"><span>Work Portfolio</span><span class="badge">Work</span></a></li>
-                        <li><a href="PM_Daily_Handbook.html"><span>Project Management Daily Handbook</span><span class="badge">Playbook</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Category: Product & Service Offerings -->
-                <div class="category-group" data-cat="offerings">
-                    <div class="category-title">Product & Service Offerings</div>
-                    <ul>
-                        <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>IT Infrastructure Taxonomy Charter</span><span class="badge badge-new">Synced 46m ago</span></a></li>
-                        <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span class="badge">Matrix</span></a></li>
-                        <li><a href="Service_Offering.html"><span>Service Offerings Overview</span><span class="badge">Services</span></a></li>
-                        <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span><span class="badge">Master Catalog</span></a></li>
-                        <li><a href="IT_Infra_Business_Catalog.html"><span>IT Infrastructure Business Catalog</span><span class="badge">Infra</span></a></li>
-                        <li><a href="IT_Consulting_Skills_Catalog.html"><span>IT Consulting Skills Directory</span><span class="badge">Skills</span></a></li>
-                    </ul>
-                </div>
-
-                <!-- Category: Sales Intelligence & Operations -->
-                <div class="category-group" data-cat="sales-ops">
-                    <div class="category-title">Sales Intelligence & Operations</div>
-                    <ul>
-                        <li><a href="Customer_Pain_Points.html"><span>Customer Pain Points Analysis</span><span class="badge">Analysis</span></a></li>
-                        <li><a href="Enterprise_IT_Sales_Intelligence.html"><span>Enterprise IT Sales Intel</span><span class="badge">Intel</span></a></li>
-                        <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>SKU & Subscription Tracker</span><span class="badge">Tracker</span></a></li>
-                        <li><a href="White_DoorOpener_Assessment_Templates.zip"><span>Door-Opener Assessment Templates</span><span class="badge">ZIP Archive</span></a></li>
-                    </ul>
-                </div>
-
-            </main>
-
-            <aside class="sidebar-panel">
-                
-                <div class="panel diagnostics">
-                    <h3>System Health</h3>
-                    <p><strong>Latency:</strong> <span id="ping">14ms</span></p>
-                    <p><strong>Encryption:</strong> <span>AES-256-GCM Active</span></p>
-                    <p><strong>Active Nodes:</strong> <span>23 Master Index Files</span></p>
-                    <p><strong>Cloud Compute Load:</strong> <span id="sysLoad">2.4%</span></p>
-                </div>
-
-                <div class="panel">
-                    <h3>Recent Operations Activity</h3>
-                    <div class="activity-feed">
-                        <div class="log-entry">
-                            <span class="log-time">Just Now</span>
-                            Directory update complete. 23 index files synced successfully.
-                        </div>
-                        <div class="log-entry">
-                            <span class="log-time">2 mins ago</span>
-                            User authenticated via SSO [ID: JINWHITE666].
-                        </div>
-                        <div class="log-entry">
-                            <span class="log-time">15 mins ago</span>
-                            Automated threat intelligence definitions updated across 5 clusters.
-                        </div>
-                    </div>
-                </div>
-
-            </aside>
+        <div>
+            <span id="clock">00:00:00 UTC</span>
+            <span>| ENCLAVE: JINWHITE666</span>
         </div>
     </div>
 
+    <!-- Enterprise Navigation -->
+    <header>
+        <div class="logo">WHITE ENTERPRISES</div>
+        <nav>
+            <ul>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#research">Research & Insights</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Value Proposition -->
+    <div class="hero">
+        <h1>Intelligence for the Modern Enterprise</h1>
+        <p>Accelerate digital transformation with our integrated portfolio of next-generation cybersecurity products, elite consulting services, and quantum-ready solutions.</p>
+        
+        <div class="search-wrapper">
+            <input type="text" id="globalSearch" class="search-input" placeholder="Search products, services, and intelligence assets..." onkeyup="filterAssets()">
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ================= PRODUCTS CAPABILITY ================= -->
+        <div id="products" class="section-header">
+            <h2>Enterprise Products</h2>
+            <p>Scalable, secure, and deployment-ready software and hardware assets.</p>
+        </div>
+        <div class="grid-3" id="products-grid">
+            
+            <div class="card asset-container">
+                <span class="card-label">Security Software</span>
+                <h3>Cybersecurity Suite</h3>
+                <p class="desc">Comprehensive endpoint, network, and cloud security licensing and products.</p>
+                <ul class="asset-list">
+                    <li><a href="Cybersecurity_Products.html"><span>Cybersecurity Product Suite</span> <span class="badge">UPDATED</span></a></li>
+                    <li><a href="Live_Threat_Tracker.html"><span>Live Threat Intel Tracker</span> <span class="badge">LIVE</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Artificial Intelligence</span>
+                <h3>AI Application Ecosystem</h3>
+                <p class="desc">Pre-trained models, enterprise AI integrations, and automated operational software.</p>
+                <ul class="asset-list">
+                    <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span> <span class="badge">CATALOG</span></a></li>
+                    <li><a href="Cybersecurity_AI_ML_Reference.html"><span>AI/ML Threat Reference</span> <span class="badge">V 2.1</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Procurement</span>
+                <h3>Global Product Master</h3>
+                <p class="desc">The complete index of White Enterprises commercial off-the-shelf (COTS) offerings.</p>
+                <ul class="asset-list">
+                    <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span> <span class="badge">SKUs</span></a></li>
+                    <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>Subscription Unit Tracker</span> <span class="badge">FINANCE</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ================= SERVICES CAPABILITY ================= -->
+        <div id="services" class="section-header">
+            <h2>Professional Services</h2>
+            <p>Expert consulting, infrastructure management, and project execution.</p>
+        </div>
+        <div class="grid-3" id="services-grid">
+            
+            <div class="card asset-container">
+                <span class="card-label">Managed Services</span>
+                <h3>IT Infrastructure Management</h3>
+                <p class="desc">End-to-end management of enterprise architecture, cloud migrations, and taxonomy.</p>
+                <ul class="asset-list">
+                    <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>Infra Taxonomy Charter</span> <span class="badge">NEW</span></a></li>
+                    <li><a href="IT_Infra_Business_Catalog.html"><span>Infra Business Catalog</span> <span class="badge">SERVICES</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Strategic Consulting</span>
+                <h3>Advisory & Implementation</h3>
+                <p class="desc">Deploying elite talent to solve complex business, security, and technology challenges.</p>
+                <ul class="asset-list">
+                    <li><a href="Service_Offering.html"><span>Core Service Offerings</span> <span class="badge">OVERVIEW</span></a></li>
+                    <li><a href="IT_Consulting_Skills_Catalog.html"><span>Consulting Skills Directory</span> <span class="badge">TALENT</span></a></li>
+                    <li><a href="Master_Competency_Directory.html"><span>Master Competency Matrix</span> <span class="badge">INTERNAL</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Executive Delivery</span>
+                <h3>Project & Portfolio Leadership</h3>
+                <p class="desc">Frameworks and methodologies utilized by White Enterprises project management.</p>
+                <ul class="asset-list">
+                    <li><a href="PM_Daily_Handbook.html"><span>PM Daily Execution Handbook</span> <span class="badge">PLAYBOOK</span></a></li>
+                    <li><a href="My_Portfolio.html"><span>Executive Delivery Portfolio</span> <span class="badge">WORK</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ================= SOLUTIONS CAPABILITY ================= -->
+        <div id="solutions" class="section-header">
+            <h2>Industry Solutions</h2>
+            <p>Outcome-driven, multi-disciplinary frameworks designed for specific enterprise challenges.</p>
+        </div>
+        <div class="grid-3" id="solutions-grid">
+            
+            <div class="card asset-container">
+                <span class="card-label">Enterprise Security</span>
+                <h3>Zero-Trust Architecture</h3>
+                <p class="desc">A holistic solution combining threat intelligence, doctrine, and behavioral analytics.</p>
+                <ul class="asset-list">
+                    <li><a href="AI_Cybersecurity.html"><span>AI Cybersecurity Protocols</span> <span class="badge">POLICY</span></a></li>
+                    <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span> <span class="badge">FRAMEWORK</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Digital Transformation</span>
+                <h3>AI-Driven Business Modernization</h3>
+                <p class="desc">Integrating machine learning into core business operations to drive ROI and efficiency.</p>
+                <ul class="asset-list">
+                    <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span> <span class="badge">STRATEGY</span></a></li>
+                    <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span> <span class="badge">SOLUTIONS</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Future Horizons R&D</span>
+                <h3>Next-Gen Compute Solutions</h3>
+                <p class="desc">Preparing the enterprise for post-classical computing and evolving market threats.</p>
+                <ul class="asset-list">
+                    <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span> <span class="badge">R&D</span></a></li>
+                    <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intel Matrix</span> <span class="badge">RESEARCH</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ================= RESEARCH, INTELLIGENCE & SALES ================= -->
+        <div id="research" class="section-header">
+            <h2>Research, Sales Intel & Corporate Identity</h2>
+        </div>
+        <div class="grid-3" id="research-grid">
+            
+            <div class="card asset-container">
+                <span class="card-label">Market Intelligence</span>
+                <h3>Customer & Market Analysis</h3>
+                <ul class="asset-list">
+                    <li><a href="Enterprise_IT_Sales_Intelligence.html"><span>Enterprise IT Sales Intel</span> <span class="badge">DATA</span></a></li>
+                    <li><a href="Customer_Pain_Points.html"><span>Customer Pain Points Analysis</span> <span class="badge">MARKET</span></a></li>
+                    <li><a href="White_DoorOpener_Assessment_Templates.zip"><span>Door-Opener Assessments</span> <span class="badge">.ZIP</span></a></li>
+                </ul>
+            </div>
+
+            <div class="card asset-container">
+                <span class="card-label">Leadership</span>
+                <h3>Executive Profiles</h3>
+                <ul class="asset-list">
+                    <li><a href="My_Profile.html"><span>Principal Executive Biography</span> <span class="badge">BIO</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
     <footer>
-        <div class="legal-box">
-            <strong>CONFIDENTIAL & PROPRIETARY:</strong> Access to this repository is restricted to authorized personnel of White Enterprises. Use of these materials is subject to the terms defined in the corporate Master Services Agreement and EULA. Unauthorized extraction, distribution, or copying of proprietary intelligence, architectural blueprints, or strategic research is strictly prohibited and monitored.
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+                <strong style="color: white; font-size: 18px;">WHITE ENTERPRISES</strong><br>
+                Enterprise Intelligence & Solutions Architecture
+            </div>
+            <div class="footer-legal">
+                <div>&copy; 2026 White Enterprises Inc. All Rights Reserved.</div>
+                <div>CONFIDENTIAL & PROPRIETARY. Unauthorized access is strictly prohibited under the corporate EULA.</div>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Standard Time Update
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toUTCString().split(' ')[4] + ' UTC';
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // System Load Simulator
+        // System Clock & Load Sim
         setInterval(() => {
-            document.getElementById('ping').innerText = Math.floor(12 + Math.random() * 6) + 'ms';
-            document.getElementById('sysLoad').innerText = (1.8 + Math.random() * 1.5).toFixed(1) + '%';
-        }, 4500);
+            document.getElementById('clock').innerText = new Date().toUTCString().split(' ')[4] + ' UTC';
+            if(Math.random() > 0.5) {
+                document.getElementById('sysLoad').innerText = 'Compute Load: ' + (1.5 + Math.random() * 2).toFixed(1) + '%';
+            }
+        }, 1000);
 
-        // Document Filter
-        function filterFiles() {
-            const query = document.getElementById('fileSearch').value.toLowerCase();
-            const groups = document.querySelectorAll('.category-group');
+        // Advanced Search Filter for the new Card Architecture
+        function filterAssets() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.asset-container');
 
-            groups.forEach(group => {
-                let hasVisibleLink = false;
-                const links = group.querySelectorAll('li');
+            cards.forEach(card => {
+                let hasMatch = false;
+                
+                // Check card title and description
+                const cardText = card.innerText.toLowerCase();
+                if (cardText.includes(query)) {
+                    hasMatch = true;
+                }
 
-                links.forEach(li => {
-                    const text = li.textContent.toLowerCase();
-                    if (text.includes(query)) {
+                // Hide/Show individual list items
+                const listItems = card.querySelectorAll('li');
+                listItems.forEach(li => {
+                    const linkText = li.innerText.toLowerCase();
+                    if (linkText.includes(query) || query === '') {
                         li.style.display = '';
-                        hasVisibleLink = true;
+                        hasMatch = true; // If a child matches, the card must show
                     } else {
                         li.style.display = 'none';
                     }
                 });
 
-                group.style.display = hasVisibleLink ? '' : 'none';
+                // Hide/Show the entire card
+                card.style.display = hasMatch ? '' : 'none';
             });
         }
     </script>
