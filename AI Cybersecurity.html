@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAI Security: Consolidated Market Matrix 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            900: '#070A11', 
+                            800: '#111520', 
+                            700: '#1E2536', 
+                            accent: '#00F0FF',
+                            accentHover: '#00D1DF',
+                            alert: '#FF3366', 
+                            success: '#00FF9D'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            background-color: #070A11;
+            color: #E5E7EB;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #070A11; }
+        ::-webkit-scrollbar-thumb { background: #1E2536; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        .glow-accent { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .glow-text { text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        
+        @keyframes pulse-border {
+            0% { border-color: rgba(0, 240, 255, 0.2); }
+            50% { border-color: rgba(0, 240, 255, 0.6); }
+            100% { border-color: rgba(0, 240, 255, 0.2); }
+        }
+        .animate-border { animation: pulse-border 4s infinite; }
+
+        #network-canvas-container {
+            width: 100%;
+            height: 220px;
+            background: radial-gradient(circle at center, #111520 0%, #070A11 100%);
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid #00F0FF;
+            color: #00F0FF;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="border-b border-cyber-700 bg-cyber-800/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="ph ph-shield-check text-cyber-accent text-3xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-white glow-text">Nexus<span class="text-cyber-accent">AI</span> Matrix</span>
+                </div>
+                <div class="hidden md:flex space-x-6 items-center">
+                    <div class="text-xs text-gray-400 font-mono bg-cyber-900 px-3 py-1 rounded-full border border-cyber-700">
+                        <i class="ph ph-funnel text-cyber-success inline"></i> Deduplicated: 1002 Raw Rows → 24 Core Platforms
+                    </div>
+                    <button onclick="downloadCSV()" class="flex items-center gap-2 bg-cyber-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition border border-gray-600">
+                        <i class="ph ph-download-simple"></i> Export Clean CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">2026 AI Cybersecurity & Agentic Landscape</h1>
+            <p class="text-gray-400 max-w-3xl text-sm">
+                A unified, deduplicated dashboard cross-mapping advanced Threat Defense mechanisms, Agentic SOC/XDR solutions, and AI Security Posture Management (AI-SPM) platforms.[cite: 1, 2]
+            </p>
+        </div>
+
+        <!-- MAS Animation Header -->
+        <div class="mb-8">
+            <div class="p-1 border border-cyber-700 rounded-xl bg-cyber-800 animate-border">
+                <div id="network-canvas-container"></div>
+                <div class="p-3 bg-cyber-800 rounded-b-lg border-t border-cyber-700 text-xs text-gray-400 flex justify-between items-center">
+                    <span class="font-mono">Topology: Agentic Threat Intelligence & Multi-Agent Swarms</span>
+                    <div class="flex gap-4">
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyber-success"></span> Defense Agents</span>
+                        <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyber-alert"></span> Zero-Day Signals</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-cyber-700 mb-6 gap-2">
+            <button class="py-2 px-4 tab-active font-medium text-sm transition flex items-center" onclick="switchTab('catalog')">
+                <i class="ph ph-squares-four mr-2"></i> Unified Product Catalog
+            </button>
+            <button class="py-2 px-4 text-gray-400 hover:text-white font-medium text-sm transition flex items-center" onclick="switchTab('matrix')">
+                <i class="ph ph-git-merge mr-2"></i> Threat Cross-Mapping Matrix
+            </button>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+            <div class="flex gap-2">
+                <button class="filter-btn bg-cyber-accent text-cyber-900 font-semibold px-3 py-1.5 rounded-md text-xs transition" data-filter="All">All Domains</button>
+                <button class="filter-btn bg-cyber-800 text-gray-300 border border-cyber-700 hover:bg-cyber-700 px-3 py-1.5 rounded-md text-xs transition" data-filter="AI-SPM">AI-SPM</button>
+                <button class="filter-btn bg-cyber-800 text-gray-300 border border-cyber-700 hover:bg-cyber-700 px-3 py-1.5 rounded-md text-xs transition" data-filter="Agentic SOC">SOC / XDR</button>
+                <button class="filter-btn bg-cyber-800 text-gray-300 border border-cyber-700 hover:bg-cyber-700 px-3 py-1.5 rounded-md text-xs transition" data-filter="Dev Framework">Dev / Agent</button>
+                <button class="filter-btn bg-cyber-800 text-gray-300 border border-cyber-700 hover:bg-cyber-700 px-3 py-1.5 rounded-md text-xs transition" data-filter="CPS/Infra">CPS / Infra</button>
+            </div>
+            <div class="relative w-full md:w-64">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="Search platforms..." class="w-full bg-cyber-900 border border-cyber-700 text-sm rounded-lg focus:ring-cyber-accent focus:border-cyber-accent pl-9 p-2 text-white">
+            </div>
+        </div>
+
+        <!-- View 1: Unified Product Catalog -->
+        <div id="view-catalog" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Injected via JS -->
+        </div>
+
+        <!-- View 2: Threat Cross-Mapping Matrix -->
+        <div id="view-matrix" class="hidden">
+            <div class="bg-cyber-800 border border-cyber-700 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-300">
+                        <thead class="text-xs text-gray-400 uppercase bg-cyber-900/80 border-b border-cyber-700">
+                            <tr>
+                                <th class="px-5 py-4">Threat / Vulnerability</th>
+                                <th class="px-5 py-4">Defense Strategy</th>
+                                <th class="px-5 py-4">Platform Mapping</th>
+                                <th class="px-5 py-4">Operational Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrixBody">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Cleaned, Deduplicated, and Cross-Mapped Data
+        const masterData = [
+            { id: "aispm-01", name: "Oligo", vendor: "Oligo Security", domain: "AI-SPM", category: "Runtime App Security", team: "Blue", icon: "ph-shield-chevron", threat: "Shadow AI & Data Leakage", defense: "Runtime library monitoring (eBPF) & dynamic AI-BOMs.", benefit: "Prevents data oversharing and ensures GenAI usage compliance." },
+            { id: "aispm-02", name: "Knostic", vendor: "Knostic", domain: "AI-SPM", category: "Access Control", team: "White", icon: "ph-lock-key", threat: "LLM Oversharing (RAG Risks)", defense: "Enforces need-to-know boundaries & forensic auditing.", benefit: "Secures enterprise data flow to Copilot and Gemini." },
+            { id: "aispm-03", name: "Lakera Guard", vendor: "Lakera", domain: "AI-SPM", category: "AI Firewall", team: "Blue", icon: "ph-wall", threat: "Prompt Injections & Toxicity", defense: "Real-time I/O filtering using Gandalf Intel.", benefit: "Blocks malicious prompts before execution." },
+            { id: "aispm-04", name: "HiddenLayer", vendor: "HiddenLayer", domain: "AI-SPM", category: "ML Model Security", team: "Blue", icon: "ph-brain", threat: "Model Poisoning & Adversarial ML", defense: "Machine Learning Detection & Response (MLDR).", benefit: "Secures proprietary AI algorithms and infrastructure." },
+            { id: "aispm-05", name: "Galileo", vendor: "Galileo", domain: "AI-SPM", category: "Observability", team: "White", icon: "ph-eye", threat: "AI Hallucinations & Drift", defense: "Continuous evaluation & autonomous data quality analysis.", benefit: "Reduces unmanaged risk and boosts model accuracy." },
+            { id: "aispm-06", name: "Cyata", vendor: "Cyata", domain: "AI-SPM", category: "Agentic Identity", team: "White", icon: "ph-fingerprint", threat: "Rogue AI Agents", defense: "Control plane for agentic identities & intent capture.", benefit: "Closes system access gaps exploited by autonomous agents." },
+            { id: "aispm-07", name: "Takumi", vendor: "GMO Flatt Security", domain: "AI-SPM", category: "AI Security Agent", team: "Red", icon: "ph-bug-beetle", threat: "Unpatched Zero-Days", defense: "Autonomous whitebox/blackbox penetration testing.", benefit: "Automates routine security tasks and diagnostic reporting." },
+            
+            { id: "soc-01", name: "Purple AI", vendor: "SentinelOne", domain: "Agentic SOC", category: "Threat Hunting", team: "Blue", icon: "ph-magnifying-glass", threat: "Alert Fatigue & Slow Triage", defense: "Natural language query translation via GenAI analyst.", benefit: "Accelerates tactical hunting and incident triage." },
+            { id: "soc-02", name: "Cortex XSIAM (Precision AI)", vendor: "Palo Alto Networks", domain: "Agentic SOC", category: "SecOps Platform", team: "Blue", icon: "ph-crosshair", threat: "Fragmented SIEM Data", defense: "Cross-domain correlation & XSOAR playbook automation.", benefit: "Unifies SOC operations into a single autonomous tower." },
+            { id: "soc-03", name: "Charlotte AI (Falcon)", vendor: "CrowdStrike", domain: "Agentic SOC", category: "Endpoint Protection", team: "Blue", icon: "ph-bird", threat: "Evasive Intrusions", defense: "AI indicators of attack (IOA) & automated hunting.", benefit: "Cuts down analyst workload and detection latency." },
+            { id: "soc-04", name: "Intezer Forensic AI SOC", vendor: "Intezer", domain: "Agentic SOC", category: "Malware Analysis", team: "Blue", icon: "ph-dna", threat: "Obfuscated Malware", defense: "Autonomous alert triage backed by multi-model fusion.", benefit: "Provides evidence-backed verdicts without human intervention." },
+            { id: "soc-05", name: "ActiveAI Security", vendor: "Darktrace", domain: "Agentic SOC", category: "Behavioral NDR", team: "Blue", icon: "ph-activity", threat: "Zero-Day Threats", defense: "Self-learning AI monitoring deviations from normal ops.", benefit: "Catches insider threats and novel attacks instantly." },
+            { id: "soc-06", name: "HexStrike AI", vendor: "Open Source", domain: "Agentic SOC", category: "Offensive Orchestration", team: "Red", icon: "ph-sword", threat: "Advanced Persistent Threats (APT)", defense: "Autonomous attack lifecycle management (MCP framework).", benefit: "Red-teams defenses using 150+ automated tool integrations." },
+
+            { id: "dev-01", name: "LangChain", vendor: "LangChain Inc.", domain: "Dev Framework", category: "LLM Orchestration", team: "Yellow", icon: "ph-link", threat: "Insecure Tool Execution", defense: "Structured prompt chaining and safe tool integration.", benefit: "Standardizes secure building of agentic workflows." },
+            { id: "dev-02", name: "AIOS", vendor: "agiresearch", domain: "Dev Framework", category: "Agent Kernel", team: "Yellow", icon: "ph-cpu", threat: "Agent Resource Hijacking", defense: "OS-level scheduling, memory management, and sandboxing.", benefit: "Safely runs multiple concurrent AI agents without overlap." },
+            { id: "dev-03", name: "NeMo Guardrails", vendor: "NVIDIA", domain: "Dev Framework", category: "Safety Logic", team: "Purple", icon: "ph-code", threat: "Malicious Outputs", defense: "Programmable rails & input/output interception (Colang).", benefit: "Defines strict logic boundaries for GenAI apps." },
+            { id: "dev-04", name: "Promptfoo", vendor: "Open Source", domain: "Dev Framework", category: "Red Teaming", team: "Red", icon: "ph-terminal", threat: "Untested Prompt Injections", defense: "Adversarial attack generation & pipeline CI/CD testing.", benefit: "Identifies app vulnerabilities before production deployment." },
+            { id: "dev-05", name: "SWE-agent & Devin", vendor: "Cognition/Princeton", domain: "Dev Framework", category: "Autonomous Dev", team: "Yellow", icon: "ph-braces", threat: "Vulnerable Code Creation", defense: "Sandboxed execution and Agent-Computer Interfaces (ACI).", benefit: "Automates software engineering safely." },
+
+            { id: "cps-01", name: "Armis Centrix", vendor: "Armis", domain: "CPS/Infra", category: "Cyber Exposure Management", team: "Blue", icon: "ph-broadcast", threat: "Unmanaged IoT/OT Devices", defense: "Asset Intelligence Engine & agentless visibility.", benefit: "Secures IoMT, OT, and IT environments universally." },
+            { id: "cps-02", name: "Claroty xDome", vendor: "Claroty", domain: "CPS/Infra", category: "CPS Protection", team: "Blue", icon: "ph-factory", threat: "Industrial Lateral Movement", defense: "OT micro-segmentation & continuous threat detection.", benefit: "Prevents ransomware spread in critical manufacturing." },
+            { id: "cps-03", name: "Cloudflare One", vendor: "Cloudflare", domain: "CPS/Infra", category: "SASE / Zero Trust", team: "Blue", icon: "ph-cloud", threat: "VPN Exploitation", defense: "SSE/SASE platform replacing VPNs with strict ZTNA.", benefit: "Secures edge access seamlessly." },
+            { id: "cps-04", name: "Secure Firewall", vendor: "Cisco", domain: "CPS/Infra", category: "Network Security", team: "Blue", icon: "ph-wall", threat: "Network Intrusions", defense: "Next-Gen Firewall with Snort 3 IPS & URL filtering.", benefit: "Deep packet inspection and access control." }
+        ];
+
+        const teamColors = {
+            "Red": "text-red-400 bg-red-400/10 border-red-500/30",
+            "Blue": "text-blue-400 bg-blue-400/10 border-blue-500/30",
+            "White": "text-gray-200 bg-gray-400/10 border-gray-500/30",
+            "Yellow": "text-yellow-400 bg-yellow-400/10 border-yellow-500/30",
+            "Purple": "text-purple-400 bg-purple-400/10 border-purple-500/30"
+        };
+
+        // Render Functions
+        function renderCatalog(data) {
+            const grid = document.getElementById('view-catalog');
+            grid.innerHTML = '';
+            
+            data.forEach(item => {
+                const colorClass = teamColors[item.team] || "text-gray-400 bg-gray-400/10 border-gray-500/30";
+                
+                grid.innerHTML += `
+                    <div class="bg-cyber-800 border border-cyber-700 rounded-xl p-5 hover:border-cyber-accent/50 transition relative overflow-hidden flex flex-col group">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="p-2.5 bg-cyber-900 rounded-lg border border-cyber-700 text-xl text-cyber-accent">
+                                <i class="${item.icon}"></i>
+                            </div>
+                            <span class="${colorClass} text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded">
+                                ${item.team} Team
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1 group-hover:text-cyber-accent transition">${item.name}</h3>
+                        <p class="text-xs text-cyber-accent font-mono mb-4">${item.vendor} &bull; ${item.category}</p>
+                        
+                        <div class="flex-grow space-y-3 mt-2">
+                            <div>
+                                <span class="text-[10px] text-gray-500 uppercase tracking-widest block mb-1">Defense Capability</span>
+                                <p class="text-sm text-gray-300 leading-snug">${item.defense}</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-cyber-700">
+                            <span class="inline-block bg-cyber-900 text-gray-400 text-xs px-2.5 py-1 rounded border border-cyber-700">
+                                ${item.domain}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderMatrix(data) {
+            const tbody = document.getElementById('matrixBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                const colorClass = teamColors[item.team] || "text-gray-400";
+                tbody.innerHTML += `
+                    <tr class="hover:bg-cyber-700/30 border-b border-cyber-700/50 transition">
+                        <td class="px-5 py-4">
+                            <div class="font-medium text-red-400 text-sm flex items-center gap-2">
+                                <i class="ph ph-warning-circle"></i> ${item.threat}
+                            </div>
+                        </td>
+                        <td class="px-5 py-4">
+                            <div class="text-gray-300 text-sm leading-relaxed">${item.defense}</div>
+                        </td>
+                        <td class="px-5 py-4">
+                            <div class="font-bold text-white mb-0.5">${item.name}</div>
+                            <div class="text-xs text-cyber-accent font-mono">${item.category}</div>
+                        </td>
+                        <td class="px-5 py-4">
+                            <div class="text-green-400 text-sm flex items-start gap-2 leading-relaxed">
+                                <i class="ph ph-check-circle mt-0.5"></i> <span>${item.benefit}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Logic
+        function switchTab(tab) {
+            const catalog = document.getElementById('view-catalog');
+            const matrix = document.getElementById('view-matrix');
+            const buttons = document.querySelectorAll('.tab-active, [onclick^="switchTab"]');
+            
+            buttons.forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-gray-400');
+            });
+
+            if (tab === 'catalog') {
+                catalog.classList.remove('hidden');
+                matrix.classList.add('hidden');
+                event.currentTarget.classList.add('tab-active');
+                event.currentTarget.classList.remove('text-gray-400');
+            } else {
+                catalog.classList.add('hidden');
+                matrix.classList.remove('hidden');
+                event.currentTarget.classList.add('tab-active');
+                event.currentTarget.classList.remove('text-gray-400');
+            }
+        }
+
+        function filterData() {
+            let activeFilter = document.querySelector('.filter-btn.bg-cyber-accent').dataset.filter;
+            let query = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = masterData.filter(item => {
+                let matchFilter = activeFilter === 'All' || item.domain === activeFilter;
+                let matchQuery = item.name.toLowerCase().includes(query) || 
+                                 item.vendor.toLowerCase().includes(query) || 
+                                 item.threat.toLowerCase().includes(query) ||
+                                 item.category.toLowerCase().includes(query);
+                return matchFilter && matchQuery;
+            });
+
+            renderCatalog(filtered);
+            renderMatrix(filtered);
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-cyber-accent', 'text-cyber-900');
+                    b.classList.add('bg-cyber-800', 'text-gray-300');
+                });
+                e.target.classList.add('bg-cyber-accent', 'text-cyber-900');
+                e.target.classList.remove('bg-cyber-800', 'text-gray-300');
+                filterData();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+
+        function downloadCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,ID,Product Name,Vendor,Domain,Category,Team Alignment,Threat Addressed,Defense Strategy,Operational Benefit\n";
+            masterData.forEach(r => {
+                let row = `"${r.id}","${r.name}","${r.vendor}","${r.domain}","${r.category}","${r.team}","${r.threat}","${r.defense}","${r.benefit}"`;
+                csvContent += row + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "NexusAI_Security_Catalog_2026.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Particle Animation
+        function initNetwork() {
+            const canvas = document.createElement('canvas');
+            const container = document.getElementById('network-canvas-container');
+            container.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            
+            let width = container.clientWidth;
+            let height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            const nodes = Array.from({length: 40}, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.7,
+                vy: (Math.random() - 0.5) * 0.7,
+                type: Math.random() > 0.8 ? 'alert' : 'agent'
+            }));
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                nodes.forEach((n, i) => {
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > width) n.vx *= -1;
+                    if (n.y < 0 || n.y > height) n.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.type === 'alert' ? 3 : 2, 0, Math.PI * 2);
+                    ctx.fillStyle = n.type === 'alert' ? '#FF3366' : '#00FF9D';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = ctx.fillStyle;
+                    ctx.fill();
+
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dist = Math.hypot(n.x - nodes[j].x, n.y - nodes[j].y);
+                        if (dist < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(n.x, n.y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = (n.type === 'alert' || nodes[j].type === 'alert') 
+                                ? `rgba(255, 51, 102, ${1 - dist/100})` 
+                                : `rgba(0, 240, 255, ${0.4 - dist/250})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                width = container.clientWidth; height = container.clientHeight;
+                canvas.width = width; canvas.height = height;
+            });
+        }
+
+        // Init
+        window.onload = () => {
+            renderCatalog(masterData);
+            renderMatrix(masterData);
+            initNetwork();
+        };
+    </script>
+</body>
+</html>

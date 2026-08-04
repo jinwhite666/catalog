@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNIVEX // LIVE THREAT TRACKER</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --void:#05050a;
+    --void2:#0a0a12;
+    --panel:#0d0f18;
+    --gold:#C9A84C;
+    --gold-dim:#7a6a35;
+    --cyan:#00D4FF;
+    --cyan-dim:#0a5a6e;
+    --red:#ff3b5c;
+    --green:#2bff9c;
+    --text:#d8dde8;
+    --textdim:#7c8494;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Share Tech Mono', monospace;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; z-index:999;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+  }
+  body::after{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; z-index:998;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%);
+  }
+  .scan{
+    position:fixed; left:0; right:0; height:120px; z-index:997; pointer-events:none;
+    background:linear-gradient(180deg, transparent, rgba(0,212,255,0.06), transparent);
+    animation:scanmove 7s linear infinite;
+  }
+  @keyframes scanmove{ 0%{top:-120px;} 100%{top:100%;} }
+
+  h1,h2,h3,.mono-head{ font-family:'Orbitron', sans-serif; letter-spacing:0.08em; }
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(180deg, rgba(6,7,12,0.98), rgba(6,7,12,0.92));
+    border-bottom:1px solid rgba(201,168,76,0.25);
+    padding:14px 22px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    backdrop-filter:blur(6px);
+  }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .brand-mark{
+    width:38px;height:38px; border:2px solid var(--gold); border-radius:4px; position:relative;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 14px rgba(201,168,76,0.35), inset 0 0 8px rgba(201,168,76,0.2);
+  }
+  .brand-mark::before{ content:"◆"; color:var(--cyan); font-size:16px; text-shadow:0 0 8px var(--cyan); }
+  .brand-text h1{ font-size:18px; color:var(--gold); text-shadow:0 0 10px rgba(201,168,76,0.4); }
+  .brand-text .sub{ font-size:10px; color:var(--cyan); letter-spacing:0.25em; opacity:0.8; }
+
+  .status-cluster{ display:flex; align-items:center; gap:18px; font-size:11px; color:var(--textdim); }
+  .live-dot{ display:flex; align-items:center; gap:6px; color:var(--green); }
+  .live-dot .pulse{
+    width:8px;height:8px;border-radius:50%; background:var(--green);
+    box-shadow:0 0 8px var(--green);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.35; transform:scale(0.7);} }
+  #clock{ color:var(--cyan); letter-spacing:0.05em; }
+
+  /* KPI STRIP */
+  .kpi-strip{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:1px; background:rgba(201,168,76,0.15);
+    border-bottom:1px solid rgba(201,168,76,0.15);
+  }
+  .kpi{
+    background:var(--void2); padding:16px 18px;
+    position:relative; overflow:hidden;
+  }
+  .kpi::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--cyan);
+    box-shadow:0 0 8px var(--cyan);
+  }
+  .kpi .label{ font-size:10px; color:var(--textdim); letter-spacing:0.15em; text-transform:uppercase; }
+  .kpi .value{ font-family:'Orbitron',sans-serif; font-size:22px; color:var(--gold); margin-top:4px; text-shadow:0 0 10px rgba(201,168,76,0.3);}
+  .kpi .value.cyan{ color:var(--cyan); text-shadow:0 0 10px rgba(0,212,255,0.35); }
+  .kpi .value.red{ color:var(--red); text-shadow:0 0 10px rgba(255,59,92,0.35); }
+
+  /* DISCLAIMER */
+  .disclaimer{
+    font-size:10.5px; color:var(--textdim); padding:8px 22px; border-bottom:1px solid rgba(255,255,255,0.05);
+    background:rgba(255,59,92,0.04); display:flex; gap:8px; align-items:center;
+  }
+  .disclaimer b{ color:var(--red); }
+
+  main{ padding:22px; max-width:1500px; margin:0 auto; }
+
+  /* CONTROLS */
+  .controls{
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:18px;
+  }
+  #search{
+    flex:1; min-width:220px; background:var(--panel); border:1px solid rgba(0,212,255,0.25);
+    color:var(--cyan); padding:10px 14px; font-family:'Share Tech Mono',monospace; font-size:13px;
+    border-radius:2px; outline:none;
+  }
+  #search::placeholder{ color:var(--textdim); }
+  #search:focus{ border-color:var(--cyan); box-shadow:0 0 10px rgba(0,212,255,0.25); }
+
+  .tabs{ display:flex; gap:6px; flex-wrap:wrap; }
+  .tab{
+    background:var(--panel); border:1px solid rgba(201,168,76,0.25); color:var(--textdim);
+    padding:9px 14px; font-size:11px; letter-spacing:0.08em; cursor:pointer; border-radius:2px;
+    font-family:'Share Tech Mono',monospace; transition:all .15s;
+    text-transform:uppercase;
+  }
+  .tab:hover{ border-color:var(--gold); color:var(--gold); }
+  .tab.active{ background:rgba(201,168,76,0.12); border-color:var(--gold); color:var(--gold); box-shadow:0 0 10px rgba(201,168,76,0.2); }
+  .count-badge{ opacity:0.6; margin-left:4px; }
+
+  /* CHART PANEL */
+  .panel{
+    background:var(--panel); border:1px solid rgba(201,168,76,0.15); border-radius:3px;
+    padding:18px; margin-bottom:22px; position:relative;
+  }
+  .panel-title{
+    font-size:12px; color:var(--gold); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel-title::before{ content:"//"; color:var(--cyan); }
+  #costChart{ max-height:280px; }
+
+  /* FEED GRID */
+  .feed{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; }
+  .card{
+    background:var(--panel); border:1px solid rgba(255,255,255,0.06); border-left:3px solid var(--cyan-dim);
+    border-radius:3px; padding:14px 16px; position:relative; transition:border-color .2s, transform .15s;
+    animation:fadein .4s ease both;
+  }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .card:hover{ border-left-color:var(--cyan); transform:translateY(-2px); }
+  .card .tag{
+    display:inline-block; font-size:9px; letter-spacing:0.12em; padding:2px 8px; border-radius:2px;
+    text-transform:uppercase; margin-bottom:8px; font-family:'Orbitron',sans-serif;
+  }
+  .tag-ai{ background:rgba(0,212,255,0.12); color:var(--cyan); border:1px solid rgba(0,212,255,0.35); }
+  .tag-scam{ background:rgba(255,59,92,0.12); color:var(--red); border:1px solid rgba(255,59,92,0.35); }
+  .tag-crypto{ background:rgba(201,168,76,0.12); color:var(--gold); border:1px solid rgba(201,168,76,0.35); }
+  .tag-breach{ background:rgba(255,140,0,0.1); color:#ffb347; border:1px solid rgba(255,140,0,0.35); }
+  .tag-fed{ background:rgba(43,255,156,0.1); color:var(--green); border:1px solid rgba(43,255,156,0.3); }
+  .tag-cost{ background:rgba(150,120,255,0.12); color:#b39cff; border:1px solid rgba(150,120,255,0.35); }
+
+  .card .title{ font-family:'Orbitron',sans-serif; font-size:13.5px; color:var(--text); margin-bottom:6px; line-height:1.4; }
+  .card .meta{ font-size:10.5px; color:var(--textdim); margin-bottom:8px; display:flex; gap:10px; flex-wrap:wrap; }
+  .card .meta span{ color:var(--cyan); }
+  .card .desc{ font-size:11.5px; color:#b8bfcc; line-height:1.55; }
+  .card .impact{
+    margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.08);
+    font-size:11px; color:var(--gold); font-family:'Orbitron',sans-serif;
+  }
+  .card .src{ margin-top:8px; font-size:9.5px; color:var(--textdim); }
+
+  #emptyState{ display:none; text-align:center; padding:60px 20px; color:var(--textdim); font-size:13px; }
+
+  /* PREVENTION PLAYBOOK */
+  .playbook-head{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .playbook-sub{ font-size:10px; color:var(--textdim); letter-spacing:0.1em; }
+  .playbook-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px; }
+  .pb-card{
+    background:var(--void2); border:1px solid rgba(0,212,255,0.15); border-top:2px solid var(--cyan-dim);
+    border-radius:3px; padding:16px; transition:border-color .2s, box-shadow .2s;
+  }
+  .pb-card.highlight{ border-top-color:var(--cyan); box-shadow:0 0 16px rgba(0,212,255,0.15); }
+  .pb-card .pb-tag{
+    display:inline-block; font-size:9px; letter-spacing:0.12em; padding:2px 8px; border-radius:2px;
+    text-transform:uppercase; margin-bottom:10px; font-family:'Orbitron',sans-serif;
+  }
+  .pb-card .pb-title{ font-family:'Orbitron',sans-serif; font-size:13px; color:var(--gold); margin-bottom:4px; }
+  .pb-card .pb-stat{ font-size:10.5px; color:var(--textdim); margin-bottom:10px; }
+  .pb-card .pb-stat b{ color:var(--cyan); font-weight:400; }
+  .pb-section{ margin-bottom:9px; }
+  .pb-section .pb-label{ font-size:9px; letter-spacing:0.12em; color:var(--textdim); text-transform:uppercase; margin-bottom:4px; }
+  .pb-section ul{ list-style:none; padding:0; margin:0; }
+  .pb-section li{ font-size:11px; color:#b8bfcc; line-height:1.5; padding-left:12px; position:relative; margin-bottom:2px; }
+  .pb-section li::before{ content:"›"; position:absolute; left:0; color:var(--cyan); }
+  .pb-service{ font-size:11px; color:var(--gold); margin-top:2px; }
+  .pb-reg{
+    margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.08);
+    font-size:10px; color:#8fb8c9;
+  }
+  .pb-reg b{ color:var(--cyan); }
+
+  footer{
+    text-align:center; padding:26px; font-size:10px; color:var(--textdim);
+    border-top:1px solid rgba(201,168,76,0.1); margin-top:30px; letter-spacing:0.05em;
+  }
+  footer .g{ color:var(--gold); }
+  footer .c{ color:var(--cyan); }
+
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-track{ background:var(--void); }
+  ::-webkit-scrollbar-thumb{ background:rgba(201,168,76,0.35); border-radius:4px; }
+
+  @media (max-width:600px){
+    .kpi-strip{ grid-template-columns:repeat(2,1fr); }
+    header{ padding:12px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="scan"></div>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div class="brand-text">
+      <h1>THREAT TRACKER</h1>
+      <div class="sub">OMNIVEX ADVISORY // INTELLIGENCE FEED</div>
+    </div>
+  </div>
+  <div class="status-cluster">
+    <div class="live-dot"><span class="pulse"></span> FEED ACTIVE</div>
+    <div id="clock">--:--:-- UTC</div>
+  </div>
+</header>
+
+<div class="kpi-strip" id="kpiStrip"></div>
+
+<div class="disclaimer">
+  <b>STATIC DATASET</b> — Compiled from 4 uploaded research files (AI attack history, global breach/fraud incidents, federal 2025 incidents, cyber cost ledger). Not a live API poll; refresh by re-uploading updated source files.
+</div>
+
+<main>
+  <div class="controls">
+    <input id="search" type="text" placeholder="SEARCH ENTITY / METHOD / KEYWORD...">
+    <div class="tabs" id="tabs"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Estimated Financial Impact by Year (Log Scale, USD)</div>
+    <canvas id="costChart"></canvas>
+  </div>
+
+  <div class="panel">
+    <div class="playbook-head">
+      <div class="panel-title" style="margin-bottom:0;">Prevention Playbook — UAE / GCC Deployment</div>
+      <div class="playbook-sub">Maps each threat class above to OMNIVEX / NexTier controls + Dubai regulatory hooks</div>
+    </div>
+    <div class="playbook-grid" id="playbookGrid"></div>
+  </div>
+
+  <div class="feed" id="feed"></div>
+  <div id="emptyState">NO RECORDS MATCH CURRENT QUERY</div>
+</main>
+
+<footer>
+  <span class="g">OMNIVEX AI-IPS</span> // <span class="c">CRYSTAL THREAT INTELLIGENCE</span> — Compiled 2026-07-31 — Sources: internal research corpus (AI Cyber Attack History, Major Global Data Breach &amp; Cyber Fraud Incidents 2023–2025, Recent Federal &amp; Global Cybersecurity Incidents 2025, Cyber Cost Ledger)
+</footer>
+
+<script>
+const RAW = {"ai_milestones": [{"year": 2018, "event": "DeepPhish (Research)", "tech": "Reinforcement Learning", "impact": "Improved phishing URL success rates from 0.69% to 20.9%"}, {"year": 2018, "event": "DeepLocker (POC)", "tech": "Neural Network Trigger", "impact": "Malware that stayed dormant until target face/voice was recognized"}, {"year": 2019, "event": "First Major Vishing", "tech": "AI Voice Cloning", "impact": "CEO impersonated via audio; $243k stolen from UK energy firm"}, {"year": 2021, "event": "UAE Bank Heist", "tech": "Deepfake Audio", "impact": "Bank manager tricked by cloned director voice; $35M unauthorized transfer"}, {"year": 2023, "event": "WormGPT/FraudGPT", "tech": "Adversarial LLMs", "impact": "Launch of \"jailbroken\" models for mass-scale malware and phishing"}, {"year": 2024, "event": "LAMEHUG Outbreak", "tech": "Polymorphic LLM-Code", "impact": "First major malware using live APIs to rewrite itself to evade EDR"}, {"year": 2025, "event": "Anthropic/GTG-1002", "tech": "Agentic AI Espionage", "impact": "First case of AI (Claude Code) orchestrating 80% of a 30-firm breach"}, {"year": 2025, "event": "Snowflake/ChangeHC", "tech": "AI-Accelerated Creds", "impact": "Mass credential stuffing and exfiltration using automated AI scripts"}, {"year": 2026, "event": "HexStrike Framework", "tech": "Autonomous Agents", "impact": "Fully autonomous frameworks managing 150+ tools for end-to-end attacks"}, {"year": 2026, "event": "Vibe-Hacking Surge", "tech": "Generative Hyper-Personalization", "impact": "Phishing success rates hit ~60% using contextual digital exhaust"}], "ai_scams": [{"name": "Bybit Breach (Feb 2025)", "target": "Centralized Exchange", "method": "AI-assisted malware injected into multisig signing.", "loss": "$1.5 Billion"}, {"name": "GreedyBear Extensions", "target": "Wallet Users", "method": "150+ AI-generated malicious Firefox add-ons.", "loss": "$1 Million+"}, {"name": "Kodane NPM Drainer", "target": "Developers", "method": "AI-written \"patch manager\" tool targeting Solana assets.", "loss": "Thousands of users"}, {"name": "The \"Eternal Decay\" Scam", "target": "Web3 Employees", "method": "Fake AI-gaming startup using deepfake \"conference\" photos.", "loss": "Ongoing (Millions)"}, {"name": "E-ZPass Phishing", "target": "US Citizens", "method": "AI-automated SMS campaign (330k texts/day) for crypto.", "loss": "$1 Billion (over 3 yrs)"}], "crypto_hacks": [{"entity": "Bybit", "year": 2025, "amount": "$1.4 – $1.5 Billion", "cause": "Private Key Leak", "note": "Largest single crypto hack in history."}, {"entity": "Ronin Network", "year": 2022, "amount": "$625 Million", "cause": "Validator Breach", "note": "Attributed to North Korea's Lazarus Group."}, {"entity": "Poly Network", "year": 2021, "amount": "$611 Million", "cause": "Smart Contract Flaw", "note": "Most funds were surprisingly returned."}, {"entity": "Binance (BNB Bridge)", "year": 2022, "amount": "$570 Million", "cause": "Bridge Exploit", "note": "Forged proof-of-deposit transactions."}, {"entity": "Coincheck", "year": 2018, "amount": "$534 Million", "cause": "Hot Wallet Breach", "note": "NEM tokens stolen from Japanese exchange."}, {"entity": "FTX", "year": 2022, "amount": "$477 Million", "cause": "Internal/Post-Collapse", "note": "Unauthorized outflows during bankruptcy."}, {"entity": "Mt. Gox", "year": 2014, "amount": "$460 Million", "cause": "Exchange Breach", "note": "Historical collapse; 850k BTC originally lost."}, {"entity": "Wormhole Bridge", "year": 2022, "amount": "$325 Million", "cause": "Smart Contract Bug", "note": "Impacted the Solana ecosystem heavily."}, {"entity": "DMM Bitcoin", "year": 2024, "amount": "$305 – $308 Million", "cause": "Infrastructure Breach", "note": "Forced exchange liquidation/transfer."}, {"entity": "WazirX", "year": 2024, "amount": "$230 – $235 Million", "cause": "Multisig Breach", "note": "Major impact on the Indian crypto market."}, {"entity": "Cetus Protocol", "year": 2025, "amount": "$223 Million", "cause": "Protocol Logic", "note": "Exploited Sui-based DEX liquidity."}], "breaches": [{"date": "May 2025", "entity": "Google", "sector": "Technology", "scale": "Millions of Texans", "data_exposed": "Location information, biometric identifiers, and web browsing activity", "cause": "Unlawful collection and storage of personal data without consent", "legal": "$1.375 billion settlement", "source": "1"}, {"date": "2023", "entity": "Meta (Facebook)", "sector": "Technology / Social Media", "scale": "Not in source", "data_exposed": "Personal data of European users", "cause": "GDPR compliance failure regarding illegal transatlantic data transfers to the U.S.", "legal": "€1.2 billion ($1.3 billion) fine", "source": "2-5"}, {"date": "May 2025", "entity": "TikTok", "sector": "Social Media", "scale": "Remote access to EEA users' data", "data_exposed": "Device information, location, metadata, usage info, and recordings", "cause": "GDPR violations related to unauthorized data transfers to Chinese affiliates", "legal": "€530 million fine and order to suspend data transfers", "source": "6"}, {"date": "January 2023", "entity": "Meta Platforms Ireland Limited", "sector": "Social Media", "scale": "Not in source", "data_exposed": "Personal data of users", "cause": "Lack of transparency and improper legal basis for data processing", "legal": "€390 million ($426 million) fine", "source": "2, 7"}, {"date": "2023-2024", "entity": "TikTok", "sector": "Technology / Social Media", "scale": "Over 1 million children", "data_exposed": "Children's contact information, profile visibility, and personal data", "cause": "Public-by-default settings and collecting data without parental consent", "legal": "€345 million ($378 million) fine", "source": "2-5"}, {"date": "October 2024", "entity": "LinkedIn Ireland Unlimited Company", "sector": "Social Media", "scale": "Not in source", "data_exposed": "Personal data for behavioral analysis and targeted advertising", "cause": "Breaches related to transparency, fairness, and lawfulness in data processing", "legal": "€310 million fine", "source": "7"}, {"date": "2024", "entity": "T-Mobile", "sector": "Telecommunications", "scale": "37 million customers", "data_exposed": "Personally identifiable information (PII)", "cause": "Data breach (API vulnerability) and unauthorized access following 2020 merger", "legal": "$410 million in settlements and penalties", "source": "1, 4, 8"}, {"date": "December 2024", "entity": "Meta Platforms Ireland Limited", "sector": "Social Media", "scale": "Not in source", "data_exposed": "Not in source", "cause": "Personal data breach reported in 2018", "legal": "€251 million fine", "source": "1"}, {"date": "August 2024", "entity": "Uber", "sector": "Transportation / Technology", "scale": "Not in source", "data_exposed": "Not in source", "cause": "Violation of international transfer requirements under EU GDPR", "legal": "€290 million fine", "source": "1"}, {"date": "2024", "entity": "Google", "sector": "Technology", "scale": "Global user base", "data_exposed": "Consent-related metadata and cookie tracking", "cause": "Use of 'dark patterns' to hinder cookie refusal (GDPR violation)", "legal": "€150 million fine", "source": "3"}, {"date": "2024", "entity": "Meta (Facebook)", "sector": "Technology / Social Media", "scale": "Hundreds of millions of users", "data_exposed": "User passwords in unencrypted plaintext", "cause": "Internal storage misconfiguration", "legal": "€91 million fine", "source": "1, 3"}, {"date": "September 2023", "entity": "Google", "sector": "Technology", "scale": "Not in source", "data_exposed": "Location data", "cause": "Violations of false advertising and unfair competition regarding location privacy", "legal": "$93 million settlement", "source": "7"}, {"date": "Early 2025", "entity": "MGM Resorts International", "sector": "Hospitality", "scale": "37 million people; $100 million revenue loss", "data_exposed": "Personal information", "cause": "Cybersecurity incidents/cyberattacks (2019 and 2023)", "legal": "$45 million settlement", "source": "9, 10"}, {"date": "June 2023", "entity": "CRITEO", "sector": "Online Advertising", "scale": "Not in source", "data_exposed": "User data for ad processing", "cause": "Failure to ensure opt-in consent and inform data subjects of rights", "legal": "€40 million ($44 million) fine", "source": "2"}, {"date": "September 2024", "entity": "Clearview AI", "sector": "Facial Recognition / AI", "scale": "Millions of data subjects", "data_exposed": "Biometric data and personal images", "cause": "Processing data without legal basis and failure to comply with cease orders", "legal": "€35.7 million ($36.1 million) in combined fines", "source": "1, 2"}, {"date": "February 2024", "entity": "Change Healthcare (UnitedHealth Group)", "sector": "Healthcare", "scale": "6TB of sensitive patient data", "data_exposed": "Patient records and medical billing data", "cause": "Ransomware (BlackCat/ALPHV) via remote access gateway lacking MFA", "legal": "$22 million ransom paid; expected total cost $1.6 billion", "source": "3, 10, 11"}, {"date": "June 2024", "entity": "CDK Global", "sector": "Automotive / Vertical SaaS", "scale": "15,000 car dealerships", "data_exposed": "Customer data, sales, repairs, and service management records", "cause": "Ransomware (BlackSuit group) and social engineering", "legal": "$25 million ransom paid; over $1 billion in dealership losses", "source": "3, 4, 12-15"}, {"date": "April 2023", "entity": "TikTok", "sector": "Social Media", "scale": "Over 1 million children", "data_exposed": "Personal data of children", "cause": "Collecting data from children without parental consent", "legal": "£14.5 million ($15.8 million) fine", "source": "2"}, {"date": "February 2024", "entity": "Avast Limited", "sector": "Cybersecurity / Software", "scale": "Not in source", "data_exposed": "Web browsing data", "cause": "Selling browsing data to third parties after promising protection", "legal": "$16.5 million settlement and ban on data sales", "source": "1, 7"}, {"date": "October 2025", "entity": "Capita plc / Capita Pension Solutions", "sector": "Business Process Services", "scale": "Not in source", "data_exposed": "Pensioner personal information", "cause": "Data breach", "legal": "£14 million fine", "source": "1"}, {"date": "September 2025", "entity": "Venus Protocol", "sector": "Decentralized Finance (DeFi)", "scale": "$13 million account targeted", "data_exposed": "Delegate status and account control", "cause": "Social engineering via compromised Zoom client", "legal": "Attacker lost $3 million in frozen assets via governance proposal", "source": "16"}, {"date": "September 2023", "entity": "Axpo Italia S.p.A.", "sector": "Energy", "scale": "Over 5,000 data subjects", "data_exposed": "Customer data for unsolicited contracts", "cause": "Processing inaccurate customer data to establish contracts", "legal": "€10 million ($10.9 million) fine", "source": "2"}, {"date": "2023", "entity": "TIM S.p.A.", "sector": "Telecommunications", "scale": "Not in source", "data_exposed": "Personal data in public telephone directories", "cause": "Inadequate response to data requests and supervising illegal call centers", "legal": "€7.6 million ($8.3 million) fine", "source": "2"}, {"date": "January 2023", "entity": "WhatsApp Ireland Ltd.", "sector": "Communication Services", "scale": "Not in source", "data_exposed": "User personal data", "cause": "Non-compliance with GDPR definition of consent", "legal": "€5.5 million ($6 million) fine", "source": "2"}, {"date": "October 2023", "entity": "EOS Matrix d.o.o.", "sector": "Debt Collection", "scale": "181,641 individuals", "data_exposed": "Special categories of personal data", "cause": "Failure to take appropriate technical measures to protect data", "legal": "€5.4 million ($5.8 million) fine", "source": "2"}, {"date": "January 2025", "entity": "PayPal", "sector": "Financial Services", "scale": "Not in source", "data_exposed": "PII data", "cause": "Failure to comply with state cybersecurity regulations", "legal": "$2 million settlement with NY State DFS", "source": "9"}, {"date": "Q1 2025", "entity": "Orange Espagne", "sector": "Telecommunications", "scale": "Individual customer account", "data_exposed": "SIM card duplication", "cause": "Identity verification failure leading to SIM-swapping fraud", "legal": "€1.2 million fine", "source": "5"}, {"date": "2023-2025", "entity": "U.S. Pandemic Relief Programs", "sector": "Government", "scale": "Over $300 billion in fraud", "data_exposed": "Personal PII and eligibility documents", "cause": "Identity theft, lack of verification, and systemic inflation of loans", "legal": "650+ civil settlements; 2,532 guilty defendants", "source": "3, 17-19"}, {"date": "February 2025", "entity": "Bybit", "sector": "Financial / Cryptocurrency Exchange", "scale": "$1.5 billion in Ethereum stolen", "data_exposed": "Multisig cold wallet keys and corporate data", "cause": "Multi-signature cold wallet exploit by North Korean Lazarus Group", "legal": "Up to 10% recovery bounty offered", "source": "3, 16, 20-22"}, {"date": "2023", "entity": "MOVEit Transfer (Progress Software)", "sector": "Technology / Managed File Transfer", "scale": "77 million individuals", "data_exposed": "PII, names, addresses, SSNs, health and financial records", "cause": "Zero-day SQL injection vulnerability (CVE-2023-34362) exploited by Cl0p", "legal": "SEC formal investigation; multiple class action lawsuits", "source": "3, 4, 10, 23, 24"}, {"date": "July 2024", "entity": "CrowdStrike", "sector": "Cybersecurity", "scale": "8.5 million Microsoft Windows systems", "data_exposed": "System availability (Blue Screen of Death); no PII exfiltration", "cause": "Flawed software update (Rapid Response Content / Channel File 291)", "legal": "$5.4 billion to $10 billion in estimated economic damage", "source": "3, 4, 25, 26"}, {"date": "June 2024", "entity": "Ticketmaster (via Snowflake)", "sector": "Entertainment / Live Events", "scale": "560 million customers", "data_exposed": "Names, addresses, phone numbers, and partial credit card numbers", "cause": "Infostealer malware used to obtain cloud storage credentials", "legal": "Not in source", "source": "10"}, {"date": "May 2024", "entity": "DMM Bitcoin", "sector": "Financial / Cryptocurrency Exchange", "scale": "4,502 BTC (approx. $308 million)", "data_exposed": "Bitcoin funds from hot wallets", "cause": "Unauthorized leak/hack (suspected Lazarus Group)", "legal": "Company liquidated in December 2024", "source": "20-22, 27"}, {"date": "February 2024", "entity": "PlayDapp", "sector": "Gaming / NFT Platform", "scale": "$290 million total loss", "data_exposed": "PLA tokens", "cause": "Hack / Security breach", "legal": "Not in source", "source": "20"}, {"date": "December 2025", "entity": "Illusory Systems Inc. (Nomad)", "sector": "Technology", "scale": "$186 million stolen", "data_exposed": "Financial consumer assets", "cause": "Data breach / Hacking", "legal": "FTC enforcement action", "source": "1"}, {"date": "January 2024", "entity": "Chris Larsen (Ripple co-founder)", "sector": "Cryptocurrency (Individual)", "scale": "$112 million", "data_exposed": "Personal XRP accounts", "cause": "Unauthorized access to crypto wallets", "legal": "Law enforcement investigation initiated", "source": "10"}, {"date": "January 2024", "entity": "Orbit Chain", "sector": "Decentralized Finance (DeFi)", "scale": "$81.5 million stolen", "data_exposed": "Cryptocurrency assets", "cause": "Bridge exploit", "legal": "Not in source", "source": "20"}, {"date": "July 2025", "entity": "McDonald's", "sector": "Retail / Food", "scale": "~64 million job applicants", "data_exposed": "Full names, email addresses, and phone numbers", "cause": "Security oversight (weak password '123456' on McHire platform)", "legal": "Not in source", "source": "9"}, {"date": "December 2024", "entity": "PowerSchool", "sector": "Education Software", "scale": "62 million students and 10 million teachers", "data_exposed": "Sensitive student and educator information", "cause": "Data breach of cloud-based software solution", "legal": "Not in source", "source": "10"}, {"date": "October 2025", "entity": "Qantas Airways", "sector": "Aviation", "scale": "5.7 million customer records", "data_exposed": "Names, emails, phone numbers, addresses, and Frequent Flyer data", "cause": "Third-party contact center software vulnerability", "legal": "Not in source", "source": "9"}, {"date": "June 2025", "entity": "Episource LLC", "sector": "Healthcare", "scale": "Over 5.4 million individuals", "data_exposed": "Contact info, health insurance, medications, and SSNs", "cause": "Cyberattack / Unauthorized data exfiltration", "legal": "Not in source", "source": "9"}, {"date": "August 2025", "entity": "TransUnion", "sector": "Financial Services", "scale": "Over 4.4 million U.S. individuals", "data_exposed": "Names, billing addresses, emails, SSNs, and dates of birth", "cause": "Unauthorized access to third-party Salesforce application", "legal": "Not in source", "source": "9"}, {"date": "December 2025", "entity": "University of Phoenix", "sector": "Education", "scale": "3.5 million individuals", "data_exposed": "Full names, dates of birth, and SSNs", "cause": "Ransomware (Clop gang exploited third-party provider)", "legal": "Not in source", "source": "9"}, {"date": "March 2025", "entity": "New York University", "sector": "Education", "scale": "Over 3 million applicants", "data_exposed": "Names, test scores, GPAs, and financial aid details", "cause": "Unauthorized access to IT systems", "legal": "Not in source", "source": "9"}, {"date": "October 2025", "entity": "SimonMed Imaging", "sector": "Healthcare", "scale": "1.27 million people", "data_exposed": "Names, addresses, medical records, and insurance data", "cause": "Medusa ransomware group attack", "legal": "Not in source", "source": "9"}, {"date": "November 2025", "entity": "University of Pennsylvania", "sector": "Education", "scale": "1.2 million individuals", "data_exposed": "Names, birthdates, addresses, and donation history", "cause": "Compromised SSO credentials and Oracle software vulnerability", "legal": "Not in source", "source": "9"}, {"date": "September 2025", "entity": "Volvo Group", "sector": "Manufacturing", "scale": "870,000 records", "data_exposed": "Employee names, addresses, dates of birth, and SSNs", "cause": "Ransomware (DataCarry group) targeting Miljödata HR software", "legal": "Not in source", "source": "9"}, {"date": "October 2025", "entity": "Motility Software Solutions", "sector": "Technology / Services", "scale": "766,000 customers", "data_exposed": "Names, portal addresses, emails, and SSNs", "cause": "Malware deployed by authorized user", "legal": "Not in source", "source": "9"}, {"date": "September 2025", "entity": "FinWise Bank", "sector": "Banking", "scale": "689,000 customers", "data_exposed": "Names, personal identifiers, and financial data", "cause": "Insider threat (former employee improperly accessed data)", "legal": "Not in source", "source": "9"}, {"date": "April 2024", "entity": "Roku", "sector": "Streaming Media", "scale": "576,000 accounts", "data_exposed": "Unauthorized account access", "cause": "Credential stuffing", "legal": "Not in source", "source": "10"}, {"date": "June 2024", "entity": "Kadokawa Corporation / Niconico", "sector": "Media / Entertainment", "scale": "254,241 individuals; 1.5 TB of data", "data_exposed": "Personal information of partners, users, and students", "cause": "Ransomware (BlackSuit group)", "legal": "Not in source", "source": "12"}, {"date": "May 2025", "entity": "Coinbase", "sector": "Financial Services", "scale": "69,461 users", "data_exposed": "Names, contact details, SSNs, and banking data", "cause": "Insider threat (overseas customer support contractors)", "legal": "Estimated cost of $400 million", "source": "9"}, {"date": "February 2024", "entity": "Cencora", "sector": "Pharmaceuticals", "scale": "Partner pharma firms (Bayer, Novartis)", "data_exposed": "PII and corporate data of partner firms", "cause": "Cyberattack", "legal": "Not in source", "source": "10"}, {"date": "December 2025", "entity": "Petco", "sector": "Retail", "scale": "At least 500 consumers", "data_exposed": "Full names, SSNs, driver's licenses, and financial account numbers", "cause": "Security misconfigurations", "legal": "Not in source", "source": "9"}, {"date": "2023-2025", "entity": "LangChain / LangChain Core", "sector": "AI Software Development", "scale": "Critical Vulnerabilities (CVE-2025-68664, CVE-2023-44467)", "data_exposed": "Arbitrary command execution; environment variables; API keys", "cause": "Serialization injection; missing validation for import variables", "legal": "Bug bounties awarded up to $4,000", "source": "28-31"}, {"date": "2025", "entity": "GitHub Copilot", "sector": "Technology / AI", "scale": "Potentially millions of developers", "data_exposed": "Source code and system configuration access", "cause": "Prompt injection (CVE-2025-53773) and CamoLeak (CVSS 9.6)", "legal": "Security patches and updates issued", "source": "32, 33"}, {"date": "2024-2025", "entity": "ChatGPT", "sector": "Technology / AI", "scale": "Global users", "data_exposed": "Windows license keys; persistent malicious instructions", "cause": "Direct prompt injection and memory-based RAG context poisoning", "legal": "Not in source", "source": "33"}, {"date": "December 2025", "entity": "AI Development Tools (IDEsaster)", "sector": "Technology / AI", "scale": "Millions of developers", "data_exposed": "Sensitive secrets and source code", "cause": "Prompt injection combined with legitimate IDE features", "legal": "Vendor advisories and patches released", "source": "34, 35"}, {"date": "January 2026", "entity": "Vanna.AI", "sector": "Artificial Intelligence", "scale": "CVE-2024-5565", "data_exposed": "System privileges", "cause": "Manipulation of AI to generate malicious SQL and Python code", "legal": "Not in source", "source": "36"}, {"date": "August 2024", "entity": "Slack AI", "sector": "Technology", "scale": "Enterprise data", "data_exposed": "Private channel information and business data", "cause": "Indirect prompt injection combining RAG poisoning", "legal": "Not in source", "source": "33"}, {"date": "February 2024", "entity": "DoorDash, Inc.", "sector": "Food Delivery", "scale": "Not in source", "data_exposed": "Customer personal information", "cause": "Violations of CCPA/CalOPPA through data sharing", "legal": "Settlement reached", "source": "1, 7"}, {"date": "November 2025", "entity": "Washington Post", "sector": "Media", "scale": "9,720 current/former employees", "data_exposed": "Names, bank accounts, SSNs, and tax ID numbers", "cause": "Ransomware (Clop/FIN11 targeting Oracle EBS)", "legal": "Not in source", "source": "9"}, {"date": "December 2025", "entity": "Inotiv", "sector": "Pharmaceuticals", "scale": "9,524 individuals", "data_exposed": "Full names, addresses, dates of birth, and SSNs", "cause": "Ransomware", "legal": "Not in source", "source": "9"}, {"date": "October 2025", "entity": "Dairy Farmers of America", "sector": "Agriculture", "scale": "4,546 people", "data_exposed": "Names, SSNs, bank accounts, and Medicare numbers", "cause": "Social engineering (Play ransomware gang)", "legal": "Not in source", "source": "9"}, {"date": "November 2025", "entity": "Nikkei", "sector": "Media / Finance", "scale": "1,700 accounts", "data_exposed": "Names, email addresses, and chat history", "cause": "Malware-stolen Slack credentials", "legal": "Not in source", "source": "9"}, {"date": "November 2025", "entity": "U.S. Congressional Budget Office (CBO)", "sector": "Government", "scale": "Unknown", "data_exposed": "Internal emails, policy analyses, and lawmaker communications", "cause": "Cyberattack by Chinese state-sponsored group Silk Typhoon", "legal": "Not in source", "source": "9"}], "recent_incidents": [{"entity": "Bybit", "type": "Cryptocurrency Heist / Multisig Exploit", "scale": "Approximately $1.5 billion USD ( $401,347$  ETH)", "data_exposed": "Ethereum (ETH) assets and digital tokens", "cause": "Exploitation of multi-signature cold wallet protocols and Safe.global UI zero-day; social engineering/insider infiltration by North Korean actors (Lazarus Group).", "consequences": "Largest crypto heist on record; ETH price dropped 7%; individual hacker indicted by US Justice Department; recovery bounty of up to 10% offered.", "lessons": "Implement robust multisig signing protocols with hardware security modules; prioritize air-gapped cold storage and real-time smart contract validation to mitigate insider threats.", "source": "1-8"}, {"entity": "Google", "type": "Unlawful Data Collection", "scale": "Millions of Texans", "data_exposed": "Location information, biometric identifiers, and web browsing activity", "cause": "Systematic collection and storage of sensitive user data without explicit legal consent.", "consequences": "$1.375 billion settlement with the Texas Attorney General.", "lessons": "User consent must be explicitly obtained for biometric and location tracking to comply with strict state privacy laws.", "source": "9"}, {"entity": "Meta (Facebook)", "type": "GDPR Violations & Data Transfer", "scale": "Hundreds of millions of users", "data_exposed": "User passwords (plaintext), photos, messages, advertising data, and minor's contact info", "cause": "Transferring EU user data to the US in violation of Schrems II; insecure internal storage of credentials in plaintext.", "consequences": "Total fines exceeding €1.7 billion (including €1.2 billion and €91 million penalties); order to cease international transfers.", "lessons": "Strictly adhere to regional data residency rules; ensure all sensitive credentials are hashed and salted at every internal storage point.", "source": "4, 9, 10"}, {"entity": "Federal Pandemic Relief Programs (SBA/DOL)", "type": "Program Fraud (PPP, EIDL, PUA)", "scale": "Estimated $300 billion to $400 billion total losses", "data_exposed": "Federal relief funds and PII used for fraudulent claims", "cause": "Reliance on self-certification/self-attestation; lack of identity verification; flawed machine learning tools for fraud detection.", "consequences": "Over 3,000 defendants found guilty; 10-year statute of limitations extension; 35.9% error rate in PUA ($43.5 billion).", "lessons": "Emergency systems must maintain robust prepayment verification and data cross-matching with IRS/SSA databases; self-certification is insufficient.", "source": "4, 11-13"}, {"entity": "TikTok", "type": "Data Privacy & Child Safety Violations", "scale": "159 million monthly active users in the EU", "data_exposed": "Biometrics, keystroke patterns, location, and metadata", "cause": "Remote access by Chinese staff; ineffective age gating; addictive \"Reward\" program design; coordinated inauthentic behavior.", "consequences": "€530 million fine (Irish DPC); permanent withdrawal of Rewards program in EU; U.S. divest-or-ban law (PAFACA); Romanian election annulled.", "lessons": "Implement strict data residency; eliminate remote access by foreign adversaries; prioritize safety-by-design over engagement metrics.", "source": "14"}, {"entity": "GitHub Copilot / Visual Studio Code", "type": "RCE and Data Exfiltration (CamoLeak)", "scale": "Potentially millions of developers", "data_exposed": "Source code, system files, credentials, and private repository tokens", "cause": "CVE-2025-53773 (YOLO mode) and indirect prompt injection via Markdown comments exploiting GitHub's Camo proxy.", "consequences": "Security updates issued for VS 2022 v17.14.12; image rendering disabled in Copilot Chat (Aug 14, 2025); CVSS score 9.6.", "lessons": "Enforce 'Human-in-the-loop' for file modifications; disable external resource rendering in AI interfaces; treat all third-party comments as untrusted.", "source": "10, 15, 16"}, {"entity": "LinkedIn", "type": "GDPR Transparency Violation", "scale": "LinkedIn users", "data_exposed": "Personal data used for behavioral analysis and targeted advertising", "cause": "Lack of transparency and lawfulness in processing user data for advertising purposes.", "consequences": "€310 million fine.", "lessons": "Data processing for advertising requires a clear legal basis and transparent communication regarding behavioral tracking.", "source": "17"}, {"entity": "DMM Bitcoin", "type": "Hot Wallet Theft", "scale": "4,502 BTC (Approximately $305 million)", "data_exposed": "Bitcoin assets", "cause": "Compromised private keys in hot wallets; exploitation linked to North Korean hackers.", "consequences": "Company operations ceased by March 2025; full reimbursement pledged via loans; assets migrated to safer exchanges.", "lessons": "Prioritize cold wallet storage to isolate reserves from online systems; implement stronger authentication for private key access.", "source": "6, 18"}, {"entity": "Salesforce (Various Clients)", "type": "Cloud Database Mass Hack", "scale": "Estimated 1 billion records", "data_exposed": "Customer data from dozens of global firms (Allianz, Google, Qantas, etc.)", "cause": "Breach of cloud-based databases by ShinyHunters gang via compromised integrations.", "consequences": "Threatened release of records on extortion website; confirmed data theft across numerous global entities.", "lessons": "Critical need for robust vendor risk management and multi-factor authentication for all cloud database service accounts.", "source": "2"}, {"entity": "MGM Resorts International", "type": "Data Breach", "scale": "Approximately 37 million people", "data_exposed": "Personal Identifiable Information (PII)", "cause": "Cybersecurity incidents occurring in 2019 and 2023.", "consequences": "$45 million lawsuit settlement.", "lessons": "Long-term legal liabilities for massive breaches can result in significant settlement costs years after the initial event.", "source": "19"}, {"entity": "Coinbase", "type": "Insider Threat / Extortion", "scale": "69,461 users", "data_exposed": "Names, contact details, partial SSNs, and ID images", "cause": "Overseas customer support contractors leaked data intentionally.", "consequences": "$20 million extortion demand; estimated $400 million in potential remediation costs.", "lessons": "Overseas contractors require high-security oversight; implement masked data fields to limit the profitability of data theft.", "source": "19"}, {"entity": "Marks & Spencer", "type": "Ransomware", "scale": "Hundreds of thousands likely affected", "data_exposed": "Customer data (unconfirmed payment details)", "cause": "Scattered Spider group using DragonForce ransomware on virtual machines.", "consequences": "Estimated £300 million ($400 million) profit loss.", "lessons": "Online retail systems must implement VM-level protection and audit IT outsourcing partners for operational resilience.", "source": "19"}, {"entity": "LexisNexis", "type": "Unauthorized Account Access", "scale": "364,333 individuals", "data_exposed": "Names, emails, SSNs, and driver's license numbers", "cause": "Unauthorized party accessed a compromised GitHub developer account.", "consequences": "2 years of free identity protection offered; facing class-action lawsuits.", "lessons": "Software development accounts are high-value targets; ensure MFA is mandatory on all development and CI/CD platforms.", "source": "19"}, {"entity": "PowerSchool", "type": "Cloud Data Breach", "scale": "62 million students and 10 million teachers", "data_exposed": "Enrollment, attendance, and financial information", "cause": "Unauthorized access to cloud-based education software solution.", "consequences": "Sensitive youth information offered for sale on the dark web.", "lessons": "Robust data security for cloud-based education platforms is critical due to the high volume of sensitive minor data.", "source": "2"}, {"entity": "23andMe", "type": "Credential Stuffing / Data Breach", "scale": "6.9 million individuals", "data_exposed": "Ancestry profile files and personal data", "cause": "Unauthorized access via credential reuse (initially impacting 0.1% of users directly).", "consequences": "Not in source", "lessons": "Enhanced credential protection and monitoring of secondary access to related files is necessary to prevent lateral data exposure.", "source": "2"}, {"entity": "ChatGPT (OpenAI)", "type": "Sensitive Information Disclosure", "scale": "Enterprise license holders (e.g., Wells Fargo)", "data_exposed": "Valid Windows 10/11 product keys", "cause": "\"Grandma exploit\" jailbreaking and training data contamination where AI revealed keys hidden in its data.", "consequences": "Model updates and patches issued to refuse specific license key generation requests.", "lessons": "Models must be trained to recognize psychological manipulation; implement robust output filtering for sensitive credential formats.", "source": "10, 15, 16"}, {"entity": "Industrial Control Systems (via Claude MCP)", "type": "SCADA Attack / Physical Damage", "scale": "Industrial infrastructure (pumps/OT)", "data_exposed": "SCADA tag values and control parameters", "cause": "Indirect prompt injection via base64-encoded PDF attachments commanding AI via Model Context Protocol (MCP).", "consequences": "Physical equipment damage (pump activation) and production downtime.", "lessons": "Isolate AI agents from critical infrastructure; never allow AI to process untrusted documents while holding active sessions with hardware.", "source": "15, 16"}, {"entity": "PandasAI (Framework)", "type": "RCE and File Vulnerabilities", "scale": "Apps built on PandasAI framework", "data_exposed": "Arbitrary files and server control", "cause": "Python inheritance chain bypass ( $subclass$ ) allowing attackers to escape custom sandboxes.", "consequences": "CVE-2023-39660, CVE-2023-39661, CVE-2023-40976 (CVSS 9.8).", "lessons": "Do not rely on custom 'denylist' sandboxes for Python; use process-level isolation (Docker) or client-side execution (Pyodide).", "source": "20"}, {"entity": "LangChain", "type": "Serialization Injection (LangGrinch)", "scale": "Millions of developers/applications", "data_exposed": "Environment variables and API keys", "cause": "CVE-2025-68664: Failure to escape 'lc' keys in dictionaries during serialization.", "consequences": "CVSS score 9.3; emergency security patches issued for langchain-core and langchain.js.", "lessons": "Practice secure-by-design development; ensure internal control markers cannot be spoofed; treat LLM output as untrusted input.", "source": "21-23"}, {"entity": "North Korean IT Worker Scheme", "type": "Identity Fraud / Recruitment Scam", "scale": "Over 40 countries impacted", "data_exposed": "Stolen identities (e.g., Ukrainian citizens)", "cause": "Weak identity verification in remote hiring processes; use of AI to fake voices/images.", "consequences": "Apprehension of facilitators; UN Security Council resolution violations.", "lessons": "Remote hiring requires multi-step background checks and high-integrity video interviews to counter AI-driven impersonation.", "source": "24"}, {"entity": "Qantas Airways", "type": "Supply Chain Breach", "scale": "5.7 million customer records", "data_exposed": "Names, emails, Frequent Flyer numbers, and birthdates", "cause": "Vulnerability in third-party contact center software; Scattered Spider group impersonation.", "consequences": "CEO and executives forfeited approximately $500,000 in compensation.", "lessons": "Enforce strict security controls on the supply chain; executive financial accountability can drive corporate security improvements.", "source": "9, 19"}, {"entity": "TransUnion", "type": "Third-party Application Breach", "scale": "4.4 million U.S. individuals", "data_exposed": "SSNs, billing addresses, and support tickets", "cause": "ShinyHunters social engineering exploited Salesforce integrations.", "consequences": "Not in source", "lessons": "Social engineering targeting cloud integrations is a rising risk; vet all third-party application permissions strictly.", "source": "19"}, {"entity": "University of Phoenix", "type": "Ransomware / Third-party Breach", "scale": "3.5 million individuals", "data_exposed": "Names, dates of birth, SSNs, and student IDs", "cause": "Clop ransomware gang exploited a third-party provider's system.", "consequences": "Not in source", "lessons": "Maintain oversight of third-party vendors; utilize data masking and encryption to reduce supply chain risk.", "source": "19"}, {"entity": "University of Pennsylvania", "type": "Credential Compromise", "scale": "1.2 million individuals", "data_exposed": "Names, birthdates, addresses, and PII", "cause": "Compromised employee SSO credentials and exploitation of an Oracle vulnerability.", "consequences": "Not in source", "lessons": "Enforce Multi-Factor Authentication (MFA) to prevent credential theft; maintain high vigilance for zero-day vulnerabilities.", "source": "19"}, {"entity": "SimonMed Imaging", "type": "Ransomware", "scale": "1.27 million people", "data_exposed": "Medical records, treatment info, and SSNs", "cause": "Medusa ransomware group attack on healthcare systems.", "consequences": "Not in source", "lessons": "Establish vendor risk mapping and regular penetration testing for all healthcare partners.", "source": "19"}, {"entity": "Kadokawa Corporation", "type": "Double Extortion Ransomware", "scale": "254,241 individuals", "data_exposed": "Personal data of partners and students; 1.5 TB stolen", "cause": "Advanced tactics (Predecessor Royal Ransomware) routing through U.S. IPs.", "consequences": "Service disruptions; physical disconnection of servers; cancellation of programming.", "lessons": "Implement double-extortion defenses and monitor for large-scale data exfiltration alongside system encryption.", "source": "25"}, {"entity": "CDK Global", "type": "Ransomware", "scale": "15,000 car dealerships", "data_exposed": "Sales, service, and inventory data", "cause": "Likely exploitation of vulnerabilities or RDP brute-force attacks.", "consequences": "Significant IT outages; $25 million paid in Bitcoin ransom.", "lessons": "Prioritize timely vulnerability patching and regular offline backups to mitigate the operational impact of encryption.", "source": "25"}, {"entity": "Slack AI", "type": "Data Exfiltration / RAG Poisoning", "scale": "Enterprise users", "data_exposed": "Private channel data and business conversations", "cause": "RAG poisoning where messages in public channels influenced AI to leak data from private channels.", "consequences": "Vulnerability disclosure in August 2024.", "lessons": "Enforce strict access control at the retrieval layer; isolate AI context between public and private organizational spaces.", "source": "15, 16"}, {"entity": "Vanna AI", "type": "Remote Code Execution (RCE)", "scale": "Users of the database query tool", "data_exposed": "System-level access", "cause": "CVE-2024-5565: Unsafe Plotly library integration allowed commands in prompts to execute directly.", "consequences": "Vulnerability identified and patched.", "lessons": "Third-party libraries used to render AI-generated content must be heavily sandboxed to prevent command injection.", "source": "15, 16, 26"}, {"entity": "NVIDIA (TensorRT-LLM)", "type": "Insecure Deserialization / RCE", "scale": "High-value inference infrastructure", "data_exposed": "Potential for arbitrary code execution", "cause": "CVE-2025-23254: Use of unauthenticated network sockets and Python pickle module.", "consequences": "CVSS score 8.8; fixed in version 0.18.2.", "lessons": "Implement authentication for internal communication sockets between inference nodes to prevent unauthorized payload injection.", "source": "21"}, {"entity": "Meta (Llama)", "type": "Insecure Deserialization / RCE", "scale": "Major AI inference framework", "data_exposed": "Potential for model theft and data exfiltration", "cause": "CVE-2024-50050: ShadowMQ pattern involving unsafe use of Python's pickle module.", "consequences": "Patched in October 2024.", "lessons": "Avoid using inherently insecure serialization formats like Python's pickle for processing unauthenticated network data.", "source": "21"}, {"entity": "Uninsured Program (HRSA)", "type": "Improper Payments", "scale": "Estimated $784 million", "data_exposed": "Federal healthcare reimbursement funds", "cause": "Weak prepayment controls; 92% of claims paid without verification if SSN was missing.", "consequences": "19% error rate reported by auditors.", "lessons": "Automated payment systems require mandatory validation; missing data should trigger manual review, not automatic approval.", "source": "11"}, {"entity": "Forbes AI 50 Companies", "type": "Secret Leakage", "scale": "65% of cohort (32+ companies)", "data_exposed": "Model keys, service account credentials, and training infra keys", "cause": "Credential leakage across public GitHub repositories.", "consequences": "Exposure allowed potential proprietary model extraction and training tampering.", "lessons": "Mandatory scanning of repositories for secrets; implement robust MLOps pipeline security and token management.", "source": "27"}, {"entity": "Internet Service Provider (ISP)", "type": "DoS / DDoS Botnets", "scale": "Over 1 million hosts", "data_exposed": "Private addressing and network topologies", "cause": "Vulnerabilities in layer 2/3 infrastructure and lack of ingress filtering (BCP38).", "consequences": "Network disruption and financial loss.", "lessons": "Implement out-of-band management and robust ingress filtering to prevent source address spoofing.", "source": "28, 29"}, {"entity": "Fortinet (FortiCloud SSO)", "type": "Authentication Bypass", "scale": "Fully-patched firewalls", "data_exposed": "Administrative edge network access", "cause": "CVE-2025-59718: Incomplete patch for a SAML vulnerability allowed unauthenticated bypass.", "consequences": "Fresh exploitation activity reported on upgraded devices.", "lessons": "Adopt defense-in-depth; restrict administrative access and disable non-essential SSO features until patches are verified.", "source": "30"}, {"entity": "GNU InetUtils (telnetd)", "type": "Authentication Bypass", "scale": "All versions 1.9.3 to 2.7", "data_exposed": "Full system access (Root shell)", "cause": "CVE-2026-24061: Flaw allowing interactive authentication bypass via '-f' flag.", "consequences": "Public proof-of-concept exploit released.", "lessons": "Regularly audit legacy codebases and decommission outdated protocols like Telnet in favor of SSH.", "source": "30"}, {"entity": "U.S. Security Camera Company", "type": "Data Breach / IoT", "scale": "Sensitive location cameras", "data_exposed": "Live camera feeds", "cause": "Failure to secure data and CAN-SPAM Act violations.", "consequences": "$2.95 Million FTC Fine; mandated privacy program.", "lessons": "IoT manufacturers must implement privacy-by-design to prevent unauthorized remote access to live feeds.", "source": "31"}, {"entity": "PayPal", "type": "Regulatory Non-compliance", "scale": "Not in source", "data_exposed": "Personal information", "cause": "Failure to comply with state cybersecurity regulations.", "consequences": "$2 million civil fine (NYDFS settlement).", "lessons": "Financial institutions require continuous security posture management to meet regulatory baseline standards.", "source": "9, 19"}, {"entity": "International Civil Aviation Organization", "type": "SQL Injection", "scale": "Nearly 12,000 individuals", "data_exposed": "Job applicant history, emails, and birthdates", "cause": "SQL Injection vulnerability in a web application.", "consequences": "Not in source", "lessons": "Sanitize all web application inputs; regulatory bodies are high-value targets for espionage and PII theft.", "source": "19"}, {"entity": "Unidentified Bankrupt Lender", "type": "Program Fraud", "scale": "Tens of thousands of PPP loans", "data_exposed": "Loan processing fees and funds", "cause": "Systemic inflation of loans and failure to implement fraud controls.", "consequences": "$120 million bankruptcy claim for recovery.", "lessons": "Financial institutions must adhere to standard underwriting procedures even during high-volume emergency periods.", "source": "12"}, {"entity": "Venus Protocol", "type": "Social Engineering", "scale": "1 account (delegate status over $13M)", "data_exposed": "Protocol asset control", "cause": "Compromised Zoom client used to trick user into granting delegate status.", "consequences": "Attacker wallet force-liquidated; $3 million frozen via governance.", "lessons": "Monitor for suspicious delegate activity; establish governance mechanisms for rapid asset freezing during exploits.", "source": "3"}, {"entity": "16 Malicious ChatGPT Extensions", "type": "Session Hijacking", "scale": "Approximately 900 downloads", "data_exposed": "Session tokens and conversation history", "cause": "Extensions mimicking brands to intercept 'fetch' function headers in the browser.", "consequences": "Covert account access and impersonation.", "lessons": "Classify AI-integrated extensions as high-risk privileged software; monitor for unauthorized network activity.", "source": "32"}, {"entity": "Orange Espagne", "type": "SIM-swapping Fraud", "scale": "Not in source", "data_exposed": "Customer identity / SIM access", "cause": "Inadequate identity verification at the franchise level.", "consequences": "€1.2 Million GDPR Fine.", "lessons": "Strict identity verification protocols must be enforced consistently across all franchises and partners.", "source": "31"}, {"entity": "Warby Parker", "type": "HIPAA Violations", "scale": "Not in source", "data_exposed": "Not in source", "cause": "Alleged failures to comply with HIPAA Security Rule requirements.", "consequences": "$1.5 million civil penalty (HHS OCR).", "lessons": "Adherence to HIPAA rules, including regular risk assessments, is essential for healthcare-adjacent retailers.", "source": "9"}, {"entity": "American Honda Motor Co.", "type": "CCPA Violations", "scale": "Not in source", "data_exposed": "Not in source", "cause": "Failure to comply with California consumer privacy requirements.", "consequences": "$632,500 fine (CPPA settlement).", "lessons": "Enterprises must ensure clear data opting-out mechanisms and transparency to avoid regulatory penalties.", "source": "9"}], "costs": [{"entity": "Global Cybercrime (Projected)", "year": "2027", "amount": "$23 Trillion", "type": "Global Cost", "details": "Projected annual cost of cybercrime globally by 2027."}, {"entity": "Global Cybercrime (Projected)", "year": "2025", "amount": "$10.5 Trillion", "type": "Global Cost", "details": "Projected annual cost of cybercrime globally by 2025."}, {"entity": "Crypto Scams (Total)", "year": "2025", "amount": "$17 Billion", "type": "Theft", "details": "Estimated total stolen in crypto scams and fraud in 2025."}, {"entity": "MOVEit Transfer", "year": "2023", "amount": ">$15 Billion", "type": "Damages", "details": "Estimated total damages from the exploitation of file transfer software affecting >2,500 organizations."}, {"entity": "NotPetya", "year": "2017", "amount": "$10 Billion", "type": "Damages", "details": "Destructive malware attack that crippled global shipping and infrastructure; total estimated global damages."}, {"entity": "CrowdStrike Outage", "year": "2024", "amount": "$5.4 Billion", "type": "Loss", "details": "Estimated cost to Fortune 500 companies due to the global IT outage."}, {"entity": "TJX Companies", "year": "2005Ã_x0083_Â¢Ã_x0082_Â_x0080_Ã_x0082_Â_x0093_2007", "amount": "$4.5 Billion", "type": "Damages", "details": "Estimated costs including legal fees, fines, and lost sales following a breach of 45 million cards."}, {"entity": "Epsilon", "year": "2011", "amount": "$4 Billion", "type": "Damages", "details": "Estimated financial losses from legal settlements, reputational damage, and client loss after email system breach."}, {"entity": "WannaCry", "year": "2017", "amount": "$4 Billion", "type": "Damages", "details": "Estimated global losses from the ransomware worm affecting 150+ countries."}, {"entity": "Crypto Theft (Total)", "year": "2025", "amount": "$3.4 Billion", "type": "Theft", "details": "Total cryptocurrency stolen in 2025, largely driven by North Korean actors."}, {"entity": "Change Healthcare", "year": "2024", "amount": "$2.87 Billion", "type": "Damages", "details": "Total estimated damage including business interruption; the company also paid a $22 million ransom."}, {"entity": "Jaguar Land Rover", "year": "2025", "amount": "Ã_x0083_Â_x0082_Ã_x0082_Â£1.9 Billion (~$2.5B)", "type": "Loss", "details": "Estimated loss from a ransomware attack disrupting manufacturing and retail operations."}, {"entity": "GandCrab", "year": "2018Ã_x0083_Â¢Ã_x0082_Â_x0080_Ã_x0082_Â_x0093_2019", "amount": "$2 Billion", "type": "Earnings", "details": "Estimated earnings generated by the GandCrab Ransomware-as-a-Service operators."}, {"entity": "North Korea (Total Theft)", "year": "2025", "amount": "$2.02 Billion", "type": "Theft", "details": "Total cryptocurrency stolen by North Korean hackers in 2025 alone."}, {"entity": "ByBit", "year": "2025", "amount": "$1.5 Billion", "type": "Theft", "details": "Largest crypto heist to date; North Korean hackers exploited a wallet software vulnerability."}, {"entity": "Meta (Facebook)", "year": "2024", "amount": "$1.4 Billion", "type": "Settlement", "details": "Settlement with the State of Texas for unlawful capture of biometric data."}, {"entity": "Equifax", "year": "2017", "amount": "$1.4 Billion+", "type": "Damages", "details": "Total costs for cleanup and legal settlements (fines settled for ~$575Ã_x0083_Â¢Ã_x0082_Â_x0080_Ã_x0082_Â_x0093_$700M)."}, {"entity": "Google (Texas)", "year": "2025", "amount": "$1.375 Billion", "type": "Settlement", "details": "Settlement with Texas regarding unlawful collection of biometric and location data."}, {"entity": "Meta (GDPR)", "year": "2023", "amount": "$1.3 Billion (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬1.2B)", "type": "Fine", "details": "Fine by Ireland's Data Protection Commission for unlawful data transfers to the US."}, {"entity": "Mafiaboy", "year": "2000", "amount": "$1.2 Billion", "type": "Damages", "details": "Estimated damages from DDoS attacks launched by a teenager against major sites like CNN and Amazon."}, {"entity": "Didi Global", "year": "2022", "amount": "$1.19 Billion", "type": "Fine", "details": "Fine imposed by the Chinese government for data security and privacy violations."}, {"entity": "Carbanak Gang", "year": "2013Ã_x0083_Â¢Ã_x0082_Â_x0080_Ã_x0082_Â_x0093_2015", "amount": "$1 Billion", "type": "Theft", "details": "Estimated total stolen from 100+ financial institutions worldwide by a cybercrime ring."}, {"entity": "CDK Global", "year": "2024", "amount": "~$1 Billion", "type": "Loss", "details": "Estimated cumulative dealer losses due to the ransomware attack on the automotive SaaS provider."}, {"entity": "Amazon", "year": "2021", "amount": "$886 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬746M)", "type": "Fine", "details": "GDPR fine issued by Luxembourg for behavioral advertising violations."}, {"entity": "Meta (Cambridge Analytica)", "year": "2022", "amount": "$725 Million", "type": "Settlement", "details": "Class-action settlement for the Cambridge Analytica data privacy scandal."}, {"entity": "Ronin Network", "year": "2022", "amount": "$625 Million", "type": "Theft", "details": "North Korean Lazarus Group stole cryptocurrency from the Axie Infinity bridge."}, {"entity": "Poly Network", "year": "2021", "amount": "$610 Million", "type": "Theft", "details": "Cryptocurrency heist where assets were eventually returned by the hacker."}, {"entity": "TikTok", "year": "2025", "amount": "$600 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬530M)", "type": "Fine", "details": "GDPR fine by Ireland for unlawful transfer of user data to China."}, {"entity": "BNB Chain", "year": "2022", "amount": "$570 Million", "type": "Theft", "details": "Total stolen from Binance bridge (though attacker only managed to move ~$100M)."}, {"entity": "Kaiser Permanente", "year": "2026", "amount": "$556 Million", "type": "Settlement", "details": "Settlement for False Claims Act allegations related to diagnosis codes."}, {"entity": "Coincheck", "year": "2018", "amount": "$534 Million", "type": "Theft", "details": "NEM cryptocurrency stolen from a Japanese exchange."}, {"entity": "Epic Games", "year": "2019", "amount": "$520 Million", "type": "Fine", "details": "Fines paid to the FTC for violating COPPA (children's privacy laws)."}, {"entity": "Veterans Affairs", "year": "2006", "amount": "$500 Million", "type": "Damages", "details": "Estimated costs including a $20M lawsuit settlement after a laptop theft."}, {"entity": "Yahoo", "year": "2013-2016", "amount": "$470 Million", "type": "Loss", "details": "Financial losses including legal fees, settlements, and acquisition price reduction."}, {"entity": "Mt. Gox", "year": "2014", "amount": "$460 Million", "type": "Theft", "details": "Bitcoin disaster leading to the exchange's bankruptcy."}, {"entity": "Meta (Instagram)", "year": "2022", "amount": "$403 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬405M)", "type": "Fine", "details": "GDPR fine regarding children's data privacy settings on Instagram."}, {"entity": "Coinbase", "year": "2025", "amount": "$400 Million", "type": "Cost (Est)", "details": "Potential cost estimate following a data breach involving contractor extortion."}, {"entity": "TikTok (Child Data)", "year": "2023", "amount": "$370 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬345M)", "type": "Fine", "details": "GDPR fine for violating children's data privacy."}, {"entity": "T-Mobile", "year": "2022", "amount": "$350 Million", "type": "Settlement", "details": "Settlement for a class action lawsuit regarding a 2021 data breach."}, {"entity": "LinkedIn", "year": "2024", "amount": "$335 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬310M)", "type": "Fine", "details": "GDPR fine for processing user data for behavioral analysis without consent."}, {"entity": "Uber", "year": "2024", "amount": "$324 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬290M)", "type": "Fine", "details": "GDPR fine for transferring driver data to the US without safeguards."}, {"entity": "Wormhole", "year": "2022", "amount": "$322 Million", "type": "Theft", "details": "DeFi bridge exploit."}, {"entity": "Maersk", "year": "2017", "amount": "$300 Million", "type": "Loss", "details": "Direct financial losses attributed to the NotPetya attack."}, {"entity": "Target", "year": "2013", "amount": "$292 Million", "type": "Damages", "details": "Total costs including settlements ($18.5M) and bank payouts ($127.5M)."}, {"entity": "Co-operative Group", "year": "2025", "amount": "Ã_x0083_Â_x0082_Ã_x0082_Â£206 Million (~$277M)", "type": "Loss", "details": "Revenue loss due to ransomware attack on UK retail sector."}, {"entity": "Meta (Scraping)", "year": "2022", "amount": "$277 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬265M)", "type": "Fine", "details": "Fine for the compromise of 500 million users' personal information."}, {"entity": "Meta (2018 Breach)", "year": "2024", "amount": "$263.5 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬251M)", "type": "Fine", "details": "Fine for a 2018 breach exposing 29 million users."}, {"entity": "WhatsApp", "year": "2021", "amount": "$255 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬225M)", "type": "Fine", "details": "GDPR fine regarding transparency obligations."}, {"entity": "Hannaford Bros", "year": "2007", "amount": "$252 Million", "type": "Damages", "details": "Estimated costs from a POS malware breach affecting 4.2 million cards."}, {"entity": "Nomad Bridge", "year": "2022", "amount": "$200 Million", "type": "Theft", "details": "Cryptocurrency withdrawal exploit."}, {"entity": "BitMart", "year": "2021", "amount": "$200 Million", "type": "Theft", "details": "Assets withdrawn in a security breach."}, {"entity": "Home Depot", "year": "2014", "amount": "~$200 Million", "type": "Damages", "details": "Estimated costs including $134.5M to banks and $19.5M to customers."}, {"entity": "Capital One", "year": "2019", "amount": "$190 Million", "type": "Settlement", "details": "Class-action settlement for a breach affecting 100 million people."}, {"entity": "Beanstalk Farms", "year": "2022", "amount": "$180 Million", "type": "Theft", "details": "Cryptocurrency theft via a governance exploit."}, {"entity": "Gilead Sciences", "year": "2025", "amount": "$176 Million", "type": "Settlement", "details": "False Claims Act settlement for paying kickbacks/honoraria."}, {"entity": "Sony PSN", "year": "2011", "amount": "$171 Million", "type": "Damages", "details": "Costs related to a 23-day network shutdown and breach of 77 million accounts."}, {"entity": "BitGrail", "year": "2018", "amount": "$170 Million", "type": "Theft", "details": "Nano cryptocurrency stolen from Italian exchange."}, {"entity": "Akira Ransomware", "year": "2025", "amount": "$150 Million", "type": "Earnings", "details": "Total ransom revenue collected by Akira group in 2025."}, {"entity": "Uber", "year": "2018", "amount": "$148 Million", "type": "Fine", "details": "Settlement for concealing a 2016 data breach and paying hackers off."}, {"entity": "Ingram Micro", "year": "2025", "amount": "$136 Million / Day", "type": "Loss", "details": "Estimated daily revenue loss during ransomware outage."}, {"entity": "Anthem", "year": "2015", "amount": "$131 Million", "type": "Penalties", "details": "$115M settlement + $16M penalty for a breach of 80 million records."}, {"entity": "Cream Finance", "year": "2021", "amount": "$130 Million", "type": "Theft", "details": "Theft from a DeFi platform via flash loan exploit."}, {"entity": "BadgerDAO", "year": "2021", "amount": "$120 Million", "type": "Theft", "details": "Crypto theft from a DeFi protocol."}, {"entity": "Morgan Stanley", "year": "2022", "amount": "$120 Million", "type": "Total", "details": "$60M settlement + $60M penalty for data decommissioning failures."}, {"entity": "MGM Resorts", "year": "2023", "amount": "$110 Million", "type": "Loss", "details": "Estimated financial loss from a ransomware attack."}, {"entity": "Bangladesh Bank", "year": "2016", "amount": "$101 Million", "type": "Theft", "details": "SWIFT hack where attackers attempted to steal nearly $1 billion."}, {"entity": "Meta (Passwords)", "year": "2024", "amount": "$102 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬91M)", "type": "Fine", "details": "Fine for storing user passwords in plaintext."}, {"entity": "Google Ireland", "year": "2022", "amount": "$102 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬90M)", "type": "Fine", "details": "Fine for cookie consent procedures on YouTube."}, {"entity": "Independent Health", "year": "2025", "amount": "$98 Million", "type": "Settlement", "details": "False Claims Act settlement for invalid diagnosis codes."}, {"entity": "Liquid", "year": "2021", "amount": "$97 Million", "type": "Theft", "details": "Crypto exchange theft."}, {"entity": "AscendEX", "year": "2021", "amount": "$77.7 Million", "type": "Theft", "details": "Breach of a crypto exchange hot wallet."}, {"entity": "Cencora", "year": "2024", "amount": "$75 Million", "type": "Ransom", "details": "Largest known single ransomware payout to Dark Angels group."}, {"entity": "NiceHash", "year": "2017", "amount": "$70 Million", "type": "Theft", "details": "Bitcoin stolen from a mining service."}, {"entity": "Kaseya", "year": "2021", "amount": "$70 Million", "type": "Demand", "details": "Ransom demanded (company did not pay) for a universal decryptor."}, {"entity": "Lehigh Valley Health", "year": "2024", "amount": "$65 Million", "type": "Settlement", "details": "Class action settlement for medical record hack/photos."}, {"entity": "Seoul Medical", "year": "2025", "amount": "$60 Million", "type": "Settlement", "details": "False Claims Act settlement."}, {"entity": "Google France", "year": "2019", "amount": "$54 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬50M)", "type": "Fine", "details": "Fine for lack of transparency and valid consent."}, {"entity": "Vodafone Germany", "year": "2025", "amount": "$52 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬45M)", "type": "Fine", "details": "GDPR fine for contract oversight and auth deficiencies."}, {"entity": "Marriott", "year": "2024", "amount": "$52 Million", "type": "Settlement", "details": "Settlement with 50 US states over Starwood breach."}, {"entity": "The DAO", "year": "2016", "amount": "$50 Million", "type": "Theft", "details": "Attackers exploited a vulnerability to siphon approximately $50 million in ether."}, {"entity": "Kuwait Bank", "year": "2019", "amount": "$49 Million", "type": "Theft", "details": "Attackers stole funds from a Kuwaiti bank."}, {"entity": "Upbit", "year": "2019", "amount": "$48.5 Million", "type": "Theft", "details": "Virtual currency stolen from a South Korean exchange."}, {"entity": "QOL Medical", "year": "2025", "amount": "$47 Million", "type": "Settlement", "details": "False Claims Act settlement regarding kickbacks."}, {"entity": "Vohra Wound", "year": "2025", "amount": "$45 Million", "type": "Settlement", "details": "Fraud allegations settlement."}, {"entity": "CNA Financial", "year": "2021", "amount": "$40 Million", "type": "Ransom", "details": "The insurance company paid a $40 million ransom to regain network control."}, {"entity": "H&M", "year": "2020", "amount": "$38 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬35M)", "type": "Fine", "details": "GDPR fine for illegal employee surveillance."}, {"entity": "IRA Financial", "year": "2022", "amount": "$36 Million", "type": "Theft", "details": "Cryptocurrency drained from retirement accounts."}, {"entity": "Crypto.com", "year": "2022", "amount": "$35 Million", "type": "Theft", "details": "Unauthorized withdrawals despite 2FA."}, {"entity": "Yahoo", "year": "2017", "amount": "$35 Million", "type": "Fine", "details": "SEC fine for failing to disclose breach."}, {"entity": "Amazon France", "year": "2024", "amount": "$34 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬32M)", "type": "Fine", "details": "GDPR fine for intrusive employee monitoring."}, {"entity": "Clearview AI", "year": "2024", "amount": "$33 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬30.5M)", "type": "Fine", "details": "Fine for illegal data collection (facial recognition)."}, {"entity": "MonoX Finance", "year": "2021", "amount": "$31 Million", "type": "Theft", "details": "Theft via smart contract vulnerability exploit."}, {"entity": "Marks & Spencer", "year": "2025", "amount": "$27 Million", "type": "Costs", "details": "Costs incurred from a data breach affecting 16.9M customers."}, {"entity": "LoanDepot", "year": "2024", "amount": "$27 Million", "type": "Costs", "details": "Response and recovery costs from a ransomware attack."}, {"entity": "Arup", "year": "2026", "amount": "$25 Million", "type": "Theft", "details": "Financial loss due to a deepfake video conference scam."}, {"entity": "Mr. Cooper", "year": "2023", "amount": "$25 Million", "type": "Costs", "details": "Vendor expenses related to response and recovery reached $25 million."}, {"entity": "Marriott International", "year": "2019", "amount": "$24 Million", "type": "Fine", "details": "Fined by the UK ICO for failing to meet cybersecurity standards."}, {"entity": "Change Healthcare", "year": "2024", "amount": "$22 Million", "type": "Ransom", "details": "Ransom paid to ALPHV/BlackCat."}, {"entity": "Costa Rican Ministry of Finance", "year": "2022", "amount": "$20 Million", "type": "Demand", "details": "Hackers demanded $20 million in ransom."}, {"entity": "US COVID-19 Relief Funds", "year": "2022", "amount": "$20 Million", "type": "Theft", "details": "Chinese government-linked hackers stole relief funds."}, {"entity": "Standard Bank", "year": "2016", "amount": "$19 Million", "type": "Theft", "details": "ATM cash-out heist in Japan."}, {"entity": "Target", "year": "2017", "amount": "$18.5 Million", "type": "Settlement", "details": "Settlement with 47 states regarding the 2013 data breach."}, {"entity": "Capita", "year": "2025", "amount": "$18 Million (Ã_x0083_Â_x0082_Ã_x0082_Â£14M)", "type": "Fine", "details": "UK ICO fine for security failings."}, {"entity": "Home Depot", "year": "2020", "amount": "$17.5 Million", "type": "Settlement", "details": "Settlement with states regarding 2014 breach."}, {"entity": "Ronald Spektor", "year": "2025", "amount": "$16 Million", "type": "Theft", "details": "Coinbase impersonation scam."}, {"entity": "T-Mobile", "year": "2024", "amount": "$15.75 Million", "type": "Settlement", "details": "FCC settlement for multiple breaches."}, {"entity": "Caesars", "year": "2023", "amount": "$15 Million", "type": "Ransom", "details": "Ransom paid to avoid operational disruption."}, {"entity": "Hill ASC", "year": "2025", "amount": "$14.75 Million", "type": "Settlement", "details": "False Claims Act settlement."}, {"entity": "DaVita", "year": "2025", "amount": "$13.5 Million", "type": "Cost", "details": "Direct incident costs from ransomware."}, {"entity": "AT&T", "year": "2024", "amount": "$13 Million", "type": "Fine", "details": "FCC fine for supply chain cloud breach."}, {"entity": "Health Net", "year": "2025", "amount": "$11.25 Million", "type": "Settlement", "details": "False Claims Act settlement for cybersecurity violations."}, {"entity": "JBS Foods", "year": "2021", "amount": "$11 Million", "type": "Ransom", "details": "Ransom paid to REvil group."}, {"entity": "Illumina", "year": "2025", "amount": "$9.8 Million", "type": "Settlement", "details": "Settlement regarding cybersecurity vulnerabilities."}, {"entity": "Raytheon", "year": "2025", "amount": "$8.4 Million", "type": "Settlement", "details": "False Claims Act settlement."}, {"entity": "British Library", "year": "2023", "amount": "Ã_x0083_Â_x0082_Ã_x0082_Â£7 Million", "type": "Costs", "details": "Recovery costs were estimated as high as Ã_x0083_Â_x0082_Ã_x0082_Â£7 million."}, {"entity": "SamSam Ransomware", "year": "2018", "amount": "$6 Million", "type": "Earnings", "details": "This ransomware earned its creators nearly $6 million."}, {"entity": "Travelex", "year": "2019", "amount": "$6 Million", "type": "Demand", "details": "Ransom demanded (and operations crippled)."}, {"entity": "Replika (Luka)", "year": "2025", "amount": "$5.8 Million (Ã_x0083_Â¢Ã_x0082_Â_x0082_Ã_x0082_Â¬5M)", "type": "Fine", "details": "Italian fine for GDPR/child safety violations."}, {"entity": "Colonial Pipeline", "year": "2021", "amount": "$4.4 Million", "type": "Ransom", "details": "The company paid a ransom via Bitcoin."}, {"entity": "Advanced", "year": "2025", "amount": "$4.1 Million (Ã_x0083_Â_x0082_Ã_x0082_Â£3.1M)", "type": "Fine", "details": "UK fine for ransomware outage affecting NHS."}, {"entity": "PowerSchool", "year": "2025", "amount": "$2.85 Million", "type": "Ransom", "details": "Ransom paid by education software provider."}, {"entity": "PayPal", "year": "2025", "amount": "$2 Million", "type": "Fine", "details": "NYDFS fine for cybersecurity failures."}, {"entity": "DoD & NASA Hack", "year": "1999", "amount": "$1.7 Million", "type": "Theft", "details": "A teenager downloaded software worth approximately $1.7 million."}, {"entity": "Technion University", "year": "2023", "amount": "$1.7 Million", "type": "Demand", "details": "Hackers demanded 80 bitcoin."}, {"entity": "Warby Parker", "year": "2025", "amount": "$1.5 Million", "type": "Penalty", "details": "HHS OCR penalty for HIPAA violations."}, {"entity": "Adobe", "year": "2013", "amount": "$1 Million", "type": "Settlement", "details": "Settled a lawsuit with 15 states."}, {"entity": "SimonMed Imaging", "year": "2025", "amount": "$1 Million", "type": "Demand", "details": "Attackers demanded $1 million to delete stolen files."}, {"entity": "First American Financial Corp", "year": "2019", "amount": 500000.0, "type": "Fine", "details": "The SEC fined the company for cybersecurity violations."}, {"entity": "Uber", "year": "2016", "amount": 100000.0, "type": "Ransom", "details": "The company paid hackers to destroy stolen data."}, {"entity": "```", "year": null, "amount": null, "type": null, "details": null}]};
+
+// ---------- Normalize into unified records ----------
+function parseAmountToNumber(str){
+  if(!str) return null;
+  const s = String(str).replace(/,/g,'');
+  const m = s.match(/([\d.]+)\s*(trillion|billion|million|thousand|k\b)?/i);
+  if(!m) return null;
+  let n = parseFloat(m[1]);
+  if(isNaN(n)) return null;
+  const unit = (m[2]||'').toLowerCase();
+  if(unit.startsWith('tril')) n *= 1e12;
+  else if(unit.startsWith('bil')) n *= 1e9;
+  else if(unit.startsWith('mil')) n *= 1e6;
+  else if(unit.startsWith('thou') || unit==='k') n *= 1e3;
+  return n;
+}
+function fmtUSD(n){
+  if(n===null || n===undefined || isNaN(n)) return 'N/A';
+  if(n>=1e12) return '$'+(n/1e12).toFixed(2)+'T';
+  if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K';
+  return '$'+n.toFixed(0);
+}
+
+let records = [];
+
+RAW.ai_milestones.forEach(r=>{
+  records.push({
+    cat:'ai', tagLabel:'AI MILESTONE', tagClass:'tag-ai',
+    title:r.event, meta:[r.year?String(r.year):null, r.tech].filter(Boolean),
+    desc:r.impact, impact:null, src:null, year:r.year, amountNum:null,
+    search:[r.event,r.tech,r.impact].join(' ')
+  });
+});
+RAW.ai_scams.forEach(r=>{
+  records.push({
+    cat:'scam', tagLabel:'AI-DRIVEN SCAM', tagClass:'tag-scam',
+    title:r.name, meta:[r.target].filter(Boolean),
+    desc:r.method, impact:r.loss?('LOSS: '+r.loss):null, src:null, year:null, amountNum:parseAmountToNumber(r.loss),
+    search:[r.name,r.target,r.method,r.loss].join(' ')
+  });
+});
+RAW.crypto_hacks.forEach(r=>{
+  records.push({
+    cat:'crypto', tagLabel:'CRYPTO HEIST', tagClass:'tag-crypto',
+    title:r.entity, meta:[r.year?String(r.year):null, r.cause].filter(Boolean),
+    desc:r.note, impact:r.amount?('STOLEN: '+r.amount):null, src:null, year:r.year, amountNum:parseAmountToNumber(r.amount),
+    search:[r.entity,r.cause,r.note,r.amount].join(' ')
+  });
+});
+RAW.breaches.forEach(r=>{
+  records.push({
+    cat:'breach', tagLabel:'DATA BREACH', tagClass:'tag-breach',
+    title:r.entity, meta:[r.date, r.sector].filter(Boolean),
+    desc:(r.data_exposed?('EXPOSED: '+r.data_exposed+'. '):'') + (r.cause?('CAUSE: '+r.cause):''),
+    impact:r.legal?('LEGAL: '+r.legal):null, src:r.source?('Ref #'+r.source):null, year:r.date, amountNum:parseAmountToNumber(r.legal),
+    search:[r.entity,r.sector,r.scale,r.data_exposed,r.cause,r.legal].join(' ')
+  });
+});
+RAW.recent_incidents.forEach(r=>{
+  records.push({
+    cat:'fed', tagLabel:'FEDERAL/GLOBAL INCIDENT', tagClass:'tag-fed',
+    title:r.entity, meta:[r.type, r.scale].filter(Boolean),
+    desc:(r.cause?('CAUSE: '+r.cause+'. '):'') + (r.data_exposed?('DATA: '+r.data_exposed):''),
+    impact:r.consequences?('IMPACT: '+r.consequences):null, src:r.source?('Ref #'+r.source):null, year:null, amountNum:parseAmountToNumber(r.scale)||parseAmountToNumber(r.consequences),
+    search:[r.entity,r.type,r.scale,r.data_exposed,r.cause,r.consequences,r.lessons].join(' ')
+  });
+});
+RAW.costs.forEach(r=>{
+  records.push({
+    cat:'cost', tagLabel:'COST LEDGER', tagClass:'tag-cost',
+    title:r.entity, meta:[r.year, r.type].filter(Boolean),
+    desc:r.details, impact:r.amount?('AMOUNT: '+r.amount):null, src:null, year:r.year, amountNum:parseAmountToNumber(r.amount),
+    search:[r.entity,r.type,r.details,r.amount].join(' ')
+  });
+});
+
+records.forEach(r=> r.search = (r.search||'').toLowerCase());
+
+// ---------- KPI Strip ----------
+const totalIncidents = records.length;
+const totalLoss = records.reduce((acc,r)=> acc + (r.amountNum && r.cat!=='cost' ? 0 : 0), 0); // placeholder unused
+const costRecords = RAW.costs.map(r=>({...r, num:parseAmountToNumber(r.amount)})).filter(r=>r.num);
+const maxCost = costRecords.reduce((a,b)=> b.num>a.num?b:a, costRecords[0]||{num:0,entity:'N/A',amount:'N/A'});
+const years = records.map(r=>{
+  let y = r.year;
+  if(typeof y === 'string'){ const m = y.match(/(19|20)\d{2}/); y = m?parseInt(m[0]):null; }
+  return y;
+}).filter(Boolean);
+const latestYear = years.length? Math.max(...years) : 'N/A';
+const earliestYear = years.length? Math.min(...years) : 'N/A';
+
+const kpis = [
+  {label:'Total Records Logged', value: totalIncidents, cls:''},
+  {label:'Largest Single Loss', value: maxCost.amount || 'N/A', cls:'red'},
+  {label:'Coverage Span', value: earliestYear+' – '+latestYear, cls:'cyan'},
+  {label:'Crypto Heists Tracked', value: RAW.crypto_hacks.length, cls:'gold'},
+  {label:'Breach/Fraud Records', value: RAW.breaches.length + RAW.recent_incidents.length, cls:'cyan'},
+  {label:'AI-Native Threat Events', value: RAW.ai_milestones.length + RAW.ai_scams.length, cls:'red'},
+];
+document.getElementById('kpiStrip').innerHTML = kpis.map(k=>
+  `<div class="kpi"><div class="label">${k.label}</div><div class="value ${k.cls}">${k.value}</div></div>`
+).join('');
+
+// ---------- Tabs ----------
+const cats = [
+  {id:'all', label:'All'},
+  {id:'ai', label:'AI Milestones'},
+  {id:'scam', label:'AI Scams'},
+  {id:'crypto', label:'Crypto Heists'},
+  {id:'breach', label:'Data Breaches'},
+  {id:'fed', label:'Federal/Global'},
+  {id:'cost', label:'Cost Ledger'},
+];
+function countFor(id){ return id==='all' ? records.length : records.filter(r=>r.cat===id).length; }
+document.getElementById('tabs').innerHTML = cats.map(c=>
+  `<div class="tab ${c.id==='all'?'active':''}" data-cat="${c.id}">${c.label} <span class="count-badge">${countFor(c.id)}</span></div>`
+).join('');
+
+let activeCat = 'all';
+let query = '';
+
+function render(){
+  const feed = document.getElementById('feed');
+  const empty = document.getElementById('emptyState');
+  let filtered = records.filter(r=>{
+    const catOk = activeCat==='all' || r.cat===activeCat;
+    const qOk = !query || r.search.includes(query);
+    return catOk && qOk;
+  });
+  if(filtered.length===0){
+    feed.innerHTML=''; empty.style.display='block'; return;
+  }
+  empty.style.display='none';
+  feed.innerHTML = filtered.map(r=>`
+    <div class="card">
+      <span class="tag ${r.tagClass}">${r.tagLabel}</span>
+      <div class="title">${escapeHtml(r.title||'Unknown')}</div>
+      ${r.meta.length? `<div class="meta">${r.meta.map(m=>`<span>${escapeHtml(String(m))}</span>`).join(' · ')}</div>`:''}
+      <div class="desc">${escapeHtml(r.desc||'')}</div>
+      ${r.impact? `<div class="impact">${escapeHtml(r.impact)}</div>`:''}
+      ${r.src? `<div class="src">${escapeHtml(r.src)}</div>`:''}
+    </div>
+  `).join('');
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    activeCat = tab.dataset.cat;
+    render();
+  });
+});
+document.getElementById('search').addEventListener('input', (e)=>{
+  query = e.target.value.trim().toLowerCase();
+  render();
+});
+
+render();
+
+// ---------- Prevention Playbook ----------
+function topLossLabel(cat){
+  const list = records.filter(r=>r.cat===cat && r.amountNum);
+  if(!list.length) return null;
+  const top = list.reduce((a,b)=> b.amountNum>a.amountNum?b:a, list[0]);
+  return top.title + ' — ' + fmtUSD(top.amountNum);
+}
+
+const PLAYBOOK = [
+  {
+    cat:'ai', tagClass:'tag-ai', title:'Agentic / LLM-Native Attacks',
+    stat: () => `${countFor('ai')} milestones tracked · top vector: autonomous multi-tool attack chains`,
+    controls:[
+      'Agentic behavior baselining — flag AI/LLM tool-call sequences that deviate from approved workflows',
+      'Prompt-injection & jailbreak testing on any internally deployed LLM/agent stack',
+      'Kill-switch + human-in-loop gating for autonomous agent actions on prod systems'
+    ],
+    service:'CRYSTAL AI-IPS (agentic anomaly detection) + DigiCognitive AI governance audit',
+    reg:'<b>UAE hook:</b> Dubai AI Roadmap / Dubai AI &amp; Web3 Campus push means fast LLM adoption without matching controls — early-mover advisory positioning for regulated entities (banks, GREs).'
+  },
+  {
+    cat:'scam', tagClass:'tag-scam', title:'Deepfake / Voice-Clone Fraud',
+    stat: () => `${countFor('scam')} campaigns tracked · ${topLossLabel('scam') || 'high-volume SMS/voice vectors'}`,
+    controls:[
+      'Out-of-band callback verification for any wire/crypto transfer above threshold',
+      'Voice/video liveness + biometric challenge on executive-authorization workflows',
+      'Deepfake-readiness tabletop exercise for finance &amp; treasury teams'
+    ],
+    service:'PANDA (fraud/anomaly detection) + NexTier executive fraud-readiness assessment',
+    reg:'<b>UAE hook:</b> CBUAE fraud advisories + high executive-impersonation exposure in GCC banking/family-office structures common in Dubai.'
+  },
+  {
+    cat:'crypto', tagClass:'tag-crypto', title:'Crypto / Digital Asset Heists',
+    stat: () => `${countFor('crypto')} heists tracked · largest: ${topLossLabel('crypto') || 'N/A'}`,
+    controls:[
+      'Multisig + hardware security module (HSM) architecture review for cold/hot wallet split',
+      'Independent smart-contract &amp; bridge-code audit before mainnet deployment',
+      'Real-time on-chain transaction anomaly monitoring on treasury wallets'
+    ],
+    service:'NexTier blockchain security assessment + CRYSTAL AI-IPS wallet anomaly monitoring',
+    reg:'<b>UAE hook:</b> VARA (Dubai Virtual Assets Regulatory Authority) licensing requires demonstrable custody &amp; security controls — direct compliance-linked service hook.'
+  },
+  {
+    cat:'breach', tagClass:'tag-breach', title:'Large-Scale Data Breaches',
+    stat: () => `${countFor('breach')} incidents tracked · largest fine: ${topLossLabel('breach') || 'N/A'}`,
+    controls:[
+      'Data discovery + classification sweep across biometric, location &amp; behavioral data stores',
+      'Consent-management platform gap assessment against GDPR-equivalent regimes',
+      'DLP + encryption-at-rest enforcement on cross-border data transfer pipelines'
+    ],
+    service:'NexTier PDPL/data-governance compliance program + DigiCognitive privacy-by-design audit',
+    reg:'<b>UAE hook:</b> Federal Decree-Law No. 45/2021 (PDPL), DIFC DP Law 5/2020, ADGM DP Regulations — three overlapping regimes inside one country, high-value advisory niche.'
+  },
+  {
+    cat:'fed', tagClass:'tag-fed', title:'Public-Sector / Program Fraud',
+    stat: () => `${countFor('fed')} incidents tracked · scale: ${topLossLabel('fed') || 'billions in program losses'}`,
+    controls:[
+      'Prepayment identity verification &amp; cross-agency data matching before fund disbursement',
+      'ML fraud-detection model validation to close self-certification loopholes',
+      'Continuous control monitoring for government relief / subsidy programs'
+    ],
+    service:'NexTier public-sector assurance practice + CRYSTAL AI-IPS program-integrity monitoring',
+    reg:'<b>UAE hook:</b> Smart Dubai / DESC Information Security Regulation compliance for government digital services and GRE-run benefit programs.'
+  },
+  {
+    cat:'cost', tagClass:'tag-cost', title:'Enterprise Cyber-Risk Exposure',
+    stat: () => `${countFor('cost')} cost benchmarks tracked · macro: global cybercrime cost trending toward $23T by 2027`,
+    controls:[
+      'Quantified cyber-risk register tied to board reporting cadence',
+      'Cyber-insurance coverage gap analysis against modeled loss scenarios',
+      'Incident-response retainer with defined RTO/RPO for critical systems'
+    ],
+    service:'NexTier cyber-risk quantification (FinOps-linked) + OMNIVEX executive risk dashboard',
+    reg:'<b>UAE hook:</b> DFSA/CBUAE board-level cyber-risk disclosure expectations for DIFC- and mainland-regulated entities.'
+  }
+];
+
+function renderPlaybook(){
+  const grid = document.getElementById('playbookGrid');
+  grid.innerHTML = PLAYBOOK.map(p=>`
+    <div class="pb-card ${activeCat===p.cat?'highlight':''}" data-pbcat="${p.cat}">
+      <span class="pb-tag ${p.tagClass}">${p.title}</span>
+      <div class="pb-stat">${p.stat()}</div>
+      <div class="pb-section">
+        <div class="pb-label">Prevention Controls</div>
+        <ul>${p.controls.map(c=>`<li>${c}</li>`).join('')}</ul>
+      </div>
+      <div class="pb-section">
+        <div class="pb-label">OMNIVEX / NexTier Service</div>
+        <div class="pb-service">${p.service}</div>
+      </div>
+      <div class="pb-reg">${p.reg}</div>
+    </div>
+  `).join('');
+}
+renderPlaybook();
+
+// Sync playbook highlight when category tab changes
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', renderPlaybook);
+});
+
+// ---------- Chart: cost by year ----------
+const yearMap = {};
+costRecords.forEach(r=>{
+  let y = r.year;
+  let ym = String(y).match(/(19|20)\d{2}/);
+  let key = ym ? ym[0] : String(y);
+  if(!yearMap[key]) yearMap[key] = 0;
+  yearMap[key] = Math.max(yearMap[key], r.num);
+});
+const yearKeys = Object.keys(yearMap).sort();
+const yearVals = yearKeys.map(k=>yearMap[k]);
+
+const ctx = document.getElementById('costChart').getContext('2d');
+new Chart(ctx, {
+  type:'bar',
+  data:{
+    labels: yearKeys,
+    datasets:[{
+      label:'Peak Estimated Cost (USD)',
+      data: yearVals,
+      backgroundColor: 'rgba(0,212,255,0.35)',
+      borderColor: '#00D4FF',
+      borderWidth:1,
+    }]
+  },
+  options:{
+    responsive:true,
+    scales:{
+      y:{
+        type:'logarithmic',
+        ticks:{ color:'#7c8494', callback:(v)=> fmtUSD(v) },
+        grid:{ color:'rgba(255,255,255,0.05)' }
+      },
+      x:{
+        ticks:{ color:'#7c8494' },
+        grid:{ display:false }
+      }
+    },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{
+        callbacks:{ label:(ctx)=> fmtUSD(ctx.parsed.y) }
+      }
+    }
+  }
+});
+
+// ---------- Clock ----------
+function tick(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toUTCString().split(' ')[4] + ' UTC';
+}
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

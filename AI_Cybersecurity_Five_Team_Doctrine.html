@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Native Security: The Five-Team Doctrine</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            900: '#070A11', 
+                            800: '#111520', 
+                            700: '#1E2536', 
+                            accent: '#00F0FF',
+                            accentHover: '#00D1DF',
+                            red: '#FF4C6A',
+                            blue: '#4CA1FF',
+                            purple: '#A855F7',
+                            yellow: '#F0C744',
+                            white: '#F3F4F6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            background-color: #070A11;
+            color: #E5E7EB;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #070A11; }
+        ::-webkit-scrollbar-thumb { background: #1E2536; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        .glow-text { text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+        .glow-red { box-shadow: 0 0 15px rgba(255, 76, 106, 0.2); }
+        .glow-blue { box-shadow: 0 0 15px rgba(76, 161, 255, 0.2); }
+        .glow-purple { box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); }
+        .glow-yellow { box-shadow: 0 0 15px rgba(240, 199, 68, 0.2); }
+        .glow-white { box-shadow: 0 0 15px rgba(243, 244, 246, 0.2); }
+
+        .card-enter {
+            animation: fade-in-up 0.4s ease-out forwards;
+        }
+
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <nav class="border-b border-cyber-700 bg-cyber-800/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="ph ph-shield-check text-cyber-accent text-3xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-white glow-text">Five-Team <span class="text-cyber-accent">Doctrine</span></span>
+                </div>
+                <div class="hidden md:flex space-x-6 items-center">
+                    <div class="text-xs text-gray-400 font-mono bg-cyber-900 px-3 py-1 rounded-full border border-cyber-700">
+                        <i class="ph ph-database text-cyber-accent inline"></i> 2026 AI Security Ecosystem
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Section -->
+        <div class="mb-10">
+            <h1 class="text-4xl font-bold text-white mb-3">The AI-Native Security Landscape</h1>
+            <p class="text-gray-400 max-w-3xl text-sm leading-relaxed">
+                A working index of AI-native security products, agentic frameworks, and defense tooling, structured against the five-team doctrine analysts use to divide the field: who attacks, who defends, who bridges the two, who builds the substrate, and who governs it.
+            </p>
+        </div>
+
+        <!-- Team Filters -->
+        <div class="flex flex-wrap gap-3 mb-8">
+            <button onclick="filterTeam('All')" id="btn-All" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-700 text-white border border-gray-500">
+                <i class="ph ph-squares-four mr-1"></i> All Ecosystem
+            </button>
+            <button onclick="filterTeam('Red')" id="btn-Red" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-cyber-red hover:text-cyber-red">
+                <i class="ph ph-sword mr-1"></i> 🔴 Red (Offense)
+            </button>
+            <button onclick="filterTeam('Blue')" id="btn-Blue" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-cyber-blue hover:text-cyber-blue">
+                <i class="ph ph-shield mr-1"></i> 🔵 Blue (Defense)
+            </button>
+            <button onclick="filterTeam('Purple')" id="btn-Purple" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-cyber-purple hover:text-cyber-purple">
+                <i class="ph ph-handshake mr-1"></i> 🟣 Purple (Bridge)
+            </button>
+            <button onclick="filterTeam('Yellow')" id="btn-Yellow" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-cyber-yellow hover:text-cyber-yellow">
+                <i class="ph ph-wrench mr-1"></i> 🟡 Yellow (Builders)
+            </button>
+            <button onclick="filterTeam('White')" id="btn-White" class="filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-white hover:text-white">
+                <i class="ph ph-scales mr-1"></i> ⚪ White (Governors)
+            </button>
+        </div>
+
+        <!-- Team Descriptions (Dynamic) -->
+        <div id="team-context" class="mb-8 p-4 rounded-lg bg-cyber-800 border border-cyber-700 hidden">
+            <h2 id="context-title" class="text-lg font-bold text-white mb-1"></h2>
+            <p id="context-desc" class="text-sm text-gray-400 font-mono"></p>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Cards Injected via JS -->
+        </div>
+
+    </main>
+
+    <script>
+        const teamContexts = {
+            "Red": {
+                title: "🔴 Red Team (Offense: Who Attacks)",
+                desc: "Focus: Automated penetration testing, AI honeypots, creating adversarial examples, and autonomous 'Security Engineer' agents."
+            },
+            "Blue": {
+                title: "🔵 Blue Team (Defense: Who Defends)",
+                desc: "Focus: Threat hunting, autonomous malware analysis, runtime app security (RASP), prompt injection defense, and cloud security remediation."
+            },
+            "Purple": {
+                title: "🟣 Purple Team (Collaboration: Who Bridges the Two)",
+                desc: "Focus: Bridging offensive findings and defensive postures through prompt sanitization, continuous validation, real-time feedback loops, and verifying model robustness."
+            },
+            "Yellow": {
+                title: "🟡 Yellow Team (Construction: Who Builds the Substrate)",
+                desc: "Focus: Building the infrastructure—AI frameworks, RAG data connectors, memory systems, AI-native IDEs, and autonomous code assistants."
+            },
+            "White": {
+                title: "⚪ White Team (Governance: Who Governs It)",
+                desc: "Focus: Ensuring compliance, enforcing access controls for LLMs, evaluating model risk, data privacy, and managing AI Security Posture (AI-SPM)."
+            }
+        };
+
+        const products = [
+            // RED TEAM
+            {
+                name: "Strix Pentesting Agent",
+                vendor: "Open Source",
+                team: "Red",
+                icon: "ph-target",
+                category: "Offensive Security",
+                description: "Autonomous AI penetration testing agents that act like hackers to find and validate vulnerabilities.[cite: 1, 2, 4]"
+            },
+            {
+                name: "PentAGI",
+                vendor: "Open Source",
+                team: "Red",
+                icon: "ph-brain",
+                category: "Assistant-Guided Offense",
+                description: "An assistant-guided offensive security platform featuring smart memory systems and Neo4j knowledge graph integration.[cite: 4]"
+            },
+            {
+                name: "Pentera",
+                vendor: "Pentera",
+                team: "Red",
+                icon: "ph-fire",
+                category: "Continuous Validation",
+                description: "Provides continuous validation and automated red-teaming as a managed service, using software to conduct the hacking.[cite: 3]"
+            },
+            {
+                name: "Takumi",
+                vendor: "GMO Flatt Security",
+                team: "Red",
+                icon: "ph-bug-beetle",
+                category: "AI Security Agent",
+                description: "An AI 'Security Engineer' agent designed for whitebox and blackbox penetration testing, 0-day vulnerability reporting, and automated security assessments.[cite: 1, 2, 4]"
+            },
+            {
+                name: "HexStrike AI",
+                vendor: "Open Source",
+                team: "Red",
+                icon: "ph-sword",
+                category: "Attack Orchestration",
+                description: "An open-source orchestration framework for autonomous attack lifecycle management that utilizes a Model Context Protocol (MCP) layer to manage over 150 tool integrations.[cite: 2]"
+            },
+            {
+                name: "Adversarial Toolkits",
+                vendor: "Various",
+                team: "Red",
+                icon: "ph-flask",
+                category: "Honeypots & Fuzzing",
+                description: "Includes open-source frameworks like Beelzebub (AI honeypot), Woodpecker (AI/Kubernetes red teaming), Foolbox (adversarial example creation), and Buttercup.[cite: 1, 2]"
+            },
+
+            // BLUE TEAM
+            {
+                name: "Sage (AgentGuard)",
+                vendor: "Open Source",
+                team: "Blue",
+                icon: "ph-shield-warning",
+                category: "Agent Defense",
+                description: "An open-source interception layer acting as Agent Detection & Response (ADR) to block malicious AI tool calls via runtime hooking and URL reputation.[cite: 4]"
+            },
+            {
+                name: "Purple AI",
+                vendor: "SentinelOne",
+                team: "Blue",
+                icon: "ph-magnifying-glass",
+                category: "Threat Hunting",
+                description: "An embedded generative AI SOC analyst that translates natural language into hunting queries to automate alert triage.[cite: 1, 2] It enables fractional AI-powered SOC retainers where an operator can do the work of multiple analysts.[cite: 3]"
+            },
+            {
+                name: "ActiveAI Security",
+                vendor: "Darktrace",
+                team: "Blue",
+                icon: "ph-activity",
+                category: "Behavioral NDR",
+                description: "Self-learning behavioral AI for network, email, and OT defense that detects deviations from normal business operations.[cite: 1, 2]"
+            },
+            {
+                name: "Intezer Forensic AI SOC",
+                vendor: "Intezer",
+                team: "Blue",
+                icon: "ph-dna",
+                category: "Malware Analysis",
+                description: "An agentic platform that autonomously triages alerts, investigates malware, and provides evidence-backed verdicts.[cite: 1, 2]"
+            },
+            {
+                name: "Wiz & Torq",
+                vendor: "Wiz / Torq",
+                team: "Blue",
+                icon: "ph-cloud-check",
+                category: "Cloud & Hyperautomation",
+                description: "Wiz is heavily utilized for continuous cloud posture remediation, finding exposures so operators can fix them.[cite: 3] Torq enables hyperautomation strategies to build bots that replace human labor in SOC workflows.[cite: 3]"
+            },
+            {
+                name: "Oligo & Lakera Guard",
+                vendor: "Oligo / Lakera",
+                team: "Blue",
+                icon: "ph-wall",
+                category: "RASP & AI Firewall",
+                description: "Oligo monitors library execution at runtime (RASP) to detect prompt injections and data leakage.[cite: 1, 2] Lakera Guard acts as a real-time AI firewall inspecting inputs and outputs for toxicity and PII leakage.[cite: 1, 2]"
+            },
+
+            // PURPLE TEAM
+            {
+                name: "Promptfoo",
+                vendor: "Open Source",
+                team: "Purple",
+                icon: "ph-terminal",
+                category: "Red Teaming Tool",
+                description: "A dev-first CLI tool and framework for testing, evaluating, and red-teaming LLM applications and agent pipelines to identify vulnerabilities before deployment.[cite: 1, 2]"
+            },
+            {
+                name: "NeMo Guardrails",
+                vendor: "NVIDIA",
+                team: "Purple",
+                icon: "ph-code",
+                category: "Safety Logic",
+                description: "A toolkit for defining safety policies and programmable guardrails through code, using the Colang modeling language to intercept inputs and outputs.[cite: 2]"
+            },
+            {
+                name: "ART & Garak",
+                vendor: "IBM / Open Source",
+                team: "Purple",
+                icon: "ph-shield-check",
+                category: "Adversarial Robustness",
+                description: "IBM's Adversarial Robustness Toolbox (ART) and the Generative AI Red-teaming & Assessment Kit (Garak) help verify AI model robustness against adversarial attacks.[cite: 1, 2]"
+            },
+            {
+                name: "Sanitization Frameworks",
+                vendor: "Various",
+                team: "Purple",
+                icon: "ph-broom",
+                category: "Code & Prompt Filters",
+                description: "Collaborative security tools like LLM Guard, CAI (Cybersecurity AI Framework), Bifrost, Semgrep, and Trivy ensure that prompts and code patterns are securely sanitized.[cite: 1, 2, 4]"
+            },
+
+            // YELLOW TEAM
+            {
+                name: "GraphBit",
+                vendor: "Enterprise",
+                team: "Yellow",
+                icon: "ph-graph",
+                category: "Agent Framework",
+                description: "An enterprise-grade, Rust-core agentic AI framework providing memory safety, secret management, and compliance hooks by design.[cite: 4]"
+            },
+            {
+                name: "AIOS",
+                vendor: "agiresearch",
+                team: "Yellow",
+                icon: "ph-cpu",
+                category: "Agent Kernel",
+                description: "An AI Agent Operating System kernel designed to manage multiple AI agents simultaneously by securely handling resources, memory, and scheduling.[cite: 1, 2]"
+            },
+            {
+                name: "LangChain & LlamaIndex",
+                vendor: "Open Source",
+                team: "Yellow",
+                icon: "ph-link",
+                category: "LLM Orchestration",
+                description: "The dominant frameworks for building LLM applications through composable chains, tool integrations, and connecting LLMs to external data via RAG.[cite: 1, 2]"
+            },
+            {
+                name: "SWE-agent & Devin",
+                vendor: "Princeton / Cognition",
+                team: "Yellow",
+                icon: "ph-braces",
+                category: "Autonomous Dev",
+                description: "Autonomous software engineers that use sandboxed environments and Agent-Computer Interfaces (ACI) to autonomously plan, research, and resolve engineering bugs.[cite: 1, 2]"
+            },
+            {
+                name: "AI IDEs & Pair Programmers",
+                vendor: "Various",
+                team: "Yellow",
+                icon: "ph-code-block",
+                category: "Development Tooling",
+                description: "Tools like GitHub Copilot, Cursor, Windsurf, Zed.dev, and Roo Code serve as the primary development substrate for coding.[cite: 1, 2]"
+            },
+
+            // WHITE TEAM
+            {
+                name: "Protect AI",
+                vendor: "Protect AI",
+                team: "White",
+                icon: "ph-shield-star",
+                category: "Model Risk Management",
+                description: "Focuses heavily on GenAI governance and model risk assessments, serving as an apex-tier service for securing LLM architectures.[cite: 3]"
+            },
+            {
+                name: "Securiti",
+                vendor: "Securiti",
+                team: "White",
+                icon: "ph-file-lock",
+                category: "Data Privacy (DSPM)",
+                description: "Focuses on Data Security Posture Management (DSPM), providing automated data privacy and compliance mapping for regulations like the DPDP Act and AI Act.[cite: 3]"
+            },
+            {
+                name: "Knostic",
+                vendor: "Knostic",
+                team: "White",
+                icon: "ph-key",
+                category: "Access Control",
+                description: "Secures the knowledge layer by enforcing need-to-know access controls for models like Copilot and Gemini, preventing oversharing and enabling forensic auditing.[cite: 1, 2]"
+            },
+            {
+                name: "Cyata (Cyatia)",
+                vendor: "Cyata",
+                team: "White",
+                icon: "ph-fingerprint",
+                category: "Agentic Identity",
+                description: "Acts as a control plane for agentic identities, providing automated discovery, forensic observability, and safety verification for AI agents accessing enterprise systems.[cite: 1, 2, 4]"
+            },
+            {
+                name: "Galileo",
+                vendor: "Galileo",
+                team: "White",
+                icon: "ph-eye",
+                category: "Observability",
+                description: "An observability platform focused on evaluating LLMs by autonomously detecting data poisoning, AI hallucinations, and Shadow AI usage to enforce enterprise governance.[cite: 1, 2]"
+            },
+            {
+                name: "HiddenLayer",
+                vendor: "HiddenLayer",
+                team: "White",
+                icon: "ph-chart-polar",
+                category: "ML Security (MLDR)",
+                description: "Specializes in Machine Learning Detection & Response (MLDR) to secure AI workloads, infrastructure, and adversarial ML pipelines.[cite: 1, 2, 3]"
+            }
+        ];
+
+        const teamStyles = {
+            "Red": "text-cyber-red border-cyber-red/30 bg-cyber-red/5 glow-red",
+            "Blue": "text-cyber-blue border-cyber-blue/30 bg-cyber-blue/5 glow-blue",
+            "Purple": "text-cyber-purple border-cyber-purple/30 bg-cyber-purple/5 glow-purple",
+            "Yellow": "text-cyber-yellow border-cyber-yellow/30 bg-cyber-yellow/5 glow-yellow",
+            "White": "text-cyber-white border-cyber-white/30 bg-cyber-white/5 glow-white"
+        };
+
+        const activeBtnStyles = {
+            "All": "bg-cyber-700 text-white border-gray-500",
+            "Red": "bg-cyber-red/10 text-cyber-red border-cyber-red",
+            "Blue": "bg-cyber-blue/10 text-cyber-blue border-cyber-blue",
+            "Purple": "bg-cyber-purple/10 text-cyber-purple border-cyber-purple",
+            "Yellow": "bg-cyber-yellow/10 text-cyber-yellow border-cyber-yellow",
+            "White": "bg-cyber-white/10 text-white border-white"
+        };
+
+        function renderGrid(teamFilter = 'All') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            let delay = 0;
+            
+            products.filter(p => teamFilter === 'All' || p.team === teamFilter).forEach((product) => {
+                const styleClass = teamStyles[product.team];
+                
+                const card = document.createElement('div');
+                card.className = `card-enter bg-cyber-800 border border-cyber-700 rounded-xl p-5 hover:border-gray-500 transition-all flex flex-col h-full`;
+                card.style.animationDelay = `${delay}s`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 rounded-lg border ${styleClass}">
+                            <i class="ph ${product.icon} text-2xl"></i>
+                        </div>
+                        <span class="${styleClass.split(' ')[0]} text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded border border-current">
+                            ${product.team} Team
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1">${product.name}</h3>
+                    <div class="text-xs text-gray-400 font-mono mb-4">${product.vendor} &bull; ${product.category}</div>
+                    <p class="text-sm text-gray-300 leading-relaxed flex-grow">
+                        ${product.description}
+                    </p>
+                `;
+                grid.appendChild(card);
+                delay += 0.05;
+            });
+
+            // Update Context Box
+            const contextBox = document.getElementById('team-context');
+            if (teamFilter !== 'All') {
+                document.getElementById('context-title').innerText = teamContexts[teamFilter].title;
+                document.getElementById('context-desc').innerText = teamContexts[teamFilter].desc;
+                contextBox.classList.remove('hidden');
+            } else {
+                contextBox.classList.add('hidden');
+            }
+        }
+
+        function filterTeam(team) {
+            // Reset Buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-cyber-900 text-gray-400 border border-cyber-700 hover:border-gray-400";
+            });
+
+            // Set Active Button
+            const activeBtn = document.getElementById(`btn-${team}`);
+            activeBtn.className = `filter-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeBtnStyles[team]}`;
+            
+            renderGrid(team);
+        }
+
+        // Initialize
+        window.onload = () => {
+            renderGrid('All');
+        };
+    </script>
+</body>
+</html>
