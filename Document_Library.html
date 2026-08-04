@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Enterprises | The Core 100 Deliverables</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                            950: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; }
+        
+        .hero-pattern {
+            background-color: #0f172a;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.2);
+            border-color: #3b82f6;
+        }
+
+        /* Modal Animations */
+        .modal-enter { animation: modalFadeIn 0.2s ease-out forwards; }
+        .modal-exit { animation: modalFadeOut 0.2s ease-in forwards; }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.98) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes modalFadeOut {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.98) translateY(10px); }
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="bg-brand-600 text-white p-2 rounded-lg">
+                        <i class="ph ph-buildings text-2xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-950 uppercase">White Enterprises</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-slate-600 hover:text-brand-600 font-medium transition">Solutions</a>
+                    <a href="#" class="text-slate-600 hover:text-brand-600 font-medium transition">Consulting</a>
+                    <a href="#" class="text-slate-600 hover:text-brand-600 font-medium transition">Resources</a>
+                </div>
+                <div>
+                    <a href="#catalog" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition shadow-sm hover:shadow-md">
+                        Access Catalog
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-pattern text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-950/90"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-block bg-brand-500/20 border border-brand-500/30 rounded-full px-4 py-1.5 text-sm font-semibold text-brand-100 mb-6 tracking-wide">
+                ENTERPRISE BLUEPRINTS V2.0
+            </div>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                Standardize Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Enterprise Operations</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Stop reinventing the wheel. Get instant access to the top 100 core deliverables, strategic frameworks, and security blueprints used by elite IT and Engineering leaders.
+            </p>
+        </div>
+    </header>
+
+    <!-- The Catalog Section -->
+    <section id="catalog" class="py-16 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">The Asset Library</h2>
+                    <p class="text-slate-600">Showing <span id="docCount" class="font-bold text-brand-600">100</span> verified enterprise templates.</p>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="w-full md:w-96 relative z-10">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-slate-400 text-lg"></i>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="filterCards()" 
+                           class="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition shadow-sm" 
+                           placeholder="Search documents, objectives, cadences...">
+                </div>
+            </div>
+
+            <!-- Asset Grid (Injected via JS) -->
+            <div id="cardGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-20">
+                <i class="ph ph-files text-6xl text-slate-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-slate-700">No documents found</h3>
+                <p class="text-slate-500 mt-2">Try adjusting your search terms.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Modal Overlay -->
+    <div id="previewModal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-6" style="z-index: 9999;">
+        <!-- Backdrop -->
+        <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div id="modalContent" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-slate-200 flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-white border-b border-slate-100 p-6 flex justify-between items-start z-10">
+                <div class="flex gap-4 items-start pr-8">
+                    <div id="modalIcon" class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0 mt-1">
+                        <!-- Icon injected -->
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-2 mb-2" id="modalBadges"></div>
+                        <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 leading-tight">Loading...</h3>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition bg-slate-100 hover:bg-slate-200 rounded-full p-2">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+
+            <!-- View 1: Modal Details -->
+            <div id="modalDetails" class="p-6">
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Primary Objective</h4>
+                    <p id="modalDesc" class="text-slate-700 text-lg leading-relaxed"></p>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 mb-8">
+                    <h4 class="text-sm font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Asset Specifications</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4">
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-file-code"></i> Format</span>
+                            <span id="modalFormat" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-files"></i> Est. Length</span>
+                            <span id="modalLength" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-git-branch"></i> Version</span>
+                            <span id="modalVersion" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-shield-check"></i> Compliance</span>
+                            <span id="modalCompliance" class="font-medium text-slate-800"></span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-hourglass-high"></i> Est. Effort</span>
+                            <span id="modalEffort" class="font-medium text-slate-800"></span>
+                        </div>
+                        
+                        <div class="md:col-span-2 lg:col-span-3 pt-2 border-t border-slate-200 mt-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-puzzle-piece"></i> Required Prerequisites</span>
+                            <span id="modalPrerequisites" class="font-medium text-slate-800 leading-relaxed block"></span>
+                        </div>
+                        
+                        <div class="md:col-span-2 lg:col-span-3 pt-2 border-t border-slate-200">
+                            <span class="text-xs font-semibold text-slate-500 uppercase flex items-center gap-1.5 mb-1"><i class="ph ph-users"></i> Target Audience</span>
+                            <span id="modalAudience" class="font-medium text-slate-800 block"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-3">Key Sections Included</h4>
+                    <ul id="modalSections" class="space-y-3">
+                        <!-- Injected via JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- View 2: Request Form -->
+            <div id="modalRequestForm" class="p-8 hidden">
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-slate-900 mb-2">Request Asset Access</h4>
+                    <p class="text-sm text-slate-600">Please provide your details below. A request will be securely routed to the administrator.</p>
+                </div>
+                
+                <form id="accessForm" class="space-y-5" onsubmit="event.preventDefault(); submitRequest();">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Your Corporate Email <span class="text-red-500">*</span></label>
+                        <input type="email" id="requestEmail" value="arvindpardeshi151@gmail.com" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Intended Use Case <span class="text-red-500">*</span></label>
+                        <select id="requestUseCase" required class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
+                            <option value="">Select a use case...</option>
+                            <option value="Internal Policy / Operations">Internal Policy / Operations</option>
+                            <option value="Audit & Compliance Readiness">Audit & Compliance Readiness</option>
+                            <option value="Client / Board Presentation">Client / Board Presentation</option>
+                            <option value="IT Architecture / Engineering">IT Architecture / Engineering</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Company / Organization</label>
+                        <input type="text" id="requestCompany" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" placeholder="e.g., Acme Corp">
+                    </div>
+                    <!-- Hidden field to store requested document name -->
+                    <input type="hidden" id="hiddenDocName">
+
+                    <button type="submit" id="btnSubmitRequest" class="w-full mt-4 px-5 py-3 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-md rounded-lg flex items-center justify-center gap-2 transition">
+                        <i class="ph ph-paper-plane-right text-lg"></i> Send Access Request
+                    </button>
+                </form>
+            </div>
+
+            <!-- View 3: Success State -->
+            <div id="modalSuccess" class="p-10 text-center hidden my-auto">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-green-200">
+                    <i class="ph ph-check text-4xl font-bold"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-slate-900 mb-3">Request Sent Successfully</h4>
+                <p class="text-slate-600 text-base mb-8 max-w-sm mx-auto">
+                    Your request for the template has been forwarded directly to <strong>arvindpardeshi151@gmail.com</strong>. The consulting team will provision secure access shortly.
+                </p>
+                <button onclick="closeModal()" class="px-6 py-2.5 text-sm font-bold text-slate-700 bg-slate-100 border border-slate-200 hover:bg-slate-200 rounded-lg transition">
+                    Return to Catalog
+                </button>
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="modalFooter" class="mt-auto p-6 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 rounded-b-2xl">
+                <button onclick="closeModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition">Cancel</button>
+                <button onclick="showRequestForm()" class="px-5 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-sm rounded-lg flex items-center gap-2 transition">
+                    <i class="ph ph-lock-key"></i> Request Template Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="ph ph-buildings text-xl text-slate-500"></i>
+                <span class="font-semibold text-slate-300 tracking-wider uppercase text-sm">White Enterprises Inc.</span>
+            </div>
+            <div class="text-sm">
+                &copy; 2026 All rights reserved. Confidential and Proprietary.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // The Verified Top 100 Core Documents
+        const docData = [
+            { doc: "Board deck / meeting pack", purp: "Briefs the board on strategy, financials, and key decisions.", cad: "Quarterly" },
+            { doc: "Investor update", purp: "Keeps investors informed on progress, metrics, and asks.", cad: "Monthly" },
+            { doc: "Annual strategic plan", purp: "Documents the year's strategic priorities and resourcing.", cad: "Annual" },
+            { doc: "Quarterly business review (QBR)", purp: "Reviews performance against quarterly goals.", cad: "Quarterly" },
+            { doc: "Monthly business review (MBR)", purp: "Tracks KPIs and operational health month to month.", cad: "Monthly" },
+            { doc: "Company OKRs / goal-setting doc", purp: "Sets and cascades company-wide objectives.", cad: "Quarterly" },
+            { doc: "Org chart & structure doc", purp: "Documents reporting lines and team structure.", cad: "Updated on change" },
+            { doc: "Compensation & equity grant memo", purp: "Records comp/equity decisions for approval and audit trail.", cad: "Per decision" },
+            { doc: "Executive hiring scorecard", purp: "Evaluates candidates against a defined leadership rubric.", cad: "Per search" },
+            { doc: "M&A / partnership evaluation memo", purp: "Assesses a deal or partnership before commitment.", cad: "Per opportunity" },
+            { doc: "Financial model & cap table", purp: "Models runway, unit economics, and ownership.", cad: "Updated monthly" },
+            { doc: "Fundraising pitch deck", purp: "Presents the company story and ask to investors.", cad: "Per round" },
+            { doc: "All-hands presentation", purp: "Communicates company updates to the whole team.", cad: "Monthly" },
+            { doc: "Performance review documents", purp: "Formal record of employee performance evaluations.", cad: "Semi-annual" },
+            { doc: "Crisis communication plan", purp: "Pre-defined messaging and escalation path for a crisis.", cad: "Reviewed annually" },
+            { doc: "Press release / media statement", purp: "External-facing announcement of news or milestones.", cad: "Per event" },
+            { doc: "Employee handbook / policy doc", purp: "Documents company policies for all staff.", cad: "Reviewed annually" },
+            { doc: "Succession plan document", purp: "Names backups for critical leadership roles.", cad: "Reviewed quarterly" },
+            { doc: "Annual budget document", purp: "Allocates spend across the org for the fiscal year.", cad: "Annual" },
+            { doc: "Enterprise risk register", purp: "Tracks top company risks and mitigation owners.", cad: "Reviewed quarterly" },
+            { doc: "Security governance & risk report", purp: "Summarizes security posture and open risks for leadership.", cad: "Quarterly" },
+            { doc: "Incident response report / postmortem", purp: "Documents what happened, impact, and remediation for an incident.", cad: "Per incident" },
+            { doc: "Compliance audit report", purp: "Records findings from an internal or external compliance audit.", cad: "Per audit cycle" },
+            { doc: "Security policy suite", purp: "Formal policies governing security behavior (AUP, access control).", cad: "Reviewed annually" },
+            { doc: "Third-party risk assessment", purp: "Evaluates security risk from a vendor before or during engagement.", cad: "Per vendor" },
+            { doc: "Security awareness training", purp: "Content used to train staff on security practices.", cad: "Refreshed annually" },
+            { doc: "Penetration test report", purp: "Findings from external or internal vulnerability and security testing.", cad: "Per test cycle" },
+            { doc: "Business continuity / DR plan", purp: "Documents how the org recovers from a disruptive event.", cad: "Reviewed annually" },
+            { doc: "Security architecture document", purp: "Describes the design of security controls across systems.", cad: "Updated on change" },
+            { doc: "Threat intelligence briefing", purp: "Summarizes current threats relevant to the business.", cad: "Monthly" },
+            { doc: "Data privacy impact assessment", purp: "Assesses privacy risk of a new product or process.", cad: "Per initiative" },
+            { doc: "Access recertification report", purp: "Confirms access rights are still appropriate for staff.", cad: "Quarterly" },
+            { doc: "Security metrics dashboard", purp: "Rolls up KPIs like incident volume, patch SLAs, MFA coverage.", cad: "Monthly" },
+            { doc: "Regulatory compliance mapping", purp: "Maps controls to regulatory requirements (ISO, SOC 2, etc.).", cad: "Reviewed annually" },
+            { doc: "Security budget proposal", purp: "Justifies security spend for the coming period.", cad: "Annual" },
+            { doc: "Cyber insurance application", purp: "Documents the risk profile submitted for coverage.", cad: "Annual" },
+            { doc: "Firewall / network security policy", purp: "Documents rule-base standards and change control.", cad: "Reviewed annually" },
+            { doc: "Identity & access management policy", purp: "Defines standards for provisioning, MFA, and access reviews.", cad: "Reviewed annually" },
+            { doc: "Security roadmap document", purp: "Plans upcoming security initiatives and investments.", cad: "Annual" },
+            { doc: "Board security briefing deck", purp: "Translates security posture into business risk terms.", cad: "Quarterly" },
+            { doc: "Technical architecture document", purp: "Describes the system's structure and key design decisions.", cad: "Updated on change" },
+            { doc: "Product/technical roadmap", purp: "Plans upcoming technical and platform investments.", cad: "Quarterly" },
+            { doc: "Sprint/release plan", purp: "Scopes and sequences engineering work for a release cycle.", cad: "Per release" },
+            { doc: "Engineering hiring plan", purp: "Plans headcount needs against roadmap and budget.", cad: "Quarterly" },
+            { doc: "Technical due diligence report", purp: "Assesses technical risk for an investment or acquisition.", cad: "Per event" },
+            { doc: "System design document", purp: "Details the design of a system or feature before build.", cad: "Per project" },
+            { doc: "API documentation", purp: "Documents endpoints, contracts, and usage for consumers.", cad: "Updated per release" },
+            { doc: "Technical incident postmortem", purp: "Root-causes a production incident and tracks follow-up actions.", cad: "Per incident" },
+            { doc: "Technical debt assessment", purp: "Catalogs and prioritizes accumulated technical debt.", cad: "Quarterly" },
+            { doc: "Infrastructure cost report", purp: "Tracks cloud/infra spend against budget and usage.", cad: "Monthly" },
+            { doc: "Vendor/tooling evaluation", purp: "Compares software or tooling options against engineering needs.", cad: "Per initiative" },
+            { doc: "Code quality coverage report", purp: "Summarizes codebase health, coverage, and static analysis.", cad: "Monthly" },
+            { doc: "Engineering OKRs document", purp: "Sets and cascades goals for the engineering organization.", cad: "Quarterly" },
+            { doc: "Data architecture document", purp: "Describes data flows, storage, pipelines, and schema designs.", cad: "Updated on change" },
+            { doc: "Disaster recovery resilience plan", purp: "Plans for failing over or restoring infrastructure in a disaster.", cad: "Reviewed annually" },
+            { doc: "Technical whitepaper", purp: "Explains a complex technical approach or innovation.", cad: "Per event" },
+            { doc: "Patent filing draft", purp: "Documents a novel technical process for IP protection.", cad: "Per invention" },
+            { doc: "Engineering onboarding guide", purp: "Helps new engineers set up environments and learn processes.", cad: "Ongoing" },
+            { doc: "Secure SDLC checklist", purp: "Ensures security gates are met during the software development lifecycle.", cad: "Per release" },
+            { doc: "R&D / innovation report", purp: "Explores a new technology or prototype and its business impact.", cad: "Per initiative" },
+            { doc: "Software Bill of Materials (SBOM)", purp: "Comprehensive inventory of all third-party and open-source components.", cad: "Per release" },
+            { doc: "Data Processing Agreement (DPA)", purp: "Legal contract defining how a vendor processes personal data.", cad: "Per vendor" },
+            { doc: "Record of Processing Activities", purp: "Maintains a detailed map of PII data flows for GDPR/CCPA compliance.", cad: "Reviewed annually" },
+            { doc: "Tabletop Exercise (TTX) Report", purp: "Evaluates incident response readiness through simulated crisis scenarios.", cad: "Annual" },
+            { doc: "Threat Modeling Report", purp: "Identifies and mitigates architectural security flaws during design.", cad: "Per project" },
+            { doc: "Service Level Objective (SLO)", purp: "Defines target reliability metrics (SLIs/SLOs) for critical services.", cad: "Updated on change" },
+            { doc: "Change Advisory Board (CAB) Agenda", purp: "Reviews and approves significant IT infrastructure or code changes.", cad: "Weekly" },
+            { doc: "Cloud Migration Strategy", purp: "Outlines the roadmap, risk, and target state for moving workloads.", cad: "Per initiative" },
+            { doc: "Zero Trust Implementation Plan", purp: "Strategic roadmap for enforcing identity and device-based controls.", cad: "Annual" },
+            { doc: "Request for Proposal (RFP)", purp: "Standardized document for soliciting bids from enterprise vendors.", cad: "Per search" },
+            { doc: "Go-to-Market (GTM) Strategy", purp: "Aligns product, sales, and marketing for a feature or product launch.", cad: "Per release" },
+            { doc: "Red Team Campaign Report", purp: "Details findings from prolonged, objective-based adversarial simulations.", cad: "Annual" },
+            { doc: "Endpoint Security Tuning Log", purp: "Records exception rules and heuristic adjustments to EDR/XDR platforms.", cad: "Monthly" },
+            { doc: "Secrets Management Policy", purp: "Defines how API keys, certificates, and passwords are stored.", cad: "Reviewed annually" },
+            { doc: "Data Classification Policy", purp: "Defines levels of data sensitivity (Public, Confidential, Restricted).", cad: "Reviewed annually" },
+            { doc: "Root Cause Analysis (RCA) Tracker", purp: "Aggregates historical incident data to identify systemic vulnerabilities.", cad: "Quarterly" },
+            { doc: "Phishing Simulation Results", purp: "Measures employee susceptibility to social engineering attacks.", cad: "Quarterly" },
+            { doc: "User Access Review (UAR) Sign-off", purp: "Formal attestation that current user permissions are valid.", cad: "Quarterly" },
+            { doc: "Vulnerability Management SLA", purp: "Defines the required timeline for patching critical, high, and medium flaws.", cad: "Reviewed annually" },
+            { doc: "Open Source (OSS) Usage Policy", purp: "Governs acceptable licenses and security thresholds for using OSS code.", cad: "Reviewed annually" },
+            { doc: "Security Exception Form", purp: "Formalizes business acceptance of unmitigated technical or security risks.", cad: "Per decision" },
+            { doc: "Disaster Recovery Runbook", purp: "Step-by-step technical instructions for restoring critical systems.", cad: "Updated on change" },
+            { doc: "Database Schema & ERD", purp: "Visualizes entity relationships and data structures for core databases.", cad: "Updated per release" },
+            { doc: "Quality Assurance Test Plan", purp: "Defines testing scope, environments, and methodologies for a release.", cad: "Per project" },
+            { doc: "Microservices Architecture Spec", purp: "Defines inter-service communication, boundaries, and dependencies.", cad: "Updated on change" },
+            { doc: "Third-Party API Contract", purp: "Documents rate limits, authentication, and data exchanged with external APIs.", cad: "Per vendor" },
+            { doc: "User Research / UX Readout", purp: "Summarizes user feedback and behavioral data for product development.", cad: "Per initiative" },
+            { doc: "Brand & UI Style Guide", purp: "Maintains consistency in visual design and tone across all platforms.", cad: "Updated on change" },
+            { doc: "Customer Escalation Matrix", purp: "Defines support tiers and response times for enterprise client issues.", cad: "Reviewed annually" },
+            { doc: "Sales Enablement Battlecard", purp: "Equips the sales team with value props, objection handling, and intel.", cad: "Quarterly" },
+            { doc: "DevSecOps Integration Pipeline", purp: "Documents the security gates and automated scanners within the CI/CD.", cad: "Updated on change" },
+            { doc: "Hardware Asset Lifecycle Policy", purp: "Governs the procurement, maintenance, and secure disposal of devices.", cad: "Reviewed annually" },
+            { doc: "AI Acceptable Use Policy", purp: "Defines rules for employee usage of generative AI and external LLM tools.", cad: "Reviewed annually" },
+            { doc: "SOC 2 Type II System Description", purp: "Narrative description of the organization's security controls.", cad: "Annual" },
+            { doc: "Data Lake / Warehouse Architecture", purp: "Outlines ingestion, transformation, and storage patterns for analytics.", cad: "Updated on change" },
+            { doc: "Capacity Planning Report", purp: "Forecasts compute, storage, and network requirements against growth.", cad: "Semi-annual" },
+            { doc: "KPI Dictionary", purp: "Centralized definition of how business and technical metrics are calculated.", cad: "Reviewed annually" },
+            { doc: "Employee Offboarding Checklist", purp: "Standardized workflow for revoking access and recovering assets.", cad: "Ongoing" },
+            { doc: "Master Services Agreement (MSA)", purp: "Core legal contract establishing overarching terms with a B2B client.", cad: "Per opportunity" },
+            { doc: "Insider Threat Monitoring Log", purp: "Tracks anomalous access patterns or data exfiltration risks.", cad: "Monthly" }
+        ];
+
+        // Add IDs for reference
+        docData.forEach((item, index) => item.id = index);
+
+        // Helper functions
+        function getBadgeStyles(cadence) {
+            const cad = cadence.toLowerCase();
+            if (cad.includes('quarterly') || cad.includes('semi-annual')) return 'bg-blue-100 text-blue-800 border-blue-200';
+            if (cad.includes('monthly') || cad.includes('weekly')) return 'bg-amber-100 text-amber-800 border-amber-200';
+            if (cad.includes('annual')) return 'bg-purple-100 text-purple-800 border-purple-200';
+            if (cad.includes('incident') || cad.includes('crisis')) return 'bg-red-100 text-red-800 border-red-200 font-bold';
+            if (cad.includes('ongoing') || cad.includes('updated')) return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+            return 'bg-slate-100 text-slate-700 border-slate-200';
+        }
+
+        function getIcon(docName) {
+            const name = docName.toLowerCase();
+            if (name.includes('security') || name.includes('threat') || name.includes('risk') || name.includes('policy')) return 'ph-shield-check';
+            if (name.includes('code') || name.includes('api') || name.includes('architecture') || name.includes('system') || name.includes('sdlc')) return 'ph-code';
+            if (name.includes('board') || name.includes('deck') || name.includes('plan') || name.includes('roadmap') || name.includes('strategy')) return 'ph-presentation-chart';
+            if (name.includes('data') || name.includes('database') || name.includes('storage') || name.includes('lake')) return 'ph-database';
+            if (name.includes('budget') || name.includes('cost') || name.includes('financial') || name.includes('cap table')) return 'ph-chart-line-up';
+            if (name.includes('checklist') || name.includes('tracker') || name.includes('matrix') || name.includes('log')) return 'ph-list-checks';
+            if (name.includes('contract') || name.includes('agreement') || name.includes('dpa') || name.includes('msa')) return 'ph-file-signature';
+            return 'ph-file-text';
+        }
+
+        function getPreviewData(doc) {
+            let format = "DOCX / PDF Document";
+            let length = "5-12 Pages";
+            let audience = "Internal Teams & Stakeholders";
+            let compliance = "Internal Governance";
+            let effort = "Medium (2-4 hours)";
+            let version = "v2.1.0 (2026)";
+            let prerequisites = "Subject Matter Expert (SME) Input";
+            let sections = ["Executive Summary", "Detailed Assessment & Requirements", "Action Items & Next Steps", "Revision History"];
+
+            const lowerDoc = doc.toLowerCase();
+            
+            if (lowerDoc.includes("deck") || lowerDoc.includes("presentation")) {
+                format = "PPTX / Keynote";
+                length = "15-25 Slides";
+                audience = "Board of Directors & C-Suite";
+                effort = "High (8-16 hours)";
+                prerequisites = "Financials, Sales Data, Exec Summaries";
+                sections = ["High-Level Metrics Dashboard", "Strategic Initiatives Overview", "Financial & Risk Summary", "Q&A Appendix"];
+            } else if (lowerDoc.includes("model") || lowerDoc.includes("tracker") || lowerDoc.includes("register") || lowerDoc.includes("checklist") || lowerDoc.includes("matrix") || lowerDoc.includes("log")) {
+                format = "XLSX / CSV Spreadsheet";
+                length = "3-5 Worksheets";
+                audience = "Operations, Engineering & Management";
+                effort = "Medium (3-5 hours)";
+                prerequisites = "Raw Data Exports, API Logs";
+                sections = ["Instructions & Legend", "Master Data Table (Sortable)", "Pivot/Dashboard View", "Dropdown Definitions"];
+            } else if (lowerDoc.includes("policy") || lowerDoc.includes("handbook") || lowerDoc.includes("charter")) {
+                length = "15-30 Pages";
+                audience = "All Employees / Public";
+                compliance = "SOC 2 / ISO 27001";
+                effort = "High (1-2 weeks review)";
+                version = "v3.0.0 (Annual Review)";
+                prerequisites = "Legal Counsel & HR Approval";
+                sections = ["Purpose, Scope & Applicability", "Core Policy Statements", "Enforcement & Disciplinary Actions", "Glossary & Version History"];
+            } else if (lowerDoc.includes("architecture") || lowerDoc.includes("design") || lowerDoc.includes("api") || lowerDoc.includes("diagram") || lowerDoc.includes("runbook")) {
+                format = "Markdown / Technical Wiki";
+                audience = "Engineering, Architecture & Product Teams";
+                effort = "High (Senior Architect)";
+                prerequisites = "System Context, Cloud Topology Data";
+                sections = ["System Context Diagram", "Component Specifications & APIs", "Data Flow & State Management", "Security & Scalability Considerations"];
+            } else if (lowerDoc.includes("report") || lowerDoc.includes("audit") || lowerDoc.includes("assessment") || lowerDoc.includes("due diligence") || lowerDoc.includes("postmortem")) {
+                audience = "Management, Audit & Compliance Teams";
+                compliance = "SOC 2 / ISO / PCI-DSS";
+                effort = "High (Requires Discovery)";
+                prerequisites = "System Log Data, Stakeholder Interviews";
+                sections = ["Methodology & Scope Definition", "Executive Findings Summary", "Critical Vulnerabilities & Root Cause", "Remediation Roadmap & Assigned Owners"];
+            } else if (lowerDoc.includes("agreement") || lowerDoc.includes("contract") || lowerDoc.includes("dpa") || lowerDoc.includes("msa")) {
+                format = "Secured PDF / E-Sign";
+                audience = "Legal, Procurement & External Vendors";
+                compliance = "GDPR / CCPA / HIPAA";
+                effort = "Medium (Legal Review)";
+                prerequisites = "Vendor Specifications, SLA Terms";
+                sections = ["Terms of Service & SLA", "Data Handling & Privacy Addendum", "Liability & Indemnification", "Signatures"];
+            }
+
+            return { format, length, audience, compliance, effort, version, prerequisites, sections };
+        }
+
+        // Render Cards with pure inline HTML onclick logic for robustness
+        function renderCards(data) {
+            const grid = document.getElementById('cardGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if(data.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                document.getElementById('docCount').innerText = '0';
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            document.getElementById('docCount').innerText = data.length;
+            
+            const htmlString = data.map(item => `
+                <div onclick="openModal(${item.id})" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm card-hover flex flex-col h-full relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-brand-500 opacity-80 group-hover:opacity-100 transition"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+                            <i class="ph ${getIcon(item.doc)} text-xl"></i>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getBadgeStyles(item.cad)}">
+                            ${item.cad}
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 leading-tight">${item.doc}</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed flex-grow">${item.purp}</p>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+                        <span class="text-sm font-semibold text-brand-600 group-hover:text-brand-800 transition flex items-center gap-1">
+                            Preview Asset <i class="ph ph-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            grid.innerHTML = htmlString;
+        }
+
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = docData.filter(item => {
+                return item.doc.toLowerCase().includes(query) || 
+                       item.purp.toLowerCase().includes(query) || 
+                       item.cad.toLowerCase().includes(query);
+            });
+            renderCards(filteredData);
+        }
+
+        // Modal State Variables
+        const modal = document.getElementById('previewModal');
+        const backdrop = document.getElementById('modalBackdrop');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal(id) {
+            const item = docData.find(d => d.id === id);
+            if (!item) return;
+
+            // Reset States
+            document.getElementById('modalDetails').classList.remove('hidden');
+            document.getElementById('modalRequestForm').classList.add('hidden');
+            document.getElementById('modalSuccess').classList.add('hidden');
+            document.getElementById('modalFooter').classList.remove('hidden');
+
+            // Populate Headers
+            document.getElementById('modalTitle').innerText = item.doc;
+            document.getElementById('hiddenDocName').value = item.doc; // Store for form submission
+            document.getElementById('modalDesc').innerText = item.purp;
+            
+            const iconClass = getIcon(item.doc);
+            document.getElementById('modalIcon').innerHTML = `<i class="ph ${iconClass} text-2xl"></i>`;
+            
+            document.getElementById('modalBadges').innerHTML = `
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${getBadgeStyles(item.cad)}">
+                    <i class="ph ph-clock mr-1"></i> ${item.cad}
+                </span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border bg-slate-100 text-slate-600 border-slate-200">
+                    <i class="ph ph-shield-check mr-1"></i> Verified
+                </span>
+            `;
+
+            // Populate Expanded Preview Data
+            const preview = getPreviewData(item.doc);
+            document.getElementById('modalFormat').innerText = preview.format;
+            document.getElementById('modalLength').innerText = preview.length;
+            document.getElementById('modalVersion').innerText = preview.version;
+            document.getElementById('modalCompliance').innerText = preview.compliance;
+            document.getElementById('modalEffort').innerText = preview.effort;
+            document.getElementById('modalPrerequisites').innerText = preview.prerequisites;
+            document.getElementById('modalAudience').innerText = preview.audience;
+
+            const sectionsUl = document.getElementById('modalSections');
+            sectionsUl.innerHTML = preview.sections.map(sec => 
+                `<li class="flex items-start gap-2 text-sm text-slate-700">
+                    <i class="ph ph-check-circle text-brand-500 mt-0.5 text-base"></i>
+                    <span>${sec}</span>
+                </li>`
+            ).join('');
+
+            // Show Modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            backdrop.classList.remove('backdrop-exit');
+            backdrop.classList.add('backdrop-enter');
+            modalContent.classList.remove('modal-exit');
+            modalContent.classList.add('modal-enter');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function showRequestForm() {
+            document.getElementById('modalDetails').classList.add('hidden');
+            document.getElementById('modalFooter').classList.add('hidden');
+            document.getElementById('modalRequestForm').classList.remove('hidden');
+        }
+
+        function submitRequest() {
+            const btn = document.getElementById('btnSubmitRequest');
+            const originalContent = btn.innerHTML;
+            
+            // Gather form data
+            const docName = document.getElementById('hiddenDocName').value;
+            const requesterEmail = document.getElementById('requestEmail').value;
+            const useCase = document.getElementById('requestUseCase').value;
+            const company = document.getElementById('requestCompany').value || 'Not provided';
+            
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-lg"></i> Sending Request...`;
+            btn.disabled = true;
+
+            // Secure, silent form submission via FormSubmit
+            fetch("https://formsubmit.co/ajax/arvindpardeshi151@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `New Template Request: ${docName}`,
+                    Template_Requested: docName,
+                    Requester_Email: requesterEmail,
+                    Intended_Use_Case: useCase,
+                    Company_Organization: company,
+                    _replyto: requesterEmail,
+                    _captcha: "false"
+                })
+            })
+            .then(response => {
+                if(response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                // Success - Show Confirmation Screen
+                document.getElementById('modalRequestForm').classList.add('hidden');
+                document.getElementById('modalSuccess').classList.remove('hidden');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                
+                // Clear form fields
+                document.getElementById('accessForm').reset();
+                document.getElementById('requestEmail').value = 'arvindpardeshi151@gmail.com'; 
+            })
+            .catch(error => {
+                console.error("API failed, falling back to mailto client", error);
+                
+                // Fallback to local mailto if network or adblocker blocks the API
+                const subject = encodeURIComponent(`Template Access Request: ${docName}`);
+                const body = encodeURIComponent(`Hello,\n\nI would like to request access to the following enterprise template:\n\nDocument: ${docName}\nRequester Email: ${requesterEmail}\nIntended Use Case: ${useCase}\nCompany: ${company}\n\nThank you.`);
+                
+                // Force open mail client
+                window.location.href = `mailto:arvindpardeshi151@gmail.com?subject=${subject}&body=${body}`;
+                
+                document.getElementById('modalRequestForm').classList.add('hidden');
+                document.getElementById('modalSuccess').classList.remove('hidden');
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                
+                // Clear form fields
+                document.getElementById('accessForm').reset();
+                document.getElementById('requestEmail').value = 'arvindpardeshi151@gmail.com';
+            });
+        }
+
+        function closeModal() {
+            backdrop.classList.remove('backdrop-enter');
+            backdrop.classList.add('backdrop-exit');
+            modalContent.classList.remove('modal-enter');
+            modalContent.classList.add('modal-exit');
+
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 200);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Initialize grid on load
+        renderCards(docData);
+    </script>
+</body>
+</html>
