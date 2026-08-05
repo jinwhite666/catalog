@@ -3,114 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>White Enterprises | Global Solutions & Capabilities</title>
+    <title>White Enterprises | Global Solutions & Architectures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-primary: #051C2C; /* Deep Corporate Navy */
-            --brand-accent: #0056D2;  /* Action Blue */
-            --brand-accent-hover: #0043A8;
-            --bg-light: #F8FAFC;
-            --surface: #FFFFFF;
-            --text-main: #1E293B;
-            --text-secondary: #64748B;
-            --border: #E2E8F0;
-            --status-green: #10B981;
+            /* Fortune 500 Corporate Color Palette */
+            --primary-blue: #003da5; 
+            --primary-hover: #00266e;
+            --text-dark: #1f2937;
+            --text-muted: #4b5563;
+            --bg-white: #ffffff;
+            --bg-gray: #f9fafb;
+            --border-light: #e5e7eb;
+            --accent-light: #eff6ff;
+            --success-green: #059669;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Top Utility Bar */
         .utility-bar {
-            background: #020b12;
-            color: #94a3b8;
+            background-color: var(--text-dark);
+            color: #d1d5db;
             font-size: 12px;
             padding: 8px 5%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
         }
 
-        .utility-bar span { margin-right: 20px; }
-        .status-dot {
-            display: inline-block;
-            width: 8px; height: 8px;
-            background: var(--status-green);
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-
-        /* Main Navigation */
+        /* Header & Navigation */
         header {
-            background: var(--surface);
+            background-color: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
             padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            color: var(--brand-primary);
+            color: var(--primary-blue);
+            text-decoration: none;
             letter-spacing: -0.5px;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 30px;
+            gap: 32px;
+            flex-wrap: wrap;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--text-dark);
             font-weight: 500;
-            font-size: 15px;
-            transition: color 0.2s;
+            font-size: 14px;
+            transition: color 0.2s ease;
         }
 
-        nav a:hover { color: var(--brand-accent); }
+        nav a:hover {
+            color: var(--primary-blue);
+        }
 
-        /* Hero Section */
+        /* Hero Banner */
         .hero {
-            background: linear-gradient(135deg, var(--brand-primary) 0%, #0a2d47 100%);
-            color: white;
-            padding: 80px 5% 100px;
+            background-color: var(--bg-white);
+            padding: 80px 5%;
             text-align: center;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 20px;
+            color: var(--text-dark);
+            margin-bottom: 16px;
             letter-spacing: -1px;
         }
 
         .hero p {
-            font-size: 20px;
-            color: #CBD5E1;
+            font-size: 18px;
+            color: var(--text-muted);
             max-width: 700px;
-            margin: 0 auto 40px;
+            margin: 0 auto 32px;
         }
 
-        .search-wrapper {
+        .search-container {
             max-width: 600px;
             margin: 0 auto;
             position: relative;
@@ -118,369 +118,720 @@
 
         .search-input {
             width: 100%;
-            padding: 18px 25px;
-            border-radius: 30px;
-            border: none;
+            padding: 16px 24px;
             font-size: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-light);
+            border-radius: 50px;
             outline: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        /* Main Content Architecture */
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 61, 165, 0.15);
+        }
+
+        /* Main Content Area */
         .container {
-            padding: 60px 5%;
             max-width: 1400px;
             margin: 0 auto;
+            padding: 60px 5%;
         }
 
-        .section-header {
-            margin-bottom: 40px;
-        }
-
-        .section-header h2 {
-            font-size: 32px;
-            color: var(--brand-primary);
-            margin-bottom: 10px;
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 18px;
-        }
-
-        /* Grid Layouts */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+        .category-section {
             margin-bottom: 80px;
         }
 
-        /* Architecture Cards */
+        .section-header {
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        /* About Us Section Styles */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .about-text h3 {
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .about-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mission-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-left: 4px solid var(--primary-blue);
+            padding: 24px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .mission-card h4 {
+            color: var(--primary-blue);
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .mission-card p {
+            color: var(--text-dark);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Grid & Cards for Products/Services */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 32px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border-color: #CBD5E1;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
         }
 
-        .card-label {
+        .card-tag {
             font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-blue);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--brand-accent);
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: block;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: inline-block;
         }
 
         .card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: var(--brand-primary);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
         }
 
         .card p.desc {
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-size: 15px;
-            margin-bottom: 25px;
-            min-height: 45px;
+            margin-bottom: 24px;
+            flex-grow: 1;
         }
 
-        /* Asset Links */
-        .asset-list {
+        /* Document Links */
+        .doc-list {
             list-style: none;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+            margin-top: auto;
         }
 
-        .asset-list li {
-            margin-bottom: 12px;
+        .doc-list li {
+            margin-bottom: 8px;
         }
 
-        .asset-list a {
+        .doc-list a {
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--primary-blue);
             font-size: 14px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             padding: 8px 12px;
             border-radius: 6px;
-            background: var(--bg-light);
-            transition: background 0.2s, color 0.2s;
+            background-color: var(--accent-light);
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        .asset-list a:hover {
-            background: var(--brand-accent);
-            color: white;
+        .doc-list a:hover {
+            background-color: var(--primary-blue);
+            color: var(--bg-white);
         }
 
-        .badge {
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 20px;
+        .doc-list a span:last-child {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 600;
             background: rgba(0,0,0,0.05);
-            color: inherit;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Enhanced Ribbon Styles */
+        .ribbon-container {
+            background-color: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            padding: 60px 5%;
+        }
+
+        .ribbon-container.alt-bg {
+            background-color: var(--bg-gray);
+            border-top: none;
+            padding-top: 20px;
+            padding-bottom: 60px;
+        }
+
+        .ribbon-title {
+            text-align: center;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .logo-ribbon {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end; 
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto 30px;
+        }
+
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+            width: 120px;
+        }
+
+        .logo-item img {
+            height: 32px;
+            max-width: 100%;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(60%);
+            transition: all 0.3s ease;
+        }
+
+        .logo-item span {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .logo-item:hover img {
+            filter: grayscale(0%) opacity(100%);
+            transform: scale(1.05);
+        }
+
+        .logo-item:hover span {
+            color: var(--primary-blue);
         }
 
         /* Footer */
         footer {
-            background: var(--brand-primary);
-            color: #94A3B8;
-            padding: 60px 5% 30px;
+            background-color: var(--text-dark);
+            color: #9ca3af;
+            padding: 48px 5% 24px;
             font-size: 14px;
         }
-        
-        .footer-legal {
-            border-top: 1px solid #1E293B;
-            padding-top: 20px;
-            margin-top: 40px;
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 32px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 32px;
+            margin-bottom: 24px;
+        }
+
+        .footer-brand h4 {
+            color: var(--bg-white);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .logo-ribbon { gap: 24px; }
+            .logo-item { width: 90px; }
+            .logo-item img { height: 24px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Global Utility Ticker -->
+    <!-- Corporate Utility Bar -->
     <div class="utility-bar">
-        <div>
-            <span class="status-dot"></span> GLOBAL CLOUD INFRASTRUCTURE: OPERATIONAL
-            <span id="sysLoad" style="margin-left: 20px; color: #475569;">Compute Load: 2.4%</span>
-        </div>
-        <div>
-            <span id="clock">00:00:00 UTC</span>
-            <span>| ENCLAVE: JINWHITE666</span>
-        </div>
+        <span>Global Corporate Portal</span>
+        <span id="datetime">Loading Data...</span>
     </div>
 
-    <!-- Enterprise Navigation -->
+    <!-- Main Header -->
     <header>
-        <div class="logo">WHITE ENTERPRISES</div>
+        <a href="#" class="logo">White Enterprises</a>
         <nav>
             <ul>
+                <li><a href="#about">About Us</a></li>
                 <li><a href="#products">Products</a></li>
                 <li><a href="#services">Services</a></li>
-                <li><a href="#solutions">Solutions</a></li>
-                <li><a href="#research">Research & Insights</a></li>
+                <li><a href="#engagements">Ecosystem & Delivery</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Value Proposition -->
-    <div class="hero">
-        <h1>Intelligence for the Modern Enterprise</h1>
-        <p>Accelerate digital transformation with our integrated portfolio of next-generation cybersecurity products, elite consulting services, and quantum-ready solutions.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>AI-Powered Enterprise Intelligence</h1>
+        <p>Comprehensive AI-driven solutions, next-generation algorithmic cybersecurity, and autonomous agentic networks driving the world's leading organizations.</p>
         
-        <div class="search-wrapper">
-            <input type="text" id="globalSearch" class="search-input" placeholder="Search products, services, and intelligence assets..." onkeyup="filterAssets()">
+        <div class="search-container">
+            <input type="text" id="directorySearch" class="search-input" placeholder="Search product catalogs, services, and policies..." onkeyup="filterDirectory()">
+        </div>
+    </section>
+
+    <!-- Content Directory -->
+    <main class="container">
+
+        <!-- ABOUT US -->
+        <section id="about" class="category-section">
+            <div class="section-header">
+                <h2>About Us</h2>
+                <p>Pioneering deep-tech, AI-native enterprise infrastructure and asynchronous agentic networks.</p>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>Corporate Identity & Leadership</h3>
+                    <p>White Enterprises Inc. is an AI-native technology firm helping large-scale operations and digital networks achieve total cognitive task automation and frictionless data processing. By deploying a self-orchestrating, AI-powered multi-agent software engine, we eliminate human workflow management overhead and manual engineering constraints.</p>
+                    
+                    <p>The firm was founded and is led by <strong>Arvind Pardeshi</strong> (operating under the executive persona Jin White), serving as CEO & Principal Architect. Arvind is a Principal Security and AI Infrastructure Architect with over 16 years of global enterprise experience across the UK, US, and Australia, having driven initiatives at major organizations such as Infosys, CSS Corp, and NSC Global. He holds a UK Developed Vetting security clearance and specializes in AI-native security, algorithmic governance, and cloud-native infrastructure.</p>
+                    
+                    <p>Under his leadership, our core engineering focuses on high-fidelity auditability, infrastructure decoupling, and the elimination of human integration latency at the perimeter edge through artificial intelligence. Structured as a Delaware C-Corporation with secondary operations in India, we are uniquely positioned to serve both US institutional markets and rapid-growth technical corridors in South Asia and the GCC.</p>
+                </div>
+                
+                <div class="about-cards">
+                    <div class="mission-card">
+                        <h4>Our Mission</h4>
+                        <p>To design, implement, and govern AI-powered, autonomous, self-remediating algorithmic frameworks capable of executing complex, high-throughput digital workflows natively at the infrastructure layer, ensuring absolute operational integrity, risk mitigation, and strict systemic precision.</p>
+                    </div>
+                    <div class="mission-card">
+                        <h4>Our Vision</h4>
+                        <p>The establishment of a comprehensively AI-automated, compliant enterprise computing ecosystem wherein critical operational mandates—including cross-jurisdictional data audits, database schema standardization, and multi-vendor security patch deployment—are continuously executed by interoperable artificial intelligence agents, thereby mitigating human processing constraints and ensuring continuous operational resilience.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section id="products" class="category-section">
+            <div class="section-header">
+                <h2>Products</h2>
+                <p>AI-integrated software suites, commercial inventory, and intelligent security deployments.</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card search-target">
+                    <span class="card-tag">Cybersecurity</span>
+                    <h3>Defense & Security Suite</h3>
+                    <p class="desc">Algorithmic endpoint protection, AI-driven cloud security products, and live autonomous tracking capabilities.</p>
+                    <ul class="doc-list">
+                        <li><a href="Cybersecurity_Products.html"><span>Cybersecurity Product Suite</span><span>DOC</span></a></li>
+                        <li><a href="Live_Threat_Tracker.html"><span>Live Threat Intel Tracker</span><span>APP</span></a></li>
+                        <li><a href="AI Cybersecurity.html"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
+                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span><span>PDF</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Artificial Intelligence</span>
+                    <h3>AI Application Ecosystem</h3>
+                    <p class="desc">Integrated machine learning catalogs, generative synthesis cores, and operational models for enterprise automation.</p>
+                    <ul class="doc-list">
+                        <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span><span>CATALOG</span></a></li>
+                        <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
+                        <li><a href="Cybersecurity_AI_ML_Reference.html"><span>AI/ML Threat Reference</span><span>GUIDE</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Procurement</span>
+                    <h3>Global Product Master</h3>
+                    <p class="desc">Commercial off-the-shelf offerings, AI SKU tracking, and platform directories.</p>
+                    <ul class="doc-list">
+                        <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span><span>SKUs</span></a></li>
+                        <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>Subscription Unit Tracker</span><span>FINANCE</span></a></li>
+                        <li><a href="Job_Platforms_Directory.html"><span>Job Platforms Directory</span><span>PORTAL</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" class="category-section">
+            <div class="section-header">
+                <h2>Services</h2>
+                <p>Professional advisory, AI infrastructure management, and project execution frameworks.</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card search-target">
+                    <span class="card-tag">Infrastructure</span>
+                    <h3>Managed AI & IT Services</h3>
+                    <p class="desc">End-to-end algorithmic architecture taxonomies and intelligent cloud migration management.</p>
+                    <ul class="doc-list">
+                        <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>Infra Taxonomy Charter</span><span>CHARTER</span></a></li>
+                        <li><a href="IT_Infra_Business_Catalog.html"><span>Infra Business Catalog</span><span>CATALOG</span></a></li>
+                        <li><a href="IT_Infrastructure_Catalog_Deep_Dive.html"><span>Infra Catalog Deep Dive</span><span>REPORT</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Advisory</span>
+                    <h3>Strategic Consulting</h3>
+                    <p class="desc">Elite AI talent matrices, skill directories, and core integration service offerings.</p>
+                    <ul class="doc-list">
+                        <li><a href="Service_Offering.html"><span>Core Service Offerings</span><span>OVERVIEW</span></a></li>
+                        <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span>MATRIX</span></a></li>
+                        <li><a href="IT_Consulting_Skills_Catalog.html"><span>Consulting Skills Directory</span><span>TALENT</span></a></li>
+                        <li><a href="Master_Competency_Directory.html"><span>Master Competency Matrix</span><span>INTERNAL</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Execution</span>
+                    <h3>Project Portfolio Leadership</h3>
+                    <p class="desc">Daily execution methodologies and algorithmic leadership delivery tracking.</p>
+                    <ul class="doc-list">
+                        <li><a href="PM_Daily_Handbook.html"><span>PM Daily Execution Handbook</span><span>PLAYBOOK</span></a></li>
+                        <li><a href="My_Portfolio.html"><span>Executive Delivery Portfolio</span><span>PORTFOLIO</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOLUTIONS -->
+        <section id="solutions" class="category-section">
+            <div class="section-header">
+                <h2>Solutions & R&D</h2>
+                <p>Outcome-driven, multi-disciplinary AI frameworks for modern business challenges.</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card search-target">
+                    <span class="card-tag">Security Architecture</span>
+                    <h3>Zero-Trust Enterprise</h3>
+                    <p class="desc">Holistic defensive postures integrating machine intelligence and behavioral mapping.</p>
+                    <ul class="doc-list">
+                        <li><a href="AI Cybersecurity.html"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
+                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span><span>FRAMEWORK</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Digital Transformation</span>
+                    <h3>AI-Driven Modernization</h3>
+                    <p class="desc">Scaling operations through embedded machine learning and cognitive automated routines.</p>
+                    <ul class="doc-list">
+                        <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
+                        <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span>SOLUTIONS</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="card search-target">
+                    <span class="card-tag">Innovation</span>
+                    <h3>Future Horizons R&D</h3>
+                    <p class="desc">Preparing for post-classical computing, neural architecture, and emerging technological shifts.</p>
+                    <ul class="doc-list">
+                        <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span><span>R&D</span></a></li>
+                        <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intel Matrix</span><span>RESEARCH</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Ribbon Elements -->
+    
+    <!-- Engagements Ribbon -->
+    <div id="engagements" class="ribbon-container">
+        <div class="ribbon-title">Global Engagements & Delivery History</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/westpac.com.au" onerror="this.style.display='none'">
+                <span>Westpac Bank</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/telstra.com" onerror="this.style.display='none'">
+                <span>Telstra</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/att.com" onerror="this.style.display='none'">
+                <span>AT&T</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/juniper.net" onerror="this.style.display='none'">
+                <span>Juniper Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cap.org" onerror="this.style.display='none'">
+                <span>American Pathologists</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/mercedes-benz.com" onerror="this.style.display='none'">
+                <span>Daimler</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/infosys.com" onerror="this.style.display='none'">
+                <span>Infosys</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/kotaklife.com" onerror="this.style.display='none'">
+                <span>Kotak Life</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/movate.com" onerror="this.style.display='none'">
+                <span>Movate (CSSCorp)</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/nscglobal.com" onerror="this.style.display='none'">
+                <span>NSC Global</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/hcltech.com" onerror="this.style.display='none'">
+                <span>HCLTech</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/techmahindra.com" onerror="this.style.display='none'">
+                <span>Tech Mahindra</span>
+            </div>
         </div>
     </div>
 
-    <div class="container">
+    <!-- AI Ecosystem Ribbon -->
+    <div class="ribbon-container alt-bg">
+        <div class="ribbon-title">AI Ecosystem & Vendor Technology Integration Matrix</div>
         
-        <!-- ================= PRODUCTS CAPABILITY ================= -->
-        <div id="products" class="section-header">
-            <h2>Enterprise Products</h2>
-            <p>Scalable, secure, and deployment-ready software and hardware assets.</p>
-        </div>
-        <div class="grid-3" id="products-grid">
-            
-            <div class="card asset-container">
-                <span class="card-label">Security Software</span>
-                <h3>Cybersecurity Suite</h3>
-                <p class="desc">Comprehensive endpoint, network, and cloud security licensing and products.</p>
-                <ul class="asset-list">
-                    <li><a href="Cybersecurity_Products.html"><span>Cybersecurity Product Suite</span> <span class="badge">UPDATED</span></a></li>
-                    <li><a href="Live_Threat_Tracker.html"><span>Live Threat Intel Tracker</span> <span class="badge">LIVE</span></a></li>
-                </ul>
+        <!-- Hardware & Foundation Models -->
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/nvidia.com" onerror="this.style.display='none'">
+                <span>NVIDIA</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Artificial Intelligence</span>
-                <h3>AI Application Ecosystem</h3>
-                <p class="desc">Pre-trained models, enterprise AI integrations, and automated operational software.</p>
-                <ul class="asset-list">
-                    <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span> <span class="badge">CATALOG</span></a></li>
-                    <li><a href="Cybersecurity_AI_ML_Reference.html"><span>AI/ML Threat Reference</span> <span class="badge">V 2.1</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/amd.com" onerror="this.style.display='none'">
+                <span>AMD</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Procurement</span>
-                <h3>Global Product Master</h3>
-                <p class="desc">The complete index of White Enterprises commercial off-the-shelf (COTS) offerings.</p>
-                <ul class="asset-list">
-                    <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span> <span class="badge">SKUs</span></a></li>
-                    <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>Subscription Unit Tracker</span> <span class="badge">FINANCE</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/intel.com" onerror="this.style.display='none'">
+                <span>Intel</span>
             </div>
-        </div>
-
-        <!-- ================= SERVICES CAPABILITY ================= -->
-        <div id="services" class="section-header">
-            <h2>Professional Services</h2>
-            <p>Expert consulting, infrastructure management, and project execution.</p>
-        </div>
-        <div class="grid-3" id="services-grid">
-            
-            <div class="card asset-container">
-                <span class="card-label">Managed Services</span>
-                <h3>IT Infrastructure Management</h3>
-                <p class="desc">End-to-end management of enterprise architecture, cloud migrations, and taxonomy.</p>
-                <ul class="asset-list">
-                    <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>Infra Taxonomy Charter</span> <span class="badge">NEW</span></a></li>
-                    <li><a href="IT_Infra_Business_Catalog.html"><span>Infra Business Catalog</span> <span class="badge">SERVICES</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/broadcom.com" onerror="this.style.display='none'">
+                <span>Broadcom</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Strategic Consulting</span>
-                <h3>Advisory & Implementation</h3>
-                <p class="desc">Deploying elite talent to solve complex business, security, and technology challenges.</p>
-                <ul class="asset-list">
-                    <li><a href="Service_Offering.html"><span>Core Service Offerings</span> <span class="badge">OVERVIEW</span></a></li>
-                    <li><a href="IT_Consulting_Skills_Catalog.html"><span>Consulting Skills Directory</span> <span class="badge">TALENT</span></a></li>
-                    <li><a href="Master_Competency_Directory.html"><span>Master Competency Matrix</span> <span class="badge">INTERNAL</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/openai.com" onerror="this.style.display='none'">
+                <span>OpenAI</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Executive Delivery</span>
-                <h3>Project & Portfolio Leadership</h3>
-                <p class="desc">Frameworks and methodologies utilized by White Enterprises project management.</p>
-                <ul class="asset-list">
-                    <li><a href="PM_Daily_Handbook.html"><span>PM Daily Execution Handbook</span> <span class="badge">PLAYBOOK</span></a></li>
-                    <li><a href="My_Portfolio.html"><span>Executive Delivery Portfolio</span> <span class="badge">WORK</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/anthropic.com" onerror="this.style.display='none'">
+                <span>Anthropic</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/deepmind.google" onerror="this.style.display='none'">
+                <span>Google DeepMind</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/meta.com" onerror="this.style.display='none'">
+                <span>Meta</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/mistral.ai" onerror="this.style.display='none'">
+                <span>Mistral AI</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cohere.com" onerror="this.style.display='none'">
+                <span>Cohere</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/c3.ai" onerror="this.style.display='none'">
+                <span>C3 AI</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/datarobot.com" onerror="this.style.display='none'">
+                <span>DataRobot</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/protectai.com" onerror="this.style.display='none'">
+                <span>Protect AI</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/hiddenlayer.com" onerror="this.style.display='none'">
+                <span>HiddenLayer</span>
             </div>
         </div>
 
-        <!-- ================= SOLUTIONS CAPABILITY ================= -->
-        <div id="solutions" class="section-header">
-            <h2>Industry Solutions</h2>
-            <p>Outcome-driven, multi-disciplinary frameworks designed for specific enterprise challenges.</p>
-        </div>
-        <div class="grid-3" id="solutions-grid">
-            
-            <div class="card asset-container">
-                <span class="card-label">Enterprise Security</span>
-                <h3>Zero-Trust Architecture</h3>
-                <p class="desc">A holistic solution combining threat intelligence, doctrine, and behavioral analytics.</p>
-                <ul class="asset-list">
-                    <li><a href="AI_Cybersecurity.html"><span>AI Cybersecurity Protocols</span> <span class="badge">POLICY</span></a></li>
-                    <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span> <span class="badge">FRAMEWORK</span></a></li>
-                </ul>
+        <!-- Master Networking/Security/Cloud Vendors -->
+        <div class="logo-ribbon" style="margin-top: 20px;">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
+                <span>Cisco</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Digital Transformation</span>
-                <h3>AI-Driven Business Modernization</h3>
-                <p class="desc">Integrating machine learning into core business operations to drive ROI and efficiency.</p>
-                <ul class="asset-list">
-                    <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span> <span class="badge">STRATEGY</span></a></li>
-                    <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span> <span class="badge">SOLUTIONS</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/aws.amazon.com" onerror="this.style.display='none'">
+                <span>AWS</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Future Horizons R&D</span>
-                <h3>Next-Gen Compute Solutions</h3>
-                <p class="desc">Preparing the enterprise for post-classical computing and evolving market threats.</p>
-                <ul class="asset-list">
-                    <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span> <span class="badge">R&D</span></a></li>
-                    <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intel Matrix</span> <span class="badge">RESEARCH</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/azure.microsoft.com" onerror="this.style.display='none'">
+                <span>Azure</span>
             </div>
-        </div>
-
-        <!-- ================= RESEARCH, INTELLIGENCE & SALES ================= -->
-        <div id="research" class="section-header">
-            <h2>Research, Sales Intel & Corporate Identity</h2>
-        </div>
-        <div class="grid-3" id="research-grid">
-            
-            <div class="card asset-container">
-                <span class="card-label">Market Intelligence</span>
-                <h3>Customer & Market Analysis</h3>
-                <ul class="asset-list">
-                    <li><a href="Enterprise_IT_Sales_Intelligence.html"><span>Enterprise IT Sales Intel</span> <span class="badge">DATA</span></a></li>
-                    <li><a href="Customer_Pain_Points.html"><span>Customer Pain Points Analysis</span> <span class="badge">MARKET</span></a></li>
-                    <li><a href="White_DoorOpener_Assessment_Templates.zip"><span>Door-Opener Assessments</span> <span class="badge">.ZIP</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cloud.google.com" onerror="this.style.display='none'">
+                <span>Google Cloud</span>
             </div>
-
-            <div class="card asset-container">
-                <span class="card-label">Leadership</span>
-                <h3>Executive Profiles</h3>
-                <ul class="asset-list">
-                    <li><a href="My_Profile.html"><span>Principal Executive Biography</span> <span class="badge">BIO</span></a></li>
-                </ul>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/paloaltonetworks.com" onerror="this.style.display='none'">
+                <span>Palo Alto Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/crowdstrike.com" onerror="this.style.display='none'">
+                <span>CrowdStrike</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ibm.com" onerror="this.style.display='none'">
+                <span>IBM</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/arista.com" onerror="this.style.display='none'">
+                <span>Arista Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/f5.com" onerror="this.style.display='none'">
+                <span>F5</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/fortinet.com" onerror="this.style.display='none'">
+                <span>Fortinet</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/zscaler.com" onerror="this.style.display='none'">
+                <span>Zscaler</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/servicenow.com" onerror="this.style.display='none'">
+                <span>ServiceNow</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/splunk.com" onerror="this.style.display='none'">
+                <span>Splunk</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/redhat.com" onerror="this.style.display='none'">
+                <span>Red Hat</span>
             </div>
         </div>
-
     </div>
 
+    <!-- Corporate Footer -->
     <footer>
-        <div style="max-width: 1400px; margin: 0 auto;">
-            <div style="margin-bottom: 20px;">
-                <strong style="color: white; font-size: 18px;">WHITE ENTERPRISES</strong><br>
-                Enterprise Intelligence & Solutions Architecture
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>White Enterprises</h4>
+                <p>Advancing Global AI Intelligence & Architecture</p>
             </div>
-            <div class="footer-legal">
-                <div>&copy; 2026 White Enterprises Inc. All Rights Reserved.</div>
-                <div>CONFIDENTIAL & PROPRIETARY. Unauthorized access is strictly prohibited under the corporate EULA.</div>
+            <div>
+                <p>Employee Portal Access</p>
+                <p>Partner Network</p>
             </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 White Enterprises Inc. All Rights Reserved.</p>
+            <p>Confidential & Proprietary. Internal Use Only.</p>
         </div>
     </footer>
 
+    <!-- Search Filtering Script -->
     <script>
-        // System Clock & Load Sim
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toUTCString().split(' ')[4] + ' UTC';
-            if(Math.random() > 0.5) {
-                document.getElementById('sysLoad').innerText = 'Compute Load: ' + (1.5 + Math.random() * 2).toFixed(1) + '%';
-            }
-        }, 1000);
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('datetime').innerText = new Date().toLocaleDateString('en-US', dateOptions);
 
-        // Advanced Search Filter for the new Card Architecture
-        function filterAssets() {
-            const query = document.getElementById('globalSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.asset-container');
+        function filterDirectory() {
+            const query = document.getElementById('directorySearch').value.toLowerCase();
+            const targets = document.querySelectorAll('.search-target');
 
-            cards.forEach(card => {
-                let hasMatch = false;
+            targets.forEach(target => {
+                let isVisible = false;
                 
-                // Check card title and description
-                const cardText = card.innerText.toLowerCase();
-                if (cardText.includes(query)) {
-                    hasMatch = true;
-                }
-
-                // Hide/Show individual list items
-                const listItems = card.querySelectorAll('li');
-                listItems.forEach(li => {
-                    const linkText = li.innerText.toLowerCase();
-                    if (linkText.includes(query) || query === '') {
-                        li.style.display = '';
-                        hasMatch = true; // If a child matches, the card must show
-                    } else {
-                        li.style.display = 'none';
+                if(target.classList.contains('search-target')) {
+                    if (target.innerText.toLowerCase().includes(query)) {
+                        isVisible = true;
                     }
-                });
 
-                // Hide/Show the entire card
-                card.style.display = hasMatch ? '' : 'none';
+                    const listItems = target.querySelectorAll('li');
+                    listItems.forEach(li => {
+                        if (li.innerText.toLowerCase().includes(query) || query === '') {
+                            li.style.display = '';
+                            isVisible = true;
+                        } else {
+                            li.style.display = 'none';
+                        }
+                    });
+                    
+                    target.style.display = isVisible ? 'flex' : 'none';
+                }
             });
         }
     </script>
