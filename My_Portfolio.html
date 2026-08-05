@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arvind Pardeshi · Senior Network Security Architect &amp; AI Security Consultant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-950:#050B18;
+  --navy-900:#0B1B33;
+  --navy-800:#122647;
+  --navy-700:#142A4D;
+  --blue-600:#0057B8;
+  --blue-700:#00458F;
+  --blue-100:#E8F0FB;
+  --paper:#FFFFFF;
+  --fog:#F4F6F9;
+  --fog-2:#EDF0F5;
+  --ink:#101828;
+  --slate:#5B6472;
+  --slate-lt:#8992A1;
+  --line:#E2E6ED;
+  --line-dark:rgba(255,255,255,0.12);
+  --gold:#B8923F;
+  --gold-lt:#D8B96A;
+  --green:#1C7C4C;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Source Serif 4',serif;color:var(--ink);font-weight:600;letter-spacing:-.01em}
+a{color:inherit}
+img{max-width:100%;display:block}
+.container{max-width:1240px;margin:0 auto;padding:0 48px}
+.eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-600);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.eyebrow::before{content:'';width:22px;height:2px;background:var(--blue-600)}
+.eyebrow.on-dark{color:var(--gold-lt)}
+.eyebrow.on-dark::before{background:var(--gold-lt)}
+section{padding:104px 0}
+.section-alt{background:var(--fog)}
+.section-head{max-width:660px;margin-bottom:56px}
+.section-head h2{font-size:clamp(30px,3.4vw,42px);line-height:1.18;margin-bottom:16px}
+.section-head p{color:var(--slate);font-size:16px;font-weight:400;line-height:1.7}
+::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:var(--fog)}::-webkit-scrollbar-thumb{background:var(--slate-lt);border-radius:5px}
+:focus-visible{outline:2px solid var(--blue-600);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── UTILITY BAR ── */
+.util-bar{background:var(--navy-950);color:rgba(255,255,255,.55);font-size:11.5px;letter-spacing:.03em;padding:8px 48px;display:flex;justify-content:space-between;align-items:center}
+.util-bar .u-left{display:flex;gap:22px}
+.util-bar .u-item{display:flex;align-items:center;gap:6px}
+.util-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green)}
+.util-bar a{color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.util-bar a:hover{color:#fff}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:16px 48px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand-mark{width:34px;height:34px;background:var(--navy-900);color:var(--gold-lt);display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',serif;font-weight:700;font-size:16px;border-radius:2px}
+.brand-text{font-family:'Source Serif 4',serif;font-weight:600;font-size:16.5px;color:var(--ink);line-height:1.1}
+.brand-text small{display:block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-lt);margin-top:2px}
+.nav-links{display:flex;gap:34px;align-items:center;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--slate);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--blue-600)}
+.nav-cta{background:var(--navy-900);color:#fff!important;padding:11px 22px;border-radius:2px;font-weight:600!important;font-size:12.5px!important;letter-spacing:.02em}
+.nav-cta:hover{background:var(--blue-600)!important}
+.nav-toggle{display:none}
+
+/* ── HERO ── */
+.hero{position:relative;background:var(--navy-900);color:#fff;overflow:hidden;padding:96px 0 0}
+.hero::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 85% 15%, rgba(0,87,184,.28) 0%, transparent 60%),
+  linear-gradient(180deg, var(--navy-900) 0%, var(--navy-950) 100%);
+  z-index:0}
+.hero-watermark{position:absolute;right:-40px;top:40px;font-family:'Source Serif 4',serif;font-weight:700;font-size:520px;line-height:1;color:rgba(255,255,255,.028);z-index:0;user-select:none;pointer-events:none}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:end;padding-bottom:64px}
+.hero-title{font-size:clamp(38px,4.6vw,60px);line-height:1.1;font-weight:600;margin-bottom:22px;max-width:640px}
+.hero-title em{font-style:italic;color:var(--gold-lt)}
+.hero-body{font-family:'Inter',sans-serif;font-size:17px;font-weight:400;color:rgba(255,255,255,.72);max-width:560px;line-height:1.75;margin-bottom:34px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+.btn-gold{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--navy-950);font-size:13.5px;font-weight:700;letter-spacing:.02em;padding:15px 28px;border-radius:2px;text-decoration:none;transition:background .2s,transform .2s}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-1px)}
+.btn-outline{display:inline-flex;align-items:center;gap:10px;background:transparent;color:#fff;font-size:13.5px;font-weight:600;padding:14px 28px;border-radius:2px;border:1px solid rgba(255,255,255,.28);text-decoration:none;transition:border-color .2s,background .2s}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.clearance-strip{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--line-dark);background:rgba(255,255,255,.04);padding:10px 18px;border-radius:2px}
+.clearance-strip .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.clearance-strip span{font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.85)}
+.clearance-strip b{color:#fff;font-weight:700}
+
+.hero-card{position:relative;z-index:1;background:rgba(255,255,255,.045);border:1px solid var(--line-dark);border-radius:4px;padding:32px;margin-bottom:64px}
+.hero-card-label{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-lt);font-weight:700;margin-bottom:22px}
+.hero-stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line-dark)}
+.hero-stat-row:last-child{border-bottom:none;padding-bottom:0}
+.hero-stat-row:first-of-type{padding-top:0}
+.hero-stat-num{font-family:'Source Serif 4',serif;font-weight:700;font-size:26px;color:#fff}
+.hero-stat-lbl{font-size:12px;color:rgba(255,255,255,.6)}
+
+.stat-bar{position:relative;z-index:1;background:var(--navy-950);border-top:1px solid var(--line-dark)}
+.stat-bar-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-cell{padding:30px 40px;border-right:1px solid var(--line-dark)}
+.stat-cell:last-child{border-right:none}
+.stat-cell .n{font-family:'Source Serif 4',serif;font-weight:700;font-size:30px;color:#fff}
+.stat-cell .n span{color:var(--gold-lt)}
+.stat-cell .l{font-size:11.5px;letter-spacing:.05em;color:rgba(255,255,255,.55);margin-top:4px;text-transform:uppercase}
+
+/* ── TRUST STRIP ── */
+.trust-strip{background:var(--paper);border-bottom:1px solid var(--line);padding:34px 0}
+.trust-inner{display:flex;align-items:center;gap:44px}
+.trust-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-lt);white-space:nowrap}
+.trust-logos{display:flex;gap:40px;flex-wrap:wrap;align-items:center}
+.trust-logo{font-family:'Source Serif 4',serif;font-weight:600;font-size:16px;color:var(--slate);opacity:.75;letter-spacing:-.01em}
+
+/* ── LETTER / SUMMARY ── */
+.letter{display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start}
+.letter-mark{font-family:'Source Serif 4',serif;font-weight:700;font-size:120px;line-height:.8;color:var(--blue-100);margin-bottom:8px}
+.letter-role{font-family:'Source Serif 4',serif;font-style:italic;font-size:20px;color:var(--ink);margin-bottom:6px}
+.letter-loc{font-size:13px;color:var(--slate-lt);letter-spacing:.03em}
+.letter-body p{font-size:17px;line-height:1.85;color:var(--ink);font-family:'Source Serif 4',serif;font-weight:500}
+.letter-body p+p{margin-top:22px}
+.letter-body em{color:var(--blue-600);font-style:italic}
+.letter-sign{margin-top:34px;padding-top:24px;border-top:1px solid var(--line);display:flex;gap:16px;align-items:center}
+.letter-sign-name{font-family:'Source Serif 4',serif;font-weight:600;font-size:16px}
+.letter-sign-title{font-size:12.5px;color:var(--slate)}
+
+/* ── CAPABILITIES ── */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.cap-card{background:var(--paper);padding:38px 34px;transition:background .2s}
+.cap-card:hover{background:var(--fog)}
+.cap-num{font-family:'Source Serif 4',serif;font-size:13px;color:var(--blue-600);font-weight:700;margin-bottom:18px}
+.cap-title{font-size:19px;font-weight:600;margin-bottom:12px;line-height:1.3}
+.cap-desc{font-size:13.5px;color:var(--slate);line-height:1.7;margin-bottom:18px}
+.cap-tags{display:flex;flex-wrap:wrap;gap:6px}
+.cap-tag{font-size:10.5px;font-weight:600;letter-spacing:.03em;padding:4px 10px;background:var(--blue-100);color:var(--blue-700);border-radius:2px}
+
+/* ── TRACK RECORD (TIMELINE) ── */
+.track-rail{display:flex;overflow-x:auto;gap:0;margin-bottom:64px;border:1px solid var(--line);border-radius:3px;background:var(--paper)}
+.rail-item{flex:1;min-width:130px;padding:18px 20px;border-right:1px solid var(--line);position:relative}
+.rail-item:last-child{border-right:none}
+.rail-year{font-family:'Source Serif 4',serif;font-weight:700;font-size:15px;color:var(--ink)}
+.rail-org{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.4}
+.rail-item.current{background:var(--navy-900)}
+.rail-item.current .rail-year{color:var(--gold-lt)}
+.rail-item.current .rail-org{color:rgba(255,255,255,.65)}
+
+.tl{display:flex;flex-direction:column}
+.tl-row{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:36px 0;border-bottom:1px solid var(--line)}
+.tl-row:first-child{padding-top:0}
+.tl-row:last-child{border-bottom:none}
+.tl-period{font-family:'Source Serif 4',serif;font-weight:700;font-size:16px;color:var(--ink)}
+.tl-loc{font-size:12px;color:var(--slate-lt);margin-top:6px;letter-spacing:.02em}
+.tl-tag{display:inline-block;margin-top:12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-600);background:var(--blue-100);padding:4px 9px;border-radius:2px}
+.tl-org{font-size:19px;font-weight:600;font-family:'Source Serif 4',serif;margin-bottom:4px}
+.tl-role{font-size:13.5px;color:var(--slate);margin-bottom:14px;font-weight:500}
+.tl-bullets{list-style:none;display:flex;flex-direction:column;gap:9px}
+.tl-bullets li{font-size:13.5px;color:var(--ink);line-height:1.65;padding-left:18px;position:relative}
+.tl-bullets li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:1.5px;background:var(--blue-600)}
+.tl-bullets strong{color:var(--navy-900)}
+
+/* ── ENGAGEMENTS (CASE STUDIES) ── */
+.eng-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.eng-card{background:var(--paper);border:1px solid var(--line);border-radius:3px;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.eng-card:hover{box-shadow:0 12px 32px rgba(11,27,51,.08);border-color:var(--line)}
+.eng-head{padding:26px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.eng-sector{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-600);margin-bottom:8px}
+.eng-name{font-family:'Source Serif 4',serif;font-size:19px;font-weight:600;line-height:1.3;margin-bottom:6px}
+.eng-client{font-size:12.5px;color:var(--slate)}
+.eng-dur{font-size:11px;color:var(--slate-lt);white-space:nowrap;border:1px solid var(--line);padding:5px 10px;border-radius:20px;flex-shrink:0}
+.eng-body{padding:22px 28px 28px}
+.eng-body ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.eng-body li{font-size:13px;color:var(--ink);line-height:1.6;padding-left:16px;position:relative}
+.eng-body li::before{content:'—';position:absolute;left:0;color:var(--slate-lt)}
+.eng-metrics{display:flex;gap:10px;flex-wrap:wrap}
+.eng-metric{background:var(--fog);border-radius:2px;padding:9px 14px}
+.eng-metric b{display:block;font-family:'Source Serif 4',serif;font-size:17px;color:var(--navy-900)}
+.eng-metric span{font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:.03em}
+
+/* ── CREDENTIALS ── */
+.cred-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:60px}
+.cred-block+.cred-block{margin-top:40px}
+.cred-block-title{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy-900);margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--navy-900)}
+.cred-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.cred-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cred-item:last-child{border-bottom:none}
+.cred-badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.cred-badge.earned{background:rgba(28,124,76,.1);color:var(--green);border:1px solid rgba(28,124,76,.3)}
+.cred-badge.progress{background:var(--blue-100);color:var(--blue-700);border:1px solid rgba(0,87,184,.25)}
+.cred-badge.lapsed{background:var(--fog-2);color:var(--slate-lt);border:1px solid var(--line)}
+.cred-name{font-size:14px;font-weight:600;color:var(--ink)}
+.cred-issuer{font-size:11.5px;color:var(--slate-lt)}
+.cred-status-tag{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px;white-space:nowrap}
+.cred-status-tag.earned{background:rgba(28,124,76,.1);color:var(--green)}
+.cred-status-tag.progress{background:var(--blue-100);color:var(--blue-700)}
+.cred-status-tag.lapsed{background:var(--fog-2);color:var(--slate-lt)}
+
+.compliance-panel{background:var(--navy-900);border-radius:4px;padding:36px;color:#fff}
+.compliance-panel .eyebrow{margin-bottom:20px}
+.compliance-panel h3{color:#fff;font-size:20px;margin-bottom:14px}
+.compliance-panel p{font-size:13.5px;color:rgba(255,255,255,.68);line-height:1.7;margin-bottom:24px}
+.compliance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.compliance-chip{border:1px solid var(--line-dark);padding:12px 10px;text-align:center;border-radius:2px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.85)}
+
+/* ── GLOBAL PRESENCE ── */
+.geo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.geo-card{background:var(--paper);padding:30px 26px}
+.geo-flag{font-size:26px;margin-bottom:14px}
+.geo-country{font-family:'Source Serif 4',serif;font-weight:600;font-size:17px;margin-bottom:6px}
+.geo-role{font-size:11px;color:var(--blue-600);font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:12px}
+.geo-desc{font-size:12.5px;color:var(--slate);line-height:1.65}
+
+/* ── CTA BAND ── */
+.cta-band{background:linear-gradient(120deg,var(--navy-950) 0%,var(--navy-800) 100%);color:#fff;padding:96px 0;text-align:center}
+.cta-band h2{color:#fff;font-size:clamp(28px,3.6vw,44px);max-width:760px;margin:0 auto 20px}
+.cta-band p{color:rgba(255,255,255,.68);font-size:16px;max-width:560px;margin:0 auto 40px}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+footer{background:var(--navy-950);color:rgba(255,255,255,.55);padding:64px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--line-dark)}
+.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.footer-brand .brand-text{color:#fff}
+.footer-desc{font-size:13px;line-height:1.7;max-width:280px;margin-bottom:20px}
+.footer-col h4{font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:18px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer-col a{font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.footer-col a:hover{color:var(--gold-lt)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:24px 0;font-size:11.5px;color:rgba(255,255,255,.4)}
+.footer-bottom .clearance-mini{display:flex;align-items:center;gap:8px;color:var(--gold-lt)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media (max-width:980px){
+  .container{padding:0 24px}
+  .util-bar,nav{padding-left:24px;padding-right:24px}
+  .nav-links{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .stat-bar-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-cell:nth-child(2){border-right:none}
+  .letter{grid-template-columns:1fr}
+  .cap-grid{grid-template-columns:1fr}
+  .eng-grid{grid-template-columns:1fr}
+  .cred-wrap{grid-template-columns:1fr}
+  .geo-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .tl-row{grid-template-columns:1fr}
+  .hero-watermark{display:none}
+}
+@media (max-width:600px){
+  section{padding:64px 0}
+  .stat-bar-grid{grid-template-columns:1fr 1fr}
+  .stat-cell{padding:22px}
+  .trust-inner{flex-direction:column;align-items:flex-start;gap:18px}
+  .geo-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:10px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="u-left">
+    <div class="u-item"><span class="util-dot"></span> Available for engagement</div>
+    <div class="u-item">Mumbai, India</div>
+  </div>
+  <div class="u-left">
+    <a href="mailto:arvindpardeshi151@gmail.com">arvindpardeshi151@gmail.com</a>
+    <a href="tel:+919321411739">+91 93214 11739</a>
+  </div>
+</div>
+
+<nav>
+  <a href="#top" class="brand">
+    <div class="brand-mark">AP</div>
+    <div class="brand-text">Arvind Pardeshi<small>Security &amp; AI Infrastructure</small></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#track-record">Track Record</a></li>
+    <li><a href="#engagements">Engagements</a></li>
+    <li><a href="#credentials">Credentials</a></li>
+    <li><a href="#presence">Global Presence</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Schedule a Consultation</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-watermark">19</div>
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow on-dark">Senior Network Security Architect · AI Security Consultant</div>
+      <h1 class="hero-title">Security architecture for institutions that <em>cannot afford</em> to get it wrong.</h1>
+      <p class="hero-body">DV-cleared (Scotland Yard/UKSV) architect with 19+ years of progressive enterprise experience — 13+ years in specialized security leadership across F5 BIG-IP, multi-vendor NGFW, and Tufin policy automation for global BFSI and healthcare institutions. Now architecting AI-native defense strategies aligned to OWASP LLM Top 10, MITRE ATLAS, and NIST AI RMF.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-gold">Schedule a Consultation →</a>
+        <a href="https://jinwhite666.github.io/catalog/" target="_blank" rel="noopener" class="btn-outline">View Service Catalog</a>
+      </div>
+      <div class="clearance-strip">
+        <span class="dot"></span>
+        <span><b>UK Developed Vetting (DV)</b> — Scotland Yard / UKSV · Highest civilian security clearance</span>
+      </div>
+    </div>
+    <div>
+      <div class="hero-card">
+        <div class="hero-card-label">Engagement Summary</div>
+        <div class="hero-stat-row"><span class="hero-stat-lbl">Enterprise experience</span><span class="hero-stat-num">19+ yrs</span></div>
+        <div class="hero-stat-row"><span class="hero-stat-lbl">Security leadership</span><span class="hero-stat-num">13+ yrs</span></div>
+        <div class="hero-stat-row"><span class="hero-stat-lbl">Perimeter traffic reduced</span><span class="hero-stat-num">60%</span></div>
+        <div class="hero-stat-row"><span class="hero-stat-lbl">Firewall rules decommissioned</span><span class="hero-stat-num">1,200+</span></div>
+        <div class="hero-stat-row"><span class="hero-stat-lbl">Target accounts, GTM strategy</span><span class="hero-stat-num">900+</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="stat-bar">
+    <div class="container">
+      <div class="stat-bar-grid">
+        <div class="stat-cell"><div class="n">19<span>+</span></div><div class="l">Years Enterprise Experience</div></div>
+        <div class="stat-cell"><div class="n">500<span>+</span></div><div class="l">Technical Competencies Mapped</div></div>
+        <div class="stat-cell"><div class="n">205</div><div class="l">AI Security Services Catalogued</div></div>
+        <div class="stat-cell"><div class="n">DV</div><div class="l">Security Clearance</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="container trust-inner">
+    <div class="trust-label">Delivered for</div>
+    <div class="trust-logos">
+      <div class="trust-logo">Westpac Bank</div>
+      <div class="trust-logo">Telstra</div>
+      <div class="trust-logo">AT&amp;T</div>
+      <div class="trust-logo">Juniper Networks</div>
+      <div class="trust-logo">College of American Pathologists</div>
+      <div class="trust-logo">Daimler</div>
+      <div class="trust-logo">Infosys</div>
+      <div class="trust-logo">Kotak Life Insurance</div>
+    </div>
+  </div>
+</div>
+
+<!-- LETTER / SUMMARY -->
+<section id="summary">
+  <div class="container letter reveal">
+    <div>
+      <div class="letter-mark">“</div>
+      <div class="letter-role">Professional Summary</div>
+      <div class="letter-loc">Mumbai, India · Open to relocation — India, GCC, UK, Australia</div>
+    </div>
+    <div class="letter-body">
+      <p>Results-driven Senior Network Security Architect with <em>19+ years of progressive enterprise experience</em>, including 13+ years of specialized security leadership. DV Cleared (Scotland Yard/UKSV) expert in F5 BIG-IP, multi-vendor NGFW (Palo Alto, Check Point, Cisco), and Tufin policy automation.</p>
+      <p>Delivered a <em>60% reduction in unclassified perimeter traffic</em> and <em>33% performance gains</em> through large-scale WAN/LAN transformation programs. Currently pursuing CISSP, CCSP, and CompTIA SecAI+ to architect AI-native defense strategies for global BFSI and healthcare clients.</p>
+      <div class="letter-sign">
+        <div>
+          <div class="letter-sign-name">Arvind Pardeshi</div>
+          <div class="letter-sign-title">Senior Network Security Architect · AI Security Consultant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities" class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Practice Areas</div>
+      <h2>Five domains of enterprise security depth</h2>
+      <p>From perimeter architecture to AI-native defense — a practice built on production experience with global BFSI, healthcare, and telecom institutions.</p>
+    </div>
+    <div class="cap-grid reveal">
+      <div class="cap-card">
+        <div class="cap-num">01 · Emerging Priority</div>
+        <div class="cap-title">AI &amp; LLM Security</div>
+        <div class="cap-desc">Prompt-injection protection, RAG pipeline hardening, and model-poisoning defense aligned to OWASP LLM Top 10, MITRE ATLAS, and NIST AI RMF for BFSI and healthcare AI adoption.</div>
+        <div class="cap-tags"><span class="cap-tag">OWASP LLM Top 10</span><span class="cap-tag">MITRE ATLAS</span><span class="cap-tag">NIST AI RMF</span></div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-num">02 · 13+ Years</div>
+        <div class="cap-title">Network Security Architecture</div>
+        <div class="cap-desc">Zero Trust design, micro-segmentation, and multi-vendor firewall management across Cisco, Check Point, Palo Alto, and Juniper for enterprise perimeters.</div>
+        <div class="cap-tags"><span class="cap-tag">Zero Trust</span><span class="cap-tag">NGFW</span><span class="cap-tag">Micro-Segmentation</span></div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-num">03 · 10+ Years</div>
+        <div class="cap-title">Policy Automation &amp; SecOps</div>
+        <div class="cap-desc">Tufin SecureTrack+/SecureChange policy lifecycle automation, SIEM/SOAR operations with Splunk and Sentinel, and identity &amp; access management via Cisco ISE.</div>
+        <div class="cap-tags"><span class="cap-tag">Tufin</span><span class="cap-tag">SIEM/SOAR</span><span class="cap-tag">IAM</span></div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-num">04 · Cloud &amp; SASE</div>
+        <div class="cap-title">Multi-Cloud &amp; Zero Trust Access</div>
+        <div class="cap-desc">AWS/Azure governance, SASE deployments with Zscaler ZIA/ZPA, and infrastructure automation via Python, Ansible, and Terraform.</div>
+        <div class="cap-tags"><span class="cap-tag">AWS · Azure</span><span class="cap-tag">SASE</span><span class="cap-tag">Terraform</span></div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-num">05 · Client-Facing</div>
+        <div class="cap-title">Pre-Sales &amp; Stakeholder Leadership</div>
+        <div class="cap-desc">Technical RFP/RFI response, HLD/LLD design, C-suite engagement, and P1/P2 incident leadership across three continents.</div>
+        <div class="cap-tags"><span class="cap-tag">RFP / RFI</span><span class="cap-tag">HLD / LLD</span><span class="cap-tag">C-Suite</span></div>
+      </div>
+      <div class="cap-card">
+        <div class="cap-num">06 · Compliance</div>
+        <div class="cap-title">Governance, Risk &amp; Regulatory</div>
+        <div class="cap-desc">PCI-DSS, HIPAA, ISO 27001, and ITIL v4 governance embedded into every engagement — from perimeter design through AI-integration risk assessment.</div>
+        <div class="cap-tags"><span class="cap-tag">PCI-DSS</span><span class="cap-tag">HIPAA</span><span class="cap-tag">ISO 27001</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACK RECORD -->
+<section id="track-record">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Career Architecture</div>
+      <h2>A track record built one enterprise perimeter at a time</h2>
+      <p>Nineteen years across five countries and three continents — from carrier NOC floors to independent AI-security advisory.</p>
+    </div>
+    <div class="track-rail reveal">
+      <div class="rail-item current"><div class="rail-year">2023—</div><div class="rail-org">Independent Consultant</div></div>
+      <div class="rail-item"><div class="rail-year">2014–23</div><div class="rail-org">Infosys Ltd</div></div>
+      <div class="rail-item"><div class="rail-year">2012–14</div><div class="rail-org">CSS Corp</div></div>
+      <div class="rail-item"><div class="rail-year">2011–12</div><div class="rail-org">NSC Global</div></div>
+      <div class="rail-item"><div class="rail-year">2009–11</div><div class="rail-org">Independent (UK)</div></div>
+      <div class="rail-item"><div class="rail-year">2006–08</div><div class="rail-org">HCL Comnet</div></div>
+    </div>
+
+    <div class="tl reveal">
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">May 2023 – Present</div>
+          <div class="tl-loc">Remote / Global — India</div>
+          <span class="tl-tag">Current</span>
+        </div>
+        <div>
+          <div class="tl-org">Cloud &amp; Network Security Consultant — Independent</div>
+          <div class="tl-role">Self-Directed</div>
+          <ul class="tl-bullets">
+            <li>Architect AI-native defense strategies — prompt-injection protection and RAG pipeline hardening aligned to <strong>NIST AI RMF</strong> and <strong>OWASP LLM Top 10</strong> — while automating firewall policy lifecycles across Python, Ansible, and Terraform, cutting configuration errors and audit cycles by <strong>40%</strong>.</li>
+            <li>Harden multi-cloud (AWS/Azure) environments via CSPM, IAM governance, and micro-segmentation for containerized workloads, ensuring PCI-DSS and HIPAA compliance.</li>
+            <li>Built a centralized product catalog spanning <strong>200+ IT service domains</strong> and a <strong>500+ competency skills taxonomy</strong> — the foundation of the OMNIVEX AI Security Consulting Catalog (205 services).</li>
+            <li>Launched an assessment-led sales framework using 200+ zero-cost diagnostic tools, supporting competitive displacement across <strong>900+ target accounts</strong>; tracked pipeline health of <strong>$4.6B addressable value</strong> via a centralized BI dashboard.</li>
+            <li>Established a cross-industry AI Security working group, developing standardized LLM-integration assessment frameworks for BFSI and healthcare.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">Nov 2014 – May 2023</div>
+          <div class="tl-loc">India · Australia · USA (onsite)</div>
+        </div>
+        <div>
+          <div class="tl-org">Infosys Ltd</div>
+          <div class="tl-role">Senior Infrastructure Consultant</div>
+          <ul class="tl-bullets">
+            <li>Led technical responses for major RFP/RFI bids — solution design, effort estimation, risk documentation — contributing to a <strong>15% increase</strong> in successful client bids.</li>
+            <li>Orchestrated F5 BIG-IP and Palo Alto NGFW operations for global BFSI and healthcare clients, maintaining <strong>100% SLA compliance</strong> on critical security changes.</li>
+            <li>Automated policy audits using Tufin SecureChange, eliminating <strong>1,200+ stale rules</strong> and cutting policy review cycles by 40% for PCI-DSS compliance.</li>
+            <li>Led global task forces of <strong>25+ engineers</strong> across three continents on large-scale infrastructure migrations with zero-defect delivery for Fortune 500 clients.</li>
+            <li>Partnered with client CTOs on 5-year technology roadmaps, reducing total cost of ownership by <strong>25%</strong> through migration to software-defined, cloud-ready architectures.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">Mar 2012 – Apr 2014</div>
+          <div class="tl-loc">Chennai, India</div>
+        </div>
+        <div>
+          <div class="tl-org">CSS Corp ICT Services</div>
+          <div class="tl-role">Senior Network Engineer — Juniper JTAC Global</div>
+          <ul class="tl-bullets">
+            <li>Delivered Tier-2 JTAC support for Juniper's global enterprise customers (EMEA, APAC, US) on M/T-Series, EX, QFX, and SRX platforms.</li>
+            <li>Authored <strong>15+ knowledge-base articles</strong> adopted as global support references, cutting recurring-issue resolution time by <strong>25%</strong>.</li>
+            <li>Diagnosed and resolved a critical kernel-level memory leak on Juniper MX-Series routers, influencing a global firmware patch release.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">Jul 2011 – Jan 2012</div>
+          <div class="tl-loc">Redditch, United Kingdom</div>
+        </div>
+        <div>
+          <div class="tl-org">NSC Global</div>
+          <div class="tl-role">Network Analyst</div>
+          <ul class="tl-bullets">
+            <li>Delivered Tier-1/2 NOC support for AT&amp;T's global corporate customers across <strong>20+ countries</strong> under 24×7 SLA.</li>
+            <li>Led a WAN optimization project reducing circuit utilization by <strong>20%</strong>, deferring bandwidth upgrades for 18 months.</li>
+            <li>Established the first "NOC Excellence" training program in the Redditch office, improving night-shift resolution rates by <strong>25%</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">Dec 2009 – Jun 2011</div>
+          <div class="tl-loc">United Kingdom</div>
+        </div>
+        <div>
+          <div class="tl-org">Network Engineering Consultant — Independent</div>
+          <div class="tl-role">Self-Directed</div>
+          <ul class="tl-bullets">
+            <li>Delivered independent network consultancy services focused on SME infrastructure stability and security.</li>
+            <li>Progressed from CCNA through CCNP-level implementation, completing two years of intensive CCIE-level study.</li>
+            <li>Built high-fidelity virtual lab environments simulating multi-site enterprise topologies and validating High Availability protocols.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div>
+          <div class="tl-period">Aug 2006 – Aug 2008</div>
+          <div class="tl-loc">Mumbai, India</div>
+        </div>
+        <div>
+          <div class="tl-org">HCLTech (HCL Comnet)</div>
+          <div class="tl-role">Network Engineer</div>
+          <ul class="tl-bullets">
+            <li>Improved network performance by <strong>33% at Kotak Life Insurance</strong> and <strong>20% at Mahindra &amp; Mahindra</strong> through QoS classification, OSPF timer optimization, and EtherChannel load balancing.</li>
+            <li>Led a Spanning Tree Protocol hardening project across Kotak Life Insurance data centers, achieving 100% Layer 2 stability during peak trading hours.</li>
+            <li>Restored a critical SAP ERP connectivity failure at Mahindra &amp; Mahindra within 15 minutes of escalation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENTS -->
+<section id="engagements" class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Flagship Engagements</div>
+      <h2>Selected client work</h2>
+      <p>Enterprise-grade delivery for institutions where downtime and non-compliance are not options.</p>
+    </div>
+    <div class="eng-grid reveal">
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">BFSI · Firewall Policy Governance</div>
+            <div class="eng-name">Westpac Bank</div>
+            <div class="eng-client">Sydney, Australia · via Infosys Ltd</div>
+          </div>
+          <div class="eng-dur">39 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Governed firewall lifecycles across Cisco ASA, Check Point R77 Gaia, and Palo Alto 5000, migrating 300+ security policies with zero production downtime.</li>
+            <li>Decommissioned 1,200+ redundant rules using Tufin Analyzer and Panorama, boosting perimeter throughput by 15%.</li>
+            <li>Designed Cisco UCS compute pods with Nexus 7000 spine for Westpac's HA data centre — N+1 redundancy, sub-30-second failover.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>300+</b><span>Policies Migrated</span></div>
+            <div class="eng-metric"><b>15%</b><span>Throughput Gain</span></div>
+            <div class="eng-metric"><b>&lt;30s</b><span>Failover</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">Healthcare · HIPAA</div>
+            <div class="eng-name">CAP Managed Infrastructure</div>
+            <div class="eng-client">College of American Pathologists · Illinois, USA · via Infosys Ltd</div>
+          </div>
+          <div class="eng-dur">24 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Directed the Network Security Track, administering Palo Alto NGFW and Cisco ASA stacks within a HIPAA-regulated environment.</li>
+            <li>Engineered Zero Trust access controls and VLAN micro-segmentation, achieving perfect audit results and 99.9% availability.</li>
+            <li>Conducted HIPAA-mandated security assessments, mitigating critical vulnerabilities across clinical data flows.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>99.9%</b><span>Availability</span></div>
+            <div class="eng-metric"><b>0</b><span>Audit Exceptions</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">Automotive · WAN Transformation</div>
+            <div class="eng-name">Enterprise LAN/WAN Transformation</div>
+            <div class="eng-client">Daimler India · via Infosys Ltd</div>
+          </div>
+          <div class="eng-dur">10 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Redesigned WAN routing for multi-site manufacturing using BGP AS-Override and OSPF, resolving application timeouts.</li>
+            <li>Implemented QoS policies prioritizing mission-critical SAP ERP traffic, reducing latency by 20% across campus sites.</li>
+            <li>Orchestrated migration of legacy campus routing to a high-availability SD-WAN architecture.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>40%</b><span>Bandwidth Increase</span></div>
+            <div class="eng-metric"><b>20%</b><span>Latency Reduction</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">Telecommunications</div>
+            <div class="eng-name">Telstra Managed Data Network</div>
+            <div class="eng-client">Activation Team · Australia · via Infosys Ltd</div>
+          </div>
+          <div class="eng-dur">6 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Provisioned CE routers using RASS Telstra order management tools; validated BGP, OSPF, switching, and leased-line services.</li>
+            <li>Engineered complex BGP route-map policies for seamless connectivity to Telstra's MPLS core.</li>
+            <li>Reduced service provisioning time by 15% through automated configuration scripts and standardized templates.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>15%</b><span>Provisioning Time ↓</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">BFSI / Automotive · Data Centre</div>
+            <div class="eng-name">Kotak Life Insurance &amp; Mahindra</div>
+            <div class="eng-client">Mumbai, India · via HCL Comnet</div>
+          </div>
+          <div class="eng-dur">24 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Delivered 24/7 network health monitoring, QoS optimization, and SLA-compliant infrastructure support.</li>
+            <li>Managed proactive hardware lifecycle assessments and firmware upgrades for core banking and manufacturing stacks.</li>
+            <li>Developed comprehensive network documentation and SOPs, improving NOC operational readiness.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>33%</b><span>Performance ↑ Kotak</span></div>
+            <div class="eng-metric"><b>20%</b><span>Performance ↑ Mahindra</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eng-card">
+        <div class="eng-head">
+          <div>
+            <div class="eng-sector">Networking Hardware · Global Support</div>
+            <div class="eng-name">Juniper JTAC Global Enterprise Support</div>
+            <div class="eng-client">EMEA / APAC / US · via CSS Corp</div>
+          </div>
+          <div class="eng-dur">24 Months</div>
+        </div>
+        <div class="eng-body">
+          <ul>
+            <li>Delivered Tier-2 JTAC support for global enterprise customers on Juniper M/T-Series and SRX platforms.</li>
+            <li>Partnered with global engineering teams on packet-level analysis and root-cause reports for Tier-3 escalation.</li>
+          </ul>
+          <div class="eng-metrics">
+            <div class="eng-metric"><b>25%</b><span>Resolution Time ↓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section id="credentials">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Credentials &amp; Compliance</div>
+      <h2>Certifications, in progress and earned</h2>
+      <p>A credential portfolio built deliberately around the AI-security transition — anchored by two decades of networking fundamentals.</p>
+    </div>
+    <div class="cred-wrap reveal">
+      <div>
+        <div class="cred-block">
+          <div class="cred-block-title">Earned</div>
+          <ul class="cred-list">
+            <li class="cred-item"><div class="cred-badge earned">✓</div><div><div class="cred-name">AAISM — Advanced in AI Security Management</div><div class="cred-issuer">ISACA</div></div><span class="cred-status-tag earned">Earned</span></li>
+            <li class="cred-item"><div class="cred-badge earned">✓</div><div><div class="cred-name">Terraform Associate</div><div class="cred-issuer">HashiCorp</div></div><span class="cred-status-tag earned">Earned</span></li>
+          </ul>
+        </div>
+        <div class="cred-block">
+          <div class="cred-block-title">In Progress — 2026/27</div>
+          <ul class="cred-list">
+            <li class="cred-item"><div class="cred-badge progress">◐</div><div><div class="cred-name">CISSP</div><div class="cred-issuer">ISC2</div></div><span class="cred-status-tag progress">In Progress</span></li>
+            <li class="cred-item"><div class="cred-badge progress">◐</div><div><div class="cred-name">CCSP</div><div class="cred-issuer">ISC2</div></div><span class="cred-status-tag progress">In Progress</span></li>
+            <li class="cred-item"><div class="cred-badge progress">◐</div><div><div class="cred-name">CompTIA Security+</div><div class="cred-issuer">CompTIA</div></div><span class="cred-status-tag progress">In Progress</span></li>
+            <li class="cred-item"><div class="cred-badge progress">◐</div><div><div class="cred-name">CompTIA SecAI+ (CY0-001)</div><div class="cred-issuer">CompTIA — launched Feb 2026</div></div><span class="cred-status-tag progress">In Progress</span></li>
+          </ul>
+        </div>
+        <div class="cred-block">
+          <div class="cred-block-title">Prior Certifications (Lapsed)</div>
+          <ul class="cred-list">
+            <li class="cred-item"><div class="cred-badge lapsed">–</div><div><div class="cred-name">CCVP — Cisco Certified Voice Professional</div><div class="cred-issuer">Cisco</div></div><span class="cred-status-tag lapsed">Lapsed</span></li>
+            <li class="cred-item"><div class="cred-badge lapsed">–</div><div><div class="cred-name">CCNA</div><div class="cred-issuer">Cisco</div></div><span class="cred-status-tag lapsed">Lapsed</span></li>
+            <li class="cred-item"><div class="cred-badge lapsed">–</div><div><div class="cred-name">JNCIS-ENT</div><div class="cred-issuer">Juniper Networks</div></div><span class="cred-status-tag lapsed">Lapsed</span></li>
+            <li class="cred-item"><div class="cred-badge lapsed">–</div><div><div class="cred-name">JNCIA-Junos</div><div class="cred-issuer">Juniper Networks</div></div><span class="cred-status-tag lapsed">Lapsed</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="compliance-panel">
+        <div class="eyebrow on-dark">Frameworks &amp; Compliance</div>
+        <h3>Standards embedded into every engagement</h3>
+        <p>Governance, risk, and regulatory alignment isn't a bolt-on — it's designed into the architecture from day one, across both legacy infrastructure and AI-integration work.</p>
+        <div class="compliance-grid">
+          <div class="compliance-chip">PCI-DSS</div>
+          <div class="compliance-chip">HIPAA</div>
+          <div class="compliance-chip">ISO 27001</div>
+          <div class="compliance-chip">ITIL v4</div>
+          <div class="compliance-chip">GDPR</div>
+          <div class="compliance-chip">SOC 2</div>
+          <div class="compliance-chip">EU AI Act</div>
+          <div class="compliance-chip">OWASP LLM</div>
+          <div class="compliance-chip">MITRE ATLAS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBAL PRESENCE -->
+<section id="presence" class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Global Presence</div>
+      <h2>Delivery experience across four regions</h2>
+      <p>Education: M.Sc. Network Systems Engineering, University of Plymouth, UK (2008–2009) · B.E. Computer Engineering, North Maharashtra University, India (2001–2006)</p>
+    </div>
+    <div class="geo-grid reveal">
+      <div class="geo-card">
+        <div class="geo-flag">🇮🇳</div>
+        <div class="geo-country">India</div>
+        <div class="geo-role">Citizen · Home Base</div>
+        <div class="geo-desc">Mumbai-based; delivery experience spanning BFSI, automotive, and healthcare clients since 2006. Open to remote, contract, or onsite engagements nationally.</div>
+      </div>
+      <div class="geo-card">
+        <div class="geo-flag">🇬🇧</div>
+        <div class="geo-country">United Kingdom</div>
+        <div class="geo-role">Resident &amp; Employed · 2008–2012</div>
+        <div class="geo-desc">M.Sc. at University of Plymouth; employed at NSC Global, Redditch. Holds UK Developed Vetting (DV) clearance and is eligible for Skilled Worker visa sponsorship.</div>
+      </div>
+      <div class="geo-card">
+        <div class="geo-flag">🇺🇸</div>
+        <div class="geo-country">United States</div>
+        <div class="geo-role">Client Onsite · Illinois</div>
+        <div class="geo-desc">Onsite delivery for the College of American Pathologists via Infosys — HIPAA-regulated architecture reviews and stakeholder workshops over a 24-month engagement.</div>
+      </div>
+      <div class="geo-card">
+        <div class="geo-flag">🇦🇺</div>
+        <div class="geo-country">Australia</div>
+        <div class="geo-role">Client Onsite · Sydney</div>
+        <div class="geo-desc">Onsite delivery for Westpac Bank and Telstra via Infosys — enterprise perimeter modernization and carrier-grade network provisioning. Eligible for skilled migration pathways.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band" id="contact">
+  <div class="container">
+    <div class="eyebrow on-dark" style="justify-content:center">Let's Talk</div>
+    <h2>Ready to architect your next security engagement.</h2>
+    <p>Available immediately — permanent, contract, or remote senior/architect roles across India, GCC, UK, Australia, and global delivery.</p>
+    <div class="cta-actions">
+      <a href="tel:+919321411739" class="btn-gold">📞 &nbsp;+91 93214 11739</a>
+      <a href="mailto:arvindpardeshi151@gmail.com" class="btn-outline">✉ &nbsp;arvindpardeshi151@gmail.com</a>
+      <a href="https://www.linkedin.com/in/arvind-pardeshi-ab92382a2" target="_blank" rel="noopener" class="btn-outline">LinkedIn ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="brand-mark">AP</div>
+          <div class="brand-text">Arvind Pardeshi</div>
+        </div>
+        <p class="footer-desc">Senior Network Security Architect &amp; AI Security Consultant. DV-cleared, 19+ years of enterprise delivery across BFSI, healthcare, automotive, and telecom.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Practice</h4>
+        <ul>
+          <li><a href="#capabilities">Capabilities</a></li>
+          <li><a href="#track-record">Track Record</a></li>
+          <li><a href="#engagements">Engagements</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Credentials</h4>
+        <ul>
+          <li><a href="#credentials">Certifications</a></li>
+          <li><a href="#presence">Global Presence</a></li>
+          <li><a href="https://jinwhite666.github.io/catalog/" target="_blank" rel="noopener">Service Catalog ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:arvindpardeshi151@gmail.com">Email</a></li>
+          <li><a href="tel:+919321411739">Phone</a></li>
+          <li><a href="https://www.linkedin.com/in/arvind-pardeshi-ab92382a2" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Arvind Pardeshi · Mumbai, India</div>
+      <div class="clearance-mini"><span class="util-dot" style="background:var(--gold-lt);box-shadow:0 0 6px var(--gold-lt)"></span> UK DV Clearance — Scotland Yard / UKSV</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
