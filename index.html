@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>White Enterprises | Global Solutions & Architectures</title>
+    <title>White Enterprises | Global Solutions, Architectures & Intelligence Master Catalog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             /* Fortune 500 Corporate Color Palette */
@@ -19,6 +19,7 @@
             --border-light: #e5e7eb;
             --accent-light: #eff6ff;
             --success-green: #059669;
+            --cyber-cyan: #00d4ff;
         }
 
         * {
@@ -35,18 +36,16 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Top Utility Bar */
         .utility-bar {
             background-color: var(--text-dark);
             color: #d1d5db;
             font-size: 12px;
             padding: 8px 5%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             gap: 20px;
         }
 
-        /* Header & Navigation */
         header {
             background-color: var(--bg-white);
             border-bottom: 1px solid var(--border-light);
@@ -71,7 +70,7 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 32px;
+            gap: 24px;
             flex-wrap: wrap;
         }
 
@@ -87,7 +86,6 @@
             color: var(--primary-blue);
         }
 
-        /* Hero Banner */
         .hero {
             background-color: var(--bg-white);
             padding: 80px 5%;
@@ -106,7 +104,7 @@
         .hero p {
             font-size: 18px;
             color: var(--text-muted);
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto 32px;
         }
 
@@ -132,7 +130,6 @@
             box-shadow: 0 4px 12px rgba(0, 61, 165, 0.15);
         }
 
-        /* Main Content Area */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -161,7 +158,6 @@
             margin-top: 8px;
         }
         
-        /* About Us Section Styles */
         .about-grid {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
@@ -211,7 +207,6 @@
             line-height: 1.6;
         }
 
-        /* Grid & Cards for Products/Services */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -258,7 +253,6 @@
             flex-grow: 1;
         }
 
-        /* Document Links */
         .doc-list {
             list-style: none;
             border-top: 1px solid var(--border-light);
@@ -297,7 +291,45 @@
             border-radius: 12px;
         }
 
-        /* Enhanced Ribbon Styles */
+        /* Benchmark Summary Box */
+        .benchmark-box {
+            background-color: #111827;
+            color: #f3f4f6;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .benchmark-box h3 {
+            font-size: 22px;
+            color: #60a5fa;
+            margin-bottom: 16px;
+        }
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .bench-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 6px;
+        }
+        .bench-card h4 {
+            font-size: 14px;
+            color: #34d399;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .bench-card p {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
         .ribbon-container {
             background-color: var(--bg-white);
             border-top: 1px solid var(--border-light);
@@ -364,7 +396,6 @@
             color: var(--primary-blue);
         }
 
-        /* Footer */
         footer {
             background-color: var(--text-dark);
             color: #9ca3af;
@@ -414,7 +445,7 @@
 
     <!-- Corporate Utility Bar -->
     <div class="utility-bar">
-        <span>Global Corporate Portal</span>
+        <span>Global Corporate Portal // Master Intelligence Index</span>
         <span id="datetime">Loading Data...</span>
     </div>
 
@@ -424,8 +455,9 @@
         <nav>
             <ul>
                 <li><a href="#about">About Us</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><a href="#products">Products & Catalogs</a></li>
+                <li><a href="#services">Services & Consulting</a></li>
+                <li><a href="#solutions">Solutions & R&D</a></li>
                 <li><a href="#engagements">Ecosystem & Delivery</a></li>
             </ul>
         </nav>
@@ -433,11 +465,11 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>AI-Powered Enterprise Intelligence</h1>
-        <p>Comprehensive AI-driven solutions, next-generation algorithmic cybersecurity, and autonomous agentic networks driving the world's leading organizations.</p>
+        <h1>AI-Powered Enterprise Intelligence & Architecture Master Index</h1>
+        <p>Comprehensive AI-driven solutions, autonomous agentic networks, rigorous cybersecurity benchmarks, and global enterprise blueprints.</p>
         
         <div class="search-container">
-            <input type="text" id="directorySearch" class="search-input" placeholder="Search product catalogs, services, and policies..." onkeyup="filterDirectory()">
+            <input type="text" id="directorySearch" class="search-input" placeholder="Search across all 30 catalogs, training data, and policies..." onkeyup="filterDirectory()">
         </div>
     </section>
 
@@ -447,7 +479,7 @@
         <!-- ABOUT US -->
         <section id="about" class="category-section">
             <div class="section-header">
-                <h2>About Us</h2>
+                <h2>About Us & Leadership</h2>
                 <p>Pioneering deep-tech, AI-native enterprise infrastructure and asynchronous agentic networks.</p>
             </div>
             
@@ -477,8 +509,8 @@
         <!-- PRODUCTS -->
         <section id="products" class="category-section">
             <div class="section-header">
-                <h2>Products</h2>
-                <p>AI-integrated software suites, commercial inventory, and intelligent security deployments.</p>
+                <h2>Products, Security Catalogs & Archives</h2>
+                <p>AI-integrated software suites, threat tracking engines, security doctrine frameworks, and template archives.</p>
             </div>
             
             <div class="grid">
@@ -496,23 +528,36 @@
 
                 <div class="card search-target">
                     <span class="card-tag">Artificial Intelligence</span>
-                    <h3>AI Application Ecosystem</h3>
-                    <p class="desc">Integrated machine learning catalogs, generative synthesis cores, and operational models for enterprise automation.</p>
+                    <h3>AI Application Ecosystem & Reference</h3>
+                    <p class="desc">Integrated machine learning catalogs, generative synthesis cores, and threat intelligence ML reference guides.</p>
                     <ul class="doc-list">
                         <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span><span>CATALOG</span></a></li>
                         <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
                         <li><a href="Cybersecurity_AI_ML_Reference.html"><span>AI/ML Threat Reference</span><span>GUIDE</span></a></li>
+                        <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intelligence Matrix</span><span>R&D</span></a></li>
                     </ul>
                 </div>
 
                 <div class="card search-target">
-                    <span class="card-tag">Procurement</span>
-                    <h3>Global Product Master</h3>
+                    <span class="card-tag">Procurement & Tracking</span>
+                    <h3>Global Product Master & SKU Trackers</h3>
                     <p class="desc">Commercial off-the-shelf offerings, AI SKU tracking, and platform directories.</p>
                     <ul class="doc-list">
                         <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span><span>SKUs</span></a></li>
                         <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>Subscription Unit Tracker</span><span>FINANCE</span></a></li>
                         <li><a href="Job_Platforms_Directory.html"><span>Job Platforms Directory</span><span>PORTAL</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- NEW ARCHIVES CARD -->
+                <div class="card search-target">
+                    <span class="card-tag">Archives & Resources</span>
+                    <h3>Repository Metadata & Templates</h3>
+                    <p class="desc">Downloadable assessment templates, document libraries, and repository documentation.</p>
+                    <ul class="doc-list">
+                        <li><a href="Documents_Library_Templates.zip"><span>Document Library Templates</span><span>ZIP</span></a></li>
+                        <li><a href="White_DoorOpener_Assessment _Templates.zip"><span>Door-Opener Assessments</span><span>ZIP</span></a></li>
+                        <li><a href="README.md"><span>Repository README</span><span>MD</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -521,15 +566,15 @@
         <!-- SERVICES -->
         <section id="services" class="category-section">
             <div class="section-header">
-                <h2>Services</h2>
+                <h2>Services & Consulting Directories</h2>
                 <p>Professional advisory, AI infrastructure management, and project execution frameworks.</p>
             </div>
             
             <div class="grid">
                 <div class="card search-target">
                     <span class="card-tag">Infrastructure</span>
-                    <h3>Managed AI & IT Services</h3>
-                    <p class="desc">End-to-end algorithmic architecture taxonomies and intelligent cloud migration management.</p>
+                    <h3>Managed AI & IT Taxonomies</h3>
+                    <p class="desc">End-to-end algorithmic architecture charters and deep-dive enterprise CMDB catalogs.</p>
                     <ul class="doc-list">
                         <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>Infra Taxonomy Charter</span><span>CHARTER</span></a></li>
                         <li><a href="IT_Infra_Business_Catalog.html"><span>Infra Business Catalog</span><span>CATALOG</span></a></li>
@@ -539,8 +584,8 @@
 
                 <div class="card search-target">
                     <span class="card-tag">Advisory</span>
-                    <h3>Strategic Consulting</h3>
-                    <p class="desc">Elite AI talent matrices, skill directories, and core integration service offerings.</p>
+                    <h3>Strategic Consulting & Skills</h3>
+                    <p class="desc">Elite AI talent matrices, skill directories, vendor cross-maps, and competency directories.</p>
                     <ul class="doc-list">
                         <li><a href="Service_Offering.html"><span>Core Service Offerings</span><span>OVERVIEW</span></a></li>
                         <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span>MATRIX</span></a></li>
@@ -555,6 +600,7 @@
                     <p class="desc">Daily execution methodologies and algorithmic leadership delivery tracking.</p>
                     <ul class="doc-list">
                         <li><a href="PM_Daily_Handbook.html"><span>PM Daily Execution Handbook</span><span>PLAYBOOK</span></a></li>
+                        <li><a href="My_Profile.html"><span>Executive Profile (Arvind Pardeshi)</span><span>PROFILE</span></a></li>
                         <li><a href="My_Portfolio.html"><span>Executive Delivery Portfolio</span><span>PORTFOLIO</span></a></li>
                     </ul>
                 </div>
@@ -564,11 +610,23 @@
         <!-- SOLUTIONS -->
         <section id="solutions" class="category-section">
             <div class="section-header">
-                <h2>Solutions & R&D</h2>
+                <h2>Solutions, Governance & R&D</h2>
                 <p>Outcome-driven, multi-disciplinary AI frameworks for modern business challenges.</p>
             </div>
             
             <div class="grid">
+                <div class="card search-target">
+                    <span class="card-tag">Governance & Sales</span>
+                    <h3>Sales Intelligence & Compliance</h3>
+                    <p class="desc">Enterprise IT sales intelligence, customer pain point trackers, and global governance workflows.</p>
+                    <ul class="doc-list">
+                        <li><a href="Enterprise_IT_Sales_Intelligence.html"><span>Sales Intelligence & Wizard</span><span>SALES</span></a></li>
+                        <li><a href="Customer_Pain_Points.html"><span>Customer Pain Point Matrix</span><span>PAIN POINTS</span></a></li>
+                        <li><a href="Governance_Process.html"><span>Global Governance Process Catalog</span><span>WORKFLOWS</span></a></li>
+                        <li><a href="Document_Library.html"><span>Core 100 Deliverables Library</span><span>LIBRARY</span></a></li>
+                    </ul>
+                </div>
+
                 <div class="card search-target">
                     <span class="card-tag">Security Architecture</span>
                     <h3>Zero-Trust Enterprise</h3>
@@ -580,22 +638,11 @@
                 </div>
 
                 <div class="card search-target">
-                    <span class="card-tag">Digital Transformation</span>
-                    <h3>AI-Driven Modernization</h3>
-                    <p class="desc">Scaling operations through embedded machine learning and cognitive automated routines.</p>
-                    <ul class="doc-list">
-                        <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
-                        <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span>SOLUTIONS</span></a></li>
-                    </ul>
-                </div>
-
-                <div class="card search-target">
                     <span class="card-tag">Innovation</span>
                     <h3>Future Horizons R&D</h3>
-                    <p class="desc">Preparing for post-classical computing, neural architecture, and emerging technological shifts.</p>
+                    <p class="desc">Preparing for post-classical computing, quantum architectures, and emerging technological shifts.</p>
                     <ul class="doc-list">
                         <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span><span>R&D</span></a></li>
-                        <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intel Matrix</span><span>RESEARCH</span></a></li>
                     </ul>
                 </div>
             </div>
