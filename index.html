@@ -130,6 +130,180 @@
             box-shadow: 0 4px 12px rgba(0, 61, 165, 0.15);
         }
 
+        .hero-cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(0, 61, 165, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-light);
+        }
+
+        /* Trust / Stats Bar */
+        .stats-bar {
+            background-color: var(--text-dark);
+            padding: 40px 5%;
+        }
+
+        .stats-grid {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-item .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--cyber-cyan);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-item .stat-label {
+            font-size: 13px;
+            color: #d1d5db;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+
+        /* Value Proposition / Why Us */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .value-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 28px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .value-icon {
+            font-size: 26px;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        .value-card h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Industry Chips */
+        .industry-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .chip {
+            background-color: var(--accent-light);
+            color: var(--primary-blue);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 61, 165, 0.15);
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #001f52 100%);
+            padding: 64px 5%;
+            text-align: center;
+            color: #fff;
+        }
+
+        .cta-banner h2 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cta-banner p {
+            font-size: 16px;
+            color: #dbeafe;
+            max-width: 650px;
+            margin: 0 auto 28px;
+        }
+
+        .cta-banner .btn-primary {
+            background-color: #fff;
+            color: var(--primary-blue);
+        }
+
+        .cta-banner .btn-primary:hover {
+            background-color: #eff6ff;
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.25);
+        }
+
+        .cta-banner .btn-secondary {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .cta-banner .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -353,6 +527,49 @@
             font-weight: 600;
         }
 
+        .subgroup-label {
+            text-align: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-blue);
+            margin: 30px auto 20px;
+            font-weight: 600;
+            max-width: 1300px;
+        }
+
+        .ribbon-subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 720px;
+            margin: -28px auto 40px;
+            line-height: 1.6;
+        }
+
+        .subgroup-desc {
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: -14px auto 22px;
+            line-height: 1.5;
+        }
+
+        .ribbon-cta {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .ribbon-cta p {
+            font-size: 15px;
+            color: var(--text-dark);
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+
         .logo-ribbon {
             display: flex;
             flex-wrap: wrap;
@@ -385,6 +602,14 @@
             font-weight: 500;
             color: var(--text-muted);
             transition: color 0.3s ease;
+        }
+
+        .logo-item .industry-tag {
+            font-size: 10px;
+            font-weight: 400;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .logo-item:hover img {
@@ -462,7 +687,6 @@
             </ul>
         </nav>
     </header>
-
     <!-- Hero Section -->
     <section class="hero">
         <h1>AI-Powered Enterprise Intelligence & Architecture Master Index</h1>
@@ -471,11 +695,39 @@
         <div class="search-container">
             <input type="text" id="directorySearch" class="search-input" placeholder="Search across all 30 catalogs, training data, and policies..." onkeyup="filterDirectory()">
         </div>
-    </section>
 
+        <div class="hero-cta-row">
+            <a href="mailto:contact@whiteenterprises.com?subject=Executive%20Briefing%20Request" class="btn-primary">Schedule an Executive Briefing</a>
+            <a href="#engagements" class="btn-secondary">View Our Track Record</a>
+        </div>
+    </section>
+    <!-- Trust / Stats Bar -->
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">19+</div>
+                <div class="stat-label">Years Enterprise Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Industry Verticals Served</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3,060+</div>
+                <div class="stat-label">Deliverables in Library</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Continents of Delivery (UK/US/APAC)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">UK DV</div>
+                <div class="stat-label">Cleared Leadership</div>
+            </div>
+        </div>
+    </div>
     <!-- Content Directory -->
     <main class="container">
-
         <!-- ABOUT US -->
         <section id="about" class="category-section">
             <div class="section-header">
@@ -488,7 +740,7 @@
                     <h3>Corporate Identity & Leadership</h3>
                     <p>White Enterprises Inc. is an AI-native technology firm helping large-scale operations and digital networks achieve total cognitive task automation and frictionless data processing. By deploying a self-orchestrating, AI-powered multi-agent software engine, we eliminate human workflow management overhead and manual engineering constraints.</p>
                     
-                    <p>The firm was founded and is led by <strong>Arvind Pardeshi</strong> (operating under the executive persona Jin White), serving as CEO & Principal Architect. Arvind is a Principal Security and AI Infrastructure Architect with over 16 years of global enterprise experience across the UK, US, and Australia, having driven initiatives at major organizations such as Infosys, CSS Corp, and NSC Global. He holds a UK Developed Vetting security clearance and specializes in AI-native security, algorithmic governance, and cloud-native infrastructure.</p>
+                    <p>The firm was founded and is led by <strong>Arvind Pardeshi</strong> (operating under the executive persona Jin White), serving as CEO & Principal Architect. Arvind is a Principal Security and AI Infrastructure Architect with over 19 years of global enterprise experience across the UK, US, and Australia, having driven initiatives at major organizations such as Infosys, CSS Corp, and NSC Global. He holds a UK Developed Vetting security clearance and specializes in AI-native security, algorithmic governance, and cloud-native infrastructure.</p>
                     
                     <p>Under his leadership, our core engineering focuses on high-fidelity auditability, infrastructure decoupling, and the elimination of human integration latency at the perimeter edge through artificial intelligence. Structured as a Delaware C-Corporation with secondary operations in India, we are uniquely positioned to serve both US institutional markets and rapid-growth technical corridors in South Asia and the GCC.</p>
                 </div>
@@ -504,48 +756,105 @@
                     </div>
                 </div>
             </div>
+
+            <div class="industry-chips">
+                <span class="chip">BFSI & Capital Markets</span>
+                <span class="chip">Defense & Government</span>
+                <span class="chip">Healthcare & Life Sciences</span>
+                <span class="chip">Automotive & Manufacturing</span>
+                <span class="chip">Telecommunications</span>
+            </div>
+        </section>
+
+        <!-- WHY FORTUNE 500 CHOOSE US -->
+        <section id="why-us" class="category-section">
+            <div class="section-header">
+                <h2>Why Fortune 500 & Global Enterprises Partner With Us</h2>
+                <p>Board-ready governance, AI-native execution speed, and a track record across the world's most regulated industries.</p>
+            </div>
+
+            <div class="value-grid">
+                <div class="value-card">
+                    <span class="value-icon">🛡️</span>
+                    <h4>Executive-Grade Risk Reduction</h4>
+                    <p>CEO, CISO, and CTO functions under one accountable principal — eliminating the coordination gaps that slow down enterprise security and compliance programs.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">⚡</span>
+                    <h4>AI-Native Speed to Value</h4>
+                    <p>Agentic automation compresses assessment, audit, and deployment cycles that traditionally take large SI teams months into weeks — without sacrificing rigor.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🌐</span>
+                    <h4>Global Delivery Footprint</h4>
+                    <p>Proven engagements across UK, US, Australia, and India give us the cross-jurisdictional fluency Fortune 500 and multinational GSI programs require.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🔒</span>
+                    <h4>Cleared & Vetted Leadership</h4>
+                    <p>UK Developed Vetting (DV) clearance and 19+ years spanning BFSI, Defense, Healthcare, Automotive, and Telecom — access and credibility at the board level.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">📊</span>
+                    <h4>Evidence-Based Engagements</h4>
+                    <p>A 3,060+ entry deliverables library and structured taxonomies mean every engagement starts from proven frameworks, not a blank page — faster time-to-insight for your team.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🤝</span>
+                    <h4>GSI & MSP-Ready Partnership</h4>
+                    <p>Built to plug directly into GSI and MSP delivery models — vendor-neutral, ecosystem-mapped, and ready to integrate with your existing technology stack.</p>
+                </div>
+            </div>
         </section>
 
         <!-- PRODUCTS -->
         <section id="products" class="category-section">
             <div class="section-header">
                 <h2>Products, Security Catalogs & Archives</h2>
-                <p>AI-integrated software suites, threat tracking engines, security doctrine frameworks, and template archives.</p>
+                <p>AI-integrated software suites, threat tracking engines, security doctrine frameworks, and template archives — built to meet the audit, compliance, and board-reporting bar Fortune 500 enterprises operate at.</p>
+            </div>
+
+            <div class="industry-chips">
+                <span class="chip">NIST CSF Aligned</span>
+                <span class="chip">ISO 27001 Mapped</span>
+                <span class="chip">SOC 2 Ready</span>
+                <span class="chip">MITRE ATT&CK Mapped</span>
+                <span class="chip">GDPR / DPDP Compliant</span>
             </div>
             
             <div class="grid">
                 <div class="card search-target">
                     <span class="card-tag">Cybersecurity</span>
                     <h3>Defense & Security Suite</h3>
-                    <p class="desc">Algorithmic endpoint protection, AI-driven cloud security products, and live autonomous tracking capabilities.</p>
+                    <p class="desc">Algorithmic endpoint protection, AI-driven cloud security products, and live autonomous tracking capabilities — architected to give CISOs continuous, board-reportable assurance instead of point-in-time snapshots.</p>
                     <ul class="doc-list">
-                        <li><a href="Cybersecurity_Products.html"><span>Cybersecurity Product Suite</span><span>DOC</span></a></li>
-                        <li><a href="Live_Threat_Tracker.html"><span>Live Threat Intel Tracker</span><span>APP</span></a></li>
-                        <li><a href="AI Cybersecurity.html"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
-                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span><span>PDF</span></a></li>
+                        <li><a href="Cybersecurity_Products.html" target="_blank" rel="noopener noreferrer"><span>Cybersecurity Product Suite</span><span>DOC</span></a></li>
+                        <li><a href="Live_Threat_Tracker.html" target="_blank" rel="noopener noreferrer"><span>Live Threat Intel Tracker</span><span>APP</span></a></li>
+                        <li><a href="AI Cybersecurity.html" target="_blank" rel="noopener noreferrer"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
+                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html" target="_blank" rel="noopener noreferrer"><span>Five Team Defense Doctrine</span><span>PDF</span></a></li>
                     </ul>
                 </div>
 
                 <div class="card search-target">
                     <span class="card-tag">Artificial Intelligence</span>
                     <h3>AI Application Ecosystem & Reference</h3>
-                    <p class="desc">Integrated machine learning catalogs, generative synthesis cores, and threat intelligence ML reference guides.</p>
+                    <p class="desc">Integrated machine learning catalogs, generative synthesis cores, and threat intelligence ML reference guides — built for enterprises that need AI adoption without ungoverned model risk.</p>
                     <ul class="doc-list">
-                        <li><a href="AI_Applications_Catalog.html"><span>AI Applications Catalog</span><span>CATALOG</span></a></li>
-                        <li><a href="AI_Business_Catalog.html"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
-                        <li><a href="Cybersecurity_AI_ML_Reference.html"><span>AI/ML Threat Reference</span><span>GUIDE</span></a></li>
-                        <li><a href="Evolutionary_Intelligence_Matrix.html"><span>Evolutionary Intelligence Matrix</span><span>R&D</span></a></li>
+                        <li><a href="AI_Applications_Catalog.html" target="_blank" rel="noopener noreferrer"><span>AI Applications Catalog</span><span>CATALOG</span></a></li>
+                        <li><a href="AI_Business_Catalog.html" target="_blank" rel="noopener noreferrer"><span>AI Business Use-Cases</span><span>STRATEGY</span></a></li>
+                        <li><a href="Cybersecurity_AI_ML_Reference.html" target="_blank" rel="noopener noreferrer"><span>AI/ML Threat Reference</span><span>GUIDE</span></a></li>
+                        <li><a href="Evolutionary_Intelligence_Matrix.html" target="_blank" rel="noopener noreferrer"><span>Evolutionary Intelligence Matrix</span><span>R&D</span></a></li>
                     </ul>
                 </div>
 
                 <div class="card search-target">
                     <span class="card-tag">Procurement & Tracking</span>
                     <h3>Global Product Master & SKU Trackers</h3>
-                    <p class="desc">Commercial off-the-shelf offerings, AI SKU tracking, and platform directories.</p>
+                    <p class="desc">Commercial off-the-shelf offerings, AI SKU tracking, and platform directories — cutting the diligence and RFP research cycle for procurement and vendor-management teams.</p>
                     <ul class="doc-list">
-                        <li><a href="White_Enterprises_Product_Catalog.html"><span>Master Product Catalog</span><span>SKUs</span></a></li>
-                        <li><a href="WE_SKU_Units_Subscription_Tracker.html"><span>Subscription Unit Tracker</span><span>FINANCE</span></a></li>
-                        <li><a href="Job_Platforms_Directory.html"><span>Job Platforms Directory</span><span>PORTAL</span></a></li>
+                        <li><a href="White_Enterprises_Product_Catalog.html" target="_blank" rel="noopener noreferrer"><span>Master Product Catalog</span><span>SKUs</span></a></li>
+                        <li><a href="WE_SKU_Units_Subscription_Tracker.html" target="_blank" rel="noopener noreferrer"><span>Subscription Unit Tracker</span><span>FINANCE</span></a></li>
+                        <li><a href="Job_Platforms_Directory.html" target="_blank" rel="noopener noreferrer"><span>Job Platforms Directory</span><span>PORTAL</span></a></li>
                     </ul>
                 </div>
 
@@ -553,13 +862,42 @@
                 <div class="card search-target">
                     <span class="card-tag">Archives & Resources</span>
                     <h3>Repository Metadata & Templates</h3>
-                    <p class="desc">Downloadable assessment templates, document libraries, and repository documentation.</p>
+                    <p class="desc">Downloadable assessment templates, document libraries, and repository documentation — pre-built so engagements start with frameworks, not blank pages.</p>
                     <ul class="doc-list">
-                        <li><a href="Documents_Library_Templates.zip"><span>Document Library Templates</span><span>ZIP</span></a></li>
-                        <li><a href="White_DoorOpener_Assessment _Templates.zip"><span>Door-Opener Assessments</span><span>ZIP</span></a></li>
-                        <li><a href="README.md"><span>Repository README</span><span>MD</span></a></li>
+                        <li><a href="Documents_Library_Templates.zip" target="_blank" rel="noopener noreferrer"><span>Document Library Templates</span><span>ZIP</span></a></li>
+                        <li><a href="White_DoorOpener_Assessment _Templates.zip" target="_blank" rel="noopener noreferrer"><span>Door-Opener Assessments</span><span>ZIP</span></a></li>
+                        <li><a href="README.md" target="_blank" rel="noopener noreferrer"><span>Repository README</span><span>MD</span></a></li>
                     </ul>
                 </div>
+
+                <!-- NEW COMPLIANCE CARD -->
+                <div class="card search-target">
+                    <span class="card-tag">Governance, Risk & Compliance</span>
+                    <h3>Audit & Regulatory Readiness Suite</h3>
+                    <p class="desc">Control mapping, evidence libraries, and gap-assessment templates aligned to the frameworks Fortune 500 audit and regulatory teams already report against — built to shorten audit prep, not add to it.</p>
+                    <ul class="doc-list">
+                        <li><a href="Governance_Process.html" target="_blank" rel="noopener noreferrer"><span>Global Governance Process Catalog</span><span>WORKFLOWS</span></a></li>
+                        <li><a href="Document_Library.html" target="_blank" rel="noopener noreferrer"><span>Core 100 Deliverables Library</span><span>LIBRARY</span></a></li>
+                        <li><a href="Customer_Pain_Points.html" target="_blank" rel="noopener noreferrer"><span>Customer Pain Point Matrix</span><span>PAIN POINTS</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- NEW EXECUTIVE REPORTING CARD -->
+                <div class="card search-target">
+                    <span class="card-tag">Executive & Board Reporting</span>
+                    <h3>CISO/CTO Board Reporting Toolkit</h3>
+                    <p class="desc">Executive dashboards and briefing templates that translate technical risk into the language boards and audit committees actually act on — built from real CEO/CISO/CTO delivery experience, not generic templates.</p>
+                    <ul class="doc-list">
+                        <li><a href="PM_Daily_Handbook.html" target="_blank" rel="noopener noreferrer"><span>PM Daily Execution Handbook</span><span>PLAYBOOK</span></a></li>
+                        <li><a href="My_Profile.html" target="_blank" rel="noopener noreferrer"><span>Executive Profile (Arvind Pardeshi)</span><span>PROFILE</span></a></li>
+                        <li><a href="My_Portfolio.html" target="_blank" rel="noopener noreferrer"><span>Executive Delivery Portfolio</span><span>PORTFOLIO</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ribbon-cta" style="border-top: none; margin-top: 32px; padding-top: 0;">
+                <p>Every catalog listed above is engagement-ready — no generic templates, no discovery-phase delays.</p>
+                <a href="mailto:contact@whiteenterprises.com?subject=Product%20Demo%20Request" class="btn-primary">Request a Full Product Demo</a>
             </div>
         </section>
 
@@ -576,9 +914,9 @@
                     <h3>Managed AI & IT Taxonomies</h3>
                     <p class="desc">End-to-end algorithmic architecture charters and deep-dive enterprise CMDB catalogs.</p>
                     <ul class="doc-list">
-                        <li><a href="IT_Infrastructure_Taxonomy_Charter.html"><span>Infra Taxonomy Charter</span><span>CHARTER</span></a></li>
-                        <li><a href="IT_Infra_Business_Catalog.html"><span>Infra Business Catalog</span><span>CATALOG</span></a></li>
-                        <li><a href="IT_Infrastructure_Catalog_Deep_Dive.html"><span>Infra Catalog Deep Dive</span><span>REPORT</span></a></li>
+                        <li><a href="IT_Infrastructure_Taxonomy_Charter.html" target="_blank" rel="noopener noreferrer"><span>Infra Taxonomy Charter</span><span>CHARTER</span></a></li>
+                        <li><a href="IT_Infra_Business_Catalog.html" target="_blank" rel="noopener noreferrer"><span>Infra Business Catalog</span><span>CATALOG</span></a></li>
+                        <li><a href="IT_Infrastructure_Catalog_Deep_Dive.html" target="_blank" rel="noopener noreferrer"><span>Infra Catalog Deep Dive</span><span>REPORT</span></a></li>
                     </ul>
                 </div>
 
@@ -587,10 +925,10 @@
                     <h3>Strategic Consulting & Skills</h3>
                     <p class="desc">Elite AI talent matrices, skill directories, vendor cross-maps, and competency directories.</p>
                     <ul class="doc-list">
-                        <li><a href="Service_Offering.html"><span>Core Service Offerings</span><span>OVERVIEW</span></a></li>
-                        <li><a href="Business_Offerings.html"><span>Business Offerings Matrix</span><span>MATRIX</span></a></li>
-                        <li><a href="IT_Consulting_Skills_Catalog.html"><span>Consulting Skills Directory</span><span>TALENT</span></a></li>
-                        <li><a href="Master_Competency_Directory.html"><span>Master Competency Matrix</span><span>INTERNAL</span></a></li>
+                        <li><a href="Service_Offering.html" target="_blank" rel="noopener noreferrer"><span>Core Service Offerings</span><span>OVERVIEW</span></a></li>
+                        <li><a href="Business_Offerings.html" target="_blank" rel="noopener noreferrer"><span>Business Offerings Matrix</span><span>MATRIX</span></a></li>
+                        <li><a href="IT_Consulting_Skills_Catalog.html" target="_blank" rel="noopener noreferrer"><span>Consulting Skills Directory</span><span>TALENT</span></a></li>
+                        <li><a href="Master_Competency_Directory.html" target="_blank" rel="noopener noreferrer"><span>Master Competency Matrix</span><span>INTERNAL</span></a></li>
                     </ul>
                 </div>
 
@@ -599,9 +937,9 @@
                     <h3>Project Portfolio Leadership</h3>
                     <p class="desc">Daily execution methodologies and algorithmic leadership delivery tracking.</p>
                     <ul class="doc-list">
-                        <li><a href="PM_Daily_Handbook.html"><span>PM Daily Execution Handbook</span><span>PLAYBOOK</span></a></li>
-                        <li><a href="My_Profile.html"><span>Executive Profile (Arvind Pardeshi)</span><span>PROFILE</span></a></li>
-                        <li><a href="My_Portfolio.html"><span>Executive Delivery Portfolio</span><span>PORTFOLIO</span></a></li>
+                        <li><a href="PM_Daily_Handbook.html" target="_blank" rel="noopener noreferrer"><span>PM Daily Execution Handbook</span><span>PLAYBOOK</span></a></li>
+                        <li><a href="My_Profile.html" target="_blank" rel="noopener noreferrer"><span>Executive Profile (Arvind Pardeshi)</span><span>PROFILE</span></a></li>
+                        <li><a href="My_Portfolio.html" target="_blank" rel="noopener noreferrer"><span>Executive Delivery Portfolio</span><span>PORTFOLIO</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -620,10 +958,10 @@
                     <h3>Sales Intelligence & Compliance</h3>
                     <p class="desc">Enterprise IT sales intelligence, customer pain point trackers, and global governance workflows.</p>
                     <ul class="doc-list">
-                        <li><a href="Enterprise_IT_Sales_Intelligence.html"><span>Sales Intelligence & Wizard</span><span>SALES</span></a></li>
-                        <li><a href="Customer_Pain_Points.html"><span>Customer Pain Point Matrix</span><span>PAIN POINTS</span></a></li>
-                        <li><a href="Governance_Process.html"><span>Global Governance Process Catalog</span><span>WORKFLOWS</span></a></li>
-                        <li><a href="Document_Library.html"><span>Core 100 Deliverables Library</span><span>LIBRARY</span></a></li>
+                        <li><a href="Enterprise_IT_Sales_Intelligence.html" target="_blank" rel="noopener noreferrer"><span>Sales Intelligence & Wizard</span><span>SALES</span></a></li>
+                        <li><a href="Customer_Pain_Points.html" target="_blank" rel="noopener noreferrer"><span>Customer Pain Point Matrix</span><span>PAIN POINTS</span></a></li>
+                        <li><a href="Governance_Process.html" target="_blank" rel="noopener noreferrer"><span>Global Governance Process Catalog</span><span>WORKFLOWS</span></a></li>
+                        <li><a href="Document_Library.html" target="_blank" rel="noopener noreferrer"><span>Core 100 Deliverables Library</span><span>LIBRARY</span></a></li>
                     </ul>
                 </div>
 
@@ -632,8 +970,8 @@
                     <h3>Zero-Trust Enterprise</h3>
                     <p class="desc">Holistic defensive postures integrating machine intelligence and behavioral mapping.</p>
                     <ul class="doc-list">
-                        <li><a href="AI Cybersecurity.html"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
-                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html"><span>Five Team Defense Doctrine</span><span>FRAMEWORK</span></a></li>
+                        <li><a href="AI Cybersecurity.html" target="_blank" rel="noopener noreferrer"><span>AI Cybersecurity Protocols</span><span>POLICY</span></a></li>
+                        <li><a href="AI_Cybersecurity_Five_Team_Doctrine.html" target="_blank" rel="noopener noreferrer"><span>Five Team Defense Doctrine</span><span>FRAMEWORK</span></a></li>
                     </ul>
                 </div>
 
@@ -642,7 +980,7 @@
                     <h3>Future Horizons R&D</h3>
                     <p class="desc">Preparing for post-classical computing, quantum architectures, and emerging technological shifts.</p>
                     <ul class="doc-list">
-                        <li><a href="Quantum_Catalog.html"><span>Quantum Computing Research</span><span>R&D</span></a></li>
+                        <li><a href="Quantum_Catalog.html" target="_blank" rel="noopener noreferrer"><span>Quantum Computing Research</span><span>R&D</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -655,63 +993,83 @@
     <!-- Engagements Ribbon -->
     <div id="engagements" class="ribbon-container">
         <div class="ribbon-title">Global Engagements & Delivery History</div>
+        <p class="ribbon-subtitle">Trusted by regulated Fortune 500 institutions and global GSIs to lead high-stakes security, infrastructure, and AI programs across banking, telecom, healthcare, and automotive — where audit failure and downtime are not options.</p>
         <div class="logo-ribbon">
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/westpac.com.au" onerror="this.style.display='none'">
                 <span>Westpac Bank</span>
+                <span class="industry-tag">Banking & Financial Services</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/telstra.com" onerror="this.style.display='none'">
                 <span>Telstra</span>
+                <span class="industry-tag">Telecommunications</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/att.com" onerror="this.style.display='none'">
                 <span>AT&T</span>
+                <span class="industry-tag">Telecommunications</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/juniper.net" onerror="this.style.display='none'">
                 <span>Juniper Networks</span>
+                <span class="industry-tag">Networking Infrastructure</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/cap.org" onerror="this.style.display='none'">
                 <span>American Pathologists</span>
+                <span class="industry-tag">Healthcare & Life Sciences</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/mercedes-benz.com" onerror="this.style.display='none'">
                 <span>Daimler</span>
+                <span class="industry-tag">Automotive & Manufacturing</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/infosys.com" onerror="this.style.display='none'">
                 <span>Infosys</span>
+                <span class="industry-tag">Global IT Services</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/kotaklife.com" onerror="this.style.display='none'">
                 <span>Kotak Life</span>
+                <span class="industry-tag">Insurance & Financial Services</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/movate.com" onerror="this.style.display='none'">
                 <span>Movate (CSSCorp)</span>
+                <span class="industry-tag">IT Services & BPO</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/nscglobal.com" onerror="this.style.display='none'">
                 <span>NSC Global</span>
+                <span class="industry-tag">Managed IT Services</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/hcltech.com" onerror="this.style.display='none'">
                 <span>HCLTech</span>
+                <span class="industry-tag">Global IT Services</span>
             </div>
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/techmahindra.com" onerror="this.style.display='none'">
                 <span>Tech Mahindra</span>
+                <span class="industry-tag">Global IT Services</span>
             </div>
+        </div>
+        <div class="ribbon-cta">
+            <p>Regulated, cross-border, and mission-critical — the environments where we deliver.</p>
+            <a href="mailto:contact@whiteenterprises.com?subject=Reference%20Check%20Request" class="btn-secondary">Request Client References</a>
         </div>
     </div>
 
     <!-- AI Ecosystem Ribbon -->
     <div class="ribbon-container alt-bg">
         <div class="ribbon-title">AI Ecosystem & Vendor Technology Integration Matrix</div>
+        <p class="ribbon-subtitle">Vendor-neutral fluency across the platforms Fortune 500 enterprises already run — so engagements start day one, procurement risk drops, and technology consolidation happens without costly rip-and-replace.</p>
         
         <!-- Hardware & Foundation Models -->
+        <div class="subgroup-label">Hardware & Foundation Models</div>
+        <div class="subgroup-desc">The compute and model layer powering enterprise AI transformation — evaluated for security, governance, and total cost of ownership.</div>
         <div class="logo-ribbon">
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/nvidia.com" onerror="this.style.display='none'">
@@ -772,6 +1130,8 @@
         </div>
 
         <!-- Master Networking/Security/Cloud Vendors -->
+        <div class="subgroup-label" style="margin-top: 40px;">Networking, Security & Cloud Vendors</div>
+        <div class="subgroup-desc">The infrastructure backbone we architect, audit, and defend — de-risking the multi-vendor sprawl most enterprises inherit.</div>
         <div class="logo-ribbon" style="margin-top: 20px;">
             <div class="logo-item">
                 <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
@@ -829,6 +1189,470 @@
                 <img src="https://logo.clearbit.com/redhat.com" onerror="this.style.display='none'">
                 <span>Red Hat</span>
             </div>
+        </div>
+
+        <!-- Core Security & Cloud Platforms -->
+        <div class="subgroup-label">Core Security & Cloud Platforms</div>
+        <div class="subgroup-desc">The platforms most audit and compliance frameworks assume you already run — integration expertise that shortens diligence cycles.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/paloaltonetworks.com" onerror="this.style.display='none'">
+                <span>Palo Alto Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/crowdstrike.com" onerror="this.style.display='none'">
+                <span>CrowdStrike</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ibm.com" onerror="this.style.display='none'">
+                <span>IBM</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Microsoft</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
+                <span>Cisco</span>
+            </div>
+        </div>
+
+        <!-- AI Infrastructure & Hyperscalers -->
+        <div class="subgroup-label">AI Infrastructure & Hyperscalers</div>
+        <div class="subgroup-desc">The compute, model, and cloud layer behind enterprise AI programs — architected for governance and cost control, not just speed.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/nvidia.com" onerror="this.style.display='none'">
+                <span>NVIDIA</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Microsoft</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/aws.amazon.com" onerror="this.style.display='none'">
+                <span>AWS</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/openai.com" onerror="this.style.display='none'">
+                <span>OpenAI</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/anthropic.com" onerror="this.style.display='none'">
+                <span>Anthropic</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/google.com" onerror="this.style.display='none'">
+                <span>Google</span>
+            </div>
+        </div>
+
+        <!-- OT/ICS & Critical Infrastructure Security -->
+        <div class="subgroup-label">OT/ICS & Critical Infrastructure Security</div>
+        <div class="subgroup-desc">Defending the physical operations Fortune 500 manufacturing, energy, and healthcare enterprises can't afford to take offline.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
+                <span>Cisco</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/tenable.com" onerror="this.style.display='none'">
+                <span>Tenable</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/claroty.com" onerror="this.style.display='none'">
+                <span>Claroty</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/dragos.com" onerror="this.style.display='none'">
+                <span>Dragos</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/nozominetworks.com" onerror="this.style.display='none'">
+                <span>Nozomi Networks</span>
+            </div>
+        </div>
+
+        <!-- GRC & RegTech -->
+        <div class="subgroup-label">GRC & RegTech</div>
+        <div class="subgroup-desc">Regulatory reporting and risk platforms that keep BFSI, insurance, and healthcare clients audit-ready across jurisdictions.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/thomsonreuters.com" onerror="this.style.display='none'">
+                <span>Thomson Reuters</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/niceactimize.com" onerror="this.style.display='none'">
+                <span>NICE Actimize</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/fenergo.com" onerror="this.style.display='none'">
+                <span>Fenergo</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/wolterskluwer.com" onerror="this.style.display='none'">
+                <span>Wolters Kluwer</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/metricstream.com" onerror="this.style.display='none'">
+                <span>MetricStream</span>
+            </div>
+        </div>
+
+        <!-- Intelligent Automation / RPA -->
+        <div class="subgroup-label">Intelligent Automation / RPA</div>
+        <div class="subgroup-desc">Workflow automation that removes manual processing bottlenecks without adding uncontrolled operational risk.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/uipath.com" onerror="this.style.display='none'">
+                <span>UiPath</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/automationanywhere.com" onerror="this.style.display='none'">
+                <span>Automation Anywhere</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/blueprism.com" onerror="this.style.display='none'">
+                <span>SS&C Blue Prism</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Microsoft Power Automate</span>
+            </div>
+        </div>
+
+        <!-- Zero Trust & Identity Security -->
+        <div class="subgroup-label">Zero Trust & Identity Security</div>
+        <div class="subgroup-desc">Identity-first architectures that reduce breach blast radius — the control Fortune 500 boards ask about first.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/zscaler.com" onerror="this.style.display='none'">
+                <span>Zscaler</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/paloaltonetworks.com" onerror="this.style.display='none'">
+                <span>Palo Alto Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
+                <span>Cisco</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/crowdstrike.com" onerror="this.style.display='none'">
+                <span>CrowdStrike</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/okta.com" onerror="this.style.display='none'">
+                <span>Okta</span>
+            </div>
+        </div>
+
+        <!-- SASE & Network Security -->
+        <div class="subgroup-label">SASE & Network Security</div>
+        <div class="subgroup-desc">Converged network and security delivery for distributed, global workforces and hybrid cloud estates.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/paloaltonetworks.com" onerror="this.style.display='none'">
+                <span>Palo Alto Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/zscaler.com" onerror="this.style.display='none'">
+                <span>Zscaler</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cisco.com" onerror="this.style.display='none'">
+                <span>Cisco</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/catonetworks.com" onerror="this.style.display='none'">
+                <span>Cato Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/fortinet.com" onerror="this.style.display='none'">
+                <span>Fortinet</span>
+            </div>
+        </div>
+
+        <!-- Cloud-Native Security (CNAPP) -->
+        <div class="subgroup-label">Cloud-Native Security (CNAPP)</div>
+        <div class="subgroup-desc">Full-lifecycle cloud posture management — closing the gap between DevOps velocity and security assurance.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/wiz.io" onerror="this.style.display='none'">
+                <span>Wiz</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/paloaltonetworks.com" onerror="this.style.display='none'">
+                <span>Palo Alto Networks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/crowdstrike.com" onerror="this.style.display='none'">
+                <span>CrowdStrike</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Microsoft</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/zscaler.com" onerror="this.style.display='none'">
+                <span>Zscaler</span>
+            </div>
+        </div>
+
+        <!-- Quantum Computing -->
+        <div class="subgroup-label">Quantum Computing</div>
+        <div class="subgroup-desc">Forward-positioning clients for the post-classical shift, including crypto-agility and quantum-readiness assessments.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ibm.com" onerror="this.style.display='none'">
+                <span>IBM</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/google.com" onerror="this.style.display='none'">
+                <span>Google</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/dwavesys.com" onerror="this.style.display='none'">
+                <span>D-Wave</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ionq.com" onerror="this.style.display='none'">
+                <span>IonQ</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/quantinuum.com" onerror="this.style.display='none'">
+                <span>Quantinuum</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/rigetti.com" onerror="this.style.display='none'">
+                <span>Rigetti</span>
+            </div>
+        </div>
+
+        <!-- AR/VR/XR & Spatial Computing -->
+        <div class="subgroup-label">AR/VR/XR & Spatial Computing</div>
+        <div class="subgroup-desc">Emerging interface technology evaluated for enterprise training, design, and field-operations use cases.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/meta.com" onerror="this.style.display='none'">
+                <span>Meta</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/apple.com" onerror="this.style.display='none'">
+                <span>Apple</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/sony.com" onerror="this.style.display='none'">
+                <span>Sony</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Microsoft</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ptc.com" onerror="this.style.display='none'">
+                <span>PTC</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/magicleap.com" onerror="this.style.display='none'">
+                <span>Magic Leap</span>
+            </div>
+        </div>
+
+        <!-- Global Systems Integrators (GSI) -->
+        <div class="subgroup-label">Global Systems Integrators (GSI)</div>
+        <div class="subgroup-desc">The GSI and consulting ecosystem we partner with and complement — plugging specialist depth into large-scale delivery programs.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/accenture.com" onerror="this.style.display='none'">
+                <span>Accenture</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/tcs.com" onerror="this.style.display='none'">
+                <span>TCS</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/infosys.com" onerror="this.style.display='none'">
+                <span>Infosys</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/cognizant.com" onerror="this.style.display='none'">
+                <span>Cognizant</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/hcltech.com" onerror="this.style.display='none'">
+                <span>HCLTech</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/dxc.com" onerror="this.style.display='none'">
+                <span>DXC</span>
+            </div>
+        </div>
+
+        <!-- DevSecOps & Application Security -->
+        <div class="subgroup-label">DevSecOps & Application Security</div>
+        <div class="subgroup-desc">Shifting security left into the SDLC — protecting the code and pipelines Fortune 500 engineering orgs ship daily.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/snyk.io" onerror="this.style.display='none'">
+                <span>Snyk</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/checkmarx.com" onerror="this.style.display='none'">
+                <span>Checkmarx</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/veracode.com" onerror="this.style.display='none'">
+                <span>Veracode</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/github.com" onerror="this.style.display='none'">
+                <span>GitHub Advanced Security</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/sonarsource.com" onerror="this.style.display='none'">
+                <span>SonarQube</span>
+            </div>
+        </div>
+
+        <!-- Data, Analytics & AI Platforms -->
+        <div class="subgroup-label">Data, Analytics & AI Platforms</div>
+        <div class="subgroup-desc">The governed data backbone behind enterprise analytics and AI — where most compliance and security exposure actually lives.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/databricks.com" onerror="this.style.display='none'">
+                <span>Databricks</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/snowflake.com" onerror="this.style.display='none'">
+                <span>Snowflake</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/palantir.com" onerror="this.style.display='none'">
+                <span>Palantir</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/tableau.com" onerror="this.style.display='none'">
+                <span>Tableau</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'">
+                <span>Power BI</span>
+            </div>
+        </div>
+
+        <!-- ERP & Core Business Systems -->
+        <div class="subgroup-label">ERP & Core Business Systems</div>
+        <div class="subgroup-desc">Securing the systems of record that run finance, supply chain, and HR — the crown-jewel data most attackers target first.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/sap.com" onerror="this.style.display='none'">
+                <span>SAP</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/oracle.com" onerror="this.style.display='none'">
+                <span>Oracle</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/workday.com" onerror="this.style.display='none'">
+                <span>Workday</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/salesforce.com" onerror="this.style.display='none'">
+                <span>Salesforce</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/servicenow.com" onerror="this.style.display='none'">
+                <span>ServiceNow</span>
+            </div>
+        </div>
+
+        <!-- Observability & Application Performance -->
+        <div class="subgroup-label">Observability & Application Performance</div>
+        <div class="subgroup-desc">Full-stack visibility that turns downtime and slow incident response into measurable, defensible uptime.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/datadoghq.com" onerror="this.style.display='none'">
+                <span>Datadog</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/dynatrace.com" onerror="this.style.display='none'">
+                <span>Dynatrace</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/newrelic.com" onerror="this.style.display='none'">
+                <span>New Relic</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/grafana.com" onerror="this.style.display='none'">
+                <span>Grafana</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/splunk.com" onerror="this.style.display='none'">
+                <span>Splunk</span>
+            </div>
+        </div>
+
+        <!-- Threat Intelligence & Incident Response -->
+        <div class="subgroup-label">Threat Intelligence & Incident Response</div>
+        <div class="subgroup-desc">Signal that turns into action — cutting time-to-detect and time-to-respond for board-level incident readiness.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/recordedfuture.com" onerror="this.style.display='none'">
+                <span>Recorded Future</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/mandiant.com" onerror="this.style.display='none'">
+                <span>Mandiant</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/crowdstrike.com" onerror="this.style.display='none'">
+                <span>CrowdStrike Falcon Intelligence</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/flashpoint.io" onerror="this.style.display='none'">
+                <span>Flashpoint</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/ibm.com" onerror="this.style.display='none'">
+                <span>IBM X-Force</span>
+            </div>
+        </div>
+
+        <!-- DevOps & Cloud-Native Platforms -->
+        <div class="subgroup-label">DevOps & Cloud-Native Platforms</div>
+        <div class="subgroup-desc">Infrastructure-as-code and container orchestration secured by design — velocity without sacrificing control.</div>
+        <div class="logo-ribbon">
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/hashicorp.com" onerror="this.style.display='none'">
+                <span>HashiCorp</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/kubernetes.io" onerror="this.style.display='none'">
+                <span>Kubernetes</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/docker.com" onerror="this.style.display='none'">
+                <span>Docker</span>
+            </div>
+            <div class="logo-item">
+                <img src="https://logo.clearbit.com/gitlab.com" onerror="this.style.display='none'">
+                <span>GitLab</span>
+            </div>
+        </div>
+        <div class="ribbon-cta">
+            <p>Already standardized on one of these platforms? We integrate on day one — no re-platforming required.</p>
+            <a href="mailto:contact@whiteenterprises.com?subject=Vendor%20Integration%20Assessment" class="btn-primary">Get a Free Vendor-Fit Assessment</a>
+        </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner">
+        <h2>Ready to Modernize Your Security & AI Infrastructure?</h2>
+        <p>Speak directly with the principal architect leading your engagement — no account managers, no hand-offs. Get a candid assessment of your risk posture and AI-readiness in one call.</p>
+        <div class="hero-cta-row">
+            <a href="mailto:contact@whiteenterprises.com?subject=Executive%20Briefing%20Request" class="btn-primary">Request a Proposal</a>
+            <a href="mailto:contact@whiteenterprises.com?subject=Strategic%20Briefing" class="btn-secondary">Book a Strategic Briefing</a>
         </div>
     </div>
 
