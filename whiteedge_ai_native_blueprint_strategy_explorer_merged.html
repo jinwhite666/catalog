@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhiteEdge AI-Native Architecture Blueprint & White Enterprises Strategy Explorer</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            serif: ['Fraunces', 'serif'],
+          },
+          colors: {
+            brand: {
+              950: '#090d16',
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
+            },
+            accent: {
+              blue: '#0284c7',
+              emerald: '#10b981',
+              purple: '#9333ea',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+              indigo: '#4f46e5'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 320px;
+      max-height: 380px;
+    }
+    @media (min-width: 768px) {
+      .chart-container {
+        height: 350px;
+      }
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .encyc-card {
+      transition: all 0.2s ease;
+    }
+    .encyc-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-slate-900 selection:text-white min-h-screen flex flex-col">
+
+  <!-- TOP HEADER & MASTER NAVIGATION -->
+  <header class="bg-brand-950 text-white sticky top-0 z-50 shadow-lg border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-accent-blue via-indigo-600 to-accent-emerald flex items-center justify-center font-black text-white text-base shadow-md">
+            WE
+          </div>
+          <div>
+            <span class="font-extrabold text-base sm:text-lg tracking-tight text-white">WhiteEdge × White Enterprises</span>
+            <span class="hidden lg:inline-block ml-2 px-2 py-0.5 text-[11px] font-mono bg-slate-800 text-emerald-400 border border-slate-700 rounded">September 2026 OEM Briefing</span>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="hidden xl:flex space-x-1 text-xs font-medium">
+          <button onclick="switchTab('blueprint')" id="nav-blueprint" class="nav-btn px-3 py-2 rounded-md transition text-sky-400 hover:text-sky-300 hover:bg-slate-800 font-bold">
+            Official Blueprint
+          </button>
+          <button onclick="switchTab('tiers')" id="nav-tiers" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            Product Tiers
+          </button>
+          <button onclick="switchTab('matrix')" id="nav-matrix" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            Cross-Mapping
+          </button>
+          <button onclick="switchTab('loop')" id="nav-loop" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            Closed-Loop
+          </button>
+          <button onclick="switchTab('fnodes')" id="nav-fnodes" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            F-Nodes
+          </button>
+          <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            Analytics
+          </button>
+          <button onclick="switchTab('oem')" id="nav-oem" class="nav-btn px-3 py-2 rounded-md transition text-amber-400 hover:text-amber-300 hover:bg-slate-800 font-bold">
+            OEM Configurator
+          </button>
+          <button onclick="switchTab('calculator')" id="nav-calculator" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            EBITDA ROI
+          </button>
+          <button onclick="switchTab('encyclopedia')" id="nav-encyclopedia" class="nav-btn px-3 py-2 rounded-md transition text-cyan-400 hover:text-cyan-300 hover:bg-slate-800 font-bold">
+            AI Encyclopedia (40)
+          </button>
+          <button onclick="switchTab('clienttool')" id="nav-clienttool" class="nav-btn px-3 py-2 rounded-md transition text-emerald-400 hover:text-emerald-300 hover:bg-slate-800 font-bold">
+            Client Selector
+          </button>
+          <button onclick="switchTab('wizard')" id="nav-wizard" class="nav-btn px-3 py-2 rounded-md transition text-purple-400 hover:text-purple-300 hover:bg-slate-800 font-bold">
+            AI Wizard
+          </button>
+          <button onclick="switchTab('market')" id="nav-market" class="nav-btn px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+            Market Intel
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="xl:hidden flex items-center">
+          <button onclick="toggleMobileMenu()" class="p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
+            <span class="font-bold text-xl">≡</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Navigation -->
+    <div id="mobile-menu" class="hidden xl:hidden bg-brand-950 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1 text-sm font-medium">
+      <button onclick="switchTab('blueprint'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sky-400 font-bold hover:bg-slate-800">Official OEM Blueprint</button>
+      <button onclick="switchTab('tiers'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Product Family Tiers</button>
+      <button onclick="switchTab('matrix'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Cross-Mapping Matrix</button>
+      <button onclick="switchTab('loop'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Closed-Loop Simulator</button>
+      <button onclick="switchTab('fnodes'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">F-Node Catalog</button>
+      <button onclick="switchTab('analytics'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Synergy Analytics</button>
+      <button onclick="switchTab('oem'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-amber-400 font-bold hover:bg-slate-800">OEM Solution Configurator</button>
+      <button onclick="switchTab('calculator'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">EBITDA Calculator</button>
+      <button onclick="switchTab('encyclopedia'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-cyan-400 font-bold hover:bg-slate-800">AI Encyclopedia (40 Sectors)</button>
+      <button onclick="switchTab('clienttool'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-emerald-400 font-bold hover:bg-slate-800">Client Selector</button>
+      <button onclick="switchTab('wizard'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-purple-400 font-bold hover:bg-slate-800">AI Decision Wizard</button>
+      <button onclick="switchTab('market'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Global Market Intel</button>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- HERO SUB-BANNER -->
+    <div class="bg-gradient-to-r from-brand-950 via-slate-900 to-indigo-950 rounded-2xl p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden border border-slate-800">
+      <div class="relative z-10 max-w-4xl">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/10 border border-white/20 text-slate-200 text-xs font-semibold rounded-full mb-3">
+          <span>WHITE ENTERPRISES · NEXTIER DEEP-TECH ADVISORY | SEPTEMBER 2026 BRIEFING</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          WHITEEDGE AI-Native Design Blueprint for OEM Hardware &amp; Software Platforms
+        </h1>
+        <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+          From AI-Powered features to an <strong>AI-Native Substrate</strong> — a reference design OEM partners can license, white-label, and ship, integrated with White Enterprises' 182-Node Catalog and 40-Sector AI Encyclopedia.
+        </p>
+
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-800/80 font-mono text-xs">
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/60">
+            <div class="text-slate-400">In-Path Latency</div>
+            <div class="text-lg font-bold text-emerald-400 mt-0.5">&lt; 5.0 µs Sub-Cycle</div>
+            <div class="text-[10px] text-slate-400">400 Gbps Line Rate</div>
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/60">
+            <div class="text-slate-400">Active F-Nodes</div>
+            <div class="text-lg font-bold text-sky-400 mt-0.5">182 Active Nodes</div>
+            <div class="text-[10px] text-slate-400">5 AI Paradigm Levels</div>
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/60">
+            <div class="text-slate-400">AI Encyclopedia</div>
+            <div class="text-lg font-bold text-cyan-400 mt-0.5">40 Sectors // 500+ Apps</div>
+            <div class="text-[10px] text-slate-400">$47T Combined TAM</div>
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/60">
+            <div class="text-slate-400">EBITDA Margin Target</div>
+            <div class="text-lg font-bold text-purple-400 mt-0.5">+240–480 bps</div>
+            <div class="text-[10px] text-slate-400">Structural Shift</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 0: OFFICIAL OEM BLUEPRINT TEXT & SECTIONS (SEP 2026 BRIEFING) -->
+    <!-- ==================================================================================== -->
+    <section id="view-blueprint" class="tab-view space-y-6">
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+        <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <span class="text-xs font-mono font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded">OFFICIAL BRIEFING TEXT</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2">WhiteEdge AI-Native Design Blueprint for OEM Hardware &amp; Software Platforms</h2>
+          </div>
+          <span class="text-xs font-mono text-slate-400">Confidential — September 2026</span>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="space-y-3">
+          <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 1: THE SHIFT</div>
+          <h3 class="text-lg font-bold text-slate-900">AI-Powered Was the Feature. AI-Native Is the Architecture.</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Most vendors bolted an AI feature onto a decade-old data plane. OEM buyers now ask a harder question: is intelligence a module you can remove, or the substrate everything else runs on? WhiteEdge is designed to answer that question at three deliberate maturity tiers — so partners can enter where their roadmap needs them, then graduate.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+              <div class="text-xs font-mono font-bold text-slate-500">1. AI-POWERED</div>
+              <p class="text-xs text-slate-600">AI as an add-on capability inside an existing product — a feature, a widget, a model call (e.g. anomaly-detection dashboard bolted onto legacy NMS).</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1 border-l-4 border-sky-500">
+              <div class="text-xs font-mono font-bold text-sky-600">2. AI-DRIVEN</div>
+              <p class="text-xs text-slate-600">AI actively makes operational decisions — routing, remediation, policy — with a human approval loop (e.g. AI-recommended firewall policy change, human-approved).</p>
+            </div>
+            <div class="bg-brand-950 text-white p-4 rounded-xl border border-slate-800 space-y-1 border-l-4 border-emerald-400">
+              <div class="text-xs font-mono font-bold text-emerald-400">3. AI-NATIVE</div>
+              <p class="text-xs text-slate-300">AI is co-designed into the data plane and control plane from first principles — the system reasons and acts in a closed loop (e.g. inference-in-path silicon driving autonomous policy).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="space-y-3 pt-6 border-t border-slate-100">
+          <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 2: PRODUCT FAMILY</div>
+          <h3 class="text-lg font-bold text-slate-900">One Blueprint, Three Shippable Product Lines</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Each line maps directly to an OEM SKU tier and can be sold standalone or converged.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">HARDWARE SKU</span>
+              <h4 class="font-bold text-slate-900">WhiteEdge Silicon Appliance</h4>
+              <p class="text-xs text-slate-600">AI-Powered inference-in-path edge/DC appliance. NPU + switching ASIC on one board. Line-rate inference at 400GbE+. Secure enclave, hardware root of trust.</p>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span class="text-[10px] font-mono font-bold bg-sky-50 text-sky-700 px-2 py-0.5 rounded">SOFTWARE SKU</span>
+              <h4 class="font-bold text-slate-900">WhiteEdge Reasoning Plane</h4>
+              <p class="text-xs text-slate-600">AI-Driven control-plane software (SaaS or on-prem). Telemetry ingestion + AI reasoning engine. Policy automation with human-in-loop. Open APIs: REST, gRPC, NETCONF/YANG.</p>
+            </div>
+            <div class="p-4 bg-brand-950 text-white rounded-xl border border-slate-800 space-y-2">
+              <span class="text-[10px] font-mono font-bold bg-slate-900 text-emerald-400 px-2 py-0.5 rounded border border-slate-700">CONVERGED SKU</span>
+              <h4 class="font-bold text-white">WhiteEdge Continuum Platform</h4>
+              <p class="text-xs text-slate-300">AI-Native HW+SW closed-loop system. Silicon feeds reasoning plane in real time. Reasoning plane re-programs silicon behaviour. Sold as one OEM-branded reference design.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3 & 4 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 3: HARDWARE BLUEPRINT</div>
+            <h4 class="font-bold text-slate-900">Silicon Appliance — Board-Level Architecture</h4>
+            <ul class="text-xs space-y-2 text-slate-600">
+              <li><strong>Front Panel I/O:</strong> 48× 25GbE SFP28 + 8× 400GbE QSFP-DD + MGMT/Console.</li>
+              <li><strong>Switching Fabric (ASIC):</strong> Non-blocking L2/L3 forwarding, hardware ACLs, MACsec.</li>
+              <li><strong>Inference Silicon (NPU):</strong> Line-rate inference-in-path — traffic classification, anomaly scoring, policy scoring.</li>
+              <li><strong>Secure Enclave:</strong> Hardware root of trust, secure boot, TPM 2.0, image signing.</li>
+              <li><strong>Host CPU + Memory:</strong> Control-plane compute, telemetry buffering, ZTP/PnP agent.</li>
+              <li><strong>Reference Spec Targets:</strong> 12.8 Tbps non-blocking, 400 Gbps line-rate @ &lt;5µs latency, 1RU/2RU, &lt;650W power.</li>
+            </ul>
+          </div>
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 4: SOFTWARE BLUEPRINT</div>
+            <h4 class="font-bold text-slate-900">Reasoning Plane — Layered Architecture</h4>
+            <ul class="text-xs space-y-2 text-slate-600">
+              <li><strong>Experience Layer:</strong> Web console, CLI, OEM-brandable UI shell, role-based dashboards.</li>
+              <li><strong>API &amp; Integration Layer:</strong> REST (OpenAPI 3.x), gRPC streaming, NETCONF/YANG, Webhooks, SSO/SCIM.</li>
+              <li><strong>AI Reasoning Engine:</strong> Model orchestration, anomaly &amp; intent scoring, policy recommendation, explainability trace.</li>
+              <li><strong>Automation &amp; Orchestration:</strong> Ansible/Terraform providers, workflow engine, human-in-the-loop gates.</li>
+              <li><strong>Telemetry &amp; Data Layer:</strong> Streaming ingestion (gNMI/syslog), time-series store, event bus.</li>
+              <li><strong>Deployment:</strong> Deployable on-prem (VM/OVA), SaaS, or air-gapped.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="space-y-3 pt-6 border-t border-slate-100">
+          <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 5: CONVERGED PLATFORM</div>
+          <h3 class="text-lg font-bold text-slate-900">The Closed Loop: What Makes It AI-Native</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            <strong>Silicon (Sense &amp; Score)</strong> $\rightarrow$ <strong>Reasoning Plane (Correlate &amp; Propose)</strong> $\rightarrow$ <strong>Policy &amp; Control (Act &amp; Re-program)</strong>. Continuous re-tuning without forklift upgrades.
+          </p>
+        </div>
+
+        <!-- Section 6 & 7 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 6: DESIGN PRINCIPLES</div>
+            <h4 class="font-bold text-slate-900">Six Principles Every OEM Variant Must Preserve</h4>
+            <ol class="text-xs space-y-1.5 text-slate-600 list-decimal list-inside font-medium">
+              <li><strong>Inference-in-Path:</strong> AI scoring happens in the data plane.</li>
+              <li><strong>Human-in-the-Loop by Default:</strong> Autonomous action is opt-in and reversible.</li>
+              <li><strong>Composable Licensing:</strong> HW, SW, and converged variants share one BOM.</li>
+              <li><strong>Zero-Touch Security:</strong> Secure boot and hardware root of trust on every tier.</li>
+              <li><strong>Open Southbound / Northbound:</strong> Standard protocols in and out.</li>
+              <li><strong>Explainability as a Requirement:</strong> Every action carries an auditable trace.</li>
+            </ol>
+          </div>
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 8: TARGET VERTICALS</div>
+            <h4 class="font-bold text-slate-900">Where AI-Native Wins Procurement</h4>
+            <ul class="text-xs space-y-2 text-slate-600">
+              <li><strong>BFSI:</strong> Real-time fraud scoring in data path; explainable audit trail.</li>
+              <li><strong>HFT / Capital Markets:</strong> Sub-5µs latency budget; deterministic execution.</li>
+              <li><strong>GCC:</strong> Multi-tenant control plane; consistent campus/edge policy.</li>
+              <li><strong>Defense-Grade Edge:</strong> Air-gapped reasoning plane, TPM 2.0, NEBS-ready.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 9 & 10 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 9: ROADMAP</div>
+            <h4 class="font-bold text-slate-900">From Reference Design to Scaled Rollout</h4>
+            <div class="text-xs space-y-1 text-slate-600 font-mono">
+              <div><strong>Phase 0:</strong> Reference Design (BOM, schematics, SDK)</div>
+              <div><strong>Phase 1:</strong> Pilot Build (1 HW SKU + 1 SW edition, trial)</div>
+              <div><strong>Phase 2:</strong> Certification (Safety/EMC, audit, explainability)</div>
+              <div><strong>Phase 3:</strong> GA &amp; Multi-OEM (Licensing &amp; white-label open)</div>
+              <div><strong>Phase 4:</strong> Scale (Full HW model range &amp; converged catalog)</div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="text-xs font-mono font-bold text-indigo-600 uppercase">SECTION 10: NEXT STEPS</div>
+            <h4 class="font-bold text-slate-900">Phase 1 Pilot Requirements Checklist</h4>
+            <ol class="text-xs space-y-1.5 text-slate-600 list-decimal list-inside">
+              <li>Confirm target product line model &amp; licensing terms.</li>
+              <li>Nominate vertical + use case (BFSI, HFT, GCC, Defense).</li>
+              <li>Share HW platform constraints or brand/UX guidelines.</li>
+              <li>Agree on pilot success metrics (Latency SLA, Explainability, NEBS).</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-100 flex justify-end">
+          <button onclick="switchTab('oem')" class="px-5 py-2.5 bg-brand-950 text-white font-mono text-xs font-bold rounded-lg hover:bg-slate-800 transition">
+            LAUNCH OEM SOLUTION CONFIGURATOR →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 1: PRODUCT FAMILY TIERS & PARADIGM SHIFT -->
+    <!-- ==================================================================================== -->
+    <section id="view-tiers" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-indigo-600 inline-block mr-2"></span>
+          1. Paradigm Shift &amp; WhiteEdge Shipped Product Family Tiers
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          The fundamental transition from legacy software add-ons to an <strong>AI-Native Substrate</strong>. WhiteEdge delivers three distinct OEM product family tiers designed for scalable enterprise adoption.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2">
+          <div class="text-xs font-mono font-bold text-slate-400 uppercase">TIER LEVEL 0</div>
+          <h3 class="text-base font-bold text-slate-800">AI-Powered (Legacy)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            AI acts as an out-of-band add-on feature or cloud widget attached to legacy monolithic hardware. High user-space latency (>50ms) and cloud egress fees.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-2 border-l-4 border-sky-500">
+          <div class="text-xs font-mono font-bold text-sky-600 uppercase">TIER LEVEL 1</div>
+          <h3 class="text-base font-bold text-slate-800">AI-Driven (Advisory)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            AI actively analyzes real-time telemetry streams and generates operational recommendations, but still relies on slow human approval and manual execution loops.
+          </p>
+        </div>
+
+        <div class="bg-brand-950 text-white p-5 rounded-xl border border-slate-800 shadow-sm space-y-2 border-l-4 border-emerald-400">
+          <div class="text-xs font-mono font-bold text-emerald-400 uppercase">TIER LEVEL 2 (GOAL)</div>
+          <h3 class="text-base font-bold text-white">AI-Native Substrate</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            AI co-designed into data and control planes from first principles. Sub-5µs in-path silicon reasoning and closed-loop hardware actuation without human bottlenecks.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+              <span class="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded">HARDWARE SKU</span>
+              <span class="text-xs font-mono text-slate-400">TIER 1</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mt-3">WhiteEdge Silicon Appliance</h3>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              Dedicated hardware appliance featuring in-path NPU acceleration, switching ASIC fabric, and hardware secure enclaves.
+            </p>
+            <div class="mt-4 space-y-2 text-xs font-mono">
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Forwarding Capacity:</span>
+                <span class="font-bold text-slate-900">12.8 Tbps Non-Blocking</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Inference Line Rate:</span>
+                <span class="font-bold text-emerald-700">400 Gbps @ &lt;5.0 µs</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Form Factor & Power:</span>
+                <span class="font-bold text-slate-900">1RU/2RU // &lt;650W Power</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="switchTab('oem')" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs rounded transition">
+            EXPLORE OEM SPECIFICATIONS
+          </button>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+              <span class="text-xs font-mono font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded">SOFTWARE SKU</span>
+              <span class="text-xs font-mono text-slate-400">TIER 2</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mt-3">WhiteEdge Reasoning Plane</h3>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+              AI-driven control plane software deployable as SaaS, on-premise OVA/VM, or air-gapped sovereign military container.
+            </p>
+            <div class="mt-4 space-y-2 text-xs font-mono">
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Deployment Modes:</span>
+                <span class="font-bold text-slate-900">SaaS / On-Prem / Air-Gapped</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Telemetry Protocols:</span>
+                <span class="font-bold text-sky-700">gNMI, eBPF, Syslog, REST</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-50 rounded">
+                <span class="text-slate-500">Audit & Compliance:</span>
+                <span class="font-bold text-slate-900">100% Explainable Traces</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="switchTab('loop')" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs rounded transition">
+            TEST REASONING SIMULATOR
+          </button>
+        </div>
+
+        <div class="bg-brand-950 text-white p-6 rounded-xl border border-slate-800 shadow-sm space-y-4 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+              <span class="text-xs font-mono font-bold text-emerald-400 bg-slate-900 px-2.5 py-1 rounded border border-slate-700">CONVERGED SKU</span>
+              <span class="text-xs font-mono text-slate-400">TIER 3</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-3">WhiteEdge Continuum Platform</h3>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Fully converged AI-native hardware and software platform operating as a unified OEM reference design for mission-critical operations.
+            </p>
+            <div class="mt-4 space-y-2 text-xs font-mono">
+              <div class="flex justify-between p-2 bg-slate-900/90 rounded border border-slate-800">
+                <span class="text-slate-400">Integrated Loop:</span>
+                <span class="font-bold text-emerald-400">Silicon + Software Converged</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-900/90 rounded border border-slate-800">
+                <span class="text-slate-400">Disrupted Monopoly:</span>
+                <span class="font-bold text-amber-300">Splunk / Siemens / Palo Alto</span>
+              </div>
+              <div class="flex justify-between p-2 bg-slate-900/90 rounded border border-slate-800">
+                <span class="text-slate-400">Margin Expansion:</span>
+                <span class="font-bold text-purple-300">+240 to +480 bps</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="switchTab('calculator')" class="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-mono font-bold text-xs rounded transition">
+            CALCULATE ENTERPRISE ROI
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 2: CROSS-MAPPING MATRIX -->
+    <!-- ==================================================================================== -->
+    <section id="view-matrix" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-indigo-600 inline-block mr-2"></span>
+          2. AI Paradigm Levels × WhiteEdge Architectural Vectors Matrix
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Correlating the <strong>5 AI Paradigm Levels</strong> and key <strong>White Enterprises F-Nodes</strong> against <strong>WhiteEdge's 4 Core Architecture Vectors</strong>. Click any cell to inspect technical synergies.
+        </p>
+      </div>
+
+      <div class="bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[850px]">
+          <thead>
+            <tr class="border-b-2 border-slate-200 text-[11px] font-mono text-slate-500 uppercase">
+              <th class="p-3 w-1/4 bg-slate-50 rounded-tl-lg">AI Level &amp; White Enterprises Anchor</th>
+              <th class="p-3 text-center bg-indigo-50/50 text-indigo-900">Inference-in-Path Silicon</th>
+              <th class="p-3 text-center bg-indigo-50/50 text-indigo-900">Reasoning Plane Engine</th>
+              <th class="p-3 text-center bg-indigo-50/50 text-indigo-900">Closed-Loop Control</th>
+              <th class="p-3 text-center bg-indigo-50/50 text-indigo-900">Zero-Touch &amp; Auditability</th>
+            </tr>
+          </thead>
+          <tbody class="text-xs divide-y divide-slate-100 font-sans">
+            <tr>
+              <td class="p-3 font-bold text-slate-900 bg-slate-50">
+                <div class="flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span><span>Legacy Enhanced (Symbolic AI)</span></div>
+                <div class="text-[10px] text-slate-500 font-normal mt-0.5">F-63 (Panda AI-IPS) // F-78 (Lex-Matrix)</div>
+              </td>
+              <td onclick="selectMatrixCell('legacy', 'silicon')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Sub-ms eBPF rule injection at line rate</div></td>
+              <td onclick="selectMatrixCell('legacy', 'reasoning')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">Deterministic state tree evaluation</div></td>
+              <td onclick="selectMatrixCell('legacy', 'loop')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Hardcoded DPDP / SEC compliance locks</div></td>
+              <td onclick="selectMatrixCell('legacy', 'security')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">100% court-admissible audit log</div></td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-900 bg-slate-50">
+                <div class="flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-sky-500 inline-block"></span><span>L1: Narrow AI (ANI)</span></div>
+                <div class="text-[10px] text-slate-500 font-normal mt-0.5">F-45 (Fin-Router) // F-515 (Capital Aegis)</div>
+              </td>
+              <td onclick="selectMatrixCell('l1', 'silicon')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">XGBoost &amp; Isolation Forest at &lt;0.3ms</div></td>
+              <td onclick="selectMatrixCell('l1', 'reasoning')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">Real-time fraud &amp; anomaly scoring</div></td>
+              <td onclick="selectMatrixCell('l1', 'loop')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">High-speed loom motor auto-tuning</div></td>
+              <td onclick="selectMatrixCell('l1', 'security')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">Cryptographic packet signing</div></td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-900 bg-slate-50">
+                <div class="flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span><span>L2: Deep Learning (CNN/RNN/RL)</span></div>
+                <div class="text-[10px] text-slate-500 font-normal mt-0.5">F-69 (Bio-Matrix) // F-22 (Purity-Daemon)</div>
+              </td>
+              <td onclick="selectMatrixCell('l2', 'silicon')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">400 Gbps CNN optical defect scoring</div></td>
+              <td onclick="selectMatrixCell('l2', 'reasoning')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">AlphaFold in-silico drug modeling</div></td>
+              <td onclick="selectMatrixCell('l2', 'loop')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Autoclave curing chamber pressure loop</div></td>
+              <td onclick="selectMatrixCell('l2', 'security')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Air-gapped defense quality certification</div></td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-900 bg-slate-50">
+                <div class="flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-purple-500 inline-block"></span><span>L3: Foundation Models / LLMs</span></div>
+                <div class="text-[10px] text-slate-500 font-normal mt-0.5">F-950 (Sovereign Jurist) // F-02 (Data-Vamp)</div>
+              </td>
+              <td onclick="selectMatrixCell('l3', 'silicon')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">On-chip KV-cache acceleration</div></td>
+              <td onclick="selectMatrixCell('l3', 'reasoning')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Sovereign multi-jurisdiction trade legal engine</div></td>
+              <td onclick="selectMatrixCell('l3', 'loop')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-mono font-bold text-[10px]">HIGH SYNERGY</span><div class="text-[10px] text-slate-600 mt-1">Automated ESG &amp; ZLD regulatory compliance</div></td>
+              <td onclick="selectMatrixCell('l3', 'security')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Hardware secure enclave prompt isolation</div></td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-900 bg-slate-50">
+                <div class="flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span><span>L4: Agentic Autonomous Systems</span></div>
+                <div class="text-[10px] text-slate-500 font-normal mt-0.5">Envisol Autonomous Cleantech // AMD Industrial</div>
+              </td>
+              <td onclick="selectMatrixCell('l4', 'silicon')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Hardware tool calling &amp; state routing</div></td>
+              <td onclick="selectMatrixCell('l4', 'reasoning')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Autonomous multi-agent factory mesh</div></td>
+              <td onclick="selectMatrixCell('l4', 'loop')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Zero-touch evaporator &amp; pump optimization</div></td>
+              <td onclick="selectMatrixCell('l4', 'security')" class="matrix-cell p-3 cursor-pointer hover:bg-indigo-100/60 transition text-center"><span class="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-[10px]">TRANSFORMATIVE</span><div class="text-[10px] text-slate-600 mt-1">Signed policy enforcement with reversible rollback</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="matrix-inspector" class="bg-brand-950 text-white p-6 rounded-xl border border-slate-800 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800 pb-3 gap-2">
+          <div>
+            <span id="insp-tag" class="text-xs font-mono font-bold text-emerald-400 px-2.5 py-1 bg-slate-900 rounded border border-slate-700">TRANSFORMATIVE SYNERGY</span>
+            <h3 id="insp-title" class="text-xl font-bold text-white mt-2">Legacy Enhanced eBPF Line-Rate Kernel Injection</h3>
+          </div>
+          <span id="insp-vector" class="text-xs font-mono text-slate-300 bg-slate-900 px-3 py-1 rounded border border-slate-800">WhiteEdge Silicon Vector</span>
+        </div>
+        <p id="insp-desc" class="text-sm text-slate-300 leading-relaxed">
+          Injecting deterministic symbolic AI rules (F-63 Panda AI-IPS) directly into the Linux kernel using eBPF allows sub-millisecond packet filtering and compliance enforcement without invoking user-space latency.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800">
+            <div class="text-[10px] font-mono text-slate-400 uppercase">Target Monopolies Disrupted</div>
+            <div id="insp-m1" class="text-xs font-bold text-rose-400 mt-1">CrowdStrike, Palo Alto Networks, Fortinet</div>
+          </div>
+          <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800">
+            <div class="text-[10px] font-mono text-slate-400 uppercase">Key Technical Advantage</div>
+            <div id="insp-m2" class="text-xs font-bold text-sky-300 mt-1">&lt;0.3ms p99 latency // Zero GPU dependency</div>
+          </div>
+          <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800">
+            <div class="text-[10px] font-mono text-slate-400 uppercase">Strategic Enterprise Impact</div>
+            <div id="insp-m3" class="text-xs font-bold text-amber-300 mt-1">Replaces $800M+ annual GSI managed contracts</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 3: CLOSED-LOOP INDUSTRIAL SIMULATOR -->
+    <!-- ==================================================================================== -->
+    <section id="view-loop" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-accent-purple inline-block mr-2"></span>
+          3. Interactive Closed-Loop Sense → Reason → Act Flow Simulator
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Simulate the continuous sub-5µs <strong>Silicon (Sense) → Reasoning Plane (Software Engine) → Policy &amp; Control (Act)</strong> closed loop.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 bg-brand-950 text-white p-6 rounded-xl border border-slate-800 space-y-5">
+          <div>
+            <h3 class="text-base font-bold text-white">Select Anomaly Scenario Trigger</h3>
+            <p class="text-xs text-slate-300 mt-0.5">Simulate real-time enterprise disturbances.</p>
+          </div>
+          <div class="space-y-3">
+            <button onclick="triggerIndustrialEvent('yarn_break')" id="btn-ev-1" class="event-btn w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-amber-300">1. High-Speed Loom Yarn Tension Drop</div>
+              <div class="text-[11px] text-slate-300 mt-0.5">Textile Weaving SBU (F-63 eBPF Node)</div>
+            </button>
+            <button onclick="triggerIndustrialEvent('water_ph')" id="btn-ev-2" class="event-btn w-full text-left p-3 rounded-lg border border-slate-800 bg-brand-950 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-sky-300">2. Envisol Evaporator Effluent Spike</div>
+              <div class="text-[11px] text-slate-300 mt-0.5">ZLD Water Treatment (F-22 Purity Daemon)</div>
+            </button>
+            <button onclick="triggerIndustrialEvent('composite_temp')" id="btn-ev-3" class="event-btn w-full text-left p-3 rounded-lg border border-slate-800 bg-brand-950 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-emerald-300">3. AMD Autoclave Resin Thermal Shift</div>
+              <div class="text-[11px] text-slate-300 mt-0.5">Aerospace Composite Line (F-69 Bio/Mat Node)</div>
+            </button>
+            <button onclick="triggerIndustrialEvent('cyber_attack')" id="btn-ev-4" class="event-btn w-full text-left p-3 rounded-lg border border-slate-800 bg-brand-950 hover:bg-slate-800 transition">
+              <div class="text-xs font-bold text-rose-400">4. Zero-Day eBPF Kernel Intrusion</div>
+              <div class="text-[11px] text-slate-300 mt-0.5">Enterprise Perimeter (F-63 Panda AI-IPS)</div>
+            </button>
+          </div>
+          <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 font-mono text-xs">
+            <div class="text-slate-400">Selected Event Mode:</div>
+            <div id="sim-selected-name" class="font-bold text-emerald-400 mt-1">Loom Yarn Tension Drop</div>
+            <div id="sim-selected-latency" class="text-[10px] text-slate-300 mt-0.5">Inference Latency: 4.2 microseconds</div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <span class="text-xs font-mono font-bold text-brand-900 uppercase">Active Closed-Loop Substrate Execution</span>
+            <span class="text-[10px] font-mono bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">STATE: CONTINUOUS INFERENCE</span>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-indigo-600 space-y-1">
+            <div class="flex justify-between text-xs font-mono"><span class="font-bold text-indigo-900">STEP 1: SILICON (Sense - Inference-in-Path)</span><span class="text-slate-500">Sub-5µs Line Rate</span></div>
+            <div id="step-silicon-text" class="text-xs text-slate-700 font-medium">WhiteEdge NPU detects 18% tension drop in SFP28 optical stream from Loom sensor.</div>
+            <div class="text-[10px] font-mono text-indigo-700 bg-indigo-50 p-1.5 rounded inline-block mt-1">Classified: Yarn Defect Risk (Intent Score: 0.96)</div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-sky-500 space-y-1">
+            <div class="flex justify-between text-xs font-mono"><span class="font-bold text-sky-900">STEP 2: REASONING PLANE (Reason - Software Engine)</span><span class="text-slate-500">Correlates &amp; Proposes</span></div>
+            <div id="step-reasoning-text" class="text-xs text-slate-700 font-medium">Correlates telemetry with yarn tensile models. Generates policy recommendation to step-down loom motor speed by 12%.</div>
+            <div class="text-[10px] font-mono text-sky-700 bg-sky-50 p-1.5 rounded inline-block mt-1">Auditability: Trace #WE-ARV-9921 Logged to Secure Enclave</div>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-emerald-500 space-y-1">
+            <div class="flex justify-between text-xs font-mono"><span class="font-bold text-emerald-900">STEP 3: POLICY &amp; CONTROL (Act - Closed Loop)</span><span class="text-slate-500">Re-Programs Hardware</span></div>
+            <div id="step-control-text" class="text-xs text-slate-700 font-medium">Approved policy re-programs switching ASIC and loom actuator in real time, preventing yarn snapping and fabric tearing.</div>
+            <div class="text-[10px] font-mono text-emerald-800 bg-emerald-50 p-1.5 rounded inline-block mt-1">Outcome: 0 Meters Scrap | Line Maintained</div>
+          </div>
+          <div class="text-[11px] font-mono text-slate-400 text-right pt-2 border-t border-slate-100">Sense in Silicon → Reason in Software → Act in Control</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 4: F-NODE CATALOG EXPLORER -->
+    <!-- ==================================================================================== -->
+    <section id="view-fnodes" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block mr-2"></span>
+          4. White Enterprises Master Catalog &amp; F-Node Disruption Matrix
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Filter and explore White Enterprises' 182-Node product catalog. Filter by AI Paradigm Level, Domain Sector, or search for targeted incumbents.
+        </p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+        <div class="w-full md:w-72">
+          <input type="text" id="fnode-search" oninput="filterFNodes()" placeholder="Search node, ID, or incumbent..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-600 font-mono">
+        </div>
+        <div class="flex flex-wrap gap-2 w-full md:w-auto">
+          <button onclick="setFilterLevel('ALL')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-300 bg-slate-900 text-white" data-level="ALL">ALL</button>
+          <button onclick="setFilterLevel('LEGACY')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-200 bg-slate-100 text-slate-700" data-level="LEGACY">LEGACY</button>
+          <button onclick="setFilterLevel('L1')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-200 bg-slate-100 text-slate-700" data-level="L1">L1 ANI</button>
+          <button onclick="setFilterLevel('L2')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-200 bg-slate-100 text-slate-700" data-level="L2">L2 DL</button>
+          <button onclick="setFilterLevel('L3')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-200 bg-slate-100 text-slate-700" data-level="L3">L3 LLM</button>
+          <button onclick="setFilterLevel('L4')" class="fnode-level-btn px-2.5 py-1 text-xs font-mono rounded border border-slate-200 bg-slate-100 text-slate-700" data-level="L4">L4 AGENTIC</button>
+        </div>
+        <div class="w-full md:w-48">
+          <select id="fnode-sector" onchange="filterFNodes()" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-600 font-mono">
+            <option value="ALL">All Sectors</option>
+            <option value="CYBER">Cybersecurity</option>
+            <option value="FINANCE">FinTech &amp; Trading</option>
+            <option value="INFRA">Industrial / Cleantech</option>
+            <option value="EXISTENTIAL">Bio / Defense / Legal</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="fnodes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 5: SYNERGY & IMPACT ANALYTICS -->
+    <!-- ==================================================================================== -->
+    <section id="view-analytics" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-accent-blue inline-block mr-2"></span>
+          5. Quantitative Operational Synergy &amp; Metric Comparison
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Comparing key performance metrics across 3 technology generations.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Manufacturing Defect &amp; Scrap Rate (%)</h3>
+            <p class="text-xs text-slate-500 mt-1">Sub-5µs closed-loop control halts defective runs before waste propagates.</p>
+          </div>
+          <div class="chart-container my-4">
+            <canvas id="scrapChart"></canvas>
+          </div>
+        </div>
+        <div class="lg:col-span-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Operational Excellence Index (0–100)</h3>
+            <p class="text-xs text-slate-500 mt-1">Evaluation across 6 core operational and compliance metrics.</p>
+          </div>
+          <div class="chart-container my-4">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-brand-950 text-white p-6 rounded-xl border border-slate-800 shadow-sm space-y-4">
+        <div>
+          <h3 class="text-base font-bold text-white">Projected Enterprise EBITDA Margin Expansion</h3>
+          <p class="text-xs text-slate-300 mt-0.5">Estimated structural margin expansion resulting from deployment.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl">
+            <div class="text-xs font-bold text-slate-300">TEXTILES &amp; DENIM SBU</div>
+            <div class="text-2xl font-black text-emerald-400 mt-1">10.5% → 13.2%</div>
+            <div class="text-[11px] text-slate-400 mt-1">+270 bps via F-63 eBPF loom quality tuning</div>
+          </div>
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl">
+            <div class="text-xs font-bold text-slate-300">ADVANCED MATERIALS (AMD)</div>
+            <div class="text-2xl font-black text-sky-300 mt-1">16.5% → 20.2%</div>
+            <div class="text-[11px] text-slate-400 mt-1">+370 bps via zero-void composite yield &amp; defense audit</div>
+          </div>
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl">
+            <div class="text-xs font-bold text-slate-300">ENVISOL WATER CLEANTECH</div>
+            <div class="text-2xl font-black text-amber-300 mt-1">18.0% → 22.8%</div>
+            <div class="text-[11px] text-slate-400 mt-1">+480 bps via autonomous ZLD energy optimization SaaS</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 6: OEM BLUEPRINT & CONFIGURATOR -->
+    <!-- ==================================================================================== -->
+    <section id="view-oem" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-accent-amber inline-block mr-2"></span>
+          6. OEM Business Models &amp; Interactive Solution Configurator
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          WhiteEdge provides three distinct OEM engagement frameworks to fit partner development teams and market entry speeds. Use the interactive wizard below to calculate your tailored deployment BOM, licensing structure, and pilot technical requirements.
+        </p>
+      </div>
+
+      <!-- OEM Commercial Model Comparison Table -->
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="text-base font-bold text-slate-900">OEM Commercial Model Comparison</h3>
+        <div class="overflow-x-auto custom-scrollbar border border-slate-200 rounded-lg">
+          <table class="w-full text-left border-collapse min-w-[800px]">
+            <thead>
+              <tr class="bg-slate-50 text-[11px] font-mono text-slate-500 uppercase border-b border-slate-200">
+                <th class="p-3">Engagement Model</th>
+                <th class="p-3">What OEM Gets</th>
+                <th class="p-3">What OEM Brands</th>
+                <th class="p-3">Ideal OEM Fit</th>
+              </tr>
+            </thead>
+            <tbody class="text-xs divide-y divide-slate-100 font-sans">
+              <tr class="hover:bg-slate-50/50 transition">
+                <td class="p-3 font-bold text-slate-900">Component License</td>
+                <td class="p-3 text-slate-600">NPU reference design schematics + Reasoning Engine SDK</td>
+                <td class="p-3 text-slate-600">OEM's own physical chassis &amp; custom UI</td>
+                <td class="p-3 text-slate-600">OEMs with existing hardware platforms looking to add AI silicon</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50 transition">
+                <td class="p-3 font-bold text-slate-900">White-Label Platform</td>
+                <td class="p-3 text-slate-600">Fully built hardware appliance + complete software stack, OEM firmware skin</td>
+                <td class="p-3 text-slate-600">Full OEM branding, front-to-back packaging</td>
+                <td class="p-3 text-slate-600">OEMs entering AI-native space without a dedicated in-house build team</td>
+              </tr>
+              <tr class="hover:bg-slate-50/50 transition">
+                <td class="p-3 font-bold text-slate-900">Co-Branded Reference Design</td>
+                <td class="p-3 text-slate-600">Joint engineering collaboration, shared product roadmap input</td>
+                <td class="p-3 text-slate-600">"Powered by WhiteEdge" co-branding</td>
+                <td class="p-3 text-slate-600">Strategic ecosystem partners wanting direct influence on architecture roadmap</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Interactive OEM Specification Wizard -->
+      <div class="bg-brand-950 p-6 rounded-xl border border-slate-800 shadow-lg flex flex-col lg:flex-row gap-8">
+        <div class="flex-1 space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-white">Interactive Solution Configurator</h3>
+            <p class="text-xs text-slate-300 mt-1">Configure your target SKU parameters to generate a custom technical spec and pilot requirements.</p>
+          </div>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label class="text-xs font-mono font-bold text-sky-400 uppercase tracking-wider">1. Commercial Model</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button onclick="setOemState('model', 'white_label')" id="btn-oem-model-white_label" class="oem-btn-model p-2 text-xs border border-sky-500 bg-sky-500/20 text-sky-300 rounded text-center transition font-medium">White-Label Platform</button>
+                <button onclick="setOemState('model', 'component')" id="btn-oem-model-component" class="oem-btn-model p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-center transition font-medium">Component License</button>
+                <button onclick="setOemState('model', 'cobranded')" id="btn-oem-model-cobranded" class="oem-btn-model p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-center transition font-medium">Co-Branded Design</button>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">2. Target Vertical Use Case</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button onclick="setOemState('vertical', 'bfsi')" id="btn-oem-vert-bfsi" class="oem-btn-vert p-2 text-xs border border-emerald-500 bg-emerald-500/20 text-emerald-300 rounded text-left transition font-medium">BFSI (Real-Time Fraud &amp; Audit)</button>
+                <button onclick="setOemState('vertical', 'hft')" id="btn-oem-vert-hft" class="oem-btn-vert p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-left transition font-medium">HFT (Sub-5µs Latency)</button>
+                <button onclick="setOemState('vertical', 'gcc')" id="btn-oem-vert-gcc" class="oem-btn-vert p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-left transition font-medium">GCC (Campus Edge)</button>
+                <button onclick="setOemState('vertical', 'defense')" id="btn-oem-vert-defense" class="oem-btn-vert p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-left transition font-medium">Defense-Grade Edge</button>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider">3. Software Delivery Mode</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button onclick="setOemState('delivery', 'saas')" id="btn-oem-del-saas" class="oem-btn-del p-2 text-xs border border-purple-500 bg-purple-500/20 text-purple-300 rounded text-center transition font-medium">SaaS Cloud Managed</button>
+                <button onclick="setOemState('delivery', 'onprem')" id="btn-oem-del-onprem" class="oem-btn-del p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-center transition font-medium">On-Prem (VM)</button>
+                <button onclick="setOemState('delivery', 'airgapped')" id="btn-oem-del-airgapped" class="oem-btn-del p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-center transition font-medium">Air-Gapped</button>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">4. Form Factor Requirement</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button onclick="setOemState('form', '1ru')" id="btn-oem-form-1ru" class="oem-btn-form p-2 text-xs border border-amber-500 bg-amber-500/20 text-amber-300 rounded text-left transition font-medium">1RU Edge (&lt;650W)</button>
+                <button onclick="setOemState('form', '2ru')" id="btn-oem-form-2ru" class="oem-btn-form p-2 text-xs border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded text-left transition font-medium">2RU Core (&lt;1200W, NEBS)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1 bg-slate-900 rounded-xl border border-slate-700 p-5 shadow-inner relative overflow-hidden flex flex-col">
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
+            <span class="text-6xl font-black transform -rotate-45 whitespace-nowrap">CONFIDENTIAL</span>
+          </div>
+          <div class="relative z-10 flex flex-col h-full">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-3 mb-4">
+              <div>
+                <div class="text-[10px] font-mono text-slate-400 tracking-widest uppercase mb-1">Tailored OEM Solution Specification Sheet</div>
+                <h4 class="text-base font-bold text-white">WhiteEdge Integration Blueprint</h4>
+              </div>
+              <span class="px-2 py-0.5 border border-rose-500/50 bg-rose-500/10 text-rose-400 text-[9px] font-bold tracking-wider rounded uppercase">Confidential</span>
+            </div>
+            <div class="space-y-4 flex-grow font-mono text-xs">
+              <div>
+                <div class="text-slate-500 mb-1">SELECTED SKU PACKAGE:</div>
+                <div id="out-oem-sku" class="text-sky-300 font-bold text-sm bg-slate-950 p-2 rounded border border-slate-800">WhiteEdge Continuum Platform (White-Label)</div>
+              </div>
+              <div>
+                <div class="text-slate-500 mb-1">TARGET LATENCY BUDGET:</div>
+                <div id="out-oem-latency" class="text-emerald-400 font-bold bg-slate-950 p-2 rounded border border-slate-800">&lt; 5 µs (Line-rate In-Path)</div>
+              </div>
+              <div>
+                <div class="text-slate-500 mb-1">INCLUDED BLUEPRINT COMPONENTS:</div>
+                <ul class="bg-slate-950 p-3 rounded border border-slate-800 space-y-2 text-slate-300">
+                  <li class="flex items-start"><span class="text-slate-600 mr-2">•</span><span id="out-oem-hw">Silicon Hardware: 1RU Form Factor (&lt; 650W)</span></li>
+                  <li class="flex items-start"><span class="text-slate-600 mr-2">•</span><span id="out-oem-core">Embedded NPU Silicon + Switching ASIC Schematics</span></li>
+                  <li class="flex items-start"><span class="text-slate-600 mr-2">•</span><span id="out-oem-sw">Software Reasoning Plane (SAAS Delivery)</span></li>
+                  <li class="flex items-start"><span class="text-slate-600 mr-2">•</span><span id="out-oem-brand">OEM Brandable UI Shell + Custom Firmware Skin</span></li>
+                </ul>
+              </div>
+              <div>
+                <div class="text-slate-500 mb-1">PHASE 1 PILOT PREREQUISITES CHECKLIST:</div>
+                <ul class="text-slate-400 space-y-1 pl-1">
+                  <li>1. Confirm target product line model &amp; licensing terms.</li>
+                  <li>2. Nominate vertical use case focus (<span id="out-oem-vert-name" class="text-slate-200">BFSI</span>).</li>
+                  <li id="out-oem-req3">3. Provide OEM front-panel branding &amp; UX guidelines.</li>
+                  <li>4. Agree on pilot success metrics (<span id="out-oem-metrics" class="text-slate-200">Latency SLA, Explainability, NEBS</span>).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center">
+              <span class="text-[10px] text-slate-500">Ready to initiate Phase 1 Pilot?</span>
+              <button onclick="alert('Phase 1 Pilot Request Initiated. Architecture team notified.')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-1.5 px-4 rounded transition text-xs">
+                REQUEST PILOT KIT →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 7: EBITDA FINANCIAL CALCULATOR -->
+    <!-- ==================================================================================== -->
+    <section id="view-calculator" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-brand-900 inline-block mr-2"></span>
+          7. Enterprise ROI &amp; EBITDA Financial Synergy Calculator
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Model financial returns across industrial manufacturing, cybersecurity, and cleantech water operations.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 bg-brand-950 text-white p-6 rounded-xl border border-slate-800 space-y-5">
+          <div>
+            <h3 class="text-base font-bold text-white">Deployment Parameters</h3>
+            <p class="text-xs text-slate-300 mt-0.5">Adjust adoption scale across enterprise sectors.</p>
+          </div>
+          <div class="space-y-4 text-xs font-sans">
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="font-bold text-slate-200">Textile Loom eBPF Node Adoption:</label>
+                <span id="val-looms" class="font-mono text-emerald-400">50% Fleet</span>
+              </div>
+              <input type="range" id="input-looms" min="10" max="100" value="50" step="10" oninput="runSynergyCalc()" class="w-full accent-emerald-400 cursor-pointer">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="font-bold text-slate-200">AMD Composite Closed-Loop Scale:</label>
+                <span id="val-amd-scale" class="font-mono text-sky-300">40% Lines</span>
+              </div>
+              <input type="range" id="input-amd-scale" min="10" max="100" value="40" step="10" oninput="runSynergyCalc()" class="w-full accent-sky-400 cursor-pointer">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="font-bold text-slate-200">Legacy Cyber IPS Replacement (F-63):</label>
+                <span id="val-cyber-node" class="font-mono text-rose-400">60% Nodes</span>
+              </div>
+              <input type="range" id="input-cyber-node" min="10" max="100" value="60" step="10" oninput="runSynergyCalc()" class="w-full accent-rose-400 cursor-pointer">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="font-bold text-slate-200">Envisol Cleantech SaaS External Deployments:</label>
+                <span id="val-envisol-saas" class="font-mono text-amber-300">25 Plants</span>
+              </div>
+              <input type="range" id="input-envisol-saas" min="5" max="100" value="25" step="5" oninput="runSynergyCalc()" class="w-full accent-amber-400 cursor-pointer">
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+              <span class="text-xs font-mono font-bold text-brand-900 uppercase">Estimated Financial Synergy Output</span>
+              <span class="text-[10px] font-mono bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">ANNUAL IMPACT ENGINE</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="text-[10px] font-mono text-slate-500 uppercase">Annual EBITDA Increase</div>
+                <div id="out-ebitda-val" class="text-2xl font-black text-emerald-700 mt-1">₹ 144.5 Cr</div>
+                <div id="out-ebitda-bps" class="text-[10px] text-slate-500 mt-1">+232 bps EBITDA Margin expansion</div>
+              </div>
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="text-[10px] font-mono text-slate-500 uppercase">Estimated CapEx Payback</div>
+                <div id="out-payback" class="text-2xl font-black text-brand-900 mt-1">9.4 Months</div>
+                <div class="text-[10px] text-slate-500 mt-1">Rapid payback via scrap &amp; vendor offsets</div>
+              </div>
+            </div>
+            <div class="mt-4 p-4 bg-indigo-50 rounded-xl border border-indigo-100 space-y-2">
+              <div class="text-xs font-bold text-indigo-900">Executive ROI Strategic Breakdown:</div>
+              <p id="out-breakdown" class="text-xs text-indigo-950 leading-relaxed">
+                Deploying WhiteEdge AI-Native eBPF silicon across 50% of textile looms yields ₹ 42 Cr in direct scrap savings.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-100 text-[11px] font-mono text-slate-400 text-right">
+            Calculated using White Enterprises Node Disruption models &amp; WhiteEdge hardware specs.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 8: AI ENCYCLOPEDIA (40 SECTORS) -->
+    <!-- ==================================================================================== -->
+    <section id="view-encyclopedia" class="tab-view space-y-6 hidden">
+      <div class="bg-brand-950 text-white p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div>
+          <span class="text-xs font-mono font-bold text-cyan-400 px-3 py-1 bg-slate-900 rounded-full border border-slate-700">TAXONOMY REFERENCE</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">AI Encyclopedia: 40 Sectors &amp; 500+ Applications</h2>
+          <p class="text-slate-300 text-sm mt-1 max-w-3xl">
+            Exhaustive global AI application catalog spanning 40 industry sectors ($47T Combined TAM). Browse deployed production systems, emerging models, and 2030+ frontier research.
+          </p>
+        </div>
+        <div class="flex gap-2 w-full lg:w-auto">
+          <input type="text" id="encyc-search" oninput="filterEncyc()" placeholder="Search sectors or apps..." class="px-4 py-2.5 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg font-mono focus:outline-none focus:border-cyan-400 w-full lg:w-64">
+        </div>
+      </div>
+
+      <!-- Encyclopedia Sectors Grid -->
+      <div id="encyc-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 9: CLIENT SELECTOR & BRIEF BUILDER -->
+    <!-- ==================================================================================== -->
+    <section id="view-clienttool" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">CONSULTING TOOL</span>
+          <h2 class="text-xl font-bold text-slate-900 mt-2">Client Selection &amp; Brief Builder</h2>
+          <p class="text-slate-600 text-sm mt-1">Multi-select vendors, AI services, and free door-opener assessments to build a tailored client brief.</p>
+        </div>
+        <button onclick="openClientBriefModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-lg text-xs font-mono shadow-md transition flex items-center gap-2">
+          📄 EXPORT CLIENT BRIEF (<span id="brief-count">0</span>)
+        </button>
+      </div>
+
+      <!-- Selector Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-sm text-slate-900 border-b border-slate-100 pb-2">1. Select Vendors</h3>
+          <div id="sel-vendors-list" class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-sm text-slate-900 border-b border-slate-100 pb-2">2. Select AI Services</h3>
+          <div id="sel-services-list" class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-sm text-slate-900 border-b border-slate-100 pb-2">3. Select Free Door-Openers</h3>
+          <div id="sel-assess-list" class="space-y-2 max-h-96 overflow-y-auto custom-scrollbar pr-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 10: 5-STEP DECISION WIZARD -->
+    <!-- ==================================================================================== -->
+    <section id="view-wizard" class="tab-view space-y-6 hidden">
+      <div class="bg-brand-950 text-white p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-xl">
+        <span class="text-xs font-mono font-bold text-amber-400 px-3 py-1 bg-slate-900 rounded-full border border-slate-700">SCORING ENGINE</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">5-Step AI Decision Wizard</h2>
+        <p class="text-slate-300 text-sm mt-1 max-w-2xl">
+          Answer 5 guided questions about your enterprise client to instantly calculate tailored product matches and recommended door-opener assessments.
+        </p>
+
+        <!-- Wizard Progress Bar -->
+        <div class="flex items-center justify-between mt-8 mb-6 max-w-xl mx-auto" id="wiz-progress-dots">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Wizard Step Container -->
+        <div id="wiz-step-container" class="bg-slate-900 p-6 sm:p-8 rounded-xl border border-slate-800 space-y-6">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Wizard Results Container -->
+        <div id="wiz-results-container" class="hidden space-y-6">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================================== -->
+    <!-- MODULE 11: GLOBAL MARKET INTELLIGENCE & FOUNDER VIEW -->
+    <!-- ==================================================================================== -->
+    <section id="view-market" class="tab-view space-y-6 hidden">
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center">
+          <span class="w-3 h-3 rounded-full bg-rose-500 inline-block mr-2"></span>
+          8. Global Market Intelligence &amp; Strategic Founder View
+        </h2>
+        <p class="mt-2 text-slate-600 text-sm leading-relaxed">
+          Deep-dive strategic analysis of the global AI-Native infrastructure market (2026–2030), TAM shifts, and executive Founder View.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
+          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Global AI-Native TAM (2030)</div>
+          <div class="text-3xl font-black text-slate-900">$1.2T</div>
+          <div class="text-xs text-emerald-600 font-medium mt-1">+34.5% CAGR</div>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
+          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Legacy Disruption Velocity</div>
+          <div class="text-3xl font-black text-slate-900">42%</div>
+          <div class="text-xs text-rose-500 font-medium mt-1">Enterprise Budgets Reallocated</div>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
+          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">In-Path Silicon Adoption</div>
+          <div class="text-3xl font-black text-slate-900">18M+</div>
+          <div class="text-xs text-sky-600 font-medium mt-1">Edge Nodes by 2028</div>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
+          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">EBITDA Impact Avg.</div>
+          <div class="text-3xl font-black text-slate-900">+310</div>
+          <div class="text-xs text-indigo-600 font-medium mt-1">Basis Points (bps) Uplift</div>
+        </div>
+      </div>
+
+      <div class="bg-brand-950 text-white rounded-xl border border-slate-800 shadow-2xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 via-purple-500 to-sky-500"></div>
+        <div class="p-6 sm:p-8 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <span class="text-[10px] font-mono bg-slate-900 text-rose-400 px-2 py-1 rounded border border-slate-700 tracking-wider">EXECUTIVE INTELLIGENCE</span>
+              <h3 class="text-2xl font-black text-white mt-2">The Founder View: AI-Native Substrate</h3>
+            </div>
+            <div class="hidden sm:block text-right">
+              <div class="text-xs text-slate-400 font-mono">TIMING HORIZON</div>
+              <div class="text-sm font-bold text-emerald-400">NOW — 2026 to 2028 Window</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+              <div>
+                <h4 class="text-sm font-bold text-slate-200 flex items-center mb-2"><span class="text-rose-400 mr-2 text-lg">◈</span> Investment Thesis</h4>
+                <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/50 p-4 rounded-lg border border-slate-800/80">
+                  The transition from AI-Powered (bolt-on software) to an <strong>AI-Native Substrate</strong> (inference-in-path) represents a $500B+ replacement cycle in enterprise IT, networking, and OT infrastructure.
+                </p>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-200 flex items-center mb-2"><span class="text-sky-400 mr-2 text-lg">✦</span> Defensible Moats</h4>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li class="flex items-start"><span class="text-sky-400 mr-2">▹</span><span><strong>Sub-5µs Hardware Integration:</strong> In-path silicon executing deterministic AI policy.</span></li>
+                  <li class="flex items-start"><span class="text-sky-400 mr-2">▹</span><span><strong>Cryptographic Auditability:</strong> Hardware TPM 2.0 enclave signing solves regulatory blocks.</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <div>
+                <h4 class="text-sm font-bold text-slate-200 flex items-center mb-2"><span class="text-emerald-400 mr-2 text-lg">❖</span> Execution Playbook</h4>
+                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-800/80 space-y-3 text-xs text-slate-300">
+                  <div class="flex items-center justify-between border-b border-slate-800 pb-2"><span class="font-mono text-emerald-400">01. LAND</span><span>Deploy targeted F-Nodes for acute high-value latency/scrap problems.</span></div>
+                  <div class="flex items-center justify-between border-b border-slate-800 pb-2"><span class="font-mono text-emerald-400">02. PROVE</span><span>Demonstrate sub-5µs deterministic execution (+240 bps in 90 days).</span></div>
+                  <div class="flex items-center justify-between"><span class="font-mono text-emerald-400">03. DISPLACE</span><span>Rip and replace legacy SIEM, legacy firewall, and SCADA monopolies.</span></div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-200 flex items-center mb-2"><span class="text-amber-400 mr-2 text-lg">⚠</span> Core Risks &amp; Mitigations</h4>
+                <div class="space-y-3">
+                  <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-800/80 border-l-2 border-amber-500">
+                    <h5 class="text-xs font-bold text-slate-300 mb-1">Silicon Supply Chain Vulnerability (NPU Shortages)</h5>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                      Global semiconductor constraints causing acute NPU shortages and delayed hardware lead times.<br><br>
+                      <em>Strategic Mitigation:</em> <strong>Composable Licensing (Principle 3)</strong>. Allows enterprise customers to deploy the software-only <strong>Reasoning Plane Engine</strong> on generic compute. Once silicon clears, deployment upgrades seamlessly.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CLIENT BRIEF EXPORT MODAL -->
+  <div id="brief-modal" class="fixed inset-0 hidden items-center justify-center p-4 z-50 bg-slate-950/80 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-4">
+        <div>
+          <span class="text-[10px] font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded border border-emerald-200">CONFIDENTIAL BRIEF</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-2">White Enterprises × Client Selection Brief</h3>
+        </div>
+        <button onclick="closeClientBriefModal()" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition">✕</button>
+      </div>
+
+      <div id="brief-content" class="space-y-4 text-xs font-mono text-slate-700">
+        <!-- Populated via JS -->
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
+        <button onclick="copyBrief()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded font-mono text-xs transition">COPY BRIEF</button>
+        <button onclick="window.print()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-mono text-xs transition">PRINT / PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-950 text-slate-400 text-xs border-t border-slate-800 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div>
+        <span class="font-bold text-white">WhiteEdge AI-Native Architecture × White Enterprises Master Platform</span>
+        <span class="ml-2">© 2026 Jin White // Nextier Deep-Tech Advisory</span>
+      </div>
+      <div class="font-mono text-[11px] text-slate-400">
+        182 Active F-Nodes // 40 Encyclopedia Sectors // Sub-5µs In-Path Substrate
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================================================================================== -->
+  <!-- JAVASCRIPT APPLICATION CODE -->
+  <!-- ==================================================================================== -->
+  <script>
+    // State Management
+    const state = {
+      activeTab: 'blueprint',
+      filterLevel: 'ALL',
+      filterSector: 'ALL',
+      searchQuery: '',
+      charts: {}
+    };
+
+    // Master F-Nodes Catalog Data
+    const fnodesCatalog = [
+      { id: 'F-63', name: 'Panda AI-IPS (Kernel eBPF Node)', level: 'LEGACY', sector: 'CYBER', incumbents: 'CrowdStrike ($800M/yr), Palo Alto Cortex XDR, Fortinet', advantage: 'Sub-0.3ms eBPF kernel rule injection at wire speed. Zero user-space overhead, no GPU required.', signal: 'In-line kernel packet classification replacing legacy agent overhead.', badge: 'LIVE // PRODUCTION' },
+      { id: 'F-78', name: 'Lex-Matrix (Symbolic Legal/Compliance)', level: 'LEGACY', sector: 'EXISTENTIAL', incumbents: 'Thomson Reuters, LexisNexis, Big 4 Compliance Advisory', advantage: 'Deterministic symbolic constraint engine enforcing DPDP Act, EU AI Act, and SEC regulatory trees.', signal: '100% reproducible court-admissible audit logs.', badge: 'LIVE // PRODUCTION' },
+      { id: 'F-45', name: 'Fin-Router Beta (Wire Fraud Engine)', level: 'L1', sector: 'FINANCE', incumbents: 'Mastercard Decision Intelligence, Visa Advanced Authorization', advantage: 'In-path XGBoost/Isolation Forest scoring at <0.3ms. Processes 100M+ tx/day with zero GPU cost.', signal: 'Sub-millisecond fraud scoring directly inside network switches.', badge: 'MASS PRODUCTION' },
+      { id: 'F-515', name: 'Capital Aegis (Sovereign Treasury Guard)', level: 'L1', sector: 'FINANCE', incumbents: 'SWIFT Alliance, FIS, Broadridge Financial', advantage: 'Deterministic transaction routing with cryptographic hardware enclave signing.', signal: 'Eliminates cross-border settlement delay and counterparty risk.', badge: 'MASS PRODUCTION' },
+      { id: 'F-69', name: 'Bio-Matrix (AlphaFold In-Silico Pipeline)', level: 'L2', sector: 'EXISTENTIAL', incumbents: 'Pharma Wet-Lab Pipelines ($4B R&D/candidate), Schrodinger', advantage: 'AlphaFold2 / RoseTTAFold structure prediction in 200ms vs 6-month wet lab trials.', signal: 'Bypasses legacy wet-lab testing with digital twin validation.', badge: 'PRODUCTION' },
+      { id: 'F-22', name: 'Purity-Daemon (ZLD Water Recycling AI)', level: 'L2', sector: 'INFRA', incumbents: 'Siemens SCADA, GE Water, Veolia Cleantech', advantage: 'In-path effluent viscosity and pH scoring. Autonomous evaporator pump closed-loop tuning.', signal: 'Reduces ZLD thermal energy consumption by 22%.', badge: 'LIVE // PRODUCTION' },
+      { id: 'F-950', name: 'Sovereign Jurist (Jurisdictional LLM)', level: 'L3', sector: 'EXISTENTIAL', incumbents: 'GSI Managed Services, Corporate Legal Firms', advantage: 'Air-gapped 70B parameter LLM fine-tuned on multi-jurisdiction trade & defense law.', signal: 'Hardware secure enclave prompt isolation guaranteeing zero data leakage.', badge: 'DEPLOYED' },
+      { id: 'F-02', name: 'Data-Vamp (Enterprise SIEM Disrupter)', level: 'L3', sector: 'CYBER', incumbents: 'Splunk ($60M/yr contracts), Datadog, Sumo Logic', advantage: 'Continuous streaming telemetry compression & real-time intent scoring in edge memory.', signal: 'Replaces $60M annual Splunk log ingest fees at zero marginal cost.', badge: 'DEPLOYED' },
+      { id: 'F-88', name: 'Autonomous Industrial Agent Mesh', level: 'L4', sector: 'INFRA', incumbents: 'Honeywell Process Systems, Rockwell Automation', advantage: 'Multi-agent closed-loop coordination across textile looms, dyeing vats, and composite autoclaves.', signal: 'Zero human intervention lag with reversible signed safety policy fallbacks.', badge: 'EMERGING' }
+    ];
+
+    // Matrix Inspection Data
+    const matrixData = {
+      'legacy-silicon': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Legacy Enhanced eBPF Line-Rate Kernel Injection', vector: 'Inference-in-Path Silicon', desc: 'Injecting deterministic symbolic AI rules (F-63 Panda AI-IPS) directly into the Linux kernel using eBPF allows sub-millisecond packet filtering and compliance enforcement without invoking user-space latency or requiring expensive GPU compute.', m1: 'CrowdStrike, Palo Alto Networks, Fortinet', m2: '<0.3ms p99 latency // Zero GPU dependency', m3: 'Replaces $800M+ annual GSI managed contracts' },
+      'legacy-reasoning': { tag: 'HIGH SYNERGY', title: 'Symbolic State Tree Policy Evaluation', vector: 'Reasoning Plane Engine', desc: 'Evaluates hardcoded legal and compliance logic trees (F-78 Lex-Matrix) to ensure zero hallucination and 100% deterministic decision-making.', m1: 'Big 4 Compliance & Legal Advisory', m2: '100% reproducible execution tree', m3: 'Eliminates multi-million dollar regulatory fines' },
+      'legacy-loop': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Deterministic Regulatory Compliance Lock', vector: 'Closed-Loop Control', desc: 'Hardcoded policy enforcement locks automatically halt non-compliant transactions or equipment states before data or physical goods leave the facility.', m1: 'Legacy SWIFT & Trade Compliance Tools', m2: 'Hardware TPM 2.0 Enclave Enforcement', m3: 'Zero compliance breach liability' },
+      'legacy-security': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Court-Admissible Cryptographic Audit Trail', vector: 'Zero-Touch & Auditability', desc: 'Generates cryptographically signed execution traces for every packet, transaction, and sensor reading, fulfilling DPDP Act and EU AI Act requirements.', m1: 'Manual Compliance Reporting', m2: 'Signed Telemetry Logs', m3: 'Audit-ready on Day 1' },
+      'l1-silicon': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Wire-Speed XGBoost / Isolation Forest Scoring', vector: 'Inference-in-Path Silicon', desc: 'Runs classical machine learning algorithms directly on switching ASICs and edge NPUs, scoring financial fraud (F-45) or loom vibration at sub-0.3ms latency.', m1: 'Mastercard DI / Visa Advanced Auth', m2: '100M+ tx/day at <0.3ms latency', m3: 'Eliminates $50M/yr payment fraud losses' },
+      'l1-reasoning': { tag: 'HIGH SYNERGY', title: 'Real-Time Anomaly Clustering Engine', vector: 'Reasoning Plane Engine', desc: 'Correlates multi-sensor telemetry across spinning mills and chemical dosing pumps to identify subtle degradation patterns.', m1: 'Legacy SCADA Monitoring Tools', m2: '99.2% Anomaly Precision', m3: 'Prevents catastrophic loom yarn snapping' },
+      'l1-loop': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Sub-Millisecond Loom Actuator Speed Tuning', vector: 'Closed-Loop Control', desc: 'Automatically adjusts loom motor speeds in real time when tension anomalies are detected, keeping yarn breaking rates near zero.', m1: 'Manual Loom Brake Adjustment', m2: '< 5µs Closed-Loop Cycle', m3: '38% Reduction in Denim Fabric Scrap' },
+      'l1-security': { tag: 'HIGH SYNERGY', title: 'Hardware Root-of-Trust Telemetry Signing', vector: 'Zero-Touch & Auditability', desc: 'Binds every ML inference score to hardware root-of-trust signatures, preventing data tampering.', m1: 'Unsigned Log Management', m2: 'TPM 2.0 Hardware Seal', m3: 'Defense-grade data integrity' },
+      'l2-silicon': { tag: 'HIGH SYNERGY', title: '400 Gbps CNN Optical Defect Scoring', vector: 'Inference-in-Path Silicon', desc: 'In-path NPU appliances scan high-speed textile weaving lines and composite surfaces at 4K resolution at 400 Gbps line rates.', m1: 'Human Manual Quality Sampling', m2: '12ms per frame @ 4K Resolution', m3: '99.97% Defect Catch Rate' },
+      'l2-reasoning': { tag: 'TRANSFORMATIVE SYNERGY', title: 'In-Silico Drug & Structural Void Modeling', vector: 'Reasoning Plane Engine', desc: 'Runs AlphaFold structure prediction (F-69 Bio-Matrix) and structural composite void stress modeling in seconds rather than months.', m1: 'Pharma Wet-Labs ($4B R&D per candidate)', m2: '200ms Structure Prediction', m3: 'Bypasses wet-lab trials with digital twin' },
+      'l2-loop': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Autoclave Curing Chamber Closed-Loop Control', vector: 'Closed-Loop Control', desc: 'Automatically re-programs pressure and thermal actuators inside composite curing chambers to prevent micro-void formation.', m1: 'Scheduled Autoclave Thermal Cycles', m2: 'Automated Pressure/Thermal Loop', m3: '99.4% Conformance on Defense Composites' },
+      'l2-security': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Air-Gapped Defense Quality Certification', vector: 'Zero-Touch & Auditability', desc: 'Generates air-gapped cryptographic explainability logs required for military aerospace contracts.', m1: 'Paper-based Defense Quality Certificates', m2: 'Air-Gapped Enclave Deployment', m3: 'High Barrier-to-Entry Defense Moat' },
+      'l3-silicon': { tag: 'HIGH SYNERGY', title: 'On-Chip KV-Cache Hardware Acceleration', vector: 'Inference-in-Path Silicon', desc: 'Hardware acceleration for Transformer attention layers enabling high-throughput LLM token streaming at the enterprise edge.', m1: 'Standard Unoptimized GPU Cloud Egress', m2: '3x Token Speedup / 50% Power Reduction', m3: 'Sovereign on-premise LLM execution' },
+      'l3-reasoning': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Sovereign Legal & Trade Contract Reasoning', vector: 'Reasoning Plane Engine', desc: 'Runs 70B parameter sovereign legal models (F-950) to evaluate multi-jurisdiction trade contracts and ESG compliance.', m1: 'GSI Managed Services Contracts', m2: 'Zero Cloud Data Egress', m3: 'Replaces $150M+ annual GSI advisory' },
+      'l3-loop': { tag: 'HIGH SYNERGY', title: 'Automated ESG & ZLD Compliance Loop', vector: 'Closed-Loop Control', desc: 'Continuously updates regulatory compliance reporting and triggers automated environmental offsets.', m1: 'Annual Manual ESG Audits', m2: 'Continuous Real-time Compliance', m3: 'Guaranteed 100% ZLD Conformance' },
+      'l3-security': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Hardware Secure Enclave Prompt Isolation', vector: 'Zero-Touch & Auditability', desc: 'Isolates proprietary garment designs and corporate trade secrets inside hardware secure enclaves.', m1: 'Public Cloud LLM APIs (OpenAI/Anthropic)', m2: 'Hardware Cryptographic Isolation', m3: 'Zero Data Leakage Guarantee' },
+      'l4-silicon': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Hardware Tool-Calling & State Routing', vector: 'Inference-in-Path Silicon', desc: 'Hardware-accelerated state routers coordinate autonomous agent actions directly over switching fabrics.', m1: 'Centralized Cloud Orchestrators', m2: 'Sub-5µs Inter-Agent Latency', m3: 'Fully Autonomous Plant Operations' },
+      'l4-reasoning': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Multi-Agent Autonomous Factory Orchestration', vector: 'Reasoning Plane Engine', desc: 'Coordinates spinning, weaving, dyeing, and water recycling agents in a unified autonomous mesh.', m1: 'Legacy Enterprise Resource Planning (ERP)', m2: 'Autonomous Intent Optimization', m3: '+320 bps Enterprise EBITDA Uplift' },
+      'l4-loop': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Zero-Touch Evaporator & Plant Control', vector: 'Closed-Loop Control', desc: 'Agents autonomously re-program chemical dosing and energy distribution feeds in response to supply chain shifts.', m1: 'Manual Control Room Operators', m2: '24/7 Autonomous Closed Loop', m3: '22% OpEx Energy Savings' },
+      'l4-security': { tag: 'TRANSFORMATIVE SYNERGY', title: 'Signed Policy Enforcement & Reversible Rollback', vector: 'Zero-Touch & Auditability', desc: 'Every autonomous agent action requires cryptographic authorization and can be instantly rolled back via hardware trigger.', m1: 'Unmonitored Autonomous Scripts', m2: 'Hardware Safety Interlock', m3: '100% Operational Safety Guarantee' }
+    };
+
+    // Industrial Simulator Events
+    const industrialEvents = {
+      yarn_break: { name: 'Loom Yarn Tension Drop', latency: 'Inference Latency: 4.2 microseconds', step1: 'WhiteEdge NPU detects 18% tension drop in SFP28 optical stream on Loom #4.', step2: 'Reasoning Plane correlates telemetry with yarn tensile models, recommending a 12% loom motor speed step-down.', step3: 'Approved policy re-programs switching ASIC and loom motor actuator in real time, preventing yarn snapping.', btnId: 'btn-ev-1' },
+      water_ph: { name: 'Envisol Evaporator Effluent Spike', latency: 'Inference Latency: 3.8 microseconds', step1: 'In-path sensor ASIC detects sharp acidity spike (pH drop to 4.2) in incoming wastewater feed.', step2: 'Reasoning Plane calculates required alkaline neutralizing volume and steam pressure adjustment.', step3: 'Closed-loop control actuates chemical dosing pump, maintaining 100% ZLD water recycling compliance.', btnId: 'btn-ev-2' },
+      composite_temp: { name: 'AMD Autoclave Resin Thermal Shift', latency: 'Inference Latency: 4.5 microseconds', step1: 'NPU silicon scores thermal variance in aerospace composite curing chamber (+6°C off profile).', step2: 'Reasoning Plane calculates void formation risk and logs explainable trace #WE-AMD-8842.', step3: 'Policy engine re-programs heating element relay in real time, achieving 99.4% structural conformance.', btnId: 'btn-ev-3' },
+      cyber_attack: { name: 'Zero-Day eBPF Kernel Intrusion', latency: 'Inference Latency: 0.28 microseconds', step1: 'F-63 Panda AI-IPS detects unauthorized kernel socket buffer access at wire speed.', step2: 'Reasoning Plane isolates malicious process handle and generates cryptographic signature log #WE-CYBER-001.', step3: 'Closed-loop eBPF filter drops malicious frames at kernel boundary, preventing lateral movement.', btnId: 'btn-ev-4' }
+    };
+
+    // OEM Configurator State
+    const oemData = {
+      model: {
+        'white_label': { title: 'White-Label Platform', skus: 'WhiteEdge Continuum Platform (White-Label)', core: 'Fully Built Hardware Appliance + Software Stack', brand: 'OEM Brandable UI Shell + Custom Firmware Skin', req3: '3. Provide OEM front-panel branding & UX guidelines.' },
+        'component': { title: 'Component License', skus: 'WhiteEdge Silicon IP + Reasoning SDK', core: 'Embedded NPU Silicon + Switching ASIC Schematics', brand: 'OEM supplies own physical chassis & custom UI', req3: '3. Share existing HW platform constraints & board specs.' },
+        'cobranded': { title: 'Co-Branded Reference Design', skus: 'WhiteEdge Joint Architecture Platform', core: 'Joint Engineering Collaboration & Shared Roadmap', brand: '"Powered by WhiteEdge" Co-Branding integration', req3: '3. Align on joint GTM and co-branding guidelines.' }
+      },
+      vertical: {
+        'bfsi': { title: 'BFSI', latency: '< 5 µs (Line-rate In-Path)', metrics: 'Latency SLA, Explainability Audit Traces' },
+        'hft': { title: 'HFT / Capital Markets', latency: '< 1.2 µs (Ultra-Low Latency Mode)', metrics: 'Deterministic Execution, Jitter Compliance' },
+        'gcc': { title: 'GCC (Campus Edge)', latency: '< 10 µs (Distributed Mesh)', metrics: 'Multi-Tenant Isolation, Throughput SLA' },
+        'defense': { title: 'Defense-Grade Edge', latency: '< 5 µs (Air-Gapped Secure)', metrics: 'TPM 2.0 Enclave Integrity, Zero Egress' }
+      },
+      delivery: {
+        'saas': { title: 'SaaS Cloud Managed', sw: 'Software Reasoning Plane (SAAS Delivery + Telemetry)' },
+        'onprem': { title: 'On-Prem Virtual Appliance', sw: 'Software Reasoning Plane (On-Premise VM / OVA)' },
+        'airgapped': { title: 'Air-Gapped Secure Enclave', sw: 'Software Reasoning Plane (Air-Gapped Sovereign Container)' }
+      },
+      form: {
+        '1ru': { title: '1RU Edge', hw: 'Silicon Hardware: 1RU Form Factor (< 650W, 48x 25G + 8x 400G)' },
+        '2ru': { title: '2RU Core', hw: 'Silicon Hardware: 2RU High-Density Core (< 1200W, NEBS Ready)' }
+      }
+    };
+
+    const oemState = { model: 'white_label', vertical: 'bfsi', delivery: 'saas', form: '1ru' };
+
+    function setOemState(category, value) {
+      oemState[category] = value;
+      const colorMap = { 'model': 'sky', 'vertical': 'emerald', 'delivery': 'purple', 'form': 'amber' };
+      const color = colorMap[category];
+      document.querySelectorAll(`.oem-btn-${category}`).forEach(btn => {
+        btn.classList.remove(`border-${color}-500`, `bg-${color}-500/20`, `text-${color}-300`);
+        btn.classList.add('border-slate-700', 'bg-slate-900', 'text-slate-300');
+      });
+      const activeBtn = document.getElementById(`btn-oem-${category === 'model' ? 'model' : category === 'vertical' ? 'vert' : category === 'delivery' ? 'del' : 'form'}-${value}`);
+      if (activeBtn) {
+        activeBtn.classList.add(`border-${color}-500`, `bg-${color}-500/20`, `text-${color}-300`);
+        activeBtn.classList.remove('border-slate-700', 'bg-slate-900', 'text-slate-300');
+      }
+      updateOemOutput();
+    }
+
+    function updateOemOutput() {
+      const dM = oemData.model[oemState.model];
+      const dV = oemData.vertical[oemState.vertical];
+      const dD = oemData.delivery[oemState.delivery];
+      const dF = oemData.form[oemState.form];
+      document.getElementById('out-oem-sku').innerText = dM.skus;
+      document.getElementById('out-oem-latency').innerText = dV.latency;
+      document.getElementById('out-oem-hw').innerText = dF.hw;
+      document.getElementById('out-oem-core').innerText = dM.core;
+      document.getElementById('out-oem-sw').innerText = dD.sw;
+      document.getElementById('out-oem-brand').innerText = dM.brand;
+      document.getElementById('out-oem-vert-name').innerText = dV.title;
+      document.getElementById('out-oem-req3').innerText = dM.req3;
+      document.getElementById('out-oem-metrics').innerText = dV.metrics;
+    }
+
+    // AI Encyclopedia Data (Simulated from 40 Sectors)
+    const encyclopediaSectors = [
+      { id: 'healthcare', name: 'Healthcare & Medicine', icon: '⚕', tam: '$500B', apps: '28 apps', color: '#00e5a0', desc: 'Medical imaging AI, AlphaFold protein folding, clinical decision support, AI scribes.' },
+      { id: 'finance', name: 'Finance & Banking', icon: '◈', tam: '$1.2T', apps: '24 apps', color: '#f5c842', desc: 'Algorithmic trading, real-time fraud prevention, AML, robo-advisory.' },
+      { id: 'cybersecurity', name: 'Cybersecurity', icon: '⬡', tam: '$350B', apps: '20 apps', color: '#42f5f5', desc: 'Autonomous SOC, XDR, zero trust enforcement, AI vulnerability discovery.' },
+      { id: 'manufacturing', name: 'Manufacturing & Industry 4.0', icon: '⬡', tam: '$900B', apps: '20 apps', color: '#f5a042', desc: 'Visual quality inspection, predictive maintenance, robotics, digital twins.' },
+      { id: 'transport', name: 'Transportation & Mobility', icon: '⬟', tam: '$2.1T', apps: '18 apps', color: '#a042f5', desc: 'Autonomous vehicles (Waymo), robotaxis, EV grid intelligence.' },
+      { id: 'retail', name: 'Retail & E-Commerce', icon: '⬠', tam: '$1.5T', apps: '18 apps', color: '#f542b8', desc: 'Recommendation engines, dynamic pricing, checkout-free stores, fulfillment robotics.' },
+      { id: 'entertainment', name: 'Entertainment & Creative Media', icon: '◇', tam: '$600B', apps: '22 apps', color: '#42f5a8', desc: 'AI video generation (Sora/Runway), music (Suno/Udio), procedural worlds, NPC AI.' },
+      { id: 'science', name: 'Science & Research', icon: '✦', tam: '$400B', apps: '18 apps', color: '#4285f5', desc: 'GNoME materials discovery, GraphCast weather forecasting, AlphaProof math theorems.' },
+      { id: 'agriculture', name: 'Agriculture & Food Systems', icon: '◈', tam: '$450B', apps: '16 apps', color: '#85f542', desc: 'Precision ag variable application, weeding lasers, vertical farm optimization.' },
+      { id: 'energy', name: 'Energy & Climate', icon: '⚡', tam: '$700B', apps: '17 apps', color: '#f58542', desc: 'Smart grid balancing, renewable forecasting, fusion reactor plasma control.' },
+      { id: 'legal', name: 'Legal & Compliance', icon: '§', tam: '$250B', apps: '14 apps', color: '#f5f542', desc: 'Harvey AI research, contract analysis, eDiscovery, automated compliance.' },
+      { id: 'education', name: 'Education & Learning', icon: '◎', tam: '$300B', apps: '16 apps', color: '#42b8f5', desc: 'Adaptive learning platforms, 2-sigma AI tutors (Khanmigo), automated grading.' },
+      { id: 'telecom', name: 'Telecom & 5G/6G', icon: '◉', tam: '$240B', apps: '14 apps', color: '#a8f0d8', desc: 'Self-organizing networks (SON), 5G network slicing, satellite constellation routing.' },
+      { id: 'hospitality', name: 'Hospitality, Travel & Tourism', icon: '◇', tam: '$180B', apps: '14 apps', color: '#f0a8d0', desc: 'Dynamic hotel revenue management, AI concierges, personalized travel itineraries.' },
+      { id: 'fashion', name: 'Fashion & Apparel', icon: '◈', tam: '$120B', apps: '12 apps', color: '#f5a0c8', desc: 'Generative fashion design, virtual try-on, automated size and fit intelligence.' },
+      { id: 'sports', name: 'Sports & Athletics', icon: '◉', tam: '$80B', apps: '14 apps', color: '#50f080', desc: 'Biomechanical performance analytics, injury prediction, Hawk-Eye officiating.' },
+      { id: 'journalism', name: 'Journalism & News Media', icon: '◇', tam: '$45B', apps: '12 apps', color: '#f5e042', desc: 'Automated news generation, deepfake detection, fact-checking AI.' },
+      { id: 'logistics', name: 'Logistics & Supply Chain', icon: '⬟', tam: '$600B', apps: '16 apps', color: '#f5c090', desc: 'UPS ORION route optimization, warehouse automation, real-time supply chain visibility.' },
+      { id: 'mining', name: 'Mining & Natural Resources', icon: '⬡', tam: '$130B', apps: '12 apps', color: '#c8a060', desc: 'Geological AI exploration, Rio Tinto autonomous haul trucks, tailings monitoring.' },
+      { id: 'biotech', name: 'Biotech & Synthetic Biology', icon: '✦', tam: '$280B', apps: '14 apps', color: '#80f0c0', desc: 'De novo protein design (RFdiffusion), CRISPR guide RNA optimization, metabolic engineering.' },
+      { id: 'mentalhealth', name: 'Mental Health & Wellbeing', icon: '◎', tam: '$160B', apps: '12 apps', color: '#c8a8f5', desc: 'CBT therapeutic companions (Woebot/Wysa), suicide risk detection.' },
+      { id: 'socialmedia', name: 'Social Media & Platforms', icon: '◇', tam: '$500B', apps: '14 apps', color: '#60a8f5', desc: 'TikTok recommendation ranking, automated moderation (Meta AI), programmatic ads.' },
+      { id: 'government', name: 'Government & Public Services', icon: '◉', tam: '$500B', apps: '16 apps', color: '#a8d0f5', desc: 'Automated social welfare benefits, AI tax compliance, smart city operations.' },
+      { id: 'hr', name: 'Human Resources & Workforce', icon: '◎', tam: '$150B', apps: '14 apps', color: '#c8a0f5', desc: 'AI resume screening, employee churn prediction, skills gap analysis.' },
+      { id: 'marketing', name: 'Marketing & Advertising', icon: '◈', tam: '$400B', apps: '16 apps', color: '#f59842', desc: 'Generative ad copy/creatives, programmatic bidding, marketing mix modeling.' },
+      { id: 'realestate', name: 'Real Estate & Construction', icon: '⬟', tam: '$280B', apps: '14 apps', color: '#f5c8a0', desc: 'Generative architectural design (Autodesk Forma), automated property valuations (AVMs).' },
+      { id: 'space', name: 'Space & Exploration', icon: '✦', tam: '$1.1T', apps: '14 apps', color: '#8042f5', desc: 'Starlink constellation satellite routing, autonomous planetary rovers (Perseverance).' },
+      { id: 'robotics', name: 'Robotics & Embodied AI', icon: '⬡', tam: '$260B', apps: '16 apps', color: '#f542e8', desc: 'Humanoid robots (Figure 02, Tesla Optimus), dexterous manipulation foundation models (π₀).' },
+      { id: 'language', name: 'Language, NLP & Communication', icon: '◇', tam: '$180B', apps: '16 apps', color: '#42e8f5', desc: 'GPT-4o/Claude 3.7 LLMs, real-time speech translation, document understanding (IDP).' },
+      { id: 'defense', name: 'Defense & Military', icon: '◉', tam: '$800B', apps: '16 apps', color: '#f54242', desc: 'Palantir ISR intelligence analysis, autonomous drone swarms, predictive maintenance (F-35).' },
+      { id: 'pharma', name: 'Pharmaceuticals & Clinical', icon: '⚕', tam: '$300B', apps: '14 apps', color: '#a0f0d8', desc: 'AI drug candidate generation, virtual clinical trials, automated regulatory submissions.' },
+      { id: 'architecture', name: 'Architecture & Urban Design', icon: '⬟', tam: '$85B', apps: '12 apps', color: '#d0e8b0', desc: 'Generative masterplanning, parametric facade engineering, zoning code compliance AI.' },
+      { id: 'quantum', name: 'Quantum Computing & Next-Gen Tech', icon: '◉', tam: '$850B', apps: '12 apps', color: '#60c8f8', desc: 'Quantum circuit optimization, quantum ML, AI-powered quantum error correction.' },
+      { id: 'arts', name: 'Arts, Culture & Museums', icon: '◇', tam: '$40B', apps: '12 apps', color: '#f0b0e8', desc: 'Generative fine art (Refik Anadol), museum collection intelligence, archival film upscaling.' },
+      { id: 'water', name: 'Water, Oceans & Environment', icon: '◈', tam: '$90B', apps: '12 apps', color: '#40c8f8', desc: 'Smart water leak detection, illegal fishing tracking, AI flood forecasting.' },
+      { id: 'food', name: 'Food & Beverage Industry', icon: '◈', tam: '$150B', apps: '12 apps', color: '#d0f080', desc: 'Molecular flavor design, robotic kitchens (Miso Flippy), alternative protein texturizing.' },
+      { id: 'nonprofit', icon: '◎', name: 'Social Impact & Nonprofits', icon: '◎', tam: '$25B', apps: '10 apps', color: '#80e0c0', desc: 'AI grant writing, humanitarian aid routing, anti-human trafficking network analysis.' },
+      { id: 'automotive', name: 'Automotive Industry', icon: '⬟', tam: '$300B', apps: '14 apps', color: '#d0a0f8', desc: 'Generative vehicle styling, accelerated crash simulation (Dojo), predictive warranty.' },
+      { id: 'insurance', name: 'Insurance (Deep Dive)', icon: '◈', tam: '$280B', apps: '14 apps', color: '#f0d070', desc: 'AI actuarial models, remote sensing underwriting, instant claims settlement (Lemonade).' },
+      { id: 'consulting', name: 'Professional Services & Consulting', icon: '◈', tam: '$200B', apps: '12 apps', color: '#f8c060', desc: 'AI research synthesis, automated financial auditing, expert knowledge capture.' }
+    ];
+
+    function renderEncyclopediaGrid() {
+      const grid = document.getElementById('encyc-grid');
+      if (!grid) return;
+      grid.innerHTML = encyclopediaSectors.map(sec => `
+        <div class="encyc-card bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3 cursor-pointer" onclick="alert('${sec.name}\\n\\nTAM: ${sec.tam}\\nScale: ${sec.apps}\\n\\nOverview:\\n${sec.desc}')">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-2xl">${sec.icon}</span>
+              <span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">${sec.apps}</span>
+            </div>
+            <h4 class="font-bold text-sm text-slate-900 mt-3">${sec.name}</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">${sec.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[10px] font-mono">
+            <span class="text-slate-500">TAM: <strong>${sec.tam}</strong></span>
+            <span class="text-indigo-600 font-bold hover:underline">EXPLORE →</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterEncyc() {
+      const q = document.getElementById('encyc-search').value.toLowerCase();
+      const grid = document.getElementById('encyc-grid');
+      const filtered = encyclopediaSectors.filter(s => s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q));
+      grid.innerHTML = filtered.map(sec => `
+        <div class="encyc-card bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3 cursor-pointer" onclick="alert('${sec.name}\\n\\nTAM: ${sec.tam}\\nScale: ${sec.apps}\\n\\nOverview:\\n${sec.desc}')">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-2xl">${sec.icon}</span>
+              <span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded">${sec.apps}</span>
+            </div>
+            <h4 class="font-bold text-sm text-slate-900 mt-3">${sec.name}</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">${sec.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[10px] font-mono">
+            <span class="text-slate-500">TAM: <strong>${sec.tam}</strong></span>
+            <span class="text-indigo-600 font-bold hover:underline">EXPLORE →</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Client Selector & Brief Builder State
+    const clientSelection = {
+      vendors: [],
+      services: [],
+      assessments: []
+    };
+
+    const selVendors = [
+      { id: 'v1', name: 'CrowdStrike Falcon', cat: 'Cybersecurity', desc: 'AI-native XDR platform unifying endpoint, cloud, identity.' },
+      { id: 'v2', name: 'SentinelOne Purple AI', cat: 'Cybersecurity', desc: 'Autonomous threat hunting and incident response via generative AI.' },
+      { id: 'v3', name: 'Wiz Cloud Security', cat: 'Cybersecurity', desc: 'Agentless CSPM platform scanning full cloud stack.' },
+      { id: 'v4', name: 'NICE Actimize', cat: 'Fraud & Compliance', desc: 'Enterprise AML and fraud prevention platform.' },
+      { id: 'v5', name: 'Databricks Mosaic AI', cat: 'Data & MLOps', desc: 'Unified lakehouse architecture with governed GenAI deployment.' }
+    ];
+
+    const selServices = [
+      { id: 's1', name: 'AI-Powered SOC Transformation', cat: 'Cybersecurity', desc: 'End-to-end SOC modernization with AI triage and SOAR integration.' },
+      { id: 's2', name: 'Zero Trust Architecture Design', cat: 'Cybersecurity', desc: 'ZTNA strategy, identity access design, and microsegmentation.' },
+      { id: 's3', name: 'RegTech Compliance Automation', cat: 'Compliance', desc: 'Automated regulatory change monitoring and compliance reporting.' },
+      { id: 's4', name: 'Enterprise GenAI Strategy & Build', cat: 'GenAI', desc: 'Full-stack GenAI deployment, RAG architecture, and governance.' },
+      { id: 's5', name: 'Predictive Maintenance AI', cat: 'Manufacturing', desc: 'Industrial IoT + ML for equipment failure prediction.' }
+    ];
+
+    const selAssess = [
+      { id: 'a1', name: 'AI Readiness Assessment', type: 'Assessment', dur: '2 weeks', desc: 'Structured maturity assessment across data, infra, talent, and governance.' },
+      { id: 'a2', name: 'Cybersecurity Posture Review', type: 'Assessment', dur: '1 week', desc: 'Non-invasive review of security architecture against NIST/ISO frameworks.' },
+      { id: 'a3', name: 'Regulatory Compliance Gap Analysis', type: 'Workshop', dur: '3 days', desc: 'Expert workshop mapping controls to RBI, SEBI, MAS TRM, or HIPAA.' },
+      { id: 'a4', name: 'GenAI Use Case Workshop', type: 'Workshop', dur: 'Half day', desc: 'Facilitated session to identify and prioritize top 5 GenAI use cases.' }
+    ];
+
+    function initClientSelector() {
+      const vEl = document.getElementById('sel-vendors-list');
+      const sEl = document.getElementById('sel-services-list');
+      const aEl = document.getElementById('sel-assess-list');
+      if (!vEl || !sEl || !aEl) return;
+
+      vEl.innerHTML = selVendors.map(v => `
+        <div onclick="toggleClientSelection('vendors', '${v.name}')" id="sel-v-${v.name.replace(/\s+/g,'_')}" class="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-emerald-500 transition flex justify-between items-center text-xs font-mono">
+          <div>
+            <div class="font-bold text-slate-900">${v.name}</div>
+            <div class="text-[10px] text-slate-500">${v.cat}</div>
+          </div>
+          <span class="sel-badge-v text-slate-400">＋ ADD</span>
+        </div>
+      `).join('');
+
+      sEl.innerHTML = selServices.map(s => `
+        <div onclick="toggleClientSelection('services', '${s.name}')" id="sel-s-${s.name.replace(/\s+/g,'_')}" class="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-emerald-500 transition flex justify-between items-center text-xs font-mono">
+          <div>
+            <div class="font-bold text-slate-900">${s.name}</div>
+            <div class="text-[10px] text-slate-500">${s.cat}</div>
+          </div>
+          <span class="sel-badge-s text-slate-400">＋ ADD</span>
+        </div>
+      `).join('');
+
+      aEl.innerHTML = selAssess.map(a => `
+        <div onclick="toggleClientSelection('assessments', '${a.name}')" id="sel-a-${a.name.replace(/\s+/g,'_')}" class="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-emerald-500 transition flex justify-between items-center text-xs font-mono">
+          <div>
+            <div class="font-bold text-slate-900">${a.name}</div>
+            <div class="text-[10px] text-emerald-700">${a.type} (${a.dur})</div>
+          </div>
+          <span class="sel-badge-a text-slate-400">＋ ADD</span>
+        </div>
+      `).join('');
+    }
+
+    function toggleClientSelection(type, name) {
+      const idx = clientSelection[type].indexOf(name);
+      const safeId = name.replace(/\s+/g,'_');
+      const cardEl = document.getElementById(`sel-${type[0]}-${safeId}`);
+      if (!cardEl) return;
+      if (idx > -1) {
+        clientSelection[type].splice(idx, 1);
+        cardEl.classList.remove('border-emerald-500', 'bg-emerald-50/50');
+        cardEl.querySelector(`.sel-badge-${type[0]}`).innerText = '＋ ADD';
+        cardEl.querySelector(`.sel-badge-${type[0]}`).classList.remove('text-emerald-700', 'font-bold');
+      } else {
+        clientSelection[type].push(name);
+        cardEl.classList.add('border-emerald-500', 'bg-emerald-50/50');
+        cardEl.querySelector(`.sel-badge-${type[0]}`).innerText = '✓ ADDED';
+        cardEl.querySelector(`.sel-badge-${type[0]}`).classList.add('text-emerald-700', 'font-bold');
+      }
+      const totalCount = clientSelection.vendors.length + clientSelection.services.length + clientSelection.assessments.length;
+      document.getElementById('brief-count').innerText = totalCount;
+    }
+
+    function openClientBriefModal() {
+      const content = document.getElementById('brief-content');
+      const total = clientSelection.vendors.length + clientSelection.services.length + clientSelection.assessments.length;
+      if (total === 0) {
+        alert('Please select at least one vendor, service, or assessment to generate a brief.');
+        return;
+      }
+      content.innerHTML = `
+        <div class="space-y-4">
+          <div class="p-3 bg-slate-900 text-white rounded font-mono text-xs">
+            <div>DATE: ${new Date().toLocaleDateString()}</div>
+            <div>STATUS: CONFIDENTIAL CLIENT BRIEFING PACKAGE</div>
+            <div>TOTAL ASSETS SELECTED: ${total}</div>
+          </div>
+          ${clientSelection.vendors.length ? `<div><strong class="text-slate-900">RECOMMENDED VENDORS:</strong><ul class="list-disc pl-5 mt-1">${clientSelection.vendors.map(v=>`<li>${v}</li>`).join('')}</ul></div>` : ''}
+          ${clientSelection.services.length ? `<div><strong class="text-slate-900">CONSULTING SERVICES:</strong><ul class="list-disc pl-5 mt-1">${clientSelection.services.map(s=>`<li>${s}</li>`).join('')}</ul></div>` : ''}
+          ${clientSelection.assessments.length ? `<div><strong class="text-slate-900">FREE DOOR-OPENER ASSESSMENTS:</strong><ul class="list-disc pl-5 mt-1">${clientSelection.assessments.map(a=>`<li>${a}</li>`).join('')}</ul></div>` : ''}
+        </div>
+      `;
+      document.getElementById('brief-modal').classList.remove('hidden');
+      document.getElementById('brief-modal').classList.add('flex');
+    }
+
+    function closeClientBriefModal() {
+      document.getElementById('brief-modal').classList.remove('flex');
+      document.getElementById('brief-modal').classList.add('hidden');
+    }
+
+    function copyBrief() {
+      const text = `WHITE ENTERPRISES × CLIENT BRIEF\nDate: ${new Date().toLocaleDateString()}\n\nVendors: ${clientSelection.vendors.join(', ')}\nServices: ${clientSelection.services.join(', ')}\nAssessments: ${clientSelection.assessments.join(', ')}`;
+      navigator.clipboard.writeText(text);
+      alert('Brief copied to clipboard successfully.');
+    }
+
+    // 5-Step Decision Wizard State & Logic
+    const wizQuestions = [
+      { step: 1, key: 'industry', title: 'Target Industry Vertical', desc: 'Select your client primary industry sector.', options: ['BFSI / Banking', 'High-Frequency Trading (HFT)', 'Healthcare & BioTech', 'Manufacturing & OT', 'Enterprise & GCC'] },
+      { step: 2, key: 'challenge', title: 'Primary Enterprise Challenge', desc: 'Select the most pressing operational hurdle.', options: ['Cybersecurity Threat Defense', 'Process Automation & RPA', 'Data Governance & MLOps', 'Fraud & Risk Detection', 'GenAI & LLM Integration'] },
+      { step: 3, key: 'regulation', title: 'Regulatory Compliance Mandate', desc: 'Select primary applicable regulatory standard.', options: ['RBI / SEBI (India)', 'MAS TRM / DFSA (GCC)', 'GDPR / EU AI Act', 'PCI-DSS / HIPAA', 'None / Standard Enterprise'] },
+      { step: 4, key: 'infra', title: 'Infrastructure Posture', desc: 'Current technological readiness level.', options: ['Cloud-First (AWS/Azure/GCP)', 'On-Premises / Air-Gapped', 'Hybrid Enterprise Mesh', 'Legacy / Brownfield OT'] },
+      { step: 5, key: 'budget', title: 'Engagement Budget Range', desc: 'Target annual capital or advisory budget.', options: ['Free Door-Opener Assessment', '$50K – $200K (Pilot)', '$200K – $1M (Enterprise)', '$1M+ (Strategic Retainer)'] }
+    ];
+
+    let currentWizStep = 0;
+    const wizAnswers = {};
+
+    function initWizard() {
+      currentWizStep = 0;
+      renderWizardStep();
+    }
+
+    function renderWizardStep() {
+      const dotsEl = document.getElementById('wiz-progress-dots');
+      if (!dotsEl) return;
+      dotsEl.innerHTML = wizQuestions.map((q, idx) => `
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold ${idx === currentWizStep ? 'bg-amber-500 text-slate-950 ring-4 ring-amber-500/20' : idx < currentWizStep ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">
+            ${idx < currentWizStep ? '✓' : idx + 1}
+          </div>
+          <span class="hidden md:inline text-xs font-mono text-slate-400">${q.key}</span>
+        </div>
+      `).join('');
+
+      const q = wizQuestions[currentWizStep];
+      const container = document.getElementById('wiz-step-container');
+      container.classList.remove('hidden');
+      document.getElementById('wiz-results-container').classList.add('hidden');
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="text-xs font-mono text-amber-400 uppercase tracking-widest">Step ${q.step} of 5</div>
+          <h3 class="text-xl font-bold text-white">${q.title}</h3>
+          <p class="text-xs text-slate-300">${q.desc}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+            ${q.options.map(opt => `
+              <button onclick="selectWizardOption('${q.key}', '${opt}')" class="p-3.5 text-left text-xs font-mono rounded-lg border transition ${wizAnswers[q.key] === opt ? 'border-amber-500 bg-amber-500/20 text-amber-300 font-bold' : 'border-slate-800 bg-slate-900/90 text-slate-300 hover:border-slate-700'}">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div class="flex justify-between pt-6 border-t border-slate-800 mt-6">
+            <button onclick="prevWizardStep()" ${currentWizStep === 0 ? 'disabled' : ''} class="px-4 py-2 bg-slate-900 text-slate-400 rounded font-mono text-xs disabled:opacity-30">← PREV</button>
+            <button onclick="nextWizardStep()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded font-mono text-xs transition">${currentWizStep === wizQuestions.length - 1 ? 'GENERATE BRIEF ⚡' : 'NEXT →'}</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectWizardOption(key, val) {
+      wizAnswers[key] = val;
+      renderWizardStep();
+    }
+
+    function prevWizardStep() {
+      if (currentWizStep > 0) {
+        currentWizStep--;
+        renderWizardStep();
+      }
+    }
+
+    function nextWizardStep() {
+      const q = wizQuestions[currentWizStep];
+      if (!wizAnswers[q.key]) {
+        alert('Please select an option before proceeding.');
+        return;
+      }
+      if (currentWizStep < wizQuestions.length - 1) {
+        currentWizStep++;
+        renderWizardStep();
+      } else {
+        renderWizardResults();
+      }
+    }
+
+    function renderWizardResults() {
+      document.getElementById('wiz-step-container').classList.add('hidden');
+      const resContainer = document.getElementById('wiz-results-container');
+      resContainer.classList.remove('hidden');
+
+      resContainer.innerHTML = `
+        <div class="space-y-6">
+          <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 text-center space-y-2">
+            <div class="text-xs font-mono text-emerald-400 uppercase">Scoring Engine Complete // 98.4% Match Verified</div>
+            <h3 class="text-2xl font-black text-white">Recommended Enterprise Package</h3>
+            <p class="text-xs text-slate-300">Based on your selections for <strong class="text-amber-400">${wizAnswers.industry || 'Enterprise'}</strong> targeting <strong class="text-sky-300">${wizAnswers.challenge || 'Operations'}</strong>.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+            <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
+              <div class="text-emerald-400 font-bold">1. Recommended Door-Opener</div>
+              <div class="text-white text-sm font-bold">AI Readiness Assessment &amp; Posture Review</div>
+              <div class="text-[11px] text-slate-400">2-week diagnostic tailored to regulatory compliance.</div>
+            </div>
+            <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
+              <div class="text-sky-400 font-bold">2. Primary Vendor Match</div>
+              <div class="text-white text-sm font-bold">WhiteEdge Silicon Appliance + F-63 Node</div>
+              <div class="text-[11px] text-slate-400">Deployed for sub-5µs latency.</div>
+            </div>
+            <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2">
+              <div class="text-purple-400 font-bold">3. Financial ROI Projections</div>
+              <div class="text-white text-sm font-bold">+245 bps EBITDA Margin Uplift</div>
+              <div class="text-[11px] text-slate-400">Estimated CapEx payback within 8.5 months under budget tier.</div>
+            </div>
+          </div>
+          <div class="flex justify-center pt-4">
+            <button onclick="initWizard()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded font-mono text-xs transition">↺ RESTART WIZARD</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize App
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabNavigation();
+      renderFNodesGrid();
+      initScrapChart();
+      initRadarChart();
+      runSynergyCalc();
+      updateOemOutput();
+      renderEncyclopediaGrid();
+      initClientSelector();
+      initWizard();
+    });
+
+    // Tab Switcher
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(el => {
+        el.classList.remove('bg-slate-800', 'text-white');
+        el.classList.add('text-slate-300');
+      });
+
+      const targetView = document.getElementById(`view-${tabId}`);
+      if (targetView) targetView.classList.remove('hidden');
+
+      const targetNav = document.getElementById(`nav-${tabId}`);
+      if (targetNav) {
+        targetNav.classList.add('bg-slate-800', 'text-white');
+        targetNav.classList.remove('text-slate-300');
+      }
+
+      setTimeout(() => {
+        if (state.charts['scrapChart']) state.charts['scrapChart'].resize();
+        if (state.charts['radarChart']) state.charts['radarChart'].resize();
+      }, 50);
+    }
+
+    function initTabNavigation() {
+      switchTab('blueprint');
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function selectMatrixCell(level, vector) {
+      const key = `${level}-${vector}`;
+      const data = matrixData[key];
+      if (!data) return;
+      document.getElementById('insp-tag').innerText = data.tag;
+      document.getElementById('insp-title').innerText = data.title;
+      document.getElementById('insp-vector').innerText = data.vector;
+      document.getElementById('insp-desc').innerText = data.desc;
+      document.getElementById('insp-m1').innerText = data.m1;
+      document.getElementById('insp-m2').innerText = data.m2;
+      document.getElementById('insp-m3').innerText = data.m3;
+    }
+
+    function setFilterLevel(level) {
+      state.filterLevel = level;
+      document.querySelectorAll('.fnode-level-btn').forEach(btn => {
+        if (btn.dataset.level === level) {
+          btn.classList.add('bg-slate-900', 'text-white');
+          btn.classList.remove('bg-slate-100', 'text-slate-700');
+        } else {
+          btn.classList.remove('bg-slate-900', 'text-white');
+          btn.classList.add('bg-slate-100', 'text-slate-700');
+        }
+      });
+      filterFNodes();
+    }
+
+    function filterFNodes() {
+      const searchInput = document.getElementById('fnode-search');
+      const sectorSelect = document.getElementById('fnode-sector');
+      if (searchInput) state.searchQuery = searchInput.value.toLowerCase();
+      if (sectorSelect) state.filterSector = sectorSelect.value;
+      renderFNodesGrid();
+    }
+
+    function renderFNodesGrid() {
+      const container = document.getElementById('fnodes-grid');
+      if (!container) return;
+      const filtered = fnodesCatalog.filter(node => {
+        const matchLevel = state.filterLevel === 'ALL' || node.level === state.filterLevel;
+        const matchSector = state.filterSector === 'ALL' || node.sector === state.filterSector;
+        const matchSearch = node.id.toLowerCase().includes(state.searchQuery) ||
+                            node.name.toLowerCase().includes(state.searchQuery) ||
+                            node.incumbents.toLowerCase().includes(state.searchQuery) ||
+                            node.advantage.toLowerCase().includes(state.searchQuery);
+        return matchLevel && matchSector && matchSearch;
+      });
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 font-mono text-xs">NO F-NODES MATCH ACTIVE FILTER CRITERIA</div>`;
+        return;
+      }
+      container.innerHTML = filtered.map(node => `
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-400 transition space-y-3">
+          <div>
+            <div class="flex justify-between items-start border-b border-slate-100 pb-2">
+              <span class="font-mono font-bold text-base text-brand-900">${node.id}</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-slate-300 bg-slate-50 text-slate-700">${node.level}</span>
+            </div>
+            <h4 class="font-bold text-sm text-slate-900 mt-2">${node.name}</h4>
+            <div class="text-[11px] font-mono text-rose-600 mt-1"><strong>Disrupts:</strong> ${node.incumbents}</div>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">${node.advantage}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-[10px] font-mono">
+            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">${node.badge}</span>
+            <button onclick="alert('DEMO REQUEST LOGGED\\n\\nF-NODE: ${node.id} (${node.name})\\n\\nSTATUS: ${node.badge}')" class="px-2.5 py-1 bg-brand-950 text-white rounded hover:bg-slate-800 transition">REQUEST DEMO</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function triggerIndustrialEvent(eventType) {
+      const data = industrialEvents[eventType];
+      if (!data) return;
+      document.querySelectorAll('.event-btn').forEach(btn => {
+        btn.classList.remove('border-slate-700', 'bg-slate-900');
+        btn.classList.add('border-slate-800', 'bg-brand-950');
+      });
+      const activeBtn = document.getElementById(data.btnId);
+      if (activeBtn) {
+        activeBtn.classList.add('border-slate-700', 'bg-slate-900');
+        activeBtn.classList.remove('bg-brand-950');
+      }
+      document.getElementById('sim-selected-name').innerText = data.name;
+      document.getElementById('sim-selected-latency').innerText = data.latency;
+      document.getElementById('step-silicon-text').innerText = data.step1;
+      document.getElementById('step-reasoning-text').innerText = data.step2;
+      document.getElementById('step-control-text').innerText = data.step3;
+    }
+
+    function runSynergyCalc() {
+      const loomInput = document.getElementById('input-looms');
+      const amdInput = document.getElementById('input-amd-scale');
+      const cyberInput = document.getElementById('input-cyber-node');
+      const envisolInput = document.getElementById('input-envisol-saas');
+      if (!loomInput) return;
+
+      const loomPct = parseInt(loomInput.value);
+      const amdPct = parseInt(amdInput.value);
+      const cyberPct = parseInt(cyberInput.value);
+      const envisolPlants = parseInt(envisolInput.value);
+
+      document.getElementById('val-looms').innerText = `${loomPct}% Fleet`;
+      document.getElementById('val-amd-scale').innerText = `${amdPct}% Lines`;
+      document.getElementById('val-cyber-node').innerText = `${cyberPct}% Nodes`;
+      document.getElementById('val-envisol-saas').innerText = `${envisolPlants} Plants`;
+
+      const loomSavings = loomPct * 0.84;
+      const amdSavings = amdPct * 0.70;
+      const cyberSavings = cyberPct * 0.50;
+      const envisolRevenue = envisolPlants * 1.78;
+
+      const totalEbitda = (loomSavings + amdSavings + cyberSavings + envisolRevenue).toFixed(1);
+      const bpsUplift = Math.round(totalEbitda * 1.60);
+      const payback = Math.max(3.8, (16.5 - (loomPct * 0.07) - (amdPct * 0.05) - (cyberPct * 0.04)).toFixed(1));
+
+      document.getElementById('out-ebitda-val').innerText = `₹ ${totalEbitda} Cr`;
+      document.getElementById('out-ebitda-bps').innerText = `+${bpsUplift} bps EBITDA Margin expansion`;
+      document.getElementById('out-payback').innerText = `${payback} Months`;
+      document.getElementById('out-breakdown').innerText = 
+        `Deploying WhiteEdge AI-Native eBPF silicon across ${loomPct}% of textile looms yields ₹ ${loomSavings.toFixed(1)} Cr in direct fabric scrap savings. AMD composite curing adds ₹ ${amdSavings.toFixed(1)} Cr in high-margin defense sales, cyber F-63 nodes save ₹ ${cyberSavings.toFixed(1)} Cr in legacy software license fees, while Envisol cleantech SaaS licenses generate ₹ ${envisolRevenue.toFixed(1)} Cr in software revenues.`;
+    }
+
+    function initScrapChart() {
+      const ctx = document.getElementById('scrapChart');
+      if (!ctx) return;
+      state.charts['scrapChart'] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Textile Weaving Scrap', 'AMD Composite Voids', 'Envisol Energy Waste', 'Cyber False Positive Rate'],
+          datasets: [
+            { label: 'Baseline Enterprise Ops', data: [6.8, 5.2, 28.0, 18.5], backgroundColor: '#cbd5e1', borderRadius: 4 },
+            { label: 'Legacy AI-Powered Add-On', data: [4.9, 3.8, 21.5, 12.1], backgroundColor: '#0284c7', borderRadius: 4 },
+            { label: 'White Enterprises × WhiteEdge Substrate', data: [1.8, 0.6, 11.2, 0.3], backgroundColor: '#10b981', borderRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, title: { display: true, text: 'Defect / Waste Rate (%)', font: { size: 11 } }, ticks: { callback: function(v) { return v + '%'; } } }
+          },
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+        }
+      });
+    }
+
+    function initRadarChart() {
+      const ctx = document.getElementById('radarChart');
+      if (!ctx) return;
+      state.charts['radarChart'] = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['Fabric Quality Yield', 'ZLD Water Recycling', 'Sub-5µs Low Latency', 'Audit & Compliance', 'Throughput Speed', 'Disruption Score'],
+          datasets: [
+            { label: 'Baseline Enterprise', data: [65, 80, 45, 55, 70, 40], borderColor: '#94a3b8', backgroundColor: 'rgba(148, 163, 184, 0.2)', pointRadius: 3 },
+            { label: 'White Enterprises × WhiteEdge Substrate', data: [98, 98, 99, 100, 95, 98], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.25)', pointRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { min: 0, max: 100, ticks: { stepSize: 20, display: false } } },
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
