@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PillarSuite™ Auto-Architect (WE-SI-PAA) — 77 Focus Areas &amp; Differentiators</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--void:#05080d;--panel:#0b1119;--line:#1a2636;--ink:#e8edf4;--mut:#8b9bb0;--gold:#c9a84c;--cyan:#00d4ff;--green:#4ade80;--m:'Share Tech Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--void);color:var(--ink);font:13.5px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif;overflow:hidden}
+#app{display:grid;height:100%;grid-template-columns:190px 1fr 380px;grid-template-rows:54px 44px 1fr 195px}
+header{grid-column:1/4;display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--panel);border-bottom:1px solid var(--line)}
+#faBar{grid-column:1/4;display:flex;align-items:center;gap:10px;padding:0 14px;background:#080d14;border-bottom:1px solid var(--line);font-size:12.5px;overflow-x:auto;white-space:nowrap}
+.logo{font:800 13.5px Orbitron,sans-serif;letter-spacing:.11em;color:var(--gold);margin-right:4px;flex:none}
+.logo small{display:block;font:9.5px var(--m);color:var(--cyan);letter-spacing:.13em}
+.btn{padding:6px 11px;border-radius:4px;border:1px solid var(--gold);background:var(--gold);color:var(--void);font:600 12.5px Inter,sans-serif;cursor:pointer;flex:none}
+.btn.g{background:none;color:var(--gold)}.btn.g:hover,.btn.on{background:rgba(201,168,76,.18)}
+.btn.cyb{border-color:var(--cyan);color:var(--cyan);background:none}.btn.cyb:hover{background:rgba(0,212,255,.14)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+#faSel{max-width:310px;padding:6px 9px;background:var(--void);color:var(--ink);border:1px solid var(--gold);border-radius:4px;font:12.5px Inter,sans-serif}
+#score{margin-left:auto;font:12.5px var(--m);color:var(--mut);flex:none}#score b{font-size:14px}
+.ok{color:#4ade80}.bad{color:#ff5d5d}.cy{color:var(--cyan)}.gold{color:var(--gold)}.mut{color:var(--mut)}.mono{font-family:var(--m)}
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font:11px var(--m);border:1px solid rgba(0,212,255,.35);color:var(--cyan);margin-right:4px}
+.tag.gold{border-color:rgba(201,168,76,.45);color:var(--gold)}
+.tag.grn{border-color:rgba(74,222,128,.4);color:var(--green)}
+#pal{padding:10px;border-right:1px solid var(--line);overflow:auto;background:var(--panel)}
+#pal h4{margin:4px 0 8px;font:10.5px var(--m);letter-spacing:.14em;color:var(--mut)}
+.pi{display:flex;align-items:center;gap:8px;width:100%;margin-bottom:5px;padding:7px 8px;border:1px solid var(--line);border-radius:5px;background:var(--void);color:var(--ink);font:12px Inter,sans-serif;cursor:grab;text-align:left}
+.pi:hover{border-color:var(--cyan)}.pi i{width:9px;height:9px;border-radius:2px;flex:none}
+main{position:relative;background:radial-gradient(circle,#13202f 1px,transparent 1px) 0 0/22px 22px,var(--void);overflow:hidden}
+#cv{width:100%;height:100%;font-family:Inter,sans-serif}
+#hint{position:absolute;left:12px;bottom:10px;font:11.5px var(--m);color:var(--mut);pointer-events:none;background:rgba(5,8,13,.75);padding:3px 8px;border-radius:4px}
+#ins{border-left:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--line);flex:none}
+.tabs button{flex:1;padding:10px 3px;background:none;border:0;border-bottom:2px solid transparent;color:var(--mut);font:12px Inter,sans-serif;cursor:pointer}
+.tabs button.on{color:var(--gold);border-color:var(--gold);font-weight:600}
+.pb{padding:12px;overflow:auto;flex:1}.pb label{display:block;margin:9px 0 4px;font:10.5px var(--m);color:var(--mut);letter-spacing:.1em}
+input,select{width:100%;padding:7px 9px;background:var(--void);color:var(--ink);border:1px solid var(--line);border-radius:4px;font:12.5px Inter,sans-serif}
+table{width:100%;border-collapse:collapse;font:11.5px var(--m)}td,th{padding:5px 4px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--gold)}
+.big{font:800 34px Orbitron,sans-serif}
+.chk{padding:7px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}.chk b{width:16px;flex:none}.chk small{display:block;font:10.5px var(--m);color:var(--mut)}
+.facard{border:1px solid var(--line);border-radius:5px;padding:9px 10px;margin-bottom:7px;background:var(--void);cursor:pointer}
+.facard:hover,.facard.on{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.facard h5{margin:0 0 4px;font:600 13px Inter,sans-serif;color:var(--ink);display:flex;justify-content:space-between}
+.facard p{margin:0 0 6px;font-size:11.5px;color:var(--mut)}
+#con{grid-column:1/4;background:#04070b;border-top:1px solid var(--line);display:flex;flex-direction:column;font:12.5px var(--m)}
+#out{flex:1;overflow:auto;padding:8px 14px;white-space:pre-wrap}
+#cin{display:flex;align-items:center;gap:8px;padding:5px 14px;border-top:1px solid var(--line)}
+#cin span{color:var(--cyan)}#cin input{border:0;background:none;font:12.5px var(--m);padding:2px}
+#cin input:focus{outline:none}
+@media(max-width:960px){#app{grid-template-columns:1fr;grid-template-rows:54px 44px 110px 1fr 250px 170px}header,#faBar,#con{grid-column:1}#pal{display:flex;gap:6px;overflow:auto}.pi{width:auto;flex:none}}
+</style></head><body>
+<div id="app">
+<header>
+<div class="logo">PILLARSUITE™<small>WE-SI-PAA AUTO-ARCHITECT</small></div>
+<select id="faSel" title="Select Focus Area &amp; Key Sales Differentiator Profile"></select>
+<button class="btn" id="gen">Generate Segments</button>
+<button class="btn cyb" id="fixBtn" title="Auto-remediate zero-trust policy violations for this Focus Area">Auto-Remediate ZT</button>
+<button class="btn g" id="lk">Link mode</button>
+<button class="btn g" id="chk">Compliance</button>
+<button class="btn g" id="exp">Export JSON</button>
+<div id="score"></div>
+</header>
+<div id="faBar"></div>
+<aside id="pal"><h4>ZERO-TRUST ASSETS</h4></aside>
+<main><svg id="cv"></svg><div id="hint">Drag assets in · Select any of the 77 Focus Areas above or in the right panel · Link mode connects nodes · we-cli below</div></main>
+<aside id="ins"></aside>
+<section id="con"><div id="out"></div><div id="cin"><span>we-cli&gt;</span><input id="ci" placeholder='type "help" or "focus list" or "focus load SI-019"' autocomplete="off" spellcheck="false"></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const FA=[{"id": "SI-001", "fa": "IT Infrastructure Services", "ksp": "IT Infrastructure, Global Reach, AWS, Microsoft, Financial Services", "reach": "Global Reach", "sector": "Financial Services", "eco": ["IT Infrastructure", "AWS", "Microsoft"], "parts": ["IT Infrastructure", "Global Reach", "AWS", "Microsoft", "Financial Services"]}, {"id": "SI-002", "fa": "IT Services & System Integration", "ksp": "IT Services, System Integration, South Korea Reach, Public Sector Focus", "reach": "South Korea Reach", "sector": "Public Sector", "eco": ["IT Services", "System Integration"], "parts": ["IT Services", "System Integration", "South Korea Reach", "Public Sector Focus"]}, {"id": "SI-003", "fa": "IT Support & Managed Services", "ksp": "IT Support, Managed Services, Hong Kong Reach, SME Focus", "reach": "Hong Kong Reach", "sector": "SME", "eco": ["IT Support", "Managed Services"], "parts": ["IT Support", "Managed Services", "Hong Kong Reach", "SME Focus"]}, {"id": "SI-004", "fa": "Enterprise IT Services", "ksp": "Enterprise IT, Global Scale, Microsoft, AWS, Public Sector", "reach": "Global Scale", "sector": "Public Sector", "eco": ["Enterprise IT", "Microsoft", "AWS"], "parts": ["Enterprise IT", "Global Scale", "Microsoft", "AWS", "Public Sector"]}, {"id": "SI-005", "fa": "Digital Transformation & Tech Solutions", "ksp": "Digital Transformation, Tech Solutions, Hong Kong Reach, Retail Focus", "reach": "Hong Kong Reach", "sector": "Retail", "eco": ["Digital Transformation", "Tech Solutions"], "parts": ["Digital Transformation", "Tech Solutions", "Hong Kong Reach", "Retail Focus"]}, {"id": "SI-006", "fa": "App & Web Development", "ksp": "App, Web Development, US Reach, Healthcare Focus", "reach": "US Reach", "sector": "Healthcare", "eco": ["App", "Web Development"], "parts": ["App", "Web Development", "US Reach", "Healthcare Focus"]}, {"id": "SI-007", "fa": "Software Development & IT Services", "ksp": "Software Development, IT Services, Asia Reach, NGO Focus", "reach": "Asia Reach", "sector": "NGO", "eco": ["Software Development", "IT Services"], "parts": ["Software Development", "IT Services", "Asia Reach", "NGO Focus"]}, {"id": "SI-008", "fa": "App Development & Digital Solutions", "ksp": "App Development, Digital Solutions, US Reach, Startup Focus", "reach": "US Reach", "sector": "Startup", "eco": ["App Development", "Digital Solutions"], "parts": ["App Development", "Digital Solutions", "US Reach", "Startup Focus"]}, {"id": "SI-009", "fa": "Custom Software Development", "ksp": "Custom Software Development, Global Reach, Healthcare Focus", "reach": "Global Reach", "sector": "Healthcare", "eco": ["Custom Software Development"], "parts": ["Custom Software Development", "Global Reach", "Healthcare Focus"]}, {"id": "SI-010", "fa": "IT Infrastructure & Cloud Solutions", "ksp": "IT Infrastructure, Cloud Solutions, Hong Kong Reach, Public Sector Focus", "reach": "Hong Kong Reach", "sector": "Public Sector", "eco": ["IT Infrastructure", "Cloud Solutions"], "parts": ["IT Infrastructure", "Cloud Solutions", "Hong Kong Reach", "Public Sector Focus"]}, {"id": "SI-011", "fa": "IT Outsourcing & Software Development", "ksp": "IT Outsourcing, Software Development, European Reach, Mid-Market Focus", "reach": "European Reach", "sector": "Mid-Market", "eco": ["IT Outsourcing", "Software Development"], "parts": ["IT Outsourcing", "Software Development", "European Reach", "Mid-Market Focus"]}, {"id": "SI-012", "fa": "Digitally Native Technology Services", "ksp": "Digitally Native Tech, Global Reach, Media Focus", "reach": "Global Reach", "sector": "Media", "eco": ["Digitally Native Tech"], "parts": ["Digitally Native Tech", "Global Reach", "Media Focus"]}, {"id": "SI-013", "fa": "Cloud & Managed IT Services", "ksp": "Cloud, Managed IT, Middle East Reach, Healthcare Focus", "reach": "Middle East Reach", "sector": "Healthcare", "eco": ["Cloud", "Managed IT"], "parts": ["Cloud", "Managed IT", "Middle East Reach", "Healthcare Focus"]}, {"id": "SI-014", "fa": "Business & Technology Consulting", "ksp": "Business, Technology Consulting, US Reach, AWS, Microsoft", "reach": "US Reach", "sector": "Enterprise", "eco": ["Business", "Technology Consulting", "AWS", "Microsoft"], "parts": ["Business", "Technology Consulting", "US Reach", "AWS", "Microsoft"]}, {"id": "SI-015", "fa": "IT Services & Consulting", "ksp": "IT Services, Consulting, South Korea Reach, Mid-Market Focus", "reach": "South Korea Reach", "sector": "Mid-Market", "eco": ["IT Services", "Consulting"], "parts": ["IT Services", "Consulting", "South Korea Reach", "Mid-Market Focus"]}, {"id": "SI-016", "fa": "Cloud & Cognitive IT Services", "ksp": "Cloud, Cognitive IT, Global Reach, Financial Services Focus", "reach": "Global Reach", "sector": "Financial Services", "eco": ["Cloud", "Cognitive IT"], "parts": ["Cloud", "Cognitive IT", "Global Reach", "Financial Services Focus"]}, {"id": "SI-017", "fa": "IT Services & Digital Transformation", "ksp": "IT Services, Digital Transformation, European Reach, Automotive Focus", "reach": "European Reach", "sector": "Automotive", "eco": ["IT Services", "Digital Transformation"], "parts": ["IT Services", "Digital Transformation", "European Reach", "Automotive Focus"]}, {"id": "SI-018", "fa": "Data Analytics & Digital Operations", "ksp": "Data Analytics, Digital Operations, Global Reach, Healthcare Focus", "reach": "Global Reach", "sector": "Healthcare", "eco": ["Data Analytics", "Digital Operations"], "parts": ["Data Analytics", "Digital Operations", "Global Reach", "Healthcare Focus"]}, {"id": "SI-019", "fa": "Digital Transformation & Strategy", "ksp": "Digital Transformation, Global Scale, SAP, Oracle, Financial Services", "reach": "Global Scale", "sector": "Financial Services", "eco": ["Digital Transformation", "SAP", "Oracle"], "parts": ["Digital Transformation", "Global Scale", "SAP", "Oracle", "Financial Services"]}, {"id": "SI-020", "fa": "Custom Software Development", "ksp": "Custom Software Development, Global Reach, Retail Focus", "reach": "Global Reach", "sector": "Retail", "eco": ["Custom Software Development"], "parts": ["Custom Software Development", "Global Reach", "Retail Focus"]}, {"id": "SI-021", "fa": "Digital Transformation & Business Operations", "ksp": "Digital Transformation, Operations, Global Reach, Financial Services", "reach": "Global Reach", "sector": "Financial Services", "eco": ["Digital Transformation", "Operations"], "parts": ["Digital Transformation", "Operations", "Global Reach", "Financial Services"]}, {"id": "SI-022", "fa": "Digital Transformation & Cybersecurity", "ksp": "Digital Transformation, Cybersecurity, Global Reach, Public Sector Focus", "reach": "Global Reach", "sector": "Public Sector", "eco": ["Digital Transformation", "Cybersecurity"], "parts": ["Digital Transformation", "Cybersecurity", "Global Reach", "Public Sector Focus"]}, {"id": "SI-023", "fa": "Global Technology Consulting", "ksp": "Global Technology Consulting, Cloud, Financial Services Focus", "reach": "Global Reach", "sector": "Financial Services", "eco": ["Global Technology Consulting", "Cloud"], "parts": ["Global Technology Consulting", "Cloud", "Financial Services Focus"]}, {"id": "SI-024", "fa": "Enterprise Digital & IT Services", "ksp": "Enterprise Digital, IT Services, Global Reach, Manufacturing Focus", "reach": "Global Reach", "sector": "Manufacturing", "eco": ["Enterprise Digital", "IT Services"], "parts": ["Enterprise Digital", "IT Services", "Global Reach", "Manufacturing Focus"]}, {"id": "SI-025", "fa": "Custom Software Development", "ksp": "Custom Software Development, US Reach, Manufacturing Focus", "reach": "US Reach", "sector": "Manufacturing", "eco": ["Custom Software Development"], "parts": ["Custom Software Development", "US Reach", "Manufacturing Focus"]}, {"id": "SI-026", "fa": "IT Services & Digital Transformation", "ksp": "IT Services, Digital Transformation, Healthcare Focus, Global Reach, AWS", "reach": "Global Reach", "sector": "Healthcare", "eco": ["IT Services", "Digital Transformation", "AWS"], "parts": ["IT Services", "Digital Transformation", "Healthcare Focus", "Global Reach", "AWS"]}, {"id": "SI-027", "fa": "Digital Platform Engineering", "ksp": "Digital Platform Engineering, Global Reach, Tech Focus", "reach": "Global Reach", "sector": "Tech", "eco": ["Digital Platform Engineering"], "parts": ["Digital Platform Engineering", "Global Reach", "Tech Focus"]}, {"id": "SI-028", "fa": "Digital Consulting & Software Development", "ksp": "Digital Consulting, Software Development, Global Reach, Tech Focus", "reach": "Global Reach", "sector": "Tech", "eco": ["Digital Consulting", "Software Development"], "parts": ["Digital Consulting", "Software Development", "Global Reach", "Tech Focus"]}, {"id": "SI-029", "fa": "Premium Software Engineering", "ksp": "Premium Software Engineering, Global Reach, Tech Focus", "reach": "Global Reach", "sector": "Tech", "eco": ["Premium Software Engineering"], "parts": ["Premium Software Engineering", "Global Reach", "Tech Focus"]}, {"id": "SI-030", "fa": "IT Services & Digital Transformation", "ksp": "IT Services, Digital Transformation, Global Reach, Travel Focus", "reach": "Global Reach", "sector": "Travel", "eco": ["IT Services", "Digital Transformation"], "parts": ["IT Services", "Digital Transformation", "Global Reach", "Travel Focus"]}, {"id": "SI-031", "fa": "Experience-Led Digital Engineering", "ksp": "Experience-Led Digital Engineering, Global Reach, Retail Focus", "reach": "Global Reach", "sector": "Retail", "eco": ["Experience-Led Digital Engineering"], "parts": ["Experience-Led Digital Engineering", "Global Reach", "Retail Focus"]}, {"id": "SI-032", "fa": "Custom Software Engineering", "ksp": "Custom Software Engineering, Global Reach, Logistics Focus", "reach": "Global Reach", "sector": "Logistics", "eco": ["Custom Software Engineering"], "parts": ["Custom Software Engineering", "Global Reach", "Logistics Focus"]}, {"id": "SI-033", "fa": "IT, BPO & Consulting Services", "ksp": "IT, BPO, Consulting, Global Reach, Financial Services Focus", "reach": "Global Reach", "sector": "Financial Services", "eco": ["IT", "BPO", "Consulting"], "parts": ["IT", "BPO", "Consulting", "Global Reach", "Financial Services Focus"]}, {"id": "SI-034", "fa": "Digital Engineering & Modernization", "ksp": "Digital Engineering, Modernization, Global Reach, Healthcare Focus", "reach": "Global Reach", "sector": "Healthcare", "eco": ["Digital Engineering", "Modernization"], "parts": ["Digital Engineering", "Modernization", "Global Reach", "Healthcare Focus"]}, {"id": "SI-035", "fa": "Strategy, Consulting & Digital", "ksp": "Cloud, AI, Global Reach, SAP, Microsoft, Fortune 500 Focus", "reach": "Global Reach", "sector": "Fortune 500", "eco": ["Cloud", "AI", "SAP", "Microsoft"], "parts": ["Cloud", "AI", "Global Reach", "SAP", "Microsoft", "Fortune 500 Focus"]}, {"id": "SI-036", "fa": "Tech Transformation & Consulting", "ksp": "Tech Transformation, Global Scale, SAP, Microsoft, Financial Services", "reach": "Global Scale", "sector": "Financial Services", "eco": ["Tech Transformation", "SAP", "Microsoft"], "parts": ["Tech Transformation", "Global Scale", "SAP", "Microsoft", "Financial Services"]}, {"id": "SI-037", "fa": "Custom Software Development", "ksp": "Custom Software Development, Global Reach, Tech Focus", "reach": "Global Reach", "sector": "Tech", "eco": ["Custom Software Development"], "parts": ["Custom Software Development", "Global Reach", "Tech Focus"]}, {"id": "SI-038", "fa": "Global IT Services & Consulting", "ksp": "Global IT Services, Cloud, SAP, Financial Services Focus", "reach": "Global Reach", "sector": "Financial Services", "eco": ["Global IT Services", "Cloud", "SAP"], "parts": ["Global IT Services", "Cloud", "SAP", "Financial Services Focus"]}, {"id": "SI-039", "fa": "Data, AI & Emerging Tech", "ksp": "Data, AI, Emerging Tech, Global Scale, Financial Services", "reach": "Global Scale", "sector": "Financial Services", "eco": ["Data", "AI", "Emerging Tech"], "parts": ["Data", "AI", "Emerging Tech", "Global Scale", "Financial Services"]}, {"id": "SI-040", "fa": "Digital Transformation & IT Solutions", "ksp": "Digital Transformation, IT Solutions, Global Reach, Manufacturing Focus", "reach": "Global Reach", "sector": "Manufacturing", "eco": ["Digital Transformation", "IT Solutions"], "parts": ["Digital Transformation", "IT Solutions", "Global Reach", "Manufacturing Focus"]}, {"id": "SI-041", "fa": "Digital Transformation for Finance", "ksp": "Digital Transformation, European Reach, Financial Services Focus", "reach": "European Reach", "sector": "Financial Services", "eco": ["Digital Transformation"], "parts": ["Digital Transformation", "European Reach", "Financial Services Focus"]}, {"id": "SI-042", "fa": "Cloud & Infrastructure Solutions", "ksp": "Cloud, Infrastructure Solutions, Global Reach, Public Sector Focus", "reach": "Global Reach", "sector": "Public Sector", "eco": ["Cloud", "Infrastructure Solutions"], "parts": ["Cloud", "Infrastructure Solutions", "Global Reach", "Public Sector Focus"]}, {"id": "SI-043", "fa": "Platform-Based Digital Transformation", "ksp": "Platform-Based Digital Transformation, Global Reach, Retail Focus", "reach": "Global Reach", "sector": "Retail", "eco": ["Platform-Based Digital Transformation"], "parts": ["Platform-Based Digital Transformation", "Global Reach", "Retail Focus"]}, {"id": "SI-044", "fa": "Enterprise Digital Transformation", "ksp": "Enterprise Digital Transformation, Global Reach, Healthcare Focus", "reach": "Global Reach", "sector": "Healthcare", "eco": ["Enterprise Digital Transformation"], "parts": ["Enterprise Digital Transformation", "Global Reach", "Healthcare Focus"]}, {"id": "SI-045", "fa": "Digital Services & Consulting", "ksp": "Digital Services, Global Reach, AWS, Microsoft, Manufacturing Focus", "reach": "Global Reach", "sector": "Manufacturing", "eco": ["Digital Services", "AWS", "Microsoft"], "parts": ["Digital Services", "Global Reach", "AWS", "Microsoft", "Manufacturing Focus"]}, {"id": "SI-046", "fa": "Digital Modernization & IT Services", "ksp": "Digital Modernization, Global Reach, Financial Services Focus", "reach": "Global Reach", "sector": "Financial Services", "eco": ["Digital Modernization"], "parts": ["Digital Modernization", "Global Reach", "Financial Services Focus"]}, {"id": "SI-047", "fa": "Digital, Engineering & Cloud Services", "ksp": "Digital, Engineering, Cloud, Global Reach, Microsoft, Energy Focus", "reach": "Global Reach", "sector": "Energy", "eco": ["Digital", "Engineering", "Cloud", "Microsoft"], "parts": ["Digital", "Engineering", "Cloud", "Global Reach", "Microsoft", "Energy Focus"]}, {"id": "SI-048", "fa": "IT & Business Consulting", "ksp": "IT, Business Consulting, Global Scale, Public Sector Focus", "reach": "Global Scale", "sector": "Public Sector", "eco": ["IT", "Business Consulting"], "parts": ["IT", "Business Consulting", "Global Scale", "Public Sector Focus"]}, {"id": "SI-049", "fa": "IT Services & Consulting", "ksp": "IT Services, Global Scale, Microsoft, AWS, Financial Services Focus", "reach": "Global Scale", "sector": "Financial Services", "eco": ["IT Services", "Microsoft", "AWS"], "parts": ["IT Services", "Global Scale", "Microsoft", "AWS", "Financial Services Focus"]}, {"id": "SI-050", "fa": "Digital Transformation & Consulting", "ksp": "Digital Transformation, European Reach, Public Sector Focus", "reach": "European Reach", "sector": "Public Sector", "eco": ["Digital Transformation"], "parts": ["Digital Transformation", "European Reach", "Public Sector Focus"]}, {"id": "SI-051", "fa": "Cloud, Data & AI Consulting", "ksp": "Cloud, Data, AI, Global Reach, Manufacturing Focus, SAP", "reach": "Global Reach", "sector": "Manufacturing", "eco": ["Cloud", "Data", "AI", "SAP"], "parts": ["Cloud", "Data", "AI", "Global Reach", "Manufacturing Focus", "SAP"]}, {"id": "SI-052", "fa": "System Integration & IT Services", "ksp": "System Integration, IT Services, Japan Reach, SME Focus", "reach": "Japan Reach", "sector": "SME", "eco": ["System Integration", "IT Services"], "parts": ["System Integration", "IT Services", "Japan Reach", "SME Focus"]}, {"id": "SI-053", "fa": "Logistics Process Automation", "ksp": "Logistics Process Automation, Global Reach, Logistics Focus", "reach": "Global Reach", "sector": "Logistics", "eco": ["Logistics Process Automation"], "parts": ["Logistics Process Automation", "Global Reach", "Logistics Focus"]}, {"id": "SI-054", "fa": "IT Services & Consulting", "ksp": "IT Services, Global Reach, Microsoft, AWS, Healthcare Focus", "reach": "Global Reach", "sector": "Healthcare", "eco": ["IT Services", "Microsoft", "AWS"], "parts": ["IT Services", "Global Reach", "Microsoft", "AWS", "Healthcare Focus"]}, {"id": "SI-055", "fa": "Telecom & IT Services", "ksp": "Telecom Focus, IT Services, Global Reach, AWS, SAP", "reach": "Global Reach", "sector": "Telecom", "eco": ["IT Services", "AWS", "SAP"], "parts": ["Telecom Focus", "IT Services", "Global Reach", "AWS", "SAP"]}, {"id": "SI-056", "fa": "Intralogistics & Supply Chain IT", "ksp": "Intralogistics, Supply Chain IT, Global Reach, Retail Focus", "reach": "Global Reach", "sector": "Retail", "eco": ["Intralogistics", "Supply Chain IT"], "parts": ["Intralogistics", "Supply Chain IT", "Global Reach", "Retail Focus"]}, {"id": "SI-057", "fa": "IT Services & Digital Transformation", "ksp": "IT Services, Digital Transformation, Global Scale, SAP, Microsoft", "reach": "Global Scale", "sector": "Enterprise", "eco": ["IT Services", "Digital Transformation", "SAP", "Microsoft"], "parts": ["IT Services", "Digital Transformation", "Global Scale", "SAP", "Microsoft"]}, {"id": "SI-058", "fa": "Defense & Intelligence IT", "ksp": "Defense, Intelligence IT, US Reach, Public Sector Focus", "reach": "US Reach", "sector": "Public Sector", "eco": ["Defense", "Intelligence IT"], "parts": ["Defense", "Intelligence IT", "US Reach", "Public Sector Focus"]}, {"id": "SI-059", "fa": "Hybrid Cloud & AI Consulting", "ksp": "Hybrid Cloud, AI, Global Scale, Red Hat, Enterprise Focus", "reach": "Global Scale", "sector": "Enterprise", "eco": ["Hybrid Cloud", "AI", "Red Hat"], "parts": ["Hybrid Cloud", "AI", "Global Scale", "Red Hat", "Enterprise Focus"]}, {"id": "SI-060", "fa": "IT Services & Operational Technology", "ksp": "IT Services, Operational Tech, Global Reach, Manufacturing Focus", "reach": "Global Reach", "sector": "Manufacturing", "eco": ["IT Services", "Operational Tech"], "parts": ["IT Services", "Operational Tech", "Global Reach", "Manufacturing Focus"]}, {"id": "SI-061", "fa": "IT & Network Technologies", "ksp": "IT, Network Technologies, Global Reach, Telecom Focus", "reach": "Global Reach", "sector": "Telecom", "eco": ["IT", "Network Technologies"], "parts": ["IT", "Network Technologies", "Global Reach", "Telecom Focus"]}, {"id": "SI-062", "fa": "Digital Transformation & Consulting", "ksp": "Digital Transformation, Global Reach, SAP, Oracle, Public Sector", "reach": "Global Reach", "sector": "Public Sector", "eco": ["Digital Transformation", "SAP", "Oracle"], "parts": ["Digital Transformation", "Global Reach", "SAP", "Oracle", "Public Sector"]}, {"id": "SI-063", "fa": "AV & IT Solutions", "ksp": "AV, IT Solutions, Middle East Reach, Broadcasting Focus", "reach": "Middle East Reach", "sector": "Broadcasting", "eco": ["AV", "IT Solutions"], "parts": ["AV", "IT Solutions", "Middle East Reach", "Broadcasting Focus"]}, {"id": "SI-064", "fa": "IT Infrastructure & Solutions", "ksp": "IT Infrastructure, Solutions, UAE Reach, Public Sector Focus", "reach": "UAE Reach", "sector": "Public Sector", "eco": ["IT Infrastructure", "Solutions"], "parts": ["IT Infrastructure", "Solutions", "UAE Reach", "Public Sector Focus"]}, {"id": "SI-065", "fa": "IT Solutions & Services", "ksp": "IT Solutions, Services, UAE Reach, Public Sector Focus", "reach": "UAE Reach", "sector": "Public Sector", "eco": ["IT Solutions", "Services"], "parts": ["IT Solutions", "Services", "UAE Reach", "Public Sector Focus"]}, {"id": "SI-066", "fa": "Digital Transformation & AV/IT", "ksp": "Digital Transformation, AV/IT, Middle East Reach, Corporate Focus", "reach": "Middle East Reach", "sector": "Corporate", "eco": ["Digital Transformation", "AV/IT"], "parts": ["Digital Transformation", "AV/IT", "Middle East Reach", "Corporate Focus"]}, {"id": "SI-067", "fa": "IT Infrastructure & Cloud", "ksp": "IT Infrastructure, Cloud, UAE Reach, Healthcare Focus", "reach": "UAE Reach", "sector": "Healthcare", "eco": ["IT Infrastructure", "Cloud"], "parts": ["IT Infrastructure", "Cloud", "UAE Reach", "Healthcare Focus"]}, {"id": "SI-068", "fa": "Digital Transformation & Smart Systems", "ksp": "Digital Transformation, Smart Systems, UAE Reach, Public Sector Focus", "reach": "UAE Reach", "sector": "Public Sector", "eco": ["Digital Transformation", "Smart Systems"], "parts": ["Digital Transformation", "Smart Systems", "UAE Reach", "Public Sector Focus"]}, {"id": "SI-069", "fa": "ICT Solutions & Digital Transformation", "ksp": "ICT Solutions, Digital Transformation, Saudi Arabia Reach, Public Sector Focus", "reach": "Saudi Arabia Reach", "sector": "Public Sector", "eco": ["ICT Solutions", "Digital Transformation"], "parts": ["ICT Solutions", "Digital Transformation", "Saudi Arabia Reach", "Public Sector Focus"]}, {"id": "SI-070", "fa": "Cybersecurity Solutions", "ksp": "Cybersecurity Solutions, Saudi Arabia Reach, Public Sector Focus", "reach": "Saudi Arabia Reach", "sector": "Public Sector", "eco": ["Cybersecurity Solutions"], "parts": ["Cybersecurity Solutions", "Saudi Arabia Reach", "Public Sector Focus"]}, {"id": "SI-071", "fa": "SAP Solutions & IT Consulting", "ksp": "SAP Solutions, IT Consulting, Middle East Reach, Mid-Market Focus", "reach": "Middle East Reach", "sector": "Mid-Market", "eco": ["SAP Solutions", "IT Consulting"], "parts": ["SAP Solutions", "IT Consulting", "Middle East Reach", "Mid-Market Focus"]}, {"id": "SI-072", "fa": "IT Solutions & System Integration", "ksp": "IT Solutions, System Integration, Saudi Arabia Reach, Public Sector Focus", "reach": "Saudi Arabia Reach", "sector": "Public Sector", "eco": ["IT Solutions", "System Integration"], "parts": ["IT Solutions", "System Integration", "Saudi Arabia Reach", "Public Sector Focus"]}, {"id": "SI-073", "fa": "IT Management & Services", "ksp": "IT Management, Services, Saudi Arabia Reach, Public Sector Focus", "reach": "Saudi Arabia Reach", "sector": "Public Sector", "eco": ["IT Management", "Services"], "parts": ["IT Management", "Services", "Saudi Arabia Reach", "Public Sector Focus"]}, {"id": "SI-074", "fa": "Software Development & Consulting", "ksp": "Software Development, Consulting, Israel Reach, Tech Focus", "reach": "Israel Reach", "sector": "Tech", "eco": ["Software Development", "Consulting"], "parts": ["Software Development", "Consulting", "Israel Reach", "Tech Focus"]}, {"id": "SI-075", "fa": "B2B Tech Marketing", "ksp": "B2B Tech Marketing, Global Reach, Tech Focus", "reach": "Global Reach", "sector": "Tech", "eco": ["B2B Tech Marketing"], "parts": ["B2B Tech Marketing", "Global Reach", "Tech Focus"]}, {"id": "SI-076", "fa": "Web Development & Digital Solutions", "ksp": "Web Development, Digital Solutions, Israel Reach, Public Sector Focus", "reach": "Israel Reach", "sector": "Public Sector", "eco": ["Web Development", "Digital Solutions"], "parts": ["Web Development", "Digital Solutions", "Israel Reach", "Public Sector Focus"]}, {"id": "SI-077", "fa": "IT Consulting & Services", "ksp": "IT Consulting, Services, South Korea Reach, Corporate Focus", "reach": "South Korea Reach", "sector": "Corporate", "eco": ["IT Consulting", "Services"], "parts": ["IT Consulting", "Services", "South Korea Reach", "Corporate Focus"]}];
+const T={
+ user:{n:'User / Identity',c:'#ff7a59',seg:'Identity',port:'443'},
+ endpoint:{n:'Endpoint / Device',c:'#f2b84b',seg:'Endpoints',port:'443'},
+ iot:{n:'IoT / OT / AV',c:'#4ade80',seg:'OT-IoT-AV',port:'8883'},
+ pep:{n:'Policy Gateway',c:'#c9a84c',seg:'Control Plane',port:'443'},
+ ai:{n:'AI / Cognitive',c:'#e879f9',seg:'AI Agents',port:'8443'},
+ app:{n:'App / Integration',c:'#00d4ff',seg:'App Tier',port:'443'},
+ cloud:{n:'Cloud / Ecosystem',c:'#60a5fa',seg:'Cloud Fabric',port:'443'},
+ db:{n:'Data / Core ERP',c:'#7c6cff',seg:'Data Tier',port:'5432'}
+};
+const L={user:0,endpoint:1,iot:1,pep:2,ai:3,app:4,cloud:5,db:6},LOW=['user','endpoint','iot'],W=142,H=48;
+let S={nodes:[],edges:[],over:[],gen:false,sel:null,link:false,from:null,tab:'fa',n:1,o:1,promoted:null,faIdx:0,faQ:'',faReach:'',faSec:''};
+const N=id=>S.nodes.find(x=>x.id==id),touch=()=>{S.promoted=null};
+const find=q=>S.nodes.find(x=>x.id.toLowerCase()==q.toLowerCase()||x.name.toLowerCase()==q.toLowerCase());
+function add(t,name,x,y,meta){const id='N'+S.n++;S.nodes.push({id,type:t,name:name||T[t].n,x,y,meta:meta||''})}
+function link(a,b){if(a==b)return;const i=S.edges.findIndex(e=>e.includes(a)&&e.includes(b));i>=0?S.edges.splice(i,1):S.edges.push([a,b]);touch()}
+
+// Build a deterministic, realistic topology for any of the 77 Focus Area profiles
+function buildFocusTopology(idx, cleanMode=false){
+ const p=FA[idx]||FA[0];
+ S.faIdx=idx;S.nodes=[];S.edges=[];S.over=[];S.n=1;S.o=1;S.sel=null;S.from=null;S.promoted=null;
+ const ksp=p.ksp;
+ const hasAWS=/AWS/i.test(ksp),hasMS=/Microsoft/i.test(ksp),hasSAP=/SAP/i.test(ksp),hasOra=/Oracle/i.test(ksp),hasRH=/Red Hat/i.test(ksp);
+ const hasAI=/AI|Cognitive|Analytics/i.test(ksp+' '+p.fa);
+ const hasOT=/Operational Tech|Smart Systems|AV|Intralogistics|Logistics|Manufacturing|Automotive|Energy|Broadcasting|Telecom/i.test(ksp+' '+p.fa);
+ const secShort=p.sector.slice(0,14);
+ const reachShort=p.reach.replace(/ Reach| Scale/g,'');
+
+ // 1. Identity & Endpoints
+ add('user', reachShort+' Identities', 45, 55, p.reach);
+ add('endpoint', secShort+' Endpoints', 45, 185, p.sector);
+ // 2. IoT / OT / Edge or Regional Branch
+ add('iot', hasOT?'OT / Smart Edge':'Branch / Edge Node', 45, 315, p.fa);
+ // 3. Zero-Trust Policy Enforcement Point (Control Plane)
+ add('pep', 'WE-SI-PAA ZT Gateway', 250, 175, 'Criterion 5 & 6 PEP');
+ // 4. App & Integration Tier tailored to Focus Area
+ const app1Name = p.fa.length>18 ? p.fa.slice(0,17)+'…' : p.fa;
+ add('app', app1Name, 455, 55, p.fa);
+ add('app', secShort+' Core API', 455, 185, p.sector+' API');
+ // 5. AI / Cognitive Copilot or Orchestrator
+ add('ai', hasAI?'Cognitive AI Agent':'SI Auto-Architect AI', 455, 315, hasAI?'AI / Cognitive':'Neuro-Symbolic CLI');
+ // 6. Cloud & Ecosystem Tier (AWS, Microsoft, SAP, Oracle, Red Hat, or Cloud)
+ let cloudLabel='Global Cloud Fabric';
+ if(hasAWS&&hasMS) cloudLabel='AWS + Azure Hub';
+ else if(hasAWS) cloudLabel='AWS Cloud VPC';
+ else if(hasMS) cloudLabel='Microsoft Azure';
+ else if(hasRH) cloudLabel='Red Hat OpenShift';
+ else if(hasSAP) cloudLabel='SAP BTP Cloud';
+ else cloudLabel=reachShort+' Cloud Hub';
+ add('cloud', cloudLabel, 665, 295, ksp);
+ // 7. Data / Core ERP Tier
+ let dbLabel=secShort+' Data Vault';
+ if(hasSAP&&hasOra) dbLabel='SAP + Oracle DB';
+ else if(hasSAP) dbLabel='SAP S/4HANA DB';
+ else if(hasOra) dbLabel='Oracle Core DB';
+ add('db', dbLabel, 665, 120, p.sector+' Data Tier');
+
+ // Compliant Zero-Trust connections
+ [['N1','N4'],['N2','N4'],['N3','N4'],['N4','N5'],['N4','N6'],['N5','N6'],['N6','N9'],['N7','N6'],['N7','N8'],['N6','N8']].forEach(e=>S.edges.push(e));
+ // In default SI-drift inspection mode, include a legacy SI shortcut (N2 -> N6) so the user can see violation detection or click Auto-Remediate
+ if(!cleanMode) S.edges.push(['N2','N6']);
+ S.gen=true;
+ out(`loaded [${p.id}] ${p.fa} — Differentiators: ${p.ksp}${cleanMode?' (100% Zero-Trust Remediated)':' (SI Drift Detected on N2->N6)'}`,'cy');
+}
+
+function dir(a,b){return(L[a.type]<L[b.type]||(L[a.type]==L[b.type]&&a.id<b.id))?[a,b]:[b,a]}
+function rules(){const r=[];if(!S.gen)return r;
+S.edges.map(e=>dir(N(e[0]),N(e[1]))).sort((x,y)=>(x[0].id+x[1].id).localeCompare(y[0].id+y[1].id)).forEach((p,i)=>r.push({id:'A-'+String(i+1).padStart(3,'0'),s:p[0].id,d:p[1].id,port:T[p[1].type].port,kind:'auto'}));
+S.over.forEach(o=>r.push({id:o.id,s:o.s,d:o.d,port:o.port,kind:'override',reason:o.reason}));return r}
+function hash(){let h=2166136261;const p=FA[S.faIdx];const s=(p?p.id+':':'')+rules().map(r=>[r.s,r.d,r.port].join('>')).sort().join('|');for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
+const hasOver=(s,d)=>S.over.some(o=>o.s==s&&o.d==d&&o.reason);
+function checks(){const R=rules(),A=R.filter(r=>r.kind=='auto'&&!hasOver(r.s,r.d)),g=S.gen,ty=id=>N(id).type;return[
+['Default-deny baseline enforced','#34 Zero Trust (ZTNA)',g],
+['Data tier unreachable from low-trust zones','#118 Microsegmentation',g&&!A.some(r=>ty(r.d)=='db'&&LOW.includes(ty(r.s)))],
+['Low-trust assets reach only the policy gateway','#34 Zero Trust (ZTNA)',g&&!A.some(r=>LOW.includes(ty(r.s))&&ty(r.d)!='pep')],
+['AI agents have no direct data-tier access','#51 Model-to-Action Validation',g&&!A.some(r=>ty(r.s)=='ai'&&ty(r.d)=='db')],
+['Every override has a documented reason','#116 Policy Drift Detector',g&&S.over.every(o=>Boolean(o.reason&&o.reason.trim()))],
+['No orphaned assets','Criteria 5 & 6',g&&S.nodes.every(n=>S.edges.some(e=>e.includes(n.id))||S.over.some(o=>o.s==n.id||o.d==n.id))]]}
+const score=()=>{const c=checks();return Math.round(100*c.filter(x=>x[2]).length/c.length)};
+function segs(){const g={};S.nodes.forEach(n=>(g[T[n.type].seg]=g[T[n.type].seg]||[]).push(n));return g}
+
+function remediate(){
+ const pep=S.nodes.find(n=>n.type=='pep');
+ let fixed=0;
+ S.edges=S.edges.filter(e=>{
+  const [s,d]=dir(N(e[0]),N(e[1]));
+  if(hasOver(s.id,d.id))return true;
+  const bad=(LOW.includes(s.type)&&d.type!='pep')||(LOW.includes(s.type)&&d.type=='db')||(s.type=='ai'&&d.type=='db');
+  if(bad){fixed++;return false}
+  return true;
+ });
+ if(pep){
+  S.nodes.forEach(n=>{
+   if(n.id!=pep.id&&!S.edges.some(e=>e.includes(n.id))&&!S.over.some(o=>o.s==n.id||o.d==n.id)){
+    S.edges.push([n.id,pep.id]);fixed++;
+   }
+  });
+ }
+ S.gen=true;touch();
+ out(`auto-remediated ${fixed} zero-trust violation(s) for [${FA[S.faIdx].id}] ${FA[S.faIdx].fa} · compliance ${score()}% · build ${hash()}`,'ok');
+ ui();
+}
+
+function draw(){
+ let h='<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6b86a5"/></marker></defs>';
+ if(S.gen){const g=segs();for(const k in g){const m=g[k],x1=Math.min(...m.map(n=>n.x))-16,y1=Math.min(...m.map(n=>n.y))-28,x2=Math.max(...m.map(n=>n.x))+W+16,y2=Math.max(...m.map(n=>n.y))+H+16,c=T[m[0].type].c;
+ h+=`<rect x="${x1}" y="${y1}" width="${x2-x1}" height="${y2-y1}" rx="10" fill="${c}" fill-opacity=".06" stroke="${c}" stroke-opacity=".6" stroke-dasharray="5 4"/><text x="${x1+10}" y="${y1+16}" fill="${c}" font-size="10.5" class="mono">SEG · ${k.toUpperCase()}</text>`}}
+ const ln=(s,d,col,w,dash)=>{const x1=s.x+W/2,y1=s.y+H/2,x2=d.x+W/2,y2=d.y+H/2,l=Math.hypot(x2-x1,y2-y1)||1,k=S.gen?Math.max(0,l-46)/l:1;
+ return`<line x1="${x1}" y1="${y1}" x2="${x1+(x2-x1)*k}" y2="${y1+(y2-y1)*k}" stroke="${col}" stroke-width="${w}" ${dash?'stroke-dasharray="6 4"':''} ${S.gen?'marker-end="url(#ar)"':''}/>`};
+ S.edges.forEach(e=>{const[s,d]=S.gen?dir(N(e[0]),N(e[1])):[N(e[0]),N(e[1])],v=S.gen&&!hasOver(s.id,d.id)&&((LOW.includes(s.type)&&d.type!='pep')||(LOW.includes(s.type)&&d.type=='db')||(s.type=='ai'&&d.type=='db'));h+=ln(s,d,v?'#ff5d5d':'#3b5068',v?2.6:1.6)});
+ S.over.forEach(o=>h+=ln(N(o.s),N(o.d),'#c9a84c',2,1));
+ S.nodes.forEach(n=>{const t=T[n.type],a=S.sel==n.id||S.from==n.id;
+ h+=`<g data-id="${n.id}" style="cursor:move"><rect x="${n.x}" y="${n.y}" width="${W}" height="${H}" rx="6" fill="#0b1119" stroke="${a?'#00d4ff':t.c}" stroke-width="${a?2.5:1.3}"/><rect x="${n.x}" y="${n.y}" width="5" height="${H}" rx="2" fill="${t.c}"/><text x="${n.x+13}" y="${n.y+20}" fill="#e8edf4" font-size="12" font-weight="600">${esc(n.name.slice(0,19))}</text><text x="${n.x+13}" y="${n.y+35}" fill="#8b9bb0" font-size="10" class="mono">${n.id} · ${t.n.toUpperCase().slice(0,16)}</text></g>`});
+ $('#cv').innerHTML=h;
+}
+
+function renderBar(){
+ const p=FA[S.faIdx]||FA[0];
+ $('#faBar').innerHTML=`<span class="mono gold">[${esc(p.id)}]</span><strong style="color:var(--ink)">Focus Area:</strong><span>${esc(p.fa)}</span><span class="mut">|</span><strong style="color:var(--ink)">Key Sales Points &amp; Differentiators:</strong><span class="cy">${esc(p.ksp)}</span><span style="margin-left:auto"><span class="tag gold">${esc(p.reach)}</span><span class="tag grn">${esc(p.sector)} Focus</span>${p.eco.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</span>`;
+}
+
+function panel(){
+ const T4=[['fa','Focus Areas (77)'],['ins','Inspector'],['pol','Policies'],['cmp','Compliance']];
+ const p=FA[S.faIdx]||FA[0];
+ let h='<div class="tabs">'+T4.map(([k,t])=>`<button class="${S.tab==k?'on':''}" data-tab="${k}">${t}</button>`).join('')+'</div><div class="pb">';
+ if(S.tab=='fa'){
+  const reaches=[...new Set(FA.map(x=>x.reach))].sort();
+  const sectors=[...new Set(FA.map(x=>x.sector))].sort();
+  const q=S.faQ.toLowerCase();
+  const list=FA.map((x,i)=>({...x,i})).filter(x=>(!S.faReach||x.reach===S.faReach)&&(!S.faSec||x.sector===S.faSec)&&(!q||(x.id+' '+x.fa+' '+x.ksp).toLowerCase().includes(q)));
+  h+=`<input id="fSearch" placeholder="Search 77 Focus Areas &amp; Differentiators…" value="${esc(S.faQ)}" style="margin-bottom:6px">
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+   <select id="fReach"><option value="">Reach: All</option>${reaches.map(r=>`<option ${S.faReach===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
+   <select id="fSec"><option value="">Focus: All</option>${sectors.map(s=>`<option ${S.faSec===s?'selected':''}>${esc(s)}</option>`).join('')}</select>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px" class="mono mut">
+   <span>Showing ${list.length} / 77 profiles</span>
+   <button class="btn cyb" id="loadClean" style="padding:3px 8px;font-size:11px">Load Active 100% Clean</button>
+  </div>`+
+  list.map(x=>`<div class="facard ${x.i===S.faIdx?'on':''}" data-fidx="${x.i}">
+   <h5><span>${esc(x.fa)}</span><span class="mono gold" style="font-size:11px">${esc(x.id)}</span></h5>
+   <p>${esc(x.ksp)}</p>
+   <div><span class="tag gold">${esc(x.reach)}</span><span class="tag grn">${esc(x.sector)}</span>${x.eco.slice(0,3).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+  </div>`).join('');
+ }else if(S.tab=='ins'){
+  const n=S.sel&&N(S.sel);
+  h+=`<div style="padding:8px 10px;border:1px solid var(--line);border-radius:5px;background:var(--void);margin-bottom:10px">
+   <div class="mono gold" style="font-size:11px">${esc(p.id)} · ACTIVE FOCUS AREA PROFILE</div>
+   <div style="font-weight:600;margin:2px 0">${esc(p.fa)}</div>
+   <div class="mut" style="font-size:12px">${esc(p.ksp)}</div>
+  </div>`;
+  h+=!n?'<p class="mut">Select an asset on the canvas to inspect or customize. Use <b>Link mode</b> to connect assets, or switch to <b>Focus Areas (77)</b> to load any SI profile.</p>':
+  `<label>ASSET NAME</label><input id="nm" value="${esc(n.name)}"><label>ZERO-TRUST ROLE</label><select id="ty">${Object.keys(T).map(k=>`<option value="${k}" ${k==n.type?'selected':''}>${T[k].n}</option>`).join('')}</select><p class="mut mono">ID ${n.id} · Segment ${T[n.type].seg} · ${S.edges.filter(e=>e.includes(n.id)).length} links</p><button class="btn g" id="del">Delete asset</button>`;
+ }else if(S.tab=='pol'){
+  h+=!S.gen?'<p class="mut">Press <b>Generate Segments</b> to build the policy set.</p>':
+  `<p class="mono ok">DEFAULT: DENY ALL · ${esc(p.id)} (${esc(p.fa)})</p><p class="mono mut">deterministic build ${hash()}</p><table><tr><th>ID</th><th>SRC</th><th>DST</th><th>PORT</th></tr>${rules().map(r=>`<tr class="${r.kind=='override'?'cy':''}"><td>${r.id}</td><td>${r.s}</td><td>${r.d}</td><td>${r.port}</td></tr>`).join('')}</table>`;
+ }else{
+  if(!S.gen)h+='<p class="mut">Generate segments to evaluate the compliance baseline.</p>';else{const c=checks(),sc=score();
+  h+=`<div class="big ${sc==100?'ok':'bad'}">${sc}%</div><p class="mut mono">Criteria 5 &amp; 6 · ${esc(p.id)} ${esc(p.fa)}</p>`+c.map(x=>`<div class="chk"><b class="${x[2]?'ok':'bad'}">${x[2]?'✓':'✗'}</b><div>${x[0]}<small>${x[1]}</small></div></div>`).join('')+
+  `<p style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="pro" ${sc<100?'disabled':''}>Promote to production</button>${sc<100?'<button class="btn cyb" id="rem">Auto-Remediate Drift</button>':''}</p>${sc<100?'<p class="mut">Promotion is blocked until every gate passes. Click <b>Auto-Remediate Drift</b> or document an override via <code>we-cli</code>.</p>':''}`}
+ }
+ $('#ins').innerHTML=h+'</div>';
+ if(S.tab=='fa'){
+  $('#fSearch').oninput=e=>{S.faQ=e.target.value;const pos=e.target.selectionStart;panel();const inp=$('#fSearch');inp.focus();inp.setSelectionRange(pos,pos)};
+  $('#fReach').onchange=e=>{S.faReach=e.target.value;panel()};
+  $('#fSec').onchange=e=>{S.faSec=e.target.value;panel()};
+  $('#loadClean').onclick=()=>{buildFocusTopology(S.faIdx,true);ui()};
+ }
+}
+
+function ui(){
+ $('#faSel').value=String(S.faIdx);
+ renderBar();draw();panel();
+ $('#lk').classList.toggle('on',S.link);
+ const sc=S.gen?score():null;
+ $('#score').innerHTML=S.gen?`Compliance <b class="${sc==100?'ok':'bad'}">${sc}%</b>${S.promoted?' · <b class="ok">PROMOTED '+S.promoted+'</b>':''}`:'Compliance <b>—</b>';
+}
+function out(t,c){const o=$('#out');o.insertAdjacentHTML('beforeend',`<div class="${c||''}">${esc(t)}</div>`);o.scrollTop=o.scrollHeight}
+function generate(){S.gen=true;touch();const p=FA[S.faIdx];out(`generated ${Object.keys(segs()).length} segments · ${rules().length} allow rules · [${p.id}] ${p.fa} · default DENY · build ${hash()}`,'ok')}
+function promote(){if(!S.gen)return out('REFUSED: run generate first','bad');const f=checks().filter(x=>!x[2]);
+if(f.length){out(`REFUSED: ${f.length} compliance gate(s) failing`,'bad');f.forEach(x=>out(`  ✗ ${x[0]} [${x[1]}]`,'bad'));S.tab='cmp';return}
+S.promoted=hash();out(`PROMOTED build ${S.promoted} for [${FA[S.faIdx].id}] ${FA[S.faIdx].fa} — deterministic and reproducible`,'ok')}
+
+function run(line){
+ out('we-cli> '+line,'cy');
+ const a=[...line.matchAll(/"([^"]*)"|(\S+)/g)].map(m=>m[1]!==undefined?m[1]:m[2]),c=a[0];if(!c)return;
+ if(c=='help')out('focus list [query] | focus load <SI-001..SI-077> [--clean] | focus current | focus stats | focus fix | nodes | generate | segments | policy list | override allow <src> <dst> <port> --reason "<text>" | override revoke <id> | check | hash | export | promote');
+ else if(c=='focus'){
+  const sub=a[1]||'current';
+  if(sub=='current'){const p=FA[S.faIdx];out(`[${p.id}] Focus Area: ${p.fa} | Key Sales Points & Differentiators: ${p.ksp}`,'ok')}
+  else if(sub=='list'){
+   const q=(a.slice(2).join(' ')||'').toLowerCase();
+   const m=FA.filter(x=>!q||(x.id+' '+x.fa+' '+x.ksp).toLowerCase().includes(q));
+   m.slice(0,25).forEach(x=>out(`${x.id}  ${x.fa.padEnd(38,' ')} | ${x.ksp}`));
+   if(m.length>25)out(`... showing 25 of ${m.length} matching profiles (use "focus list <keyword>" to narrow)`,'mut');
+  }else if(sub=='load'){
+   const target=(a[2]||'').toUpperCase();
+   const clean=a.includes('--clean');
+   const idx=FA.findIndex(x=>x.id.toUpperCase()===target||x.fa.toLowerCase().includes(target.toLowerCase()));
+   if(idx<0)out('REFUSED: Focus Area profile not found (try SI-001 through SI-077)','bad');
+   else buildFocusTopology(idx,clean);
+  }else if(sub=='fix'){
+   remediate();
+  }else if(sub=='stats'){
+   const byR={},byS={};FA.forEach(x=>{byR[x.reach]=(byR[x.reach]||0)+1;byS[x.sector]=(byS[x.sector]||0)+1});
+   out('77 Focus Area Profiles — By Reach: '+Object.entries(byR).map(([k,v])=>`${k} (${v})`).join(', '));
+   out('77 Focus Area Profiles — By Sector Focus: '+Object.entries(byS).map(([k,v])=>`${k} (${v})`).join(', '));
+  }else out('unknown focus subcommand — try: focus list | focus load SI-001 --clean | focus current | focus stats | focus fix','bad');
+ }
+ else if(c=='nodes')S.nodes.forEach(n=>out(`${n.id}  ${n.name}  [${n.type}] ${n.meta?'· '+n.meta:''}`));
+ else if(c=='generate')generate();
+ else if(!S.gen&&c!='promote')out('run "generate" first','bad');
+ else if(c=='segments'){const g=segs();for(const k in g)out(`${k}: ${g[k].map(n=>n.name).join(', ')}`)}
+ else if(c=='policy')rules().forEach(r=>out(`${r.id}  allow ${r.s} -> ${r.d}  tcp/${r.port}  ${r.kind}${r.reason?'  # '+r.reason:''}`));
+ else if(c=='hash')out(hash());
+ else if(c=='check'){checks().forEach(x=>out(`${x[2]?'✓':'✗'} ${x[0]} [${x[1]}]`,x[2]?'ok':'bad'));out(`score ${score()}%`)}
+ else if(c=='export'){const p=FA[S.faIdx];out(`# we-cli export · [${p.id}] ${p.fa} · Differentiators: ${p.ksp} · build ${hash()}`);out('we-cli policy default deny');rules().forEach(r=>out(`we-cli policy allow ${r.s} ${r.d} ${r.port}${r.reason?` --reason "${r.reason}"`:''}`))}
+ else if(c=='promote')promote();
+ else if(c=='override'&&a[1]=='allow'){const s=find(a[2]||''),d=find(a[3]||''),i=a.indexOf('--reason'),why=i>0?(a[i+1]||'').trim():'';
+ if(!s||!d)out('REFUSED: unknown source or destination (see "nodes")','bad');
+ else if(!/^\d{1,5}$/.test(a[4]||''))out('REFUSED: port must be numeric','bad');
+ else if(!why)out('REFUSED: every override requires --reason "<text>"','bad');
+ else{S.over.push({id:'O-'+S.o++,s:s.id,d:d.id,port:a[4],reason:why});touch();out(`override ${S.over[S.over.length-1].id} recorded: ${s.id} -> ${d.id} tcp/${a[4]} # ${why}`,'ok')}
+ }else if(c=='override'&&a[1]=='revoke'){const n=S.over.length;S.over=S.over.filter(o=>o.id!=a[2]);touch();out(S.over.length<n?'revoked '+a[2]:'no such override','bad')}
+ else out('unknown command — type "help"','bad');
+ ui();
+}
+
+// Populate header selector
+$('#faSel').innerHTML=FA.map((x,i)=>`<option value="${i}">[${esc(x.id)}] ${esc(x.fa)} — ${esc(x.ksp)}</option>`).join('');
+$('#faSel').onchange=e=>{buildFocusTopology(+e.target.value,false);ui()};
+
+$('#ci').addEventListener('keydown',e=>{if(e.key=='Enter'){run(e.target.value.trim());e.target.value=''}});
+$('#pal').innerHTML+=Object.keys(T).map(k=>`<button class="pi" draggable="true" data-t="${k}"><i style="background:${T[k].c}"></i>${T[k].n}</button>`).join('');
+$('#pal').addEventListener('click',e=>{const b=e.target.closest('.pi');if(!b)return;const c=S.nodes.length;add(b.dataset.t,null,40+(c%7)*60,30+(c%9)*40);touch();ui()});
+$('#pal').addEventListener('dragstart',e=>{const b=e.target.closest('.pi');if(b)e.dataTransfer.setData('text/plain',b.dataset.t)});
+$('#cv').addEventListener('dragover',e=>e.preventDefault());
+$('#cv').addEventListener('drop',e=>{e.preventDefault();const t=e.dataTransfer.getData('text/plain');if(!T[t])return;const r=$('#cv').getBoundingClientRect();add(t,null,Math.round(e.clientX-r.left-W/2),Math.round(e.clientY-r.top-H/2));touch();ui()});
+let drag=null;
+$('#cv').addEventListener('pointerdown',e=>{const g=e.target.closest('[data-id]');if(!g){S.sel=null;S.from=null;return ui()}
+const id=g.dataset.id;if(S.link){if(!S.from)S.from=id;else{link(S.from,id);S.from=null}return ui()}
+S.sel=id;const n=N(id),r=$('#cv').getBoundingClientRect();drag={n,dx:e.clientX-r.left-n.x,dy:e.clientY-r.top-n.y};ui()});
+addEventListener('pointermove',e=>{if(!drag)return;const r=$('#cv').getBoundingClientRect();drag.n.x=Math.max(0,Math.round(e.clientX-r.left-drag.dx));drag.n.y=Math.max(0,Math.round(e.clientY-r.top-drag.dy));draw()});
+addEventListener('pointerup',()=>{if(drag){drag=null;touch();ui()}});
+$('#ins').addEventListener('click',e=>{
+ const fc=e.target.closest('[data-fidx]');
+ if(fc){buildFocusTopology(+fc.dataset.fidx,false);return ui()}
+ const t=e.target;if(t.dataset.tab){S.tab=t.dataset.tab}
+ if(t.id=='del'){const id=S.sel;S.nodes=S.nodes.filter(n=>n.id!=id);S.edges=S.edges.filter(x=>!x.includes(id));S.over=S.over.filter(o=>o.s!=id&&o.d!=id);S.sel=null;touch()}
+ if(t.id=='pro')promote();
+ if(t.id=='rem')remediate();
+ ui();
+});
+$('#ins').addEventListener('change',e=>{const n=N(S.sel);if(!n)return;if(e.target.id=='nm')n.name=e.target.value||n.name;if(e.target.id=='ty')n.type=e.target.value;touch();ui()});
+$('#gen').onclick=()=>{generate();ui()};
+$('#fixBtn').onclick=()=>remediate();
+$('#lk').onclick=()=>{S.link=!S.link;S.from=null;ui()};
+$('#chk').onclick=()=>{S.tab='cmp';ui()};
+$('#exp').onclick=()=>{
+ const p=FA[S.faIdx];
+ const d={
+  product:'PillarSuite Auto-Architect',
+  product_id:'WE-COG-SI0001-SW (WE-SI-PAA)',
+  focus_area_profile:p,
+  focus_area_catalog_total:FA.length,
+  build:S.gen?hash():null,
+  default_policy:'deny',
+  nodes:S.nodes,
+  edges:S.edges,
+  segments:S.gen?Object.fromEntries(Object.entries(segs()).map(([k,v])=>[k,v.map(n=>n.id)])):{},
+  rules:rules(),
+  checks:S.gen?checks().map(x=>({check:x[0],framework:x[1],pass:x[2]})):[]
+ };
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}));a.download=`pillarsuite-${p.id.toLowerCase()}-topology.json`;a.click();
+};
+out('PillarSuite™ Auto-Architect (WE-SI-PAA) · 77 Focus Area & Differentiator Profiles Loaded · type "help" or "focus list"');
+buildFocusTopology(0,false);
+run('check');
+</script></body></html>
